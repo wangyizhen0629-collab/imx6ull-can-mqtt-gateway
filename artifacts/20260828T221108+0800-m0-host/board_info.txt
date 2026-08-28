@@ -1,0 +1,6 @@
+NOT RUN
+
+No target connection was established in M0. The owner-supplied i.MX6ULL facts
+were not revalidated. Run `tools/board/collect_board_info.sh` on the target in an
+approved later session and retain its output in a new run directory.
+

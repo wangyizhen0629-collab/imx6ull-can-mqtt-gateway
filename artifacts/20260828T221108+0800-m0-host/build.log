@@ -1,0 +1,36 @@
+$ cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+-- The C compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build
+
+$ cmake --build build --parallel
+[ 50%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+[100%] Linking C executable gatewayd
+[100%] Built target gatewayd
+
+$ ctest --test-dir build --output-on-failure
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build
+    Start 1: gatewayd_version
+1/3 Test #1: gatewayd_version .................   Passed    0.00 sec
+    Start 2: gatewayd_default_config
+2/3 Test #2: gatewayd_default_config ..........   Passed    0.00 sec
+    Start 3: gatewayd_example_config
+3/3 Test #3: gatewayd_example_config ..........   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 3
+Total Test time (real) = 0.01 sec
+
+$ cmake --build build --parallel  # final verification
+Consolidate compiler generated dependencies of target gatewayd
+[100%] Built target gatewayd
+
+$ ctest --test-dir build --output-on-failure  # final verification
+1/3 Test #1: gatewayd_version .................   Passed    0.00 sec
+2/3 Test #2: gatewayd_default_config ..........   Passed    0.00 sec
+3/3 Test #3: gatewayd_example_config ..........   Passed    0.00 sec
+100% tests passed, 0 tests failed out of 3
+Total Test time (real) = 0.01 sec

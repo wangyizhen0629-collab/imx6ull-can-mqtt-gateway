@@ -1,0 +1,21 @@
+Collected during M0 on 2026-08-28 (Asia/Shanghai).
+
+uname -a:
+Linux wangyizhen-virtual-machine 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+
+/etc/os-release:
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+VERSION_ID="22.04"
+VERSION_CODENAME=jammy
+
+Build tools used:
+gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+cmake version 3.22.1
+GNU Make 4.3
+pkg-config 0.29.2
+git version 2.34.1
+
+Binary inspection:
+ELF 64-bit LSB PIE executable, x86-64, dynamically linked, with debug_info,
+not stripped. Runtime dependency reported by ldd: host glibc only.
+

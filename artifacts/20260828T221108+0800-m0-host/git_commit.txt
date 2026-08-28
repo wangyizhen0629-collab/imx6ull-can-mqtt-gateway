@@ -1,0 +1,6 @@
+UNBORN
+
+The repository had no commits, and M0 explicitly prohibited creating one unless
+requested. `git status --short --branch` reported an unborn `master` with the M0
+files untracked.
+

@@ -1,0 +1,37 @@
+{
+  "run_id": "20260828T221108+0800-m0-host",
+  "milestone": "M0",
+  "test_scope": "x86_64 host configure, compile, CTest smoke tests, and direct lifecycle/config checks",
+  "timezone": "Asia/Shanghai (+08:00)",
+  "start_time": "2026-08-28T22:11:08.600829576+08:00",
+  "end_time": "2026-08-28T22:13:39+08:00",
+  "time_evidence": "CMakeCache birth time and explicit final verification timestamps",
+  "git_commit": "UNBORN",
+  "git_state": "unborn master with untracked M0 files; no commit created by instruction",
+  "host": {
+    "os": "Ubuntu 22.04.5 LTS",
+    "kernel": "6.8.0-138-generic",
+    "architecture": "x86_64"
+  },
+  "target_board": {
+    "status": "NOT RUN",
+    "owner_supplied_kernel": "Linux 4.9.88 (not revalidated in M0)"
+  },
+  "gatewayd_version": "0.0.0-m0",
+  "configuration": "gateway.conf (copy of gateway/config/gateway.conf.example; readability only)",
+  "broker_version": "NOT RUN",
+  "commands": [
+    "cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build --parallel",
+    "ctest --test-dir build --output-on-failure",
+    "./build/gateway/gatewayd",
+    "./build/gateway/gatewayd --config gateway/config/gateway.conf.example",
+    "./build/gateway/gatewayd --version",
+    "./build/gateway/gatewayd --config /tmp/gatewayd-m0-intentionally-missing.conf"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Host-only M0 skeleton; binary is x86-64, not ARMv7",
+    "No board, CAN, STM32, MQTT, queue, spool, epoll, deployment, performance, or endurance test was run"
+  ]
+}

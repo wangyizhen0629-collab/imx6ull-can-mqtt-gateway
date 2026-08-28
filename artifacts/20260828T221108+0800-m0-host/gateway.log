@@ -1,0 +1,21 @@
+$ ./build/gateway/gatewayd
+gatewayd 0.0.0-m0 starting
+configuration: built-in M0 placeholder defaults (non-operational)
+gatewayd M0 skeleton exiting normally
+[exit_status=0]
+
+$ ./build/gateway/gatewayd --config gateway/config/gateway.conf.example
+gatewayd 0.0.0-m0 starting
+configuration: loaded 415 bytes from gateway/config/gateway.conf.example
+configuration parsing: deferred to M1
+gatewayd M0 skeleton exiting normally
+[exit_status=0]
+
+$ ./build/gateway/gatewayd --version
+gatewayd 0.0.0-m0
+[exit_status=0]
+
+$ ./build/gateway/gatewayd --config /tmp/gatewayd-m0-intentionally-missing.conf
+gatewayd 0.0.0-m0 starting
+gatewayd: cannot open config '/tmp/gatewayd-m0-intentionally-missing.conf': No such file or directory
+[exit_status=1; expected=1]

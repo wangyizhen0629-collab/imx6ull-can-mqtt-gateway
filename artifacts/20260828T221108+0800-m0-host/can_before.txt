@@ -1,0 +1,3 @@
+NOT RUN: host-only M0 test; no board connection and no CAN interface inspection
+or state change.
+

@@ -1,0 +1,13 @@
+# M0 example only. gatewayd checks readability but does not parse these keys yet.
+# Copy to gateway.conf for local use; that filename is ignored by Git.
+
+device_id=imx6ull-gateway-lab
+can_interface=can0
+
+# Replace CHANGEME only in a local, uncommitted configuration.
+broker_host=CHANGEME
+broker_port=1883
+mqtt_topic=vehicle/imx6ull-gateway-lab/telemetry
+
+queue_capacity=1024
+spool_path=/var/lib/gatewayd/spool.data
