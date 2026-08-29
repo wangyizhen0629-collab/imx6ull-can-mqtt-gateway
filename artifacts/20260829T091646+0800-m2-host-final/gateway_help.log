@@ -1,0 +1,7 @@
+Script started on 2026-08-29 09:17:11+08:00 [<not executed on terminal>]
+Usage: ./build/m2-host-final/gateway/gatewayd [--config PATH] [--set KEY=VALUE] [--print-config] [--wait-for-signal]
+       ./build/m2-host-final/gateway/gatewayd [--config PATH] [--set KEY=VALUE] --can-receive COUNT [--can-timeout-ms MS]
+       ./build/m2-host-final/gateway/gatewayd --help
+       ./build/m2-host-final/gateway/gatewayd --version
+
+Script done on 2026-08-29 09:17:11+08:00 [COMMAND_EXIT_CODE="0"]

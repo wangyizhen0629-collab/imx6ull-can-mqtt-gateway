@@ -40,6 +40,41 @@ M1 已于 2026-08-28 完成：最终 warning-clean 主机 run 为
 当前 `ptrace` 环境限制为 `NOT RUN`；ARMv7 和板端项目也均为 `NOT RUN`。这些结果不能
 代替 M2 的交叉编译和真实板端 SocketCAN 证据。
 
+M2 当前主机最终回归为
+`artifacts/20260829T131536+0800-m2-host-regression/`（warning-clean、CTest 9/9 PASS）
+和 `artifacts/20260829T131705+0800-m2-asan-ubsan-regression/`（ASan+UBSan、9/9 PASS）。
+M2 单测实际覆盖未绑定 CAN_RAW socket 的精确 filter/SO_TIMESTAMPNS 选项、主机内核
+辅助时间戳、目标/非目标/flag/DLC/短长 datagram/缺 timestamp/timeout。
+
+ARM 交叉构建 `artifacts/20260829T131442+0800-m2-arm-cross-final/` 使用 Buildroot GCC
+7.5.0、glibc 2.30 sysroot warning-clean PASS，输出 ARMv7 hard-float `gatewayd`；首次
+feature 宏失败证据保留在 `artifacts/20260829T131347+0800-m2-arm-cross/`。该二进制尚未
+在当时的 build run 中执行；后续板端 run 使用相同 SHA256 binary 完成验证。
+
+只读板端审计 `artifacts/19700101T123711+0000-m2-board-audit/` 已 PASS，确认 i.MX6ULL、
+ARMv7、Linux 4.9.88、Buildroot 2020.02、FlexCAN `can0` 处于 DOWN/STOPPED，且
+`candump`/`cansend` 可用。板端时钟未初始化导致 run_id 为 1970；这不是 loopback、ARM
+binary 或 timestamp 功能证据。首次脚本缺失失败保存在
+`artifacts/19700101T123312+0000-m2-board-audit/`。
+
+板端部署核验 `artifacts/20260829T132938+0800-m2-board-deploy-verify/` 已 PASS：上传到
+`/tmp/gatewayd-m2` 的 SHA256 与 ARM artifact 一致，紧邻测试前 `can0` 为
+DOWN/STOPPED 且收发/error 计数为 0。该 run 没有启动程序或修改接口，不是 loopback
+功能证据。
+
+真实板端 M2 run 必须在批准后分别执行并判定：三条目标 ID 成功接收且 timestamp 存在；
+只发送非目标 ID 时预期 timeout 且零帧；发送目标 ID 的错误 DLC 时记录拒绝并预期
+timeout。短/长 SocketCAN datagram 由主机注入单测覆盖，因为正常 CAN 控制器/
+`cansend` 不会产生这种 socket datagram。精确命令骨架见 `tools/can/README.md`。
+
+上述真实板端门禁已在明确批准后由
+`artifacts/20260829T133148+0800-m2-board-loopback/` 执行并 PASS：目标 3/3、三个正数
+递增 timestamp、非目标接受 0、DLC reject 1、CAN error 0，恢复为 DOWN/STOPPED 和
+loopback off。最终审计 `artifacts/20260829T134148+0800-m2-final-audit/` 对 18 个 tar
+成员逐字节复核并 PASS；首次 UID/GID 比较方法失败的审计 run 保留不变。板端时钟为
+1970，timestamp 不作为 UTC/时延结论；500000 bit timing 在 DOWN 状态保留。M2 门禁
+据此通过，物理 CAN/STM32 和 M3+ 仍为 `NOT RUN`。
+
 ## M3-A～M3-E 测试组
 
 | 阶段 | 环境 | 必须证明 | 不能替代的证据 |

@@ -1,0 +1,257 @@
+
+[metadata]
+$ date +%Y-%m-%dT%H:%M:%S%z
+1970-01-01T12:37:13+0000
+$ uname -a
+Linux 100ask 4.9.88 #1 SMP PREEMPT Thu Apr 2 14:58:18 EDT 2026 armv7l GNU/Linux
+
+[operating_system]
+$ cat /etc/os-release
+NAME=Buildroot
+VERSION=2020.02-g65177d4
+ID=buildroot
+VERSION_ID=2020.02
+PRETTY_NAME="Buildroot 2020.02"
+$ busybox
+/tmp/collect_board_info.sh: line 17: busybox: command not found
+[exit_status=127]
+
+[cpu_and_memory]
+$ cat /proc/cpuinfo
+processor	: 0
+model name	: ARMv7 Processor rev 5 (v7l)
+BogoMIPS	: 12.00
+Features	: half thumb fastmult vfp edsp neon vfpv3 tls vfpv4 idiva idivt vfpd32 lpae 
+CPU implementer	: 0x41
+CPU architecture: 7
+CPU variant	: 0x0
+CPU part	: 0xc07
+CPU revision	: 5
+
+Hardware	: Freescale i.MX6 UltraLite (Device Tree)
+Revision	: 0000
+Serial		: 0000000000000000
+$ cat /proc/meminfo
+MemTotal:         500944 kB
+MemFree:          352336 kB
+MemAvailable:     394600 kB
+Buffers:            6580 kB
+Cached:            35200 kB
+SwapCached:            0 kB
+Active:            28072 kB
+Inactive:          23028 kB
+Active(anon):       9720 kB
+Inactive(anon):      184 kB
+Active(file):      18352 kB
+Inactive(file):    22844 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+HighTotal:             0 kB
+HighFree:              0 kB
+LowTotal:         500944 kB
+LowFree:          352336 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                44 kB
+Writeback:             0 kB
+AnonPages:          9344 kB
+Mapped:            21452 kB
+Shmem:               584 kB
+Slab:              15972 kB
+SReclaimable:       8208 kB
+SUnreclaim:         7764 kB
+KernelStack:         984 kB
+PageTables:          692 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      250472 kB
+Committed_AS:     235940 kB
+VmallocTotal:    1556480 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+CmaTotal:         327680 kB
+CmaFree:          252872 kB
+
+[init]
+$ readlink /proc/1/exe
+/sbin/init
+$ ps
+PID   USER     COMMAND
+    1 root     init
+    2 root     [kthreadd]
+    3 root     [ksoftirqd/0]
+    5 root     [kworker/0:0H]
+    6 root     [kworker/u2:0]
+    7 root     [rcu_preempt]
+    8 root     [rcu_sched]
+    9 root     [rcu_bh]
+   10 root     [migration/0]
+   11 root     [lru-add-drain]
+   12 root     [cpuhp/0]
+   13 root     [kdevtmpfs]
+   14 root     [oom_reaper]
+   15 root     [writeback]
+   16 root     [kcompactd0]
+   17 root     [crypto]
+   18 root     [bioset]
+   19 root     [kblockd]
+   20 root     [kworker/0:1]
+   21 root     [ata_sff]
+   22 root     [cfg80211]
+   23 root     [watchdogd]
+   24 root     [rpciod]
+   25 root     [xprtiod]
+   26 root     [kswapd0]
+   27 root     [vmstat]
+   28 root     [nfsiod]
+   74 root     [bioset]
+   75 root     [bioset]
+   76 root     [bioset]
+   77 root     [bioset]
+   78 root     [bioset]
+   79 root     [bioset]
+   80 root     [bioset]
+   81 root     [bioset]
+   82 root     [bioset]
+   83 root     [bioset]
+   84 root     [bioset]
+   85 root     [bioset]
+   86 root     [bioset]
+   87 root     [bioset]
+   88 root     [bioset]
+   89 root     [bioset]
+   90 root     [bioset]
+   91 root     [bioset]
+   92 root     [bioset]
+   93 root     [bioset]
+   94 root     [bioset]
+   95 root     [bioset]
+   96 root     [bioset]
+   97 root     [bioset]
+   98 root     [spi32766]
+   99 root     [spi0]
+  100 root     [spi2]
+  104 root     [ci_otg]
+  105 root     [irq/84-gt9xx]
+  106 root     [kworker/0:2]
+  107 root     [cfinteractive]
+  108 root     [irq/64-mmc0]
+  109 root     [irq/98-2190000.]
+  110 root     [irq/65-mmc1]
+  111 root     [mxs_dcp_chan/sh]
+  112 root     [mxs_dcp_chan/ae]
+  117 root     [bioset]
+  118 root     [mmcqd/1]
+  119 root     [bioset]
+  120 root     [mmcqd/1boot0]
+  121 root     [bioset]
+  122 root     [mmcqd/1boot1]
+  123 root     [bioset]
+  124 root     [mmcqd/1rpmb]
+  126 root     [ipv6_addrconf]
+  127 root     [krfcommd]
+  128 root     [kworker/u3:0]
+  129 root     [hci0]
+  130 root     [hci0]
+  131 root     [kworker/u3:1]
+  132 root     [kworker/u3:2]
+  133 root     [pxp_dispatch]
+  134 root     [irq/44-imx_ther]
+  135 root     [kworker/0:1H]
+  136 root     [jbd2/mmcblk1p2-]
+  137 root     [ext4-rsv-conver]
+  151 root     psplash -n
+  155 root     /sbin/syslogd -n
+  159 root     /sbin/klogd -n
+  177 root     /sbin/udevd -d
+  217 dbus     dbus-daemon --system
+  247 root     /usr/sbin/ModemManager
+  255 root     /usr/sbin/NetworkManager
+  261 root     /usr/sbin/ntpd -g
+  267 mosquitt /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  273 root     /usr/bin/pulseaudio --system --daemonize --disallow-module-loading --disallow-exit --exit-idle-time=-1 --use-pid-file --disable-shm
+  280 root     /usr/libexec/pulse/gsettings-helper
+  288 root     /usr/sbin/sshd
+  293 root     /usr/sbin/telnetd -F
+  304 root     /usr/bin/swupdate-progress -w -r
+  307 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  315 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  329 root     /usr/bin/adbd
+  337 root     -bash
+  343 root     [kworker/u2:4]
+  388 root     [kworker/0:0]
+  389 root     sh /tmp/collect_board_info.sh
+  390 root     tee /tmp/19700101T123711+0000-m2-board-audit/board_info.txt
+  398 root     ps
+
+[network_links]
+$ ip -details -statistics link show can0
+2: can0: <NOARP,ECHO> mtu 16 qdisc noop state DOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 0 
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    0          0        0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       
+$ ip address show eth0
+3: eth0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+    link/ether 00:01:3f:2d:3e:4d brd ff:ff:ff:ff:ff:ff
+
+[can_procfs]
+$ cat /proc/net/can/rcvlist_all
+
+receive list 'rx_all':
+  (any: no entry)
+  (can0: no entry)
+
+$ cat /proc/net/can/rcvlist_fil
+
+receive list 'rx_fil':
+  (any: no entry)
+  (can0: no entry)
+
+$ cat /proc/net/can/stats
+
+        0 transmitted frames (TXF)
+        0 received frames (RXF)
+        0 matched frames (RXMF)
+
+        0 % total match ratio (RXMR)
+        0 frames/s total tx rate (TXR)
+        0 frames/s total rx rate (RXR)
+
+        0 % current match ratio (CRXMR)
+        0 frames/s current tx rate (CTXR)
+        0 frames/s current rx rate (CRXR)
+
+        0 % max match ratio (MRXMR)
+        0 frames/s max tx rate (MTXR)
+        0 frames/s max rx rate (MRXR)
+
+        0 current receive list entries (CRCV)
+        0 maximum receive list entries (MRCV)
+
+
+[mqtt_files]
+$ find /lib /usr/lib /usr/include -maxdepth 3 ( -name libmosquitto.so* -o -name libmosquitto.a -o -name mosquitto.h -o -name libmosquitto.pc ) -print
+/usr/lib/libmosquitto.so
+/usr/lib/libmosquitto.so.1
+find: /usr/include: No such file or directory
+[exit_status=1]
+
+[available_commands]
+/sbin/ip
+/usr/bin/candump
+/usr/bin/cansend
+pkg-config: NOT FOUND
+gatewayd: NOT FOUND
+
+[reminder]
+READ-ONLY COLLECTION COMPLETE
+No CAN state, service, process, or /etc setting was changed.

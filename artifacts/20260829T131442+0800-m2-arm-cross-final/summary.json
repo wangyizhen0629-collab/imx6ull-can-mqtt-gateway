@@ -1,0 +1,12 @@
+{
+  "run_id": "20260829T131442+0800-m2-arm-cross-final",
+  "result": "PASS",
+  "cmake_configure": "PASS",
+  "arm_warning_clean_build": "PASS",
+  "compiler": "GCC 7.5.0, arm-buildroot-linux-gnueabihf",
+  "binary_sha256": "be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595",
+  "binary_abi": "ELF32 ARM EABI5 hard-float, Cortex-A7/ARMv7",
+  "board_execution": "NOT RUN",
+  "m2_loopback": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

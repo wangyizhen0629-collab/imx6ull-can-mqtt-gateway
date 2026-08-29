@@ -1,0 +1,9 @@
+{
+  "run_id": "20260829T091304+0800-m2-host-dev",
+  "result": "FAIL",
+  "cmake_configure": "PASS",
+  "warning_clean_host_compile": "FAIL - SCM_TIMESTAMPNS not exposed under the configured POSIX feature macros",
+  "ctest": "NOT RUN - compile failed",
+  "arm_cross_build": "NOT RUN",
+  "target_board": "NOT RUN"
+}

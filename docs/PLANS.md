@@ -8,8 +8,11 @@
 - M0 已于 2026-08-28 通过，证据保持不变。
 - M1 已于 2026-08-28 通过；最终 warning-clean 主机 run 和 ASan+UBSan run 均为
   8/8 通过。LeakSanitizer 因当前执行环境处于 `ptrace` 下标记为 `NOT RUN`。
-- 当前没有活动 Milestone；项目处于“**M1 已完成并停止，等待用户另行确认是否启动
-  M2**”状态。不得自动实现 SocketCAN 或其他 M2+ 功能。
+- M2 已于 2026-08-29 通过。SocketCAN 源码、warning-clean x86_64 与 ARMv7 构建、
+  主机普通/ASan+UBSan 9/9、真实 i.MX6ULL 动态加载和 controller loopback 均有证据。
+  板端目标 ID、非目标过滤、DLC 拒绝及内核 timestamp 用例全部 PASS。
+- 本轮已在 M2 完成后停止。M3-A 及后续阶段仍为“未开始”，没有因 M2 通过自动进入；
+  开始下一阶段需要用户另行确认。
 
 ## Milestone 总表
 
@@ -17,7 +20,7 @@
 | --- | --- | --- | --- |
 | M0 | 环境审计、架构文档、仓库与主机骨架 | 文档齐全；主机 `gatewayd` 可配置、编译、运行；未知项和 `NOT RUN` 已记录 | 2026-08-28 已通过 |
 | M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 2026-08-28 已通过 |
-| M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 未开始 |
+| M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 2026-08-29 已通过 |
 | M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 未开始 |
 | M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 未开始 |
 | M3-C | 断电物理层检查 | 接线/模块记录完整；CANH--CANL 实测接近 60 Ω 并有证据 | 未开始 |
@@ -30,6 +33,58 @@
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
+
+## M2 完成记录
+
+实现和退出证据如下：
+
+1. `CAN_RAW` socket 安装 `0x100`、`0x101`、`0x102` 三条精确标准数据帧过滤器，mask
+   同时区分 EFF/RTR；默认不订阅 CAN error frame。
+2. 启用 `SO_TIMESTAMPNS`，通过 `poll()` + `recvmsg()` 提取内核时间戳，拒绝短/长
+   datagram、非目标/带 flag 的 ID、DLC 非 8、控制消息截断和缺失/非法时间戳。
+3. `gatewayd --can-receive COUNT --can-timeout-ms MS` 提供有限帧数、总超时的板端门禁
+   入口；只记录原始帧和 M2 stats，不接入 ring buffer、DBC、MQTT 或其他 M3+ 功能。
+4. 初始最终主机 run `artifacts/20260829T092323+0800-m2-host-final/` warning-clean 构建
+   及 CTest 9/9 PASS；`test_can_receiver` 实际覆盖未绑定 CAN_RAW socket 选项、主机
+   内核 timestamp 和错误注入。为目标 glibc 增加 `_DEFAULT_SOURCE` 后，又以
+   `artifacts/20260829T131536+0800-m2-host-regression/` 完成 warning-clean 9/9 回归，
+   并以 `artifacts/20260829T131705+0800-m2-asan-ubsan-regression/` 完成 ASan+UBSan
+   9/9 回归；LSan 仍为 `NOT RUN`。
+5. 真实板端只读审计 `artifacts/19700101T123711+0000-m2-board-audit/` 确认 i.MX6ULL、
+   ARMv7、Linux 4.9.88、Buildroot 2020.02-g65177d4、glibc 2.30 loader、FlexCAN
+   `can0`、`candump`/`cansend` 和 245 MiB 可用 `/tmp`。板端时钟未初始化而报告 1970；
+   原 run_id 保留，不能作为真实日期。
+6. 用户提供并已 relocate 的 SDK 位于被 `.gitignore` 排除的 `ToolChain/`。仓库内
+   `gateway/cmake/toolchains/imx6ull-buildroot.cmake` 从环境变量读取 SDK 根目录；最终
+   ARM run `artifacts/20260829T131442+0800-m2-arm-cross-final/` 使用 GCC 7.5.0、
+   `arm-buildroot-linux-gnueabihf`、glibc 2.30 sysroot warning-clean 构建成功。输出为
+   Cortex-A7/ARMv7 EABI5 hard-float ELF32，解释器 `/lib/ld-linux-armhf.so.3`，SHA256
+   为 `be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595`。
+7. 板端部署核验 `artifacts/20260829T132938+0800-m2-board-deploy-verify/` 确认
+   `/tmp/gatewayd-m2` SHA256 与交叉构建产物完全一致；紧邻测试前 `can0` 仍为
+   DOWN/STOPPED，流量和错误计数均为 0。本 run 没有启动程序或修改接口。
+8. 经明确批准的真实板端 run `artifacts/20260829T133148+0800-m2-board-loopback/`
+   动态加载 PASS；按顺序接收 `0x100`/`0x101`/`0x102` 三帧及正数内核时间戳；只发送
+   `0x123` 时零接收并预期 timeout；`0x100` DLC 3 被拒绝并预期 timeout。8 个发送帧
+   共 59 字节，TX/CAN error 为 0。
+9. 最终审计 `artifacts/20260829T134148+0800-m2-final-audit/` 对上传 tar 的 18 个原始
+   成员逐字节复核，并重新检查 binary、日志和状态，全部 PASS。第一次把 UID/GID 差异
+   当成内容差异的审计 `artifacts/20260829T134053+0800-m2-final-audit/` 保留为 FAIL，
+   没有覆盖。
+
+退出判定和限制：
+
+- ARM 交叉编译、板端动态加载、controller loopback、目标/非目标 ID、错误 DLC 和
+  `SO_TIMESTAMPNS` 提取均满足 M2 退出条件。
+- 板端 wall clock 未初始化；时间戳只证明提取和递增顺序，不能描述为正确 UTC 时间、
+  CAN 时延或性能。
+- 测试后 `can0` 为 DOWN/STOPPED 且 loopback off；500000 bit timing 按执行前说明仍在
+  DOWN 状态保留，不能描述为完全恢复未配置状态。
+- 物理 CAN、STM32、DBC、producer--consumer、MQTT 及性能均不属于 M2，仍为
+  `NOT RUN`。
+
+因此 M2 状态为“已通过”，详见 `docs/milestones/M2.md`。controller loopback 结果不得
+描述成物理 CAN 或 STM32 结果。
 
 ## M3-A～M3-E 顺序门禁
 
@@ -100,4 +155,4 @@ M1 是 Ubuntu 主机侧阶段，未触碰真实 CAN 或 MQTT，也不依赖 STM3
 上述 1～6 已完成。最终普通主机证据为
 `artifacts/20260828T234222+0800-m1-host-final/`，ASan+UBSan 证据为
 `artifacts/20260828T234154+0800-m1-asan-ubsan/`，完整过程和 `NOT RUN` 项见
-`docs/milestones/M1.md`。M1 通过不代表 M2 已开始，也不证明 ARMv7 或板端行为。
+`docs/milestones/M1.md`。M1 通过本身不能证明 M2、ARMv7 或板端行为。

@@ -1,0 +1,24 @@
+{
+  "run_id": "19700101T123711+0000-m2-board-audit",
+  "milestone": "M2",
+  "scope": "read-only i.MX6ULL identity, CAN, tool, libc, and temporary-space audit",
+  "board_reported_time": "1970-01-01T12:37:13+00:00",
+  "host_received_time": "2026-08-29T10:27:47+08:00",
+  "time_note": "The board clock was not initialized; the 1970 run_id is retained as captured and is not treated as the real test date",
+  "raw_file_sha256": {
+    "board_info.txt": "f438ce557c45d2d9a6a37ad3326442b651f6f7c9d12e21beb9d7a8ee29faf465",
+    "m2_prerequisites.txt": "8f9a8939cd99aee0de058aa744b6c49aa3986abf84c13264a8315339aebe3d8c"
+  },
+  "commands": [
+    "sh /tmp/collect_board_info.sh",
+    "command availability checks for deployment, build, ip, candump, and cansend",
+    "df -h /tmp",
+    "list dynamic loader and libc symlinks"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Read-only prerequisite audit only; gatewayd was not deployed or run",
+    "can0 remained DOWN/STOPPED and no interface setting was changed",
+    "No ARM cross-build or SocketCAN loopback traffic was run"
+  ]
+}

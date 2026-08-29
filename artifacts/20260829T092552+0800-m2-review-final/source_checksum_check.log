@@ -1,0 +1,56 @@
+Script started on 2026-08-29 09:26:11+08:00 [<not executed on terminal>]
+sha256sum: 'CMakeLists.txt'$'\r': 没有那个文件或目录
+CMakeLists.txt: 打开或读取失败
+sha256sum: 'gateway/CMakeLists.txt'$'\r': 没有那个文件或目录
+gateway/CMakeLists.txt: 打开或读取失败
+sha256sum: 'gateway/config/gateway.conf.example'$'\r': 没有那个文件或目录
+gateway/config/gateway.conf.example: 打开或读取失败
+sha256sum: 'gateway/include/gateway/can_receiver.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/can_receiver.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/config.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/config.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/error.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/error.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/lifecycle.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/lifecycle.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/log.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/log.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/ring_buffer.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/ring_buffer.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/stats.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/stats.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/telemetry_record.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/telemetry_record.h: 打开或读取失败
+sha256sum: 'gateway/include/gateway/version.h'$'\r': 没有那个文件或目录
+gateway/include/gateway/version.h: 打开或读取失败
+sha256sum: 'gateway/src/can_receiver.c'$'\r': 没有那个文件或目录
+gateway/src/can_receiver.c: 打开或读取失败
+sha256sum: 'gateway/src/config.c'$'\r': 没有那个文件或目录
+gateway/src/config.c: 打开或读取失败
+sha256sum: 'gateway/src/error.c'$'\r': 没有那个文件或目录
+gateway/src/error.c: 打开或读取失败
+sha256sum: 'gateway/src/lifecycle.c'$'\r': 没有那个文件或目录
+gateway/src/lifecycle.c: 打开或读取失败
+sha256sum: 'gateway/src/log.c'$'\r': 没有那个文件或目录
+gateway/src/log.c: 打开或读取失败
+sha256sum: 'gateway/src/main.c'$'\r': 没有那个文件或目录
+gateway/src/main.c: 打开或读取失败
+sha256sum: 'gateway/src/ring_buffer.c'$'\r': 没有那个文件或目录
+gateway/src/ring_buffer.c: 打开或读取失败
+sha256sum: 'gateway/src/stats.c'$'\r': 没有那个文件或目录
+gateway/src/stats.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_can_receiver.c'$'\r': 没有那个文件或目录
+gateway/tests/test_can_receiver.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_config.c'$'\r': 没有那个文件或目录
+gateway/tests/test_config.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_error_record.c'$'\r': 没有那个文件或目录
+gateway/tests/test_error_record.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_lifecycle.c'$'\r': 没有那个文件或目录
+gateway/tests/test_lifecycle.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_log.c'$'\r': 没有那个文件或目录
+gateway/tests/test_log.c: 打开或读取失败
+sha256sum: 'gateway/tests/test_ring_buffer.c'$'\r': 没有那个文件或目录
+gateway/tests/test_ring_buffer.c: 打开或读取失败
+sha256sum: 警告：26 个列出的文件无法读取
+
+Script done on 2026-08-29 09:26:11+08:00 [COMMAND_EXIT_CODE="1"]

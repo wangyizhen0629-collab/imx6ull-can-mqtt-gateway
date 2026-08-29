@@ -1,0 +1,10 @@
+{
+  "run_id": "20260829T092130+0800-m2-review",
+  "result": "PASS",
+  "m2_json_files_parsed": 10,
+  "git_diff_check": "PASS",
+  "trailing_whitespace": "PASS",
+  "scope_review": "PASS - no stm32, protocol, deploy, MQTT, spool, or M3+ source changes",
+  "build": "NOT RUN - use 20260829T091646+0800-m2-host-final",
+  "target_board": "NOT RUN"
+}

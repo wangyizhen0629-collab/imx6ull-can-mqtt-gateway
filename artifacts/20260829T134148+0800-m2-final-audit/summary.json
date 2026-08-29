@@ -1,0 +1,12 @@
+{
+  "run_id": "20260829T134148+0800-m2-final-audit",
+  "result": "PASS",
+  "archive_sha256": "PASS",
+  "raw_archive_members": {"expected": 18, "byte_matches": 18, "mismatches": 0},
+  "binary_checksum": "PASS",
+  "target_case": "PASS",
+  "non_target_case": "PASS",
+  "invalid_dlc_case": "PASS",
+  "can_restore": "PASS with retained bit timing documented",
+  "m2_exit_gate": "MET"
+}

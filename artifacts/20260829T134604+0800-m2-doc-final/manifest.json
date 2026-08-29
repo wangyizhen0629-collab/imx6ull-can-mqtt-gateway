@@ -1,0 +1,17 @@
+{
+  "run_id": "20260829T134604+0800-m2-doc-final",
+  "milestone": "M2",
+  "scope": "final documentation, JSON, evidence-reference and milestone-boundary verification",
+  "start_time": "2026-08-29T13:46:04+08:00",
+  "end_time": "2026-08-29T13:46:32+08:00",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "commands": [
+    "sh -n artifacts/20260829T134604+0800-m2-doc-final/verify.sh",
+    "artifacts/20260829T134604+0800-m2-doc-final/verify.sh > artifacts/20260829T134604+0800-m2-doc-final/verification.log 2>&1"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "This run validates stored results and documents; it does not rerun board hardware",
+    "LeakSanitizer, physical CAN, STM32, M3 and later stages remain NOT RUN"
+  ]
+}

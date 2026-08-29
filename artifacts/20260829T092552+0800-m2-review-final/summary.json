@@ -1,0 +1,13 @@
+{
+  "run_id": "20260829T092552+0800-m2-review-final",
+  "result": "PASS",
+  "m2_json_files_parsed": 16,
+  "git_diff_check": "PASS",
+  "trailing_whitespace": "PASS",
+  "final_source_checksums": "PASS - 26/26 files",
+  "initial_checksum_replay": "FAIL - script CRLF made filenames contain carriage return; original checksum evidence was not modified",
+  "checksum_replay_retry": "PASS - carriage returns removed only from the validation input stream",
+  "scope_review": "PASS - no stm32, protocol, deploy, MQTT, spool, or M3+ source changes",
+  "build": "NOT RUN - use 20260829T092323+0800-m2-host-final",
+  "target_board": "NOT RUN"
+}

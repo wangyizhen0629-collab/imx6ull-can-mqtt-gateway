@@ -1,0 +1,9 @@
+{
+  "run_id": "20260829T131347+0800-m2-arm-cross",
+  "result": "FAIL",
+  "cmake_configure": "PASS",
+  "arm_warning_clean_build": "FAIL - SO_TIMESTAMPNS undeclared in target sysroot headers",
+  "arm_binary": "NOT PRODUCED",
+  "board_run": "NOT RUN",
+  "m2_loopback": "NOT RUN"
+}

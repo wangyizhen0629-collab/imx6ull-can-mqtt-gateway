@@ -1,0 +1,33 @@
+[OUTPUT] 
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m2-asan-ubsan
+
+[HANDLER_OUTPUT] 
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m2-asan-ubsan
+
+    Start 1: gatewayd_version
+1/9 Test #1: gatewayd_version .................   Passed    0.02 sec
+    Start 2: gatewayd_default_config
+2/9 Test #2: gatewayd_default_config ..........   Passed    0.01 sec
+    Start 3: gatewayd_example_config
+3/9 Test #3: gatewayd_example_config ..........   Passed    0.01 sec
+    Start 4: test_config
+4/9 Test #4: test_config ......................   Passed    0.01 sec
+    Start 5: test_error_record
+5/9 Test #5: test_error_record ................   Passed    0.01 sec
+    Start 6: test_lifecycle
+6/9 Test #6: test_lifecycle ...................   Passed    0.03 sec
+    Start 7: test_log
+7/9 Test #7: test_log .........................   Passed    0.01 sec
+    Start 8: test_ring_buffer
+8/9 Test #8: test_ring_buffer .................   Passed    0.11 sec
+    Start 9: test_can_receiver
+9/9 Test #9: test_can_receiver ................   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Label Time Summary:
+M1      =   0.15 sec*proc (5 tests)
+M2      =   0.02 sec*proc (1 test)
+unit    =   0.17 sec*proc (6 tests)
+
+Total Test time (real) =   0.21 sec

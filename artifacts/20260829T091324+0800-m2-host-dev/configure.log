@@ -1,0 +1,17 @@
+Script started on 2026-08-29 09:13:34+08:00 [<not executed on terminal>]
+-- The C compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m2-host-dev2
+
+Script done on 2026-08-29 09:13:34+08:00 [COMMAND_EXIT_CODE="0"]

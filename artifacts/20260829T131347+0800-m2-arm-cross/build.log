@@ -1,0 +1,25 @@
+Script started on 2026-08-29 13:14:03+08:00 [<not executed on terminal>]
+[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+[ 30%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[ 40%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+[ 50%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[ 70%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+[ 70%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:[m[K 在函数‘[01m[Kgateway_can_receiver_configure_socket[m[K’中:
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:114:44:[m[K [01;31m[K错误： [m[K‘[01m[KSO_TIMESTAMPNS[m[K’ undeclared (first use in this function); did you mean ‘[01m[K__TIMESTAMP__[m[K’?
+         setsockopt(descriptor, SOL_SOCKET, [01;31m[KSO_TIMESTAMPNS[m[K, &enabled,
+                                            [01;31m[K^~~~~~~~~~~~~~[m[K
+                                            [32m[K__TIMESTAMP__[m[K
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:114:44:[m[K [01;36m[K附注： [m[K每个未声明的标识符在其出现的函数内只报告一次
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:[m[K 在函数‘[01m[Kgateway_can_receiver_receive[m[K’中:
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:254:43:[m[K [01;31m[K错误： [m[K‘[01m[KSO_TIMESTAMPNS[m[K’ undeclared (first use in this function); did you mean ‘[01m[K__TIMESTAMP__[m[K’?
+             control_message->cmsg_type == [01;31m[KSO_TIMESTAMPNS[m[K &&
+                                           [01;31m[K^~~~~~~~~~~~~~[m[K
+                                           [32m[K__TIMESTAMP__[m[K
+gmake[2]: *** [gateway/CMakeFiles/gateway_core.dir/build.make:76：gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o] 错误 1
+gmake[2]: *** 正在等待未完成的任务....
+gmake[1]: *** [CMakeFiles/Makefile2:100：gateway/CMakeFiles/gateway_core.dir/all] 错误 2
+gmake: *** [Makefile:136：all] 错误 2
+
+Script done on 2026-08-29 13:14:03+08:00 [COMMAND_EXIT_CODE="2"]

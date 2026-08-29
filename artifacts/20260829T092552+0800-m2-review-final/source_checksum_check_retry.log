@@ -1,0 +1,29 @@
+Script started on 2026-08-29 09:26:16+08:00 [<not executed on terminal>]
+CMakeLists.txt: 成功
+gateway/CMakeLists.txt: 成功
+gateway/config/gateway.conf.example: 成功
+gateway/include/gateway/can_receiver.h: 成功
+gateway/include/gateway/config.h: 成功
+gateway/include/gateway/error.h: 成功
+gateway/include/gateway/lifecycle.h: 成功
+gateway/include/gateway/log.h: 成功
+gateway/include/gateway/ring_buffer.h: 成功
+gateway/include/gateway/stats.h: 成功
+gateway/include/gateway/telemetry_record.h: 成功
+gateway/include/gateway/version.h: 成功
+gateway/src/can_receiver.c: 成功
+gateway/src/config.c: 成功
+gateway/src/error.c: 成功
+gateway/src/lifecycle.c: 成功
+gateway/src/log.c: 成功
+gateway/src/main.c: 成功
+gateway/src/ring_buffer.c: 成功
+gateway/src/stats.c: 成功
+gateway/tests/test_can_receiver.c: 成功
+gateway/tests/test_config.c: 成功
+gateway/tests/test_error_record.c: 成功
+gateway/tests/test_lifecycle.c: 成功
+gateway/tests/test_log.c: 成功
+gateway/tests/test_ring_buffer.c: 成功
+
+Script done on 2026-08-29 09:26:16+08:00 [COMMAND_EXIT_CODE="0"]

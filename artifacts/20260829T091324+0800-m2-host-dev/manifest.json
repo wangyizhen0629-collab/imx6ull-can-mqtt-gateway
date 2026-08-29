@@ -1,0 +1,21 @@
+{
+  "run_id": "20260829T091324+0800-m2-host-dev",
+  "milestone": "M2",
+  "scope": "development warning-clean x86_64 build and CTest inside the restricted sandbox",
+  "start_time": "2026-08-29T09:13:34+08:00",
+  "end_time": "2026-08-29T09:13:42+08:00",
+  "host": "Ubuntu 22.04.5 x86_64",
+  "compiler": "GCC 11.4.0",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "git_state": "dirty worktree containing the tested M2 source",
+  "commands": [
+    "cmake -S . -B build/m2-host-dev2 -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build/m2-host-dev2 --parallel",
+    "ctest --test-dir build/m2-host-dev2 --output-on-failure"
+  ],
+  "result": "FAIL",
+  "limitations": [
+    "The sandbox denied PF_CAN socket creation in test_can_receiver",
+    "No ARM cross-build, target-board, or CAN interface test was run"
+  ]
+}

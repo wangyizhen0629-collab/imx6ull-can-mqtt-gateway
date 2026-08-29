@@ -1,0 +1,19 @@
+Script started on 2026-08-29 09:13:13+08:00 [<not executed on terminal>]
+[  4%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+[  9%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[ 18%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+[ 22%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+[ 27%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[ 31%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:[m[K In function ‘[01m[Kgateway_can_receiver_receive[m[K’:
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:253:43:[m[K [01;31m[Kerror: [m[K‘[01m[KSCM_TIMESTAMPNS[m[K’ undeclared (first use in this function); did you mean ‘[01m[KSO_TIMESTAMPNS[m[K’?
+  253 |             control_message->cmsg_type == [01;31m[KSCM_TIMESTAMPNS[m[K &&
+      |                                           [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |                                           [32m[KSO_TIMESTAMPNS[m[K
+[01m[K/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c:253:43:[m[K [01;36m[Knote: [m[Keach undeclared identifier is reported only once for each function it appears in
+gmake[2]: *** [gateway/CMakeFiles/gateway_core.dir/build.make:76：gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o] 错误 1
+gmake[1]: *** [CMakeFiles/Makefile2:868：gateway/CMakeFiles/gateway_core.dir/all] 错误 2
+gmake: *** [Makefile:146：all] 错误 2
+
+Script done on 2026-08-29 09:13:13+08:00 [COMMAND_EXIT_CODE="2"]

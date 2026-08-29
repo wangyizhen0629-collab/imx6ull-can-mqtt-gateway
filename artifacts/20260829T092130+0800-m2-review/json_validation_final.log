@@ -1,0 +1,14 @@
+Script started on 2026-08-29 09:22:28+08:00 [<not executed on terminal>]
+validated_json_files=10
+artifacts/20260829T091304+0800-m2-host-dev/manifest.json
+artifacts/20260829T091304+0800-m2-host-dev/summary.json
+artifacts/20260829T091324+0800-m2-host-dev/manifest.json
+artifacts/20260829T091324+0800-m2-host-dev/summary.json
+artifacts/20260829T091646+0800-m2-host-final/manifest.json
+artifacts/20260829T091646+0800-m2-host-final/summary.json
+artifacts/20260829T091755+0800-m2-asan-ubsan/manifest.json
+artifacts/20260829T091755+0800-m2-asan-ubsan/summary.json
+artifacts/20260829T092130+0800-m2-review/manifest.json
+artifacts/20260829T092130+0800-m2-review/summary.json
+
+Script done on 2026-08-29 09:22:28+08:00 [COMMAND_EXIT_CODE="0"]

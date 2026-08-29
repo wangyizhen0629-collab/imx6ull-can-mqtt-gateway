@@ -1,0 +1,9 @@
+{
+  "run_id": "20260829T131536+0800-m2-host-regression",
+  "result": "PASS",
+  "warning_clean_build": "PASS",
+  "ctest": {"total": 9, "passed": 9, "failed": 0},
+  "arm_board_execution": "NOT RUN",
+  "m2_loopback": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

@@ -1,0 +1,19 @@
+{
+  "run_id": "20260829T133325+0800-m2-board-script-host",
+  "milestone": "M2",
+  "scope": "POSIX shell syntax validation for the approved board loopback runner",
+  "start_time": "2026-08-29T13:33:25+08:00",
+  "end_time": "2026-08-29T13:33:25+08:00",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "commands": [
+    "sh -n tools/can/run_m2_board_loopback.sh",
+    "sha256sum tools/can/run_m2_board_loopback.sh"
+  ],
+  "script_sha256": "04c1052e232e976bec796cc59a15de0c9460e328f8b861416c764782751b5416",
+  "result": "PASS",
+  "limitations": [
+    "ShellCheck NOT RUN because the command is not installed; no dependency was installed",
+    "The script was not executed against a CAN interface on the host",
+    "Target-board loopback remains NOT RUN"
+  ]
+}

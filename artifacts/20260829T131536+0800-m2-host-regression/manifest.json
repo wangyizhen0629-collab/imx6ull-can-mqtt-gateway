@@ -1,0 +1,23 @@
+{
+  "run_id": "20260829T131536+0800-m2-host-regression",
+  "milestone": "M2",
+  "scope": "x86_64 host regression after enabling target Linux feature declarations",
+  "start_time": "2026-08-29T13:15:36+08:00",
+  "end_time": "2026-08-29T13:16:01+08:00",
+  "host": "Ubuntu 22.04.5 x86_64 virtual machine",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "source_reference": "source_sha256.txt",
+  "commands": [
+    "cmake -S . -B build/m2-host-regression -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build/m2-host-regression --parallel",
+    "ctest --test-dir build/m2-host-regression --output-on-failure"
+  ],
+  "execution_note": "CTest ran outside the restricted sandbox only to permit unbound PF_CAN socket creation; no CAN interface was bound or modified",
+  "result": "PASS",
+  "limitations": [
+    "No ARM binary was executed on the target board",
+    "No target-board CAN loopback was run"
+  ]
+}

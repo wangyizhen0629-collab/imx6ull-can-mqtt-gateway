@@ -1,0 +1,6 @@
+[1970-01-01T15:52:14.333Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-01T15:52:14.335Z] INFO can: M2 receive started interface=can0 target_ids=0x100,0x101,0x102 classic_dlc=8 kernel_timestamp=SO_TIMESTAMPNS expected=3 timeout_ms=5000
+[1970-01-01T15:52:15.392Z] INFO can: M2_CAN_FRAME seq=1 can_id=0x100 dlc=8 kernel_timestamp_ns=57135391850767 data=0102030405060708
+[1970-01-01T15:52:15.416Z] INFO can: M2_CAN_FRAME seq=2 can_id=0x101 dlc=8 kernel_timestamp_ns=57135415856100 data=1112131415161718
+[1970-01-01T15:52:15.440Z] INFO can: M2_CAN_FRAME seq=3 can_id=0x102 dlc=8 kernel_timestamp_ns=57135439981100 data=2122232425262728
+[1970-01-01T15:52:15.440Z] INFO can: M2_CAN_SUMMARY attempts=3 accepted=3 timeouts=0 rejected_length=0 rejected_dlc=0 rejected_id=0 timestamp_errors=0 receive_errors=0

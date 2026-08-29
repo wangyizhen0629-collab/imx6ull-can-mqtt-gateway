@@ -1,0 +1,7 @@
+PASS valid_json_files=50
+PASS git_diff_check
+PASS required_M2_documents_updated_and_M3_not_started
+PASS final_board_and_audit_evidence_referenced
+PASS host_sanitizer_ARM_board_and_final_audit_gate_results
+PASS board_runner_syntax_and_no_M3_source_changes
+FINAL result=PASS milestone=M2 next_milestone_started=no

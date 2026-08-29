@@ -1,0 +1,1 @@
+04c1052e232e976bec796cc59a15de0c9460e328f8b861416c764782751b5416  tools/can/run_m2_board_loopback.sh

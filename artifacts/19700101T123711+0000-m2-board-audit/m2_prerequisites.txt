@@ -1,0 +1,15 @@
+/usr/bin/scp
+/bin/tar
+/usr/bin/file
+/usr/bin/readelf
+cmake: NOT FOUND
+gcc: NOT FOUND
+cc: NOT FOUND
+/sbin/ip
+/usr/bin/candump
+/usr/bin/cansend
+Filesystem      Size  Used Avail Use% Mounted on
+tmpfs           245M  100K  245M   1% /tmp
+-rwxr-xr-x 1 root root 158748 Jul 21  2024 /lib/ld-2.30.so
+lrwxrwxrwx 1 root root     10 Jul 21  2024 /lib/ld-linux-armhf.so.3 -> ld-2.30.so
+lrwxrwxrwx 1 root root     12 Jul 21  2024 /lib/libc.so.6 -> libc-2.30.so

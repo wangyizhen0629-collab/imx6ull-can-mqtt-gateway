@@ -1,0 +1,12 @@
+PASS uploaded archive SHA256
+PASS 18 archive members match extracted raw file bytes; UID/GID metadata intentionally ignored
+PASS board binary matches cross-build artifact
+PASS board runner result fields
+PASS target dynamic load and version
+PASS ordered target IDs, payloads, positive increasing kernel timestamps and summary
+PASS non-target ID kernel filter and expected timeout
+PASS invalid DLC rejection and expected timeout
+PASS CAN pre-state and active controller loopback state
+PASS 8 TX frames/59 bytes, zero TX errors, DOWN/STOPPED and loopback-off restoration
+PASS board identity and explicitly untrusted wall clock
+FINAL result=PASS limitations=board_wall_clock_uninitialized,bitrate_500000_retained_while_DOWN

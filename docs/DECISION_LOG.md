@@ -118,6 +118,56 @@
 - 影响：32 字节解码区在 M1 不承载任何已声明的信号语义。M4 必须依据自定义 DBC 和
   黄金向量同步定义，不能把当前预留区描述成已实现解码。
 
+## D-014：M2 使用内核精确过滤、SO_TIMESTAMPNS 和有限验证入口
+
+- 日期：2026-08-29
+- 状态：M2 已接受并经板端门禁验证
+- 决定：Linux 接收端使用一个 `CAN_RAW` socket，为 `0x100`、`0x101`、`0x102` 安装
+  `CAN_SFF_MASK | CAN_EFF_FLAG | CAN_RTR_FLAG` 精确过滤器，排除同数值扩展帧和 RTR；
+  不订阅 error frame。启用 `SO_TIMESTAMPNS`，由 `recvmsg()` 辅助数据取得内核接收
+  时间戳，并对 datagram 长度、DLC、ID flags 和 timestamp 完整性做防御性复核。
+- 验证边界：`--can-receive COUNT --can-timeout-ms MS` 是有限板端门禁入口，使用总超时
+  避免无效帧持续输入导致测试不退出。它直接生成/记录原始 `telemetry_record`，不投入
+  M1 ring buffer，不实现 DBC/checksum/生产者--消费者/MQTT，因此没有提前进入 M3+ 或
+  M5。
+- 证据决定：x86_64 主机单测可以验证 socket 选项、辅助时间戳解析和错误注入，但不能
+  代替 ARM 交叉编译、真实 i.MX6ULL bind/controller loopback、非目标 ID 过滤日志。
+  后三者未运行时 M2 必须保持门禁未通过。
+
+## D-015：M2 使用可迁移 Buildroot SDK 和显式 Linux feature 宏
+
+- 日期：2026-08-29
+- 状态：M2 已接受并经板端运行验证
+- 决定：仓库只提交 `gateway/cmake/toolchains/imx6ull-buildroot.cmake`，通过
+  `IMX6ULL_SDK_ROOT` 引用执行过 `relocate-sdk.sh` 的外部 Buildroot SDK；`ToolChain/`
+  和厂商 SDK 源码目录保持 `.gitignore` 排除，不把 2.3 GiB 工具链或构建产物纳入源码
+  可信源。编译定义同时使用 `_POSIX_C_SOURCE=200809L` 和 `_DEFAULT_SOURCE`，前者约束
+  POSIX API，后者使目标 glibc 2.30 公开 `SO_TIMESTAMPNS` 等 Linux 接口。
+- 证据：首次 ARM run `artifacts/20260829T131347+0800-m2-arm-cross/` 因目标头文件未公开
+  `SO_TIMESTAMPNS` 保留为 FAIL；修正后的
+  `artifacts/20260829T131442+0800-m2-arm-cross-final/` warning-clean PASS，并由新的普通
+  主机及 ASan+UBSan run 各 9/9 回归。
+- 限制：板端 Buildroot 修订为 `2020.02-g65177d4`，SDK 修订为
+  `2020.02-gee85cab`。glibc 2.30、hard-float loader 和 ARMv7 ABI 一致只提供兼容线索；
+  最终以 `artifacts/20260829T133148+0800-m2-board-loopback/` 运行该 SHA256 固定的
+  `gatewayd`，动态加载和 M2 功能均通过，关闭了这项运行兼容性风险。
+
+## D-016：M2 以真实 controller loopback 证据通过并冻结边界
+
+- 日期：2026-08-29
+- 状态：M2 已接受并通过
+- 决定：M2 退出依据由 warning-clean 主机/ARM 构建、主机 9/9 普通与 ASan+UBSan、
+  SHA256 固定的板端 binary、真实 i.MX6ULL controller loopback 及最终逐字节证据审计
+  共同组成。板端三目标 ID、非目标过滤、DLC 拒绝和 `SO_TIMESTAMPNS` 提取均有原始
+  日志，因此 M2 门禁通过。
+- 恢复边界：经批准的测试结束后 `can0` 为 DOWN/STOPPED、loopback off；iproute2 没有
+  通用“清空 bit timing”操作，500000 bit/s 参数在 DOWN 状态保留。该结果明确记录，
+  不表述为完全恢复未配置状态，也不为清除参数扩大到 reboot/驱动重绑。
+- 时间边界：板端 wall clock 未初始化，内核 timestamp 只能证明辅助数据提取、正值与
+  顺序，不能转换成 UTC 正确性、时延或性能数字。
+- 范围边界：controller loopback 不能替代物理 CAN、STM32、DBC、实际生产者--消费者、
+  MQTT 或长期运行证据。M3-A 及后续功能没有开始，必须另行确认后按门禁推进。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

@@ -1,0 +1,20 @@
+{
+  "run_id": "20260829T091304+0800-m2-host-dev",
+  "milestone": "M2",
+  "scope": "development warning-clean x86_64 configure and build",
+  "start_time": "2026-08-29T09:13:10+08:00",
+  "end_time": "2026-08-29T09:13:13+08:00",
+  "host": "Ubuntu 22.04.5 x86_64",
+  "compiler": "GCC 11.4.0",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "git_state": "dirty worktree containing the tested M2 source",
+  "commands": [
+    "cmake -S . -B build/m2-host-dev -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build/m2-host-dev --parallel"
+  ],
+  "result": "FAIL",
+  "limitations": [
+    "Development run; CTest was not run after compile failure",
+    "No ARM cross-build, target-board, or CAN interface test was run"
+  ]
+}

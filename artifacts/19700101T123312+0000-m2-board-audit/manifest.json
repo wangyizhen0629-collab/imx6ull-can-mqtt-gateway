@@ -1,0 +1,17 @@
+{
+  "run_id": "19700101T123312+0000-m2-board-audit",
+  "milestone": "M2",
+  "scope": "first read-only board audit attempt",
+  "board_reported_time": "1970-01-01T12:33:12+00:00 (derived from run_id; board clock was not initialized)",
+  "host_received_time": "2026-08-29T10:26:43+08:00",
+  "raw_file_sha256": {
+    "board_info.txt": "1259cc4b1d2338f01fc70756aa8a17087815c1fc885795ec07b7e7c63a4ce642"
+  },
+  "command": "sh /tmp/collect_board_info.sh",
+  "result": "FAIL",
+  "failure": "/tmp/collect_board_info.sh did not exist on the board",
+  "limitations": [
+    "No board information was collected",
+    "No CAN state, process, service, firmware, or configuration was changed"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "run_id": "20260829T092406+0800-m2-asan-ubsan-final",
+  "milestone": "M2",
+  "scope": "final x86_64 ASan+UBSan build and tests after strict total-deadline fix",
+  "start_time": "2026-08-29T09:24:14+08:00",
+  "end_time": "2026-08-29T09:24:25+08:00",
+  "host": "Ubuntu 22.04.5 x86_64 virtual machine",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "source_reference": "artifacts/20260829T092323+0800-m2-host-final/source_sha256.txt",
+  "commands": [
+    "cmake -S . -B build/m2-asan-ubsan-final -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_ENABLE_SANITIZERS=ON",
+    "cmake --build build/m2-asan-ubsan-final --parallel",
+    "ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m2-asan-ubsan-final --output-on-failure"
+  ],
+  "execution_note": "CTest ran outside the restricted sandbox only to permit unbound PF_CAN socket creation; no CAN interface was bound or modified",
+  "result": "PASS",
+  "limitations": [
+    "LeakSanitizer NOT RUN because the known ptrace environment limitation remains",
+    "No ARM or target-board test was run"
+  ]
+}

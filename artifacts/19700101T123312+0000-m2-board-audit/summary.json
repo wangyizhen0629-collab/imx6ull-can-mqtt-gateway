@@ -1,0 +1,8 @@
+{
+  "run_id": "19700101T123312+0000-m2-board-audit",
+  "result": "FAIL",
+  "board_audit": "NOT RUN - collection script missing",
+  "can_state_change": "NOT RUN",
+  "arm_cross_build": "NOT RUN",
+  "m2_loopback": "NOT RUN"
+}

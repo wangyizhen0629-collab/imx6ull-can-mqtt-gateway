@@ -1,0 +1,18 @@
+{
+  "run_id": "19700101T123711+0000-m2-board-audit",
+  "result": "PASS",
+  "board_identity": "Freescale i.MX6 UltraLite, ARMv7 Processor rev 5",
+  "kernel": "Linux 4.9.88",
+  "rootfs": "Buildroot 2020.02-g65177d4",
+  "libc": "glibc 2.30 loader names observed; exact SDK still unknown",
+  "can0": "present, FlexCAN, clock 30000000, DOWN/STOPPED, zero CAN counters",
+  "can_utils": "candump and cansend present",
+  "transfer_tools": "scp and tar present",
+  "native_build_tools": "cmake, gcc, cc NOT FOUND",
+  "temporary_space": "/tmp tmpfs, 245M available at audit time",
+  "board_clock": "INVALID/UNINITIALIZED - reported 1970-01-01",
+  "arm_cross_build": "NOT RUN",
+  "gatewayd_board_run": "NOT RUN",
+  "m2_loopback": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

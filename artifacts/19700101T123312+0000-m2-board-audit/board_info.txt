@@ -1,0 +1,1 @@
+sh: /tmp/collect_board_info.sh: No such file or directory

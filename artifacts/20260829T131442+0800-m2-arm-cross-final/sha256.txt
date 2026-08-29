@@ -1,0 +1,8 @@
+Script started on 2026-08-29 13:15:23+08:00 [<not executed on terminal>]
+be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595  build/m2-arm-cross-final/gateway/gatewayd
+df5632066a095307885dfd056f7acfba5f084d47abcdb794dd8079d05dd05e71  gateway/cmake/toolchains/imx6ull-buildroot.cmake
+f32dab618827107ee555e682f09fbacfd6b368accde8ac74f87b238e39c079fa  gateway/src/can_receiver.c
+ffc8dfbb349b5ee71aa019c9ab290f4de8bce2ced6e2fa6fb4cb920428ce0cf4  gateway/src/main.c
+15bc21f88aa2b3fd4b337b5f1b427391214f138b8e13d9f6e59aac252ac68b8a  gateway/CMakeLists.txt
+
+Script done on 2026-08-29 13:15:23+08:00 [COMMAND_EXIT_CODE="0"]

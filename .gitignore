@@ -1,5 +1,8 @@
 /build/
 /build-*/
+/ToolChain/
+/100ask_imx6ull-sdk/
+/tmp/
 *.o
 *.axf
 *.a

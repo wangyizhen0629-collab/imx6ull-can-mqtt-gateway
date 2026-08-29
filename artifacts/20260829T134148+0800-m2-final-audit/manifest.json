@@ -1,0 +1,22 @@
+{
+  "run_id": "20260829T134148+0800-m2-final-audit",
+  "milestone": "M2",
+  "scope": "final host verification of uploaded board loopback archive and M2 evidence",
+  "start_time": "2026-08-29T13:41:48+08:00",
+  "end_time": "2026-08-29T13:42:45+08:00",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "commands": [
+    "sh -n artifacts/20260829T134148+0800-m2-final-audit/verify.sh",
+    "artifacts/20260829T134148+0800-m2-final-audit/verify.sh > artifacts/20260829T134148+0800-m2-final-audit/verification.log 2>&1",
+    "sha256sum artifacts/20260829T133148+0800-m2-board-loopback/*",
+    "tar -tvf artifacts/20260829T133148+0800-m2-board-loopback.tar"
+  ],
+  "board_archive_sha256": "a538c92bc4aef201df3c8dd7069285d48c997af98ffd0378732b443086f54163",
+  "result": "PASS",
+  "limitations": [
+    "Archive UID/GID metadata is intentionally excluded from byte-content comparison because extraction ran as an unprivileged host user",
+    "Board wall clock is uninitialized",
+    "can0 retains 500000 bit timing while DOWN after loopback is disabled",
+    "No physical CAN, STM32, M3 or later function was tested"
+  ]
+}

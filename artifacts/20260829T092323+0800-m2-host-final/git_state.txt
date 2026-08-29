@@ -1,0 +1,26 @@
+Script started on 2026-08-29 09:23:48+08:00 [<not executed on terminal>]
+ [31mM[m README.md
+ [31mM[m docs/DECISION_LOG.md
+ [31mM[m docs/OPEN_QUESTIONS.md
+ [31mM[m docs/PLANS.md
+ [31mM[m docs/PROJECT_SPEC.md
+ [31mM[m docs/RESUME_TRACEABILITY.md
+ [31mM[m docs/TEST_PLAN.md
+ [31mM[m gateway/CMakeLists.txt
+ [31mM[m gateway/include/gateway/stats.h
+ [31mM[m gateway/include/gateway/telemetry_record.h
+ [31mM[m gateway/src/main.c
+ [31mM[m gateway/tests/README.md
+ [31mM[m tools/can/README.md
+[31m??[m artifacts/20260829T091304+0800-m2-host-dev/
+[31m??[m artifacts/20260829T091324+0800-m2-host-dev/
+[31m??[m artifacts/20260829T091646+0800-m2-host-final/
+[31m??[m artifacts/20260829T091755+0800-m2-asan-ubsan/
+[31m??[m artifacts/20260829T092130+0800-m2-review/
+[31m??[m artifacts/20260829T092323+0800-m2-host-final/
+[31m??[m docs/milestones/M2.md
+[31m??[m gateway/include/gateway/can_receiver.h
+[31m??[m gateway/src/can_receiver.c
+[31m??[m gateway/tests/test_can_receiver.c
+
+Script done on 2026-08-29 09:23:48+08:00 [COMMAND_EXIT_CODE="0"]

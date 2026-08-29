@@ -1,0 +1,29 @@
+{
+  "run_id": "20260829T131442+0800-m2-arm-cross-final",
+  "milestone": "M2",
+  "scope": "final gatewayd ARMv7 cross-build with relocated Buildroot SDK",
+  "start_time": "2026-08-29T13:14:42+08:00",
+  "end_time": "2026-08-29T13:15:23+08:00",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "source_reference": "source_sha256.txt",
+  "toolchain": "arm-buildroot-linux-gnueabihf-gcc 7.5.0, Buildroot 2020.02-gee85cab",
+  "sysroot": "relocated local SDK, glibc 2.30",
+  "commands": [
+    "cmake -S . -B build/m2-arm-cross-final -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=OFF -DCMAKE_TOOLCHAIN_FILE=gateway/cmake/toolchains/imx6ull-buildroot.cmake",
+    "cmake --build build/m2-arm-cross-final --parallel",
+    "file build/m2-arm-cross-final/gateway/gatewayd",
+    "arm-buildroot-linux-gnueabihf-readelf -h -l -d -A build/m2-arm-cross-final/gateway/gatewayd",
+    "sha256sum build/m2-arm-cross-final/gateway/gatewayd"
+  ],
+  "binary": {
+    "path": "gatewayd.armv7",
+    "sha256": "be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595",
+    "format": "ELF32 ARM EABI5 hard-float, Cortex-A7/ARMv7, interpreter /lib/ld-linux-armhf.so.3"
+  },
+  "result": "PASS",
+  "limitations": [
+    "Board image is Buildroot 2020.02-g65177d4 while SDK reports Buildroot 2020.02-gee85cab; matching glibc and loader are ABI clues, not proof of runtime compatibility",
+    "gatewayd was not deployed or executed on the target board",
+    "No can0 state or board process was changed"
+  ]
+}

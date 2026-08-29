@@ -1,0 +1,19 @@
+{
+  "run_id": "20260829T134053+0800-m2-final-audit",
+  "milestone": "M2",
+  "scope": "first host verification of uploaded board loopback archive",
+  "start_time": "2026-08-29T13:40:53+08:00",
+  "end_time": "2026-08-29T13:41:48+08:00",
+  "git_base": "f2bf4d8aad7650953d4b9658fb38c2c13a6d1777",
+  "commands": [
+    "sh -n artifacts/20260829T134053+0800-m2-final-audit/verify.sh",
+    "artifacts/20260829T134053+0800-m2-final-audit/verify.sh | tee artifacts/20260829T134053+0800-m2-final-audit/verification.log",
+    "sha256sum artifacts/20260829T133148+0800-m2-board-loopback/*"
+  ],
+  "result": "FAIL",
+  "failure": "tar -df compared UID/GID metadata: the archive records board root/root while extraction intentionally uses the unprivileged host user; tee then masked the verifier's nonzero status",
+  "limitations": [
+    "The failure is in the host archive verification method, not a board functional result",
+    "A new immutable audit run is required to compare archive member bytes without ownership metadata"
+  ]
+}

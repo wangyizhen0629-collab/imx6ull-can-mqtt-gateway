@@ -1,0 +1,12 @@
+{
+  "run_id": "20260829T132938+0800-m2-board-deploy-verify",
+  "result": "PASS",
+  "binary_checksum_match": "PASS",
+  "can0_pre_state": "DOWN/STOPPED",
+  "can0_rx_packets": 0,
+  "can0_tx_packets": 0,
+  "can0_error_counters": 0,
+  "gatewayd_execution": "NOT RUN",
+  "m2_loopback": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

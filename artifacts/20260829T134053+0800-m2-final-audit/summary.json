@@ -1,0 +1,9 @@
+{
+  "run_id": "20260829T134053+0800-m2-final-audit",
+  "result": "FAIL",
+  "archive_sha256": "PASS",
+  "archive_compare": "FAIL - UID/GID metadata differs after unprivileged extraction",
+  "pipeline_exit_capture": "FAIL - tee masked verifier status",
+  "board_functional_result": "NOT REJUDGED",
+  "m2_exit_gate": "NOT DECIDED BY THIS RUN"
+}

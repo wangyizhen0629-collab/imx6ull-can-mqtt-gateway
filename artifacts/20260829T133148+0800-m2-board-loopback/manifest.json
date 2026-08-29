@@ -1,0 +1,40 @@
+{
+  "run_id": "20260829T133148+0800-m2-board-loopback",
+  "run_id_source": "assigned from the Ubuntu host before execution because the board wall clock is uninitialized",
+  "milestone": "M2",
+  "scope": "approved i.MX6ULL gatewayd dynamic-load and can0 controller-loopback gate",
+  "operator": "project owner via MobaXterm",
+  "authorization": "start /tmp/gatewayd-m2; temporarily configure can0 at 500000 bit/s with loopback on; send test frames; restore DOWN and loopback off; do not modify network, Mosquitto, /etc, firmware or dependencies",
+  "board_reported_start_time": "1970-01-01T15:52:14Z - UNTRUSTED, wall clock uninitialized",
+  "board_reported_end_time": "1970-01-01T15:52:18Z - UNTRUSTED, wall clock uninitialized",
+  "host_archive_verified_time": "2026-08-29T13:42:45+08:00",
+  "board": "100ASK i.MX6ULL, armv7l, Linux 4.9.88",
+  "binary": {
+    "path": "/tmp/gatewayd-m2",
+    "version": "gatewayd 0.1.0-m1",
+    "sha256": "be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595",
+    "matches_cross_build_artifact": true
+  },
+  "commands": [
+    "/tmp/run_m2_board_loopback.sh --approved 20260829T133148+0800-m2-board-loopback",
+    "gatewayd --version",
+    "ip link set can0 down",
+    "ip link set can0 type can bitrate 500000 loopback on",
+    "ip link set can0 up",
+    "gatewayd target/non-target/DLC finite receive cases with cansend",
+    "ip link set can0 down",
+    "ip link set can0 type can loopback off"
+  ],
+  "raw_archive": {
+    "path": "artifacts/20260829T133148+0800-m2-board-loopback.tar",
+    "sha256": "a538c92bc4aef201df3c8dd7069285d48c997af98ffd0378732b443086f54163",
+    "raw_member_count": 18
+  },
+  "result": "PASS",
+  "limitations": [
+    "Board wall clock is uninitialized; kernel timestamps prove extraction and ordering but not correct UTC time or latency",
+    "After restoration can0 is DOWN/STOPPED with loopback off, but the 500000 bit/s timing remains configured while down as disclosed before approval",
+    "Controller loopback is not physical CAN or STM32 evidence",
+    "The board-side script SHA256 output was not included in the returned transcript; the output files and behavior were verified against the expected runner"
+  ]
+}

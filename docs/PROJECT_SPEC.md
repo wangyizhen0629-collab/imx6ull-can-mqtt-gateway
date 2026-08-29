@@ -124,9 +124,17 @@ device ID、CAN 接口、Broker 地址/端口/凭据、topic、spool 路径、�
 
 M1 已完成 Ubuntu x86_64 主机上的严格配置解析/校验/覆盖、时间戳分级日志和配置脱敏、
 稳定错误码、self-pipe 信号生命周期、mutex stats、64 字节 `telemetry_record` 以及
-mutex/condition variable 有界环形缓冲区。默认 `gatewayd` 只验证合并配置后退出；
-`--wait-for-signal` 只验证生命周期，不启动数据链路。
+mutex/condition variable 有界环形缓冲区。
 
-当前没有 SocketCAN、CAN 过滤/时间戳、DBC 解码、实际生产者--消费者数据链路、MQTT、
-spool I/O、epoll、STM32 固件或部署功能。`telemetry_record.decoded_payload` 仍是 M4
-预留区。M1 的证据只适用于 x86_64 主机，不代表 ARMv7 或 i.MX6ULL 板端结果。
+M2 已增加 Linux `CAN_RAW` 接收模块：为 `0x100`、`0x101`、`0x102` 安装精确标准数据帧
+过滤器，启用 `SO_TIMESTAMPNS`，使用 `poll()` + `recvmsg()` 检查 datagram 长度、DLC、
+辅助数据完整性并填充原始 `telemetry_record`。`gatewayd --can-receive COUNT` 只是有总
+超时的有限板端验证入口，不向 M1 ring buffer 投递，也不构成 M5 生产者--消费者链路。
+
+M2 已于 2026-08-29 通过：具备 x86_64 warning-clean/单元测试、ASan+UBSan、Buildroot
+SDK ARMv7 warning-clean 交叉构建和真实 i.MX6ULL controller loopback 证据。SHA256
+固定的 Cortex-A7/ARMv7 hard-float binary 在板端动态加载成功；目标/非目标 ID、错误
+DLC 和 `SO_TIMESTAMPNS` 提取均通过最终审计。板端 wall clock 未初始化，因此时间戳
+不代表正确 UTC 时间或性能；测试后接口为 DOWN/STOPPED、loopback off，但 500000 bit
+timing 在关闭状态保留。当前仍没有物理 CAN、DBC 解码、MQTT、spool I/O、epoll、STM32
+固件或部署功能。`telemetry_record.decoded_payload` 仍是 M4 预留区，M3 及后续未开始。

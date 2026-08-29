@@ -1,0 +1,14 @@
+{
+  "run_id": "20260829T091646+0800-m2-host-final",
+  "result": "PASS",
+  "cmake_configure": "PASS",
+  "warning_clean_host_compile": "PASS",
+  "ctest": {"total": 9, "passed": 9, "failed": 0},
+  "m2_unit_tests": {"total": 1, "passed": 1, "failed": 0},
+  "can_raw_filter_socket_options": "PASS - unbound x86_64 host socket",
+  "so_timestampns_receive": "PASS - x86_64 host datagram socket",
+  "invalid_id_dlc_datagram_timestamp_timeout": "PASS - x86_64 host unit injection",
+  "arm_cross_build": "NOT RUN - no verified Buildroot SDK/sysroot or cross compiler",
+  "imx6ull_loopback": "NOT RUN - target board unavailable and no can0 state-change approval was exercised",
+  "m2_exit_gate": "NOT MET"
+}

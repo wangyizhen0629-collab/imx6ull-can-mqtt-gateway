@@ -1,0 +1,10 @@
+{
+  "run_id": "20260829T131705+0800-m2-asan-ubsan-regression",
+  "result": "PASS",
+  "asan_ubsan_compile": "PASS",
+  "ctest": {"total": 9, "passed": 9, "failed": 0},
+  "leak_sanitizer": "NOT RUN - ptrace environment limitation",
+  "arm_board_execution": "NOT RUN",
+  "m2_loopback": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

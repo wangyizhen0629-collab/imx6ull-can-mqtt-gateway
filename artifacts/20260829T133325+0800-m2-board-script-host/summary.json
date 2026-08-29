@@ -1,0 +1,8 @@
+{
+  "run_id": "20260829T133325+0800-m2-board-script-host",
+  "result": "PASS",
+  "sh_syntax": "PASS",
+  "shellcheck": "NOT RUN - command not installed",
+  "target_execution": "NOT RUN",
+  "m2_exit_gate": "NOT MET"
+}

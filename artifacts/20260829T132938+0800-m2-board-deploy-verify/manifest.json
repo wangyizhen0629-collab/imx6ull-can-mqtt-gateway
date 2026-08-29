@@ -1,0 +1,25 @@
+{
+  "run_id": "20260829T132938+0800-m2-board-deploy-verify",
+  "milestone": "M2",
+  "scope": "user-executed target binary checksum and can0 pre-state verification",
+  "host_received_time": "2026-08-29T13:29:38+08:00",
+  "board_execution_time": "NOT RECORDED - board wall clock is uninitialized and the transcript contained no timestamp",
+  "operator": "project owner via MobaXterm",
+  "board": "100ASK i.MX6ULL",
+  "commands": [
+    "chmod 0755 /tmp/gatewayd-m2",
+    "sha256sum /tmp/gatewayd-m2",
+    "ip -details -statistics link show can0"
+  ],
+  "binary": {
+    "path": "/tmp/gatewayd-m2",
+    "sha256": "be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595",
+    "matches_cross_build_artifact": true
+  },
+  "result": "PASS",
+  "limitations": [
+    "Evidence was supplied as a terminal transcript by the project owner",
+    "gatewayd was not executed",
+    "can0 was not modified and controller loopback was not run"
+  ]
+}

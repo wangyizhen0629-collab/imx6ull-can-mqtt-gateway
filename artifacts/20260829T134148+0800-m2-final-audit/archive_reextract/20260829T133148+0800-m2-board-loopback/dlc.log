@@ -1,0 +1,5 @@
+[1970-01-01T15:52:17.222Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-01T15:52:17.224Z] INFO can: M2 receive started interface=can0 target_ids=0x100,0x101,0x102 classic_dlc=8 kernel_timestamp=SO_TIMESTAMPNS expected=1 timeout_ms=1500
+[1970-01-01T15:52:18.240Z] WARN can: rejected frame reason=dlc
+[1970-01-01T15:52:18.725Z] ERROR can: receive timed out before expected frame count
+[1970-01-01T15:52:18.725Z] INFO can: M2_CAN_SUMMARY attempts=2 accepted=0 timeouts=1 rejected_length=0 rejected_dlc=1 rejected_id=0 timestamp_errors=0 receive_errors=0

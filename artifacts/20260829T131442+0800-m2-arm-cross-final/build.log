@@ -1,0 +1,15 @@
+Script started on 2026-08-29 13:15:04+08:00 [<not executed on terminal>]
+[ 10%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[ 30%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+[ 40%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[ 50%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+[ 60%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[ 70%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[ 80%] [32m[1mLinking C static library libgateway_core.a[0m
+[ 80%] Built target gateway_core
+[ 90%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+[100%] [32m[1mLinking C executable gatewayd[0m
+[100%] Built target gatewayd
+
+Script done on 2026-08-29 13:15:04+08:00 [COMMAND_EXIT_CODE="0"]

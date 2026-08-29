@@ -1,0 +1,47 @@
+{
+  "run_id": "20260829T133148+0800-m2-board-loopback",
+  "result": "PASS",
+  "binary_checksum_match": "PASS",
+  "dynamic_load_and_version": "PASS",
+  "target_case": {
+    "result": "PASS",
+    "sent_target_frames": 3,
+    "accepted_frames": 3,
+    "ordered_ids": ["0x100", "0x101", "0x102"],
+    "positive_kernel_timestamps": 3,
+    "timeouts": 0,
+    "rejections": 0,
+    "timestamp_errors": 0,
+    "receive_errors": 0
+  },
+  "non_target_case": {
+    "result": "PASS",
+    "sent_id": "0x123",
+    "accepted_frames": 0,
+    "expected_timeouts": 1,
+    "gateway_exit_code": 1
+  },
+  "invalid_dlc_case": {
+    "result": "PASS",
+    "sent_id": "0x100",
+    "sent_dlc": 3,
+    "accepted_frames": 0,
+    "rejected_dlc": 1,
+    "expected_timeouts": 1,
+    "gateway_exit_code": 1
+  },
+  "can_controller": {
+    "bitrate": 500000,
+    "tx_packets": 8,
+    "tx_bytes": 59,
+    "tx_errors": 0,
+    "can_error_counters": 0
+  },
+  "restore": {
+    "result": "PASS",
+    "state": "DOWN/STOPPED",
+    "loopback": "off",
+    "bit_timing": "500000 bit/s retained while DOWN"
+  },
+  "m2_exit_gate": "MET"
+}
