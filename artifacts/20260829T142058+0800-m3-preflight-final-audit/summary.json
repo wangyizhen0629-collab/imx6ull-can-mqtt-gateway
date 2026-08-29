@@ -1,0 +1,10 @@
+{
+  "run_id": "20260829T142058+0800-m3-preflight-final-audit",
+  "result": "PASS",
+  "git_diff_check": "PASS",
+  "json_validation": "PASS",
+  "unexpected_stm32_files": 0,
+  "m4_or_later_implementation": "NONE",
+  "m3_preflight_record": "PASS",
+  "m3_exit_gate": "NOT MET - M3-A Windows CubeMX/Keil evidence is required"
+}

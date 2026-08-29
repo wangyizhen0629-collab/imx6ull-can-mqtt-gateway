@@ -1,0 +1,21 @@
+PASS git diff --check
+PASS JSON validation for both M3 preflight JSON files
+PASS no unexpected files under stm32/
+PASS changed scope is limited to M3 preflight artifacts and required M3 documentation/handoff
+PASS no M4 or later source implementation was added
+
+SHA256
+dc10995dd18a9b7081675f89d046c60cfa3d931319c834ce0f7c65bdedddf88b  docs/PLANS.md
+774bb76c122883cd8925cfac7140b43ff555060078f393edd50d8e968a3cc068  docs/DECISION_LOG.md
+fa701cab678c7e42a55b0f37347f4ed3fa8f828399a6719a4a93bf0f544aef4d  docs/OPEN_QUESTIONS.md
+184a0992c5cb12261db082915f532a55b09a68537abee01dc51c25ea7da4c1ad  docs/RESUME_TRACEABILITY.md
+9185690279daf644fe56a095a1dc86c2db6189a480938ad678cc300fa95c1c7d  docs/milestones/M3.md
+8fe4d3510d1f56892047d4500ae9d43c3ff076c4cb5abb542da20f2d9637d5cb  docs/milestones/M3_WINDOWS_CODEX_PROMPT.md
+d038790227c8922a4114218662995fae796d2195552ca5d1c749ec959299261b  artifacts/20260829T141730+0800-m3-preflight/manifest.json
+e25acf5a1b8fb1be958e9f000be270c9ed4a5db23c0163b835c602b7e729cd04  artifacts/20260829T141730+0800-m3-preflight/summary.json
+eaa33e08a97711713871d4ba3b4eff713113ae03656fb02a7202fed5de6bea88  artifacts/20260829T141730+0800-m3-preflight/verification.log
+36304a329129006130ebeaf10164607a725828a4b95e921b79905fa232ea9472  artifacts/20260829T141730+0800-m3-preflight/test_report.md
+
+M3-A remains NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证.
+M3-B through M3-E remain NOT RUN because their preceding gates have not passed.
+M3 exit gate remains NOT MET.

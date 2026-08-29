@@ -168,6 +168,19 @@
 - 范围边界：controller loopback 不能替代物理 CAN、STM32、DBC、实际生产者--消费者、
   MQTT 或长期运行证据。M3-A 及后续功能没有开始，必须另行确认后按门禁推进。
 
+## D-017：M3 跨 Windows、真实硬件和 Ubuntu 严格交接
+
+- 日期：2026-08-29
+- 状态：M3 已接受，当前停在 M3-A
+- 决定：M3 仍是唯一活动 Milestone，但 M3-A～M3-E 必须按证据顺序跨环境交接。
+  Windows clone 独占 CubeMX/Keil Build 和 ST-Link 证据，真实断电硬件独占接线/电阻
+  证据，Ubuntu/i.MX6ULL 独占物理 `candump` 和 `gatewayd` 证据。任一环境不能用源码
+  审阅、假设值或另一环境的成功结果替代当前门禁。
+- 当前影响：`artifacts/20260829T141730+0800-m3-preflight/` 已复核 M2 前置门禁，但
+  Ubuntu 没有 CubeMX/Keil，仓库没有 `.ioc`/`.uvprojx`，所以 M3-A 为
+  `NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证`。M3-B～M3-E 保持 `NOT RUN`；
+  不为绕过门禁在 Ubuntu 手工伪造 CubeMX/Keil 工程，也不提前实现 M4 DBC。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

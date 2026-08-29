@@ -1,0 +1,33 @@
+M3 preflight time: 2026-08-29T14:17:30+08:00
+Git commit: 6384184e74c445555c37d617bfc1e3cb032ac403
+Initial git status: clean
+
+PASS M2 ARM binary SHA256
+expected: be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595
+actual:   be27554bafac535e45908e881117a185965470f21ae9645f2fcb0ca0a1ba5595
+
+PASS M2 board archive SHA256
+expected: a538c92bc4aef201df3c8dd7069285d48c997af98ffd0378732b443086f54163
+actual:   a538c92bc4aef201df3c8dd7069285d48c997af98ffd0378732b443086f54163
+
+PASS M2 frozen-source checksum verification
+26/26 entries in artifacts/20260829T131442+0800-m2-arm-cross-final/source_sha256.txt matched.
+
+PASS M2 final-audit record
+artifacts/20260829T134148+0800-m2-final-audit/verification.log reports that all 18 raw archive members matched byte-for-byte and that binary checksum, target/non-target/DLC cases, CAN counters and restoration all passed.
+
+M3 environment inspection
+Linux: 6.8.0-138-generic x86_64
+STM32CubeMX: NOT FOUND
+Keil UV4: NOT FOUND
+STM32 repository files: stm32/README.md, stm32/firmware/.gitkeep
+.ioc files: none
+.uvprojx files: none
+
+NOT RUN M3-A - 需要用户在 Windows STM32CubeMX/Keil 中验证。
+NOT RUN M3-B - M3-A 尚未通过，顺序门禁禁止提前实施。
+NOT RUN M3-C - M3-A/M3-B 尚未通过；本环境未连接全部断电的真实硬件和万用表。
+NOT RUN M3-D - M3-C 尚未通过；未获得本次具体烧录和 can0 状态修改的分别批准。
+NOT RUN M3-E - M3-D 尚未通过；未启动 10 分钟真实物理 CAN 测试。
+
+No hardware, firmware, can0, process, /etc, Broker or dependency state was changed.

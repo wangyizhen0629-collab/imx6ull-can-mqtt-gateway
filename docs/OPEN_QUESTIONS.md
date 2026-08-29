@@ -48,11 +48,15 @@ timing 在接口 DOWN 时保留；物理 CAN/STM32 属于 M3，未运行。
 
 ## STM32 Windows 工程
 
-- 当前仓库尚无 STM32F103C8T6 `.ioc`/Keil 工程；M3-A 将新建还是导入哪个现有工程？
+- M3 preflight `artifacts/20260829T141730+0800-m3-preflight/` 已确认当前仓库没有
+  STM32F103C8T6 `.ioc`/Keil 工程；M3-A 需要在 Windows clone 中新建工程并同步回仓库。
 - Windows 上实际使用的 STM32CubeMX、Keil MDK、Device Pack 和 ST-Link 工具版本是什么？
 - F103 板载晶振、Clock Tree、APB1 时钟和最终 500 kbit/s bit timing 参数是什么？
 - PB8/PB9 是否可用，CAN Remap 是否在生成工程和真实引脚上都已验证？
 - Keil Build 日志和 ST-Link 烧录记录采用什么可导出的证据格式？
+
+当前 M3-A 为 `NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证`；M3-B～M3-E
+因顺序门禁尚不能开始。Windows 工程和 Build 证据回传前，不把源码计划写成已实现。
 
 Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也不阻塞 Linux 侧开发。
 

@@ -1,0 +1,11 @@
+{
+  "run_id": "20260829T141730+0800-m3-preflight",
+  "result": "BLOCKED",
+  "m2_exit_gate_audit": "PASS",
+  "m3_a": "NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证",
+  "m3_b": "NOT RUN - M3-A 尚未通过",
+  "m3_c": "NOT RUN - M3-A/M3-B 尚未通过，且需要全部断电的真实硬件测量",
+  "m3_d": "NOT RUN - M3-C 尚未通过，且烧录和 can0 状态修改需要分别批准",
+  "m3_e": "NOT RUN - M3-D 尚未通过，且 10 分钟真实 CAN 测试需要批准",
+  "m3_exit_gate": "NOT MET"
+}

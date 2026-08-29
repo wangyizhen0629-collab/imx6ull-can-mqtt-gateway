@@ -11,8 +11,10 @@
 - M2 已于 2026-08-29 通过。SocketCAN 源码、warning-clean x86_64 与 ARMv7 构建、
   主机普通/ASan+UBSan 9/9、真实 i.MX6ULL 动态加载和 controller loopback 均有证据。
   板端目标 ID、非目标过滤、DLC 拒绝及内核 timestamp 用例全部 PASS。
-- 本轮已在 M2 完成后停止。M3-A 及后续阶段仍为“未开始”，没有因 M2 通过自动进入；
-  开始下一阶段需要用户另行确认。
+- 用户已明确批准开始 M3。`artifacts/20260829T141730+0800-m3-preflight/` 复核 M2
+  前置门禁为 PASS；M3 当前停在 M3-A。当前 Ubuntu 环境没有 CubeMX/Keil，仓库也没有
+  `.ioc`/`.uvprojx`，因此 M3-A 为 `NOT RUN - 需要用户在 Windows Keil 中验证`；M3-B～
+  M3-E 受顺序门禁阻塞，M4 及后续仍未开始。
 
 ## Milestone 总表
 
@@ -21,7 +23,7 @@
 | M0 | 环境审计、架构文档、仓库与主机骨架 | 文档齐全；主机 `gatewayd` 可配置、编译、运行；未知项和 `NOT RUN` 已记录 | 2026-08-28 已通过 |
 | M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 2026-08-28 已通过 |
 | M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 2026-08-29 已通过 |
-| M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 未开始 |
+| M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 进行中；Windows CubeMX/Keil `NOT RUN` |
 | M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 未开始 |
 | M3-C | 断电物理层检查 | 接线/模块记录完整；CANH--CANL 实测接近 60 Ω 并有证据 | 未开始 |
 | M3-D | i.MX6ULL 物理 CAN 与 `candump` | 经批准烧录 STM32、关闭 loopback；`candump` 看到三类 ID、正确周期和 Rolling Counter | 未开始 |
