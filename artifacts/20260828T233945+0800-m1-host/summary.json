@@ -1,0 +1,10 @@
+{
+  "run_id": "20260828T233945+0800-m1-host",
+  "milestone": "M1",
+  "result": "FAIL",
+  "cmake_configure": "PASS",
+  "host_compile": "FAIL",
+  "ctest": "NOT RUN - host compile failed",
+  "failure": "test_config.c lacked the stdlib.h declaration for mkstemp; -Werror stopped the build",
+  "target_hardware_tests": "NOT RUN - M1 is host-only and no hardware access was requested"
+}

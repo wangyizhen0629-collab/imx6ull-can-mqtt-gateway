@@ -1,0 +1,16 @@
+{
+  "run_id": "20260828T234124+0800-m1-sanitizers",
+  "milestone": "M1",
+  "result": "FAIL - environment limitation",
+  "cmake_configure": "PASS",
+  "asan_ubsan_compile": "PASS",
+  "ctest": {
+    "total": 8,
+    "passed": 0,
+    "failed": 8,
+    "common_failure": "LeakSanitizer cannot run under the execution environment ptrace"
+  },
+  "code_defect_observed": "NO - all programs were stopped by the same LeakSanitizer environment error before a leak result",
+  "next_action": "Use a new run_id with LeakSanitizer disabled and retain ASan/UBSan",
+  "hardware_tests": "NOT RUN - outside M1"
+}

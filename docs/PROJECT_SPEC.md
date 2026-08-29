@@ -122,6 +122,11 @@ device ID、CAN 接口、Broker 地址/端口/凭据、topic、spool 路径、�
 
 ## 当前实现边界
 
-M0 已完成文档、目录、只读板端信息脚本和可在 Ubuntu 主机构建的 `gatewayd` 骨架。
-当前程序只打印版本、检查配置文件可读性或使用非运行性的占位默认值，然后退出。
-CAN、MQTT、协议解码、队列、spool、epoll、STM32 固件和部署功能均尚未实现。
+M1 已完成 Ubuntu x86_64 主机上的严格配置解析/校验/覆盖、时间戳分级日志和配置脱敏、
+稳定错误码、self-pipe 信号生命周期、mutex stats、64 字节 `telemetry_record` 以及
+mutex/condition variable 有界环形缓冲区。默认 `gatewayd` 只验证合并配置后退出；
+`--wait-for-signal` 只验证生命周期，不启动数据链路。
+
+当前没有 SocketCAN、CAN 过滤/时间戳、DBC 解码、实际生产者--消费者数据链路、MQTT、
+spool I/O、epoll、STM32 固件或部署功能。`telemetry_record.decoded_payload` 仍是 M4
+预留区。M1 的证据只适用于 x86_64 主机，不代表 ARMv7 或 i.MX6ULL 板端结果。

@@ -1,0 +1,21 @@
+{
+  "run_id": "20260828T234124+0800-m1-sanitizers",
+  "milestone": "M1",
+  "scope": "ASan+UBSan build with LeakSanitizer enabled at runtime",
+  "start_time": "2026-08-28T23:41:38+08:00",
+  "end_time": "2026-08-28T23:41:47+08:00",
+  "host": "Ubuntu 22.04.5 x86_64 under ptrace-managed command execution",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "1a6ecfd3f773af06fde8a93e85e4b5cf0624b167",
+  "commands": [
+    "cmake -S . -B build/m1-sanitizers -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_ENABLE_SANITIZERS=ON",
+    "cmake --build build/m1-sanitizers --parallel",
+    "ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m1-sanitizers --output-on-failure"
+  ],
+  "result": "FAIL - LeakSanitizer environment limitation",
+  "limitations": [
+    "LeakSanitizer reported that it cannot run under ptrace for every test",
+    "No hardware test was run"
+  ]
+}

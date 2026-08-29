@@ -34,6 +34,12 @@ Windows Keil 门禁也属于同一个证据体系。M3-A/M3-B 至少保留 `.ioc
 - M2：i.MX6ULL SocketCAN loopback、目标 ID 接收、非目标 ID 过滤、错误长度处理和
   内核接收时间戳。改变 `can0` 状态前必须批准。
 
+M1 已于 2026-08-28 完成：最终 warning-clean 主机 run 为
+`artifacts/20260828T234222+0800-m1-host-final/`，ASan+UBSan run 为
+`artifacts/20260828T234154+0800-m1-asan-ubsan/`，均为 8/8 PASS。LeakSanitizer 因
+当前 `ptrace` 环境限制为 `NOT RUN`；ARMv7 和板端项目也均为 `NOT RUN`。这些结果不能
+代替 M2 的交叉编译和真实板端 SocketCAN 证据。
+
 ## M3-A～M3-E 测试组
 
 | 阶段 | 环境 | 必须证明 | 不能替代的证据 |

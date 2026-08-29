@@ -1,13 +1,19 @@
-# M0 example only. gatewayd checks readability but does not parse these keys yet.
-# Copy to gateway.conf for local use; that filename is ignored by Git.
+# M1 配置语法为逐行 key=value；空行和以 # 开头的行会被忽略。
+# 优先级：内建默认值 < 配置文件 < 后出现的 --set KEY=VALUE。
+# 复制为 gateway.conf 后填写本地参数；该文件已被 Git 忽略。
 
 device_id=imx6ull-gateway-lab
 can_interface=can0
 
-# Replace CHANGEME only in a local, uncommitted configuration.
-broker_host=CHANGEME
+# example.invalid 是保留域名，不代表真实局域网 Broker。
+broker_host=broker.example.invalid
 broker_port=1883
+broker_username=
+broker_password=
 mqtt_topic=vehicle/imx6ull-gateway-lab/telemetry
 
 queue_capacity=1024
+queue_push_timeout_ms=50
+batch_interval_ms=1000
 spool_path=/var/lib/gatewayd/spool.data
+log_level=info

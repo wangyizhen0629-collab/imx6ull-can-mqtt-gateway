@@ -1,0 +1,33 @@
+[  5%] Building C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o
+[ 10%] Building C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o
+[ 15%] Building C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o
+[ 26%] Building C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o
+[ 31%] Building C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o
+[ 31%] Building C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o
+[ 36%] Linking C static library libgateway_core.a
+[ 36%] Built target gateway_core
+[ 42%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+[ 47%] Building C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o
+[ 57%] Building C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o
+[ 57%] Building C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o
+[ 63%] Building C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o
+[ 68%] Building C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_config.c: In function ‘write_temporary_config’:
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_config.c:18:22: error: implicit declaration of function ‘mkstemp’ [-Werror=implicit-function-declaration]
+   18 |     int descriptor = mkstemp(path);
+      |                      ^~~~~~~
+[ 73%] Linking C executable test_error_record
+cc1: all warnings being treated as errors
+gmake[2]: *** [gateway/CMakeFiles/test_config.dir/build.make:76：gateway/CMakeFiles/test_config.dir/tests/test_config.c.o] 错误 1
+gmake[1]: *** [CMakeFiles/Makefile2:918：gateway/CMakeFiles/test_config.dir/all] 错误 2
+gmake[1]: *** 正在等待未完成的任务....
+[ 78%] Linking C executable test_log
+[ 84%] Linking C executable gatewayd
+[ 89%] Linking C executable test_lifecycle
+[ 94%] Linking C executable test_ring_buffer
+[ 94%] Built target test_log
+[ 94%] Built target test_error_record
+[ 94%] Built target gatewayd
+[ 94%] Built target test_lifecycle
+[ 94%] Built target test_ring_buffer
+gmake: *** [Makefile:146：all] 错误 2

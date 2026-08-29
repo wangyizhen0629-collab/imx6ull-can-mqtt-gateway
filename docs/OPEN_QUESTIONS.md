@@ -46,6 +46,16 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 长时间运行 artifact 的备份和保留策略是什么？
 - M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
 
+## M1 后续验证边界
+
+- M1 的 C11/pthread 代码尚未使用真实 Buildroot SDK 做 ARMv7 交叉编译，也未在
+  i.MX6ULL 上运行；需要取得精确 SDK/sysroot 后在后续相应门禁中验证。
+- LeakSanitizer 在当前命令执行环境中因 `ptrace` 限制无法运行；本轮仅有关闭 leak
+  检测后的 ASan+UBSan 8/8 通过证据。若需要无泄漏结论，必须在不受该限制的环境另建
+  run；当前不得宣称已经通过 LSan。
+- M5 接入实际生产者/消费者后，`queue_push_timeout_ms` 的默认值 50 ms 和“超时丢弃
+  新记录”策略是否满足 111 帧/s 基准，需要板端证据决定；M1 并发功能测试不能替代。
+
 ## 本次已解决项
 
 - STM32 开发环境：Windows STM32CubeMX + Keil MDK + ST-Link；Ubuntu 不负责 STM32 编译。
@@ -54,5 +64,9 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - i.MX6ULL CAN 模块：已包含 CAN 控制器、TJA1042T/3、120 Ω、TVS 和 CANH/CANL 接口。
 - 终端配置：STM32 侧 TJA1050 模块和 i.MX6ULL 板载 CAN 模块各有 120 Ω，设计上
   不再增加终端电阻。
+- M1 配置基础：严格 schema、范围、重复/未知 key 拒绝、默认值 < 文件 < CLI 的
+  优先级和配置日志凭据脱敏已有主机测试。
+- M1 并发基础：mutex stats、固定记录布局、有界 ring buffer、producer timeout、
+  close/drain/broadcast 和 self-pipe 信号生命周期已有主机单元测试。
 
 “模块标称带终端”已经解决硬件配置/采购问题，但没有替代 M3-C 的真实电阻测量。

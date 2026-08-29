@@ -1,0 +1,1 @@
+NOT RUN - M1 不读取或修改 can0；SocketCAN 属于 M2。

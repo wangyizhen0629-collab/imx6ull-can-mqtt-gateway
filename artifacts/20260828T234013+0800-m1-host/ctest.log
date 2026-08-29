@@ -1,0 +1,26 @@
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m1-host-pass1
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m1-host-pass1
+    Start 1: gatewayd_version
+1/8 Test #1: gatewayd_version .................   Passed    0.01 sec
+    Start 2: gatewayd_default_config
+2/8 Test #2: gatewayd_default_config ..........   Passed    0.00 sec
+    Start 3: gatewayd_example_config
+3/8 Test #3: gatewayd_example_config ..........   Passed    0.00 sec
+    Start 4: test_config
+4/8 Test #4: test_config ......................   Passed    0.00 sec
+    Start 5: test_error_record
+5/8 Test #5: test_error_record ................   Passed    0.00 sec
+    Start 6: test_lifecycle
+6/8 Test #6: test_lifecycle ...................   Passed    0.02 sec
+    Start 7: test_log
+7/8 Test #7: test_log .........................   Passed    0.00 sec
+    Start 8: test_ring_buffer
+8/8 Test #8: test_ring_buffer .................   Passed    0.11 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Label Time Summary:
+M1      =   0.15 sec*proc (5 tests)
+unit    =   0.15 sec*proc (5 tests)
+
+Total Test time (real) =   0.18 sec

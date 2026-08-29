@@ -1,0 +1,24 @@
+{
+  "run_id": "20260828T234222+0800-m1-host-final",
+  "milestone": "M1",
+  "scope": "final x86_64 warning-clean host build, CTest, CLI precedence, and redaction",
+  "start_time": "2026-08-28T23:42:28+08:00",
+  "end_time": "2026-08-28T23:42:45+08:00",
+  "host": "Ubuntu 22.04.5 x86_64",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "1a6ecfd3f773af06fde8a93e85e4b5cf0624b167",
+  "git_state": "dirty worktree containing the tested M1 source; source_sha256.txt identifies the tested code",
+  "commands": [
+    "cmake -S . -B build/m1-host-final -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build/m1-host-final --parallel",
+    "ctest --test-dir build/m1-host-final --output-on-failure",
+    "gatewayd --config gateway/config/gateway.conf.example --set queue_capacity=8 --set broker_password=fake-m1-secret --print-config",
+    "verify fake-m1-secret is absent and broker_password=<redacted> is present in config_cli.log"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Host-only functional evidence; not an ARMv7 or i.MX6ULL result",
+    "No SocketCAN, hardware, STM32, MQTT, spool I/O, performance, or long-running test was run"
+  ]
+}

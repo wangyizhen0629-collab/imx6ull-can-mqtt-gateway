@@ -83,6 +83,41 @@
 - 影响：两端各有一个 120 Ω，仍禁止额外并联终端；M3-C 保留断电实测约 60 Ω 的门禁，
   但“i.MX6ULL 是否具备收发器/终端/TVS/CAN 接口”不再是未知项。
 
+## D-011：M1 配置采用严格 key=value schema 和分层覆盖
+
+- 日期：2026-08-28
+- 状态：M1 已接受
+- 决定：配置只接受逐行 `key=value`、空行和行首 `#` 注释；未知 key、同一文件重复
+  key、格式错误和越界值均拒绝。优先级固定为“内建默认值 < 配置文件 < 按命令行顺序
+  应用的 `--set KEY=VALUE`”。当前 schema 包含 device/CAN/Broker/topic、队列超时与
+  容量、batch 周期、spool 路径和日志等级。
+- 安全边界：配置日志始终将 `broker_username` 和 `broker_password` 脱敏；解析错误不
+  回显 value。真实凭据优先放在权限受控且不提交的配置文件中，因为命令行参数仍可能
+  被本机进程列表观察到。
+- 影响：后续新增或改变 key、默认值、范围或优先级必须同时更新示例、单元测试和决策
+  记录；M1 只解析这些参数，不连接 CAN、Broker 或 spool 文件。
+
+## D-012：M1 并发基础设施使用 mutex/condition variable 和自管道生命周期
+
+- 日期：2026-08-28
+- 状态：M1 已接受
+- 决定：64-bit stats 全部在 mutex 下读写，不假设 ARMv7 lock-free；ring buffer 使用
+  `while` 谓词等待、`CLOCK_MONOTONIC` 有界 producer timeout、close/broadcast，关闭
+  后允许消费者先排空已有记录。信号 handler 只向 nonblocking self-pipe `write()`，
+  普通线程再设置 stop 状态和广播条件变量。
+- 影响：队列 push 超时由调用方视为“丢弃新记录”的边界，M5 才接入真实生产者/消费者
+  并验证基准负载。销毁 ring buffer 前必须先 close 并 join 所有使用线程。
+
+## D-013：M1 冻结 64 字节 telemetry_record 布局但不定义 M4 解码语义
+
+- 日期：2026-08-28
+- 状态：M1 已接受
+- 决定：记录固定为 64 字节，冻结 gateway seq、内核纳秒时间戳、CAN ID、8 字节原始
+  数据、状态、DLC、ECU counter 和 32 字节预留解码区的关键偏移；使用定宽整数和
+  `_Static_assert` 检查布局。
+- 影响：32 字节解码区在 M1 不承载任何已声明的信号语义。M4 必须依据自定义 DBC 和
+  黄金向量同步定义，不能把当前预留区描述成已实现解码。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

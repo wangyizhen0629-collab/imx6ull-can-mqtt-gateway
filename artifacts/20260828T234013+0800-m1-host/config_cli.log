@@ -1,0 +1,3 @@
+[2026-08-28T15:40:44.344Z] INFO main: gatewayd 0.1.0-m1 starting
+[2026-08-28T15:40:44.344Z] INFO config: device_id=imx6ull-gateway-lab can_interface=can0 broker_host=broker.example.invalid broker_port=1883 broker_username=<unset> broker_password=<redacted> mqtt_topic=vehicle/imx6ull-gateway-lab/telemetry queue_capacity=8 queue_push_timeout_ms=50 batch_interval_ms=1000 spool_path=/var/lib/gatewayd/spool.data log_level=INFO
+[2026-08-28T15:40:44.344Z] INFO main: M1 host infrastructure check complete; operational data path is not started

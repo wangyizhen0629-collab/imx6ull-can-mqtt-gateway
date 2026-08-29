@@ -15,9 +15,9 @@ PC 端 Mosquitto validator。
 
 ## 当前状态
 
-M0 已完成；当前没有活动 Milestone，等待用户确认是否启动 M1。`gatewayd` 仍只是
-主机生命周期/配置文件可读性骨架，尚未实现 SocketCAN、MQTT、ring buffer、spool、
-epoll 或 STM32 固件。
+M1 已完成；当前没有活动 Milestone，等待用户另行确认是否启动 M2。`gatewayd` 已有
+主机侧严格配置、日志/错误/生命周期、stats、固定记录和有界 ring buffer，但尚未实现
+SocketCAN、真实生产者--消费者数据链路、MQTT、spool I/O、epoll 或 STM32 固件。
 
 ## Ubuntu 主机构建
 
@@ -27,8 +27,11 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ./build/gateway/gatewayd
 ./build/gateway/gatewayd --config gateway/config/gateway.conf.example
+./build/gateway/gatewayd --config gateway/config/gateway.conf.example \
+  --set queue_capacity=128 --print-config
 ```
 
 请先阅读[项目规范](docs/PROJECT_SPEC.md)、[阶段计划](docs/PLANS.md)和
 [待确认问题](docs/OPEN_QUESTIONS.md)。M0 证据记录在
-[docs/milestones/M0.md](docs/milestones/M0.md)。
+[docs/milestones/M0.md](docs/milestones/M0.md)，M1 证据记录在
+[docs/milestones/M1.md](docs/milestones/M1.md)。

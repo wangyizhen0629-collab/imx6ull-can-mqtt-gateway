@@ -1,0 +1,1 @@
+NOT RUN - M1 是 Ubuntu x86_64 主机阶段；未连接或访问 i.MX6ULL。

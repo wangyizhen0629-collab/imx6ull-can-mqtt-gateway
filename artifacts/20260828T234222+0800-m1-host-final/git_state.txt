@@ -1,0 +1,39 @@
+1a6ecfd3f773af06fde8a93e85e4b5cf0624b167
+2026-08-28T23:27:28+08:00 chore: 建立 M0 项目骨架并冻结架构规范
+ M CMakeLists.txt
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M gateway/CMakeLists.txt
+ M gateway/config/gateway.conf.example
+ M gateway/include/gateway/version.h
+ M gateway/src/main.c
+ M gateway/tests/README.md
+?? artifacts/20260828T233945+0800-m1-host/
+?? artifacts/20260828T234013+0800-m1-host/
+?? artifacts/20260828T234124+0800-m1-sanitizers/
+?? artifacts/20260828T234154+0800-m1-asan-ubsan/
+?? artifacts/20260828T234222+0800-m1-host-final/
+?? docs/milestones/M1.md
+?? gateway/include/gateway/config.h
+?? gateway/include/gateway/error.h
+?? gateway/include/gateway/lifecycle.h
+?? gateway/include/gateway/log.h
+?? gateway/include/gateway/ring_buffer.h
+?? gateway/include/gateway/stats.h
+?? gateway/include/gateway/telemetry_record.h
+?? gateway/src/config.c
+?? gateway/src/error.c
+?? gateway/src/lifecycle.c
+?? gateway/src/log.c
+?? gateway/src/ring_buffer.c
+?? gateway/src/stats.c
+?? gateway/tests/test_config.c
+?? gateway/tests/test_error_record.c
+?? gateway/tests/test_lifecycle.c
+?? gateway/tests/test_log.c
+?? gateway/tests/test_ring_buffer.c

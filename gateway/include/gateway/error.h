@@ -1,0 +1,20 @@
+#ifndef GATEWAY_ERROR_H
+#define GATEWAY_ERROR_H
+
+typedef enum {
+    GATEWAY_OK = 0,
+    GATEWAY_ERROR_ARGUMENT = 1,
+    GATEWAY_ERROR_IO = 2,
+    GATEWAY_ERROR_PARSE = 3,
+    GATEWAY_ERROR_UNKNOWN_KEY = 4,
+    GATEWAY_ERROR_DUPLICATE_KEY = 5,
+    GATEWAY_ERROR_RANGE = 6,
+    GATEWAY_ERROR_INVALID_VALUE = 7,
+    GATEWAY_ERROR_TIMEOUT = 8,
+    GATEWAY_ERROR_CLOSED = 9,
+    GATEWAY_ERROR_SYSTEM = 10
+} gateway_error_code;
+
+const char *gateway_error_string(gateway_error_code code);
+
+#endif

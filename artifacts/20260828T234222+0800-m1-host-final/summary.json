@@ -1,0 +1,19 @@
+{
+  "run_id": "20260828T234222+0800-m1-host-final",
+  "result": "PASS",
+  "cmake_configure": "PASS",
+  "warning_clean_host_compile": "PASS",
+  "ctest": {"total": 8, "passed": 8, "failed": 0},
+  "m1_unit_tests": {"total": 5, "passed": 5, "failed": 0},
+  "config_cli_exit": 0,
+  "config_file_queue_capacity": 1024,
+  "cli_queue_capacity": 8,
+  "logged_queue_capacity": 8,
+  "fake_password_absent_from_log": true,
+  "redacted_marker_present": true,
+  "arm_cross_build": "NOT RUN",
+  "target_board": "NOT RUN",
+  "hardware_can": "NOT RUN",
+  "mqtt": "NOT RUN",
+  "performance": "NOT RUN"
+}

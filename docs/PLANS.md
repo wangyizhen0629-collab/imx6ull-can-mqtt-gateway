@@ -6,15 +6,17 @@
 ## 当前状态
 
 - M0 已于 2026-08-28 通过，证据保持不变。
-- 本次仅完成架构规范调整，不算开始 M1，也不产生新的功能测试结论。
-- 当前没有活动 Milestone；项目处于“**M0 已完成，等待用户确认是否启动 M1**”状态。
+- M1 已于 2026-08-28 通过；最终 warning-clean 主机 run 和 ASan+UBSan run 均为
+  8/8 通过。LeakSanitizer 因当前执行环境处于 `ptrace` 下标记为 `NOT RUN`。
+- 当前没有活动 Milestone；项目处于“**M1 已完成并停止，等待用户另行确认是否启动
+  M2**”状态。不得自动实现 SocketCAN 或其他 M2+ 功能。
 
 ## Milestone 总表
 
 | Milestone | 范围 | 退出门禁 | 状态 |
 | --- | --- | --- | --- |
 | M0 | 环境审计、架构文档、仓库与主机骨架 | 文档齐全；主机 `gatewayd` 可配置、编译、运行；未知项和 `NOT RUN` 已记录 | 2026-08-28 已通过 |
-| M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 未开始 |
+| M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 2026-08-28 已通过 |
 | M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 未开始 |
 | M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 未开始 |
 | M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 未开始 |
@@ -82,9 +84,9 @@ Checksum 和 CAN error/state；不得跳过烧录记录或 `candump`。
 最终保存至少 10 分钟连续接收、CAN 状态、每 ID Rolling Counter gap 和错误统计；
 未产生的数值不得预填。
 
-## M1 建议任务
+## M1 完成记录
 
-M1 仍为 Ubuntu 主机侧阶段，不触碰真实 CAN 或 MQTT，也不依赖 STM32 Linux 工具链：
+M1 是 Ubuntu 主机侧阶段，未触碰真实 CAN 或 MQTT，也不依赖 STM32 Linux 工具链：
 
 1. 冻结配置 schema、优先级、校验和敏感信息脱敏规则，覆盖有效/无效/边界测试。
 2. 增加带时间戳和等级的日志、稳定错误码、信号驱动生命周期和确定性退出测试。
@@ -94,3 +96,8 @@ M1 仍为 Ubuntu 主机侧阶段，不触碰真实 CAN 或 MQTT，也不依赖 S
 5. 添加无外部测试框架的 FIFO、满队列、超时、退出唤醒和多线程不变量测试。
 6. 执行 warning-clean 主机构建和环境支持的 sanitizer；不同测试使用独立 run_id，且
    主机结果不得表述为板端结果。
+
+上述 1～6 已完成。最终普通主机证据为
+`artifacts/20260828T234222+0800-m1-host-final/`，ASan+UBSan 证据为
+`artifacts/20260828T234154+0800-m1-asan-ubsan/`，完整过程和 `NOT RUN` 项见
+`docs/milestones/M1.md`。M1 通过不代表 M2 已开始，也不证明 ARMv7 或板端行为。

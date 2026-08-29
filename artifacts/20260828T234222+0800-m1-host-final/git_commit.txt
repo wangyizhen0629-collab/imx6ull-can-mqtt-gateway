@@ -1,0 +1,4 @@
+1a6ecfd3f773af06fde8a93e85e4b5cf0624b167
+
+测试时 worktree 包含尚未提交的 M1 变更；精确受测源码由同目录 `source_sha256.txt`
+标识。未创建或修改 Git commit。

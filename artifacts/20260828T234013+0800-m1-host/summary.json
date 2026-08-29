@@ -1,0 +1,10 @@
+{
+  "run_id": "20260828T234013+0800-m1-host",
+  "result": "PASS - intermediate",
+  "cmake_configure": "PASS",
+  "host_compile": "PASS",
+  "ctest": {"total": 8, "passed": 8, "failed": 0},
+  "config_cli_exit": 0,
+  "final_gate_run": false,
+  "hardware_tests": "NOT RUN"
+}

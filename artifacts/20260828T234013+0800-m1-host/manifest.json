@@ -1,0 +1,23 @@
+{
+  "run_id": "20260828T234013+0800-m1-host",
+  "milestone": "M1",
+  "scope": "intermediate warning-clean host build, CTest, and redacted config CLI",
+  "start_time": "2026-08-28T23:40:19+08:00",
+  "end_time": "2026-08-28T23:40:44+08:00",
+  "host": "Ubuntu 22.04.5 x86_64",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "1a6ecfd3f773af06fde8a93e85e4b5cf0624b167",
+  "git_state": "dirty worktree containing M1 changes",
+  "commands": [
+    "cmake -S . -B build/m1-host-pass1 -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build/m1-host-pass1 --parallel",
+    "ctest --test-dir build/m1-host-pass1 --output-on-failure",
+    "gatewayd --config gateway/config/gateway.conf.example --set queue_capacity=8 --set broker_password=<fake-test-value> --print-config"
+  ],
+  "result": "PASS - intermediate",
+  "limitations": [
+    "Superseded by the final host run after minor source/test cleanup",
+    "No ARM or hardware test was run"
+  ]
+}

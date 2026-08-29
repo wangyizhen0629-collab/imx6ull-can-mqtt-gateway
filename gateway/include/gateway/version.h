@@ -1,7 +1,6 @@
 #ifndef GATEWAY_VERSION_H
 #define GATEWAY_VERSION_H
 
-#define GATEWAYD_VERSION "0.0.0-m0"
+#define GATEWAYD_VERSION "0.1.0-m1"
 
 #endif
-

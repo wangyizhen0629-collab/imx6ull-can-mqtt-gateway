@@ -1,0 +1,73 @@
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m1-sanitizers
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m1-sanitizers
+    Start 1: gatewayd_version
+1/8 Test #1: gatewayd_version .................***Failed    0.03 sec
+==5==LeakSanitizer has encountered a fatal error.
+==5==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==5==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 2: gatewayd_default_config
+2/8 Test #2: gatewayd_default_config ..........***Failed    0.01 sec
+[2026-08-28T15:41:47.157Z] INFO main: gatewayd 0.1.0-m1 starting
+[2026-08-28T15:41:47.157Z] INFO main: M1 host infrastructure check complete; operational data path is not started
+==7==LeakSanitizer has encountered a fatal error.
+==7==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==7==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 3: gatewayd_example_config
+3/8 Test #3: gatewayd_example_config ..........***Failed    0.01 sec
+[2026-08-28T15:41:47.165Z] INFO main: gatewayd 0.1.0-m1 starting
+[2026-08-28T15:41:47.166Z] INFO main: M1 host infrastructure check complete; operational data path is not started
+==9==LeakSanitizer has encountered a fatal error.
+==9==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==9==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 4: test_config
+4/8 Test #4: test_config ......................***Failed    0.01 sec
+==11==LeakSanitizer has encountered a fatal error.
+==11==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==11==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 5: test_error_record
+5/8 Test #5: test_error_record ................***Failed    0.01 sec
+==13==LeakSanitizer has encountered a fatal error.
+==13==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==13==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 6: test_lifecycle
+6/8 Test #6: test_lifecycle ...................***Failed    0.03 sec
+==15==LeakSanitizer has encountered a fatal error.
+==15==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==15==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 7: test_log
+7/8 Test #7: test_log .........................***Failed    0.01 sec
+==18==LeakSanitizer has encountered a fatal error.
+==18==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==18==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+    Start 8: test_ring_buffer
+8/8 Test #8: test_ring_buffer .................***Failed    0.11 sec
+==20==LeakSanitizer has encountered a fatal error.
+==20==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==20==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+
+
+0% tests passed, 8 tests failed out of 8
+
+Label Time Summary:
+M1      =   0.16 sec*proc (5 tests)
+unit    =   0.16 sec*proc (5 tests)
+
+Total Test time (real) =   0.21 sec
+
+The following tests FAILED:
+	  1 - gatewayd_version (Failed)
+	  2 - gatewayd_default_config (Failed)
+	  3 - gatewayd_example_config (Failed)
+	  4 - test_config (Failed)
+	  5 - test_error_record (Failed)
+	  6 - test_lifecycle (Failed)
+	  7 - test_log (Failed)
+	  8 - test_ring_buffer (Failed)
+Errors while running CTest
