@@ -7,9 +7,11 @@
 PC 端 Mosquitto Broker。项目价值以可复现测试和保留证据为准，不以源码目录看起来
 是否“完整”为准。
 
-任何编译、烧录、上板、网络、可靠性、时延、CPU、内存或运行时长结论，都必须有
-对应命令和 `artifacts/<run_id>/` 证据。无法执行的检查必须标记 `NOT RUN`。协议只能
-描述为“依据自定义 DBC 解析模拟车况信号”，不得暗示 OEM 或量产车辆协议。
+任何编译、烧录、上板、网络、可靠性、时延、CPU、内存或运行时长结论，原则上都必须有
+对应命令和 `artifacts/<run_id>/` 证据。若项目所有者明确选择简化验收，文档必须同时
+标明“项目所有者确认、原始日志未归档”，且不得填写未提供的量化值。无法执行的检查
+必须标记 `NOT RUN`。协议只能描述为“依据自定义 DBC 解析模拟车况信号”，不得暗示
+OEM 或量产车辆协议。
 
 ## 双开发环境与唯一源码
 
@@ -31,8 +33,8 @@ PC 端 Mosquitto Broker。项目价值以可复现测试和保留证据为准，
 
 - Linux 目标：100ASK i.MX6ULL、ARMv7、Linux 4.9.88、Buildroot 2020.02、BusyBox
   1.31.1、已有 `can0`，无 systemd。
-- 模拟 ECU：STM32F103C8T6，运行时只启用所需 CAN 功能，计划将 bxCAN 重映射到
-  PB8/CAN_RX 和 PB9/CAN_TX。
+- 模拟 ECU：STM32F103C8T6，运行时只启用所需 CAN 功能；实际工程和接线采用 bxCAN
+  默认引脚 PA11/CAN_RX、PA12/CAN_TX，不启用 CAN remap。
 - 物理层：STM32 侧使用带 120 Ω 终端的外置 TJA1050 模块；i.MX6ULL 开发板已配备
   完整 CAN 模块，包含 CAN 控制器、TJA1042T/3 收发器、120 Ω 终端、TVS 保护和
   CANH/CANL 接口。两端终端均已具备，禁止额外并联 120 Ω。
@@ -45,7 +47,7 @@ PC 端 Mosquitto Broker。项目价值以可复现测试和保留证据为准，
 
 ```text
 STM32F103C8T6 确定性模拟 ECU
-  -> STM32 bxCAN（PB8/PB9）
+  -> STM32 bxCAN（PA11/PA12，默认映射）
   -> STM32 侧 TJA1050 模块（120 Ω）
   -> CANH/CANL/GND 物理总线
   -> i.MX6ULL 板载 CANH/CANL 接口、TVS、120 Ω、TJA1042T/3
@@ -67,7 +69,7 @@ STM32F103C8T6 确定性模拟 ECU
 STM32 是确定性 CAN 流量发生器（Deterministic CAN Traffic Generator）/模拟 ECU，
 不是本项目的主要技术复杂度来源。它只负责：
 
-- 使用 CubeMX 配置 Clock、CAN、PB8/PB9 CAN Remap 和经过计算的 500 kbit/s bit timing；
+- 使用 CubeMX 配置 Clock、CAN、PA11/PA12 默认映射和经过计算的 500 kbit/s bit timing；
 - 周期发送 `0x100`、`0x101`、`0x102`；
 - 维护各消息 Rolling Counter 和 XOR Checksum；
 - 生成便于自动校验的确定性信号，必要时提供 UART 调试和错误统计。
@@ -136,5 +138,15 @@ SDK ARMv7 warning-clean 交叉构建和真实 i.MX6ULL controller loopback 证�
 固定的 Cortex-A7/ARMv7 hard-float binary 在板端动态加载成功；目标/非目标 ID、错误
 DLC 和 `SO_TIMESTAMPNS` 提取均通过最终审计。板端 wall clock 未初始化，因此时间戳
 不代表正确 UTC 时间或性能；测试后接口为 DOWN/STOPPED、loopback off，但 500000 bit
-timing 在关闭状态保留。当前仍没有物理 CAN、DBC 解码、MQTT、spool I/O、epoll、STM32
-固件或部署功能。`telemetry_record.decoded_payload` 仍是 M4 预留区，M3 及后续未开始。
+timing 在关闭状态保留。
+
+M3-A～M3-D 已由项目所有者按实际现象验收：仓库已有 STM32F103C8T6 CubeMX/Keil 工程，
+系统时钟 72 MHz、PCLK1 36 MHz；CAN Prescaler 4、SJW 1 TQ、BS1 13 TQ、BS2 4 TQ，
+得到 500 kbit/s 和约 77.78% sample point。Keil Build 为 0 error、0 warning；实际接线
+采用 PA11/CAN_RX、PA12/CAN_TX，SoC 侧 `candump` 收到 `0x100`/`0x101`/`0x102`，并由
+项目所有者确认周期、DLC、Rolling Counter 和 XOR 正确。上述 STM32/物理 CAN 结果采用
+项目所有者简化验收，没有新增完整测试 artifact，不外推为 `gatewayd`、DBC 或可靠性
+结果。M3-E 已完成两次1110帧真实 `gatewayd` 短测，均无接收错误；项目所有者取消
+原计划的10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟没有执行，不得写成可靠性
+结果。DBC 解码、MQTT、spool I/O、epoll 和部署功能仍未实现；
+`telemetry_record.decoded_payload` 仍是 M4 预留区。

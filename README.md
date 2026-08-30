@@ -15,10 +15,13 @@ PC 端 Mosquitto validator。
 
 ## 当前状态
 
-M1、M2 已完成。M2 的有限 SocketCAN 路径通过主机回归、ARMv7 交叉构建和真实 i.MX6ULL
-controller loopback；证据覆盖目标/非目标 ID、错误 DLC 和内核时间戳。该结果不是物理
-CAN、DBC 或性能证据。当前没有实现真实生产者--消费者数据链路、DBC、MQTT、spool
-I/O、epoll 或 STM32 固件；M3 仍未开始，进入下一阶段需要另行确认。
+M1、M2 已完成。M3-A～M3-D 已由项目所有者按实际现象验收：STM32F103C8T6 使用
+PA11/CAN_RX、PA12/CAN_TX，以 500 kbit/s 发送三类确定性报文，Keil Build 0 error、
+0 warning；i.MX6ULL `candump` 已观察到正确 ID、周期、DLC、Rolling Counter 和 XOR。
+`gatewayd` 又在真实 `can0` 完成两次1110帧短时接收，均为 accepted=1110 且接收错误
+为0；项目所有者豁免原计划的10分钟 M3-E 门禁并接受 M3 完成。该状态不代表10分钟、
+可靠性或性能验证。当前没有实现 DBC、真实生产者--消费者数据链路、MQTT、spool I/O
+或 epoll，M4 及后续未开始。
 
 ## Ubuntu 主机构建
 

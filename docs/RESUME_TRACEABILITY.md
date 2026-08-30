@@ -1,16 +1,15 @@
 # 简历事实可追溯性
 
-当前仍不能写“完整 CAN--MQTT 网关”、物理 CAN、STM32 模拟 ECU、DBC、可靠性或性能
-结论。M1 已证明
+当前仍不能写“完整 CAN--MQTT 网关”、DBC、可靠性或性能结论。M1 已证明
 x86_64 主机上的配置和并发基础设施单元行为；M2 又完成 ARMv7 warning-clean 交叉构建，
 并在真实 i.MX6ULL controller loopback 上证明当前 `gatewayd` 的 SocketCAN 精确过滤、
 DLC 拒绝和内核时间戳提取。只允许使用下表明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
-| SocketCAN 接收/过滤/内核时间戳和自定义 DBC 解码 | M2/M4 源码和协议文件 | loopback、过滤、时间戳、黄金/实时报文解码 | M2 主机/ARM/板端 loopback 已通过；M3-D/E、M4 未运行 | M2 controller loopback 已验证；无物理 CAN/DBC 值 | 否 |
+| SocketCAN 接收/过滤/内核时间戳和自定义 DBC 解码 | M2/M4 源码和协议文件 | loopback、过滤、时间戳、黄金/实时报文解码 | M2 已通过；M3 以短时真实接收关闭，M4 未运行 | 已有物理 CAN/短时 `gatewayd`；无长时/DBC 值 | 否 |
 | 在 i.MX6ULL 上实现 CAN_RAW 精确 ID 过滤、DLC 校验和 SO_TIMESTAMPNS 提取，并以 controller loopback 验证 | M2 `can_receiver`、有限 CLI、toolchain file | 主机错误注入、ARM 构建、真实板端目标/非目标/DLC/timestamp | M2 最终主机、ARM、板端和审计 run | 目标 3/3；非目标 0；DLC reject 1；timestamp 3/3；仅 controller loopback | 是，必须保留 loopback 限定且不得写性能 |
-| STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、断电终端测量、`candump`、周期/计数器 | M3 preflight 仅确认 M2 前置门禁；M3-A～M3-D 均未通过 | NOT RUN | 否 |
+| STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、接线/终端检查、`candump`、周期/计数器 | 项目所有者简化验收；原始日志未归档 | PA11/PA12、500 kbit/s；三类 ID/周期/DLC/counter/XOR 正常 | 是，但必须注明为项目实测且不写可靠性/性能数字 |
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M1 主机 8/8 已通过；M5 板端未运行 | M1 功能测试：3 producer × 2000 条全部唯一消费；非性能值 | 否 |
 | MQTT QoS 1、seq、PUBACK、本地 spool、重连补传 | M6/M7 源码和 spool 格式/配置 | 1000 batch、断线、损坏、崩溃恢复 | M6/M7 集成 run | 未测量 | 否 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor 和 API 兼容性记录 | 与 M7 等价的 reactor/重连/退出测试 | M8 目标 run | 未测量 | 否 |
@@ -34,10 +33,18 @@ CAN_RAW socket 过滤选项、内核 datagram timestamp 解析及错误路径；
 产物一致。真实 i.MX6ULL controller loopback 为
 `artifacts/20260829T133148+0800-m2-board-loopback/`，最终逐字节审计为
 `artifacts/20260829T134148+0800-m2-final-audit/`。因此仅第二行的 M2 窄范围描述可用；
-第一行仍受 M3-D/E 和 M4 阻塞。板端时钟未初始化，三个正数 timestamp 不能表述为 CAN
+第一行仍受 M4 阻塞。板端时钟未初始化，三个正数 timestamp 不能表述为 CAN
 时延、UTC 正确性或性能。
 
-M3 preflight 为 `artifacts/20260829T141730+0800-m3-preflight/`。它只证明 M2 前置门禁
-经再次核验、当前仓库缺少 `.ioc`/`.uvprojx` 且 Ubuntu 没有 CubeMX/Keil；不是 STM32
-源码、Keil Build、硬件测量、烧录、物理 `candump` 或 10 分钟接收证据。因此 M3 相关
-简历描述仍不可用。
+M3 preflight 为 `artifacts/20260829T141730+0800-m3-preflight/`。它只证明当时的 M2
+前置门禁和环境状态，仍保持历史含义。此后仓库已加入 STM32 `.ioc`、Keil 工程和业务
+源码；项目所有者确认 Keil Build、接线/终端和物理 `candump` 正常，并选择不补建新的
+M3-A～M3-D artifact。因此可使用表中受限的 STM32/物理 CAN 描述，但不得声称仓库有
+未实际归档的日志。M3-E 后续两次1110帧真实接收均无接收错误；项目所有者取消10分钟
+门禁并关闭 M3，但仍不得写10分钟 `gatewayd`、DBC、可靠性或性能结论。
+
+Windows M3-A 前置审计
+`artifacts/20260829T144926+0800-m3a-preflight-windows/` 仍只代表当时的 BLOCKED 状态，
+不作为后续 PASS artifact，也没有被改写。当前进度依据是已同步源码和项目所有者的
+简化验收陈述及两次短时 `gatewayd` 输出；M3 已由项目所有者验收关闭。连续10分钟仍
+为 NOT RUN/已豁免。

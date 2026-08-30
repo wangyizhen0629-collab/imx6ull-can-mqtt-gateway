@@ -79,7 +79,7 @@ loopback off。最终审计 `artifacts/20260829T134148+0800-m2-final-audit/` 对
 
 | 阶段 | 环境 | 必须证明 | 不能替代的证据 |
 | --- | --- | --- | --- |
-| M3-A | Windows CubeMX + Keil | Clock、APB1、PB8/PB9 Remap、500 kbit/s timing；`.ioc`/Keil 工程；Build 成功 | Ubuntu 工具缺失或源码看起来正确都不能代替 Keil Build |
+| M3-A | Windows CubeMX + Keil | Clock、APB1、PA11/PA12 默认映射、500 kbit/s timing；`.ioc`/Keil 工程；Build 成功 | Ubuntu 工具缺失或源码看起来正确都不能代替 Keil Build |
 | M3-B | Windows Keil | `0x100` 100 Hz、`0x101` 10 Hz、`0x102` 1 Hz；Rolling Counter、XOR、确定性信号；Build 成功 | 未执行 Keil 时标记 `NOT RUN` |
 | M3-C | 全部断电的真实硬件 | STM32 侧 TJA1050 接线/供电/逻辑电平、i.MX6ULL 板载 TJA1042T/3 CAN 接口、CANH/CANL/GND；CANH--CANL 实测接近 60 Ω | 两端已配 120 Ω 不能代替万用表实测 |
 | M3-D | Windows ST-Link + i.MX6ULL 物理 CAN | 经批准烧录并保留结果；经批准关闭 loopback；`candump` 看到三类 ID、周期和 Rolling Counter；CAN 状态可解释 | 不得用 Keil Build 代替烧录，也不得用 `gatewayd` 日志跳过 `candump` 基线 |
@@ -87,6 +87,14 @@ loopback off。最终审计 `artifacts/20260829T134148+0800-m2-final-audit/` 对
 
 M3-C 判定：接近 60 Ω 才符合两只 120 Ω 并联预期；接近 120 Ω 可能少一个终端，
 接近 40 Ω 可能有第三个终端。后两者或明显异常时不得上电，应先排查并另建测试记录。
+
+2026-08-30，项目所有者决定对 M3-A～M3-D 采用简化的实际现象验收，不再补建 STM32
+侧测试 artifact。已确认 Keil Build 0 error/0 warning、PA11/PA12 物理接线、终端检查、
+三类 `candump` 报文及周期/DLC/counter/XOR 正确。该例外只用于记录 M3-A～M3-D 的项目
+进度。随后 `gatewayd` 在真实 `can0` 完成两次1110帧短测，两次均 accepted=1110 且
+全部接收错误为0；干净复测期间 CAN 状态和错误计数无新增异常。项目所有者明确取消
+M3-E 原10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟仍是 NOT RUN，不得据此声称
+稳定性、可靠性或性能结果。
 
 ## M4～M10 测试组
 

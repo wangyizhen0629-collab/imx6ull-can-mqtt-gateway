@@ -1,5 +1,10 @@
 # M3 Windows Codex 交接提示词
 
+> 历史文件：本提示词记录最初的 PB8/PB9 和完整 artifact 要求，不再作为当前执行入口。
+> 2026-08-30 起实际方案改为 PA11/CAN_RX、PA12/CAN_TX 默认映射，M3-A～M3-D 已由
+> 项目所有者按实际现象简化验收；M3 已于2026-08-30由项目所有者验收关闭，当前不再
+> 执行本提示词或 M3-E，详见 `docs/milestones/M3.md`。
+
 将下面整段提示词交给位于 **Windows 主机同一 Git 仓库 clone** 中的 Codex。开始前应
 先把包含 `artifacts/20260829T141730+0800-m3-preflight/` 和本文件的变更同步到 Windows
 clone，避免形成第二份独立 STM32 源码。

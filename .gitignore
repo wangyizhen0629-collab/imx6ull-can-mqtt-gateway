@@ -14,6 +14,18 @@
 /stm32/**/Objects/
 /stm32/**/Listings/
 /stm32/**/*.d
+*.crf
+*.hex
+*.map
+*.lnp
+*.lst
+*.dep
+*.build_log.htm
+*.uvguix.*
+*.uvoptx
+.mxproject
+/stm32/**/MDK-ARM/DebugConfig/
+/stm32/**/MDK-ARM/EventRecorderStub.scvd
 
 # Runtime state and credentials must not enter version control.
 *.pid

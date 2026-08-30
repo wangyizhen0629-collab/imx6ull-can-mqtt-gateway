@@ -21,8 +21,8 @@
 - STM32 侧 TJA1050 模块与 i.MX6ULL 板载 CAN 模块分别位于两节点总线的物理端点。
 
 ```text
-STM32 PB9 / CAN_TX -> STM32 侧 TJA1050 TXD
-STM32 PB8 / CAN_RX <- STM32 侧 TJA1050 RXD
+STM32 PA12 / CAN_TX -> STM32 侧 TJA1050 TXD
+STM32 PA11 / CAN_RX <- STM32 侧 TJA1050 RXD
 
 STM32 侧 TJA1050 CANH（120 Ω） <-> i.MX6ULL 板载 CANH 接口
 STM32 侧 TJA1050 CANL          <-> i.MX6ULL 板载 CANL 接口
@@ -53,18 +53,19 @@ M3-C 上电前必须让两块开发板、STM32 侧 TJA1050 模块及 i.MX6ULL �
 
 ## STM32 约束与 Windows 工作流
 
-- MCU：STM32F103C8T6；计划 CAN Remap 为 PB8/CAN_RX、PB9/CAN_TX。
-- STM32CubeMX 负责 Clock、CAN、Remap 和 Keil 工程生成；Keil MDK 负责真实编译、
+- MCU：STM32F103C8T6；实际使用 PA11/CAN_RX、PA12/CAN_TX 默认映射，不启用 CAN remap。
+- STM32CubeMX 负责 Clock、CAN、引脚映射和 Keil 工程生成；Keil MDK 负责真实编译、
   调试和 ST-Link 烧录；Ubuntu 不承担 STM32 编译门禁。
 - Codex 修改生成工程时优先放在 `USER CODE BEGIN/END` 区域，不无故修改 CubeMX
   自动生成区。
-- 运行时不启用 STM32 USB CDC/DFU；USB 可用于供电或与外部烧录/调试设备配合。
+- PA11/PA12 同时是 USB D-/D+；本项目不启用 STM32 USB CDC/DFU，也不得同时把这两个
+  引脚用于 USB 数据通信。USB 接口如用于供电，不应启动 USB 外设。
 - 根据实际 APB1 时钟计算：
 
   `bitrate = PCLK1 / (prescaler * (1 + BS1 + BS2))`
 
-  同步段为 1 个 time quantum。必须记录 SJW、sample point、晶振/Clock Tree、APB1、
-  prescaler、BS1 和 BS2；当前尚未选择或验证具体 timing 参数。
+  同步段为 1 个 time quantum。当前工程参数为 PCLK1 36 MHz、prescaler 4、SJW 1 TQ、
+  BS1 13 TQ、BS2 4 TQ，总计 18 TQ，对应 500 kbit/s 和约 77.78% sample point。
 
 ## M3 安全上电顺序
 
@@ -82,6 +83,8 @@ M3-C 上电前必须让两块开发板、STM32 侧 TJA1050 模块及 i.MX6ULL �
 TJA1042T/3，并已包含 CAN 控制器、120 Ω、TVS 和 CANH/CANL 接口。项目不再缺少
 i.MX6ULL 侧收发器、终端或保护电路。
 
-尚未验证：实际 CANH--CANL 电阻、STM32 侧模块供电与逻辑电平兼容性、实际接线、
-STM32 Clock Tree/bit timing/PB8-PB9 Remap、Keil Build/烧录、关闭 loopback 后的
-`candump` 以及 10 分钟物理总线运行。本轮未连接、测量或修改任何硬件。
+项目所有者已确认实际 STM32 为 STM32F103C8T6，板载外部晶振为 8 MHz；STM32 工程、
+PA11/PA12 接线、终端电阻检查、Keil Build、烧录及关闭 loopback 后的物理 `candump`
+现象均正常，三类报文的周期、DLC、Rolling Counter 和 XOR 符合预期。具体电阻读数和
+原始测试日志未归档，此处仅记录项目所有者的简化验收，不能外推为 M3-E `gatewayd`
+连续接收结果。

@@ -171,7 +171,7 @@
 ## D-017：M3 跨 Windows、真实硬件和 Ubuntu 严格交接
 
 - 日期：2026-08-29
-- 状态：M3 已接受，当前停在 M3-A
+- 状态：历史决定；当前状态由 D-019、D-020 更新
 - 决定：M3 仍是唯一活动 Milestone，但 M3-A～M3-E 必须按证据顺序跨环境交接。
   Windows clone 独占 CubeMX/Keil Build 和 ST-Link 证据，真实断电硬件独占接线/电阻
   证据，Ubuntu/i.MX6ULL 独占物理 `candump` 和 `gatewayd` 证据。任一环境不能用源码
@@ -180,6 +180,65 @@
   Ubuntu 没有 CubeMX/Keil，仓库没有 `.ioc`/`.uvprojx`，所以 M3-A 为
   `NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证`。M3-B～M3-E 保持 `NOT RUN`；
   不为绕过门禁在 Ubuntu 手工伪造 CubeMX/Keil 工程，也不提前实现 M4 DBC。
+
+## D-018：M3-A 在板卡时钟和引脚事实确认前停止
+
+- 日期：2026-08-29
+- 状态：历史 BLOCKED 记录；后续事实由 D-019 解除
+- 依据：Windows 审计 `artifacts/20260829T144926+0800-m3a-preflight-windows/` 确认本机
+  有 CubeMX/Keil/STM32F1 DFP，但仓库没有实际板卡照片、芯片/晶振丝印、原理图或明确
+  板型，无法确认外部晶振来源/频率及 PB8/PB9 的板级可用性。项目规范记录的
+  `STM32F103C8T6` 是项目所有者提供的型号，不足以推导具体板卡一定使用常见 8 MHz
+  晶振，也不足以证明 PB8/PB9 未被板载器件占用。
+- 决定：不得假定 “Blue Pill 8 MHz”，不得先创建虚构时钟的 `.ioc`。M3-A 的 CubeMX
+  工程创建、Generate Code 和 Keil Build 全部保持 **NOT RUN**；获得照片、丝印、原理图、
+  板卡资料或用户明确说明后，用新的唯一 run_id 重试。
+- 影响：M3-B 不得实施；M3-C 等待全部断电的接线/电阻实测；M3-D 等待 M3-C 及烧录/
+  `can0` 分别批准；M3-E 等待物理 `candump` 及至少 10 分钟运行批准。M3 总门禁不完成。
+
+## D-019：STM32 改用 PA11/PA12，并按项目所有者实际现象关闭 M3-A～M3-D
+
+- 日期：2026-08-30
+- 状态：已接受，取代 M3 中原 PB8/PB9 方案及 D-018 的当前阻塞状态
+- 决定：STM32 bxCAN 使用默认映射 PA11/CAN_RX、PA12/CAN_TX，不启用 CAN remap；
+  PA11/PA12 不再用于 USB 数据通信。仓库工程、实际接线和项目所有者报告的物理运行
+  均采用这一方案。
+- 依据：项目所有者确认实际 MCU 为 STM32F103C8T6、外部晶振为 8 MHz；Keil Build
+  `0 Error(s), 0 Warning(s)`；接线和终端已经核对；SoC 物理 `candump` 收到
+  `0x100`/`0x101`/`0x102`，周期约 10/100/1000 ms、DLC 8、三个 byte 6 counter 独立
+  递增、byte 7 XOR 正确，并连续运行10分钟现象正常。
+- 证据边界：项目所有者明确选择简化验收，不补建 M3-A～M3-D 的新测试 artifact。
+  文档可据此记录项目进度，但必须标注“项目所有者确认、原始日志未归档”，不得虚构
+  Build、欧姆值、`candump` 行数、CAN error 数或可靠性结论。历史 preflight artifact
+  仍保持当时 BLOCKED/NOT RUN 的含义。
+- 影响：M3-A～M3-D 视为完成；STM32 侧不再增加功能。M3 总门禁仍等待 M3-E，M4 及
+  后续不得开始。
+
+## D-020：M3-E 需要最小长时接收能力，现有 M2 CLI 不足以直接验收
+
+- 日期：2026-08-30
+- 状态：历史计划；由 D-021 取消剩余门禁
+- 依据：当前 `gatewayd --can-receive COUNT --can-timeout-ms MS` 把总超时上限限制为
+  60000 ms，最终 `M2_CAN_SUMMARY` 只有总 attempts/accepted/reject/error 计数，没有
+  按 CAN ID 的 frame 数或 Rolling Counter gap。
+- 决定：先用现有入口做短时真实 CAN smoke test；随后只在 M3-E 范围内补齐至少10分钟
+  的单次单调时钟运行和按 ID frame/counter-gap summary，再执行正式长时测试。不得在
+  此步骤引入 DBC、解码、队列、MQTT 或任何 M4+ 功能。
+
+## D-021：项目所有者以短时真实接收关闭 M3，并豁免 M3-E 长时门禁
+
+- 日期：2026-08-30
+- 状态：已接受，M3 已完成
+- 依据：经批准将 `can0` 配置为500 kbit/s、loopback off 后，板端 `gatewayd` 完成两次
+  1110帧真实接收；两次 summary 均为 `attempts=1110 accepted=1110`，timeout、所有
+  reject、timestamp error 和 receive error 均为0。首次观察到一次瞬态 `error-warn`
+  状态转换，随后恢复 ERROR-ACTIVE、tx/rx error counter 为0；干净复测期间项目所有者
+  确认 CAN 状态和错误计数无新增异常。测试后 `can0` 恢复为 DOWN。
+- 决定：项目所有者明确要求停止进一步测试，不增加长时/按 ID gap 功能，并取消原
+  M3-E 连续10分钟门禁；以现有真实短时接收接受 M3 完成。
+- 限制：当前 binary 的总超时上限仍为60000 ms，且没有按 ID gap summary；没有执行
+  连续10分钟测试。因此 M3 完成不得描述成10分钟、稳定性、可靠性或性能 PASS，也不
+  自动批准进入 M4。
 
 ## 本次规范冲突修正清单
 
@@ -192,3 +251,6 @@
 | 物理 CAN 可直接由 `gatewayd` 调试 | 强制先通过接线/电阻检查，再通过 `candump`，最后进入 `gatewayd` | `PLANS.md`、`TEST_PLAN.md` |
 | 文档和少量注释以英文为主 | 新文档/人工注释默认中文，标识符和专业术语保留英文，旧材料渐进转换 | `AGENTS.md`、本轮更新文档 |
 | STM32 中间产物只有通用 `*.o` 被忽略 | 增加 `Objects/`、`Listings/`、`*.d`、`*.axf` 忽略规则 | `.gitignore` |
+| STM32 CAN 原计划使用 PB8/PB9 remap | 实际工程和接线改用 PA11/CAN_RX、PA12/CAN_TX 默认映射；禁用 USB 数据功能 | `PROJECT_SPEC.md`、`HARDWARE.md`、`PLANS.md` |
+| M3-A～M3-D 等待完整 artifact | 项目所有者按真实 Build/接线/`candump` 现象简化验收；明确未归档原始日志 | `PLANS.md`、`milestones/M3.md`、`RESUME_TRACEABILITY.md` |
+| M3-E 原计划连续10分钟并统计按 ID gap | 两次1110帧真实接收正常后，项目所有者取消剩余长时门禁并接受 M3 完成 | `PLANS.md`、`milestones/M3.md`、`TEST_PLAN.md` |

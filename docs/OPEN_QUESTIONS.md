@@ -44,28 +44,31 @@
   复核并 PASS。第一次 UID/GID 比较方法失败的 run 原样保留。
 
 因此 M2 退出门禁已满足。遗留项不是 M2 阻塞：板端时间源仍待后续确定；500000 bit
-timing 在接口 DOWN 时保留；物理 CAN/STM32 属于 M3，未运行。
+timing 在接口 DOWN 时保留。STM32 和物理 `candump` 已在 M3 中由项目所有者验收。
 
 ## STM32 Windows 工程
 
-- M3 preflight `artifacts/20260829T141730+0800-m3-preflight/` 已确认当前仓库没有
-  STM32F103C8T6 `.ioc`/Keil 工程；M3-A 需要在 Windows clone 中新建工程并同步回仓库。
-- Windows 上实际使用的 STM32CubeMX、Keil MDK、Device Pack 和 ST-Link 工具版本是什么？
-- F103 板载晶振、Clock Tree、APB1 时钟和最终 500 kbit/s bit timing 参数是什么？
-- PB8/PB9 是否可用，CAN Remap 是否在生成工程和真实引脚上都已验证？
-- Keil Build 日志和 ST-Link 烧录记录采用什么可导出的证据格式？
-
-当前 M3-A 为 `NOT RUN - 需要用户在 Windows STM32CubeMX/Keil 中验证`；M3-B～M3-E
-因顺序门禁尚不能开始。Windows 工程和 Build 证据回传前，不把源码计划写成已实现。
+- 已解决：项目所有者确认实际 MCU 丝印为 STM32F103C8T6，板载晶振为 8 MHz；工程已
+  放入 `stm32/firmware/imx6ull-can-mqtt-gateway/`。
+- 已解决：实际方案采用 PA11/CAN_RX、PA12/CAN_TX 默认映射，不使用 PB8/PB9 remap，
+  也不启用占用 PA11/PA12 的 USB 数据功能。
+- 已解决：SYSCLK 72 MHz、PCLK1 36 MHz，CAN Prescaler 4、SJW 1 TQ、BS1 13 TQ、
+  BS2 4 TQ，对应 500 kbit/s、约 77.78% sample point。
+- 已解决：项目所有者确认 Keil Build 0 error/0 warning，三类确定性报文已在真实物理
+  `candump` 中验证。按其决定不补建 M3-A～M3-D 的新 artifact。
+- 非阻塞遗留：CubeMX 安装元数据与 executable 版本字符串不一致；探针固件版本和精确
+  终端电阻读数未归档。这些信息不得在文档中填入推测值。
 
 Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也不阻塞 Linux 侧开发。
 
-## CAN 物理层
+## M3-E 真实 `gatewayd` 接收
 
-- STM32 侧 TJA1050 模块的实际供电、TXD/RXD 逻辑电平兼容性和引脚定义是否已按
-  模块原理图核对？
-- 接线完成且全部断电后，CANH--CANL 的实际测量值是多少？
-- i.MX6ULL 板载 CANH/CANL/GND 接口的实际针脚/端子定义是否已与接线记录一致？
+- 已解决：`gatewayd` 在真实 `can0` 完成两次1110帧短测，均 accepted=1110 且 timeout、
+  reject、timestamp error、receive error 为0；干净复测期间 CAN 状态和错误计数无新增
+  异常。
+- 已决定：项目所有者取消原10分钟和按 ID counter-gap 门禁，接受 M3 完成；不再为此
+  修改当前60000 ms超时上限。
+- 保留边界：10分钟测试没有执行，不能在后续文档或简历中写成稳定性/可靠性结果。
 
 ## 网络、Broker 和运行策略
 
@@ -100,6 +103,11 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 
 - STM32 开发环境：Windows STM32CubeMX + Keil MDK + ST-Link；Ubuntu 不负责 STM32 编译。
 - STM32 定位：确定性 CAN 流量发生器/模拟 ECU，不承担网关复杂功能。
+- STM32 引脚：PA11/CAN_RX、PA12/CAN_TX 默认 bxCAN 映射；不启用 USB 数据功能。
+- M3-A～M3-D：项目所有者已按实际 Build、接线/终端检查和物理 `candump` 现象验收；
+  原始日志未归档，不能写未提供的量化值。
+- M3-E/M3：两次1110帧真实 `gatewayd` 短测正常；10分钟门禁由项目所有者豁免，M3
+  已关闭，但没有10分钟、可靠性或性能结论。
 - CAN 收发器：STM32 侧为外置 TJA1050；i.MX6ULL 板载 CAN 模块使用 TJA1042T/3。
 - i.MX6ULL CAN 模块：已包含 CAN 控制器、TJA1042T/3、120 Ω、TVS 和 CANH/CANL 接口。
 - 终端配置：STM32 侧 TJA1050 模块和 i.MX6ULL 板载 CAN 模块各有 120 Ω，设计上
@@ -115,4 +123,5 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M2 板端门禁：SHA256 固定 binary 的动态加载、controller loopback、目标/非目标 ID、
   DLC 拒绝、kernel timestamp 和恢复状态已有真实日志及最终审计，M2 已通过。
 
-“模块标称带终端”已经解决硬件配置/采购问题，但没有替代 M3-C 的真实电阻测量。
+“模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
+但精确电阻读数没有归档，后续不得引用推测的欧姆值。

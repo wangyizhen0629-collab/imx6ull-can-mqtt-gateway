@@ -1,7 +1,8 @@
 # 分阶段实施计划
 
-同一时间只能有一个活动 Milestone。只有退出条件具备真实证据时才能通过；无法执行的
-门禁必须写成 `NOT RUN`，不能用推测代替。进入下一阶段需要用户另行确认。
+同一时间只能有一个活动 Milestone。只有退出条件具备真实依据时才能通过；项目所有者
+选择简化验收时必须明确记录未归档原始日志，不能用推测补齐数值。无法执行的门禁必须
+写成 `NOT RUN`。进入下一阶段需要用户另行确认。
 
 ## 当前状态
 
@@ -11,10 +12,15 @@
 - M2 已于 2026-08-29 通过。SocketCAN 源码、warning-clean x86_64 与 ARMv7 构建、
   主机普通/ASan+UBSan 9/9、真实 i.MX6ULL 动态加载和 controller loopback 均有证据。
   板端目标 ID、非目标过滤、DLC 拒绝及内核 timestamp 用例全部 PASS。
-- 用户已明确批准开始 M3。`artifacts/20260829T141730+0800-m3-preflight/` 复核 M2
-  前置门禁为 PASS；M3 当前停在 M3-A。当前 Ubuntu 环境没有 CubeMX/Keil，仓库也没有
-  `.ioc`/`.uvprojx`，因此 M3-A 为 `NOT RUN - 需要用户在 Windows Keil 中验证`；M3-B～
-  M3-E 受顺序门禁阻塞，M4 及后续仍未开始。
+- M3-A～M3-D 已由项目所有者按简化的实际现象口径验收：实际 MCU/8 MHz 晶振已确认，
+  STM32 工程改用 PA11/CAN_RX、PA12/CAN_TX 默认映射；Keil Build 为 0 error、0 warning；
+  接线和终端已核对，物理 `candump` 已确认三类 ID、周期、DLC、独立 Rolling Counter
+  和 XOR 正确。项目所有者明确不补建这些 STM32 侧 artifact，因此状态必须同时保留
+  “用户确认、未归档原始日志”的限定。
+- `gatewayd` 已在真实 `can0` 完成两次1110帧短时接收，summary 均为 accepted=1110，
+  timeout/reject/timestamp/receive error 全为0；干净复测期间 CAN 状态和错误计数无新增
+  异常。项目所有者决定不再执行原计划的10分钟 M3-E 测试，也不增加长时/按 ID gap
+  统计，并接受 M3 完成。该决定不等价于10分钟或可靠性 PASS。M4 及后续仍未开始。
 
 ## Milestone 总表
 
@@ -23,11 +29,11 @@
 | M0 | 环境审计、架构文档、仓库与主机骨架 | 文档齐全；主机 `gatewayd` 可配置、编译、运行；未知项和 `NOT RUN` 已记录 | 2026-08-28 已通过 |
 | M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 2026-08-28 已通过 |
 | M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 2026-08-29 已通过 |
-| M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 进行中；Windows CubeMX/Keil `NOT RUN` |
-| M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 未开始 |
-| M3-C | 断电物理层检查 | 接线/模块记录完整；CANH--CANL 实测接近 60 Ω 并有证据 | 未开始 |
-| M3-D | i.MX6ULL 物理 CAN 与 `candump` | 经批准烧录 STM32、关闭 loopback；`candump` 看到三类 ID、正确周期和 Rolling Counter | 未开始 |
-| M3-E | `gatewayd` 接入真实 CAN | 只在 M3-D 通过后切换；连续 10 分钟接收，CAN 状态和计数器结果可解释 | 未开始 |
+| M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 已完成；项目所有者确认 Build 0 error/0 warning，采用 PA11/PA12 默认映射 |
+| M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 已完成；项目所有者已实测确认三类报文行为 |
+| M3-C | 断电物理层检查 | 接线/模块记录完整；CANH--CANL 终端检查合理 | 已完成；项目所有者确认接线和终端已核对，具体欧姆值未归档 |
+| M3-D | i.MX6ULL 物理 CAN 与 `candump` | 烧录 STM32、关闭 loopback；`candump` 看到三类 ID、正确周期和 Rolling Counter | 已完成；项目所有者确认物理 `candump` 及10分钟运行现象正常 |
+| M3-E | `gatewayd` 接入真实 CAN | 在真实 `can0` 完成有限接收；原10分钟门禁由项目所有者豁免 | 已完成；两次1110帧 smoke 正常，10分钟测试 NOT RUN/已豁免 |
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，真实 STM32 规律与解码结果一致 | 未开始 |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 未开始 |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 未开始 |
@@ -95,12 +101,18 @@
 ### M3-A：STM32 CubeMX 基础工程（Windows）
 
 1. 用 STM32CubeMX 创建 STM32F103C8T6 工程。
-2. 记录 Clock Tree、APB1 时钟、CAN Remap、PB8/CAN_RX、PB9/CAN_TX。
+2. 记录 Clock Tree、APB1 时钟、PA11/CAN_RX、PA12/CAN_TX 默认映射。
 3. 根据真实时钟计算并记录 500 kbit/s bit timing、sample point 和 SJW。
 4. Generate Code 生成 Keil 工程并执行 Keil Build。
 5. 保存 `.ioc`、`.uvprojx` 和 Keil Build 输出；`Objects/`、`Listings/` 等中间文件不提交。
 
 Codex 若无法执行 Windows Keil，必须写：`NOT RUN - 需要用户在 Windows Keil 中验证`。
+
+历史 Windows preflight `artifacts/20260829T144926+0800-m3a-preflight-windows/` 的
+BLOCKED/NOT RUN 记录保持不变。此后项目所有者提供实物信息并完成工程：MCU 为
+STM32F103C8T6，外部晶振 8 MHz，SYSCLK 72 MHz、PCLK1 36 MHz；CAN 采用 PA11/PA12
+默认映射，Prescaler 4、SJW 1 TQ、BS1 13 TQ、BS2 4 TQ，实际 500 kbit/s，sample point
+约 77.78%。项目所有者确认 Keil Build 为 0 error、0 warning，M3-A 已完成。
 
 ### M3-B：STM32 模拟 ECU（Windows）
 
@@ -110,14 +122,18 @@ Codex 若无法执行 Windows Keil，必须写：`NOT RUN - 需要用户在 Wind
 4. 必要时增加简洁 UART 调试和错误计数，不引入 RTOS、USB 协议或网络栈。
 5. 以 Keil Build 输出作为编译门禁；未执行时不得声称成功。
 
+项目所有者确认上述实现已经实际运行，SoC 端看到 `0x100`/`0x101`/`0x102`，周期约
+10/100/1000 ms、DLC 8、byte 6 各自递增且 byte 7 XOR 正确，因此 M3-B 已完成。
+
 ### M3-C：CAN 物理层检查（断电）
 
 1. 两块开发板、STM32 侧 TJA1050 模块和 i.MX6ULL 板载 CAN 模块全部断电。
-2. 核对 STM32 PB8/PB9 与 TJA1050 TXD/RXD、两端 CANH/CANL/GND、STM32 侧模块
+2. 核对 STM32 PA11/PA12 与 TJA1050 RXD/TXD、两端 CANH/CANL/GND、STM32 侧模块
    电源和逻辑电平；i.MX6ULL 侧直接使用板载 CANH/CANL 接口。
 3. 禁止额外并联 120 Ω；测量 CANH--CANL 等效电阻。
 4. 预期约 60 Ω；约 120 Ω 或约 40 Ω 时停止上电并排查终端数量。
-5. 保存实测值、仪表/接线记录和判定。
+5. 保存实测值、仪表/接线记录和判定；本项目当前按项目所有者的简化验收记录为
+   “接线及终端检查正常”，未归档具体欧姆值。
 
 ### M3-D：i.MX6ULL 物理 CAN
 
@@ -134,12 +150,22 @@ candump can0
 先用 `candump` 验证 `0x100`、`0x101`、`0x102`，再验证周期、Rolling Counter、
 Checksum 和 CAN error/state；不得跳过烧录记录或 `candump`。
 
+项目所有者已完成烧录和物理 `candump`，并确认三类 ID、周期、DLC、counter、XOR 及
+10分钟运行现象正常。该10分钟结果是物理 CAN/`candump` 验收，不是 M3-E `gatewayd`
+结果。
+
 ### M3-E：gatewayd 接入真实 CAN
 
 只有“STM32 -> TJA1050 -> CANH/CANL/GND -> i.MX6ULL 板载 TJA1042T/3 CAN 模块
 -> SocketCAN -> candump”链路已经通过，才允许 `gatewayd` 切换到真实 CAN 输入。
-最终保存至少 10 分钟连续接收、CAN 状态、每 ID Rolling Counter gap 和错误统计；
-未产生的数值不得预填。
+原计划要求至少10分钟连续接收、按 ID Rolling Counter gap 和 CAN error 统计。实际已
+完成两次1110帧短时真实 CAN smoke test：`accepted=1110`，所有 timeout/reject/
+timestamp/receive error 为0；项目所有者确认干净复测的 CAN 状态和错误计数无新增异常。
+
+当前 binary 的 `--can-timeout-ms` 上限仍为60000 ms，summary 仍没有按 ID gap，因此没有
+执行也不能声称完成10分钟测试。2026-08-30，项目所有者明确取消该剩余测试和代码扩展，
+接受 M3 以现有短时结果关闭。M3 状态据此为“已完成（10分钟门禁已豁免）”，而不是
+“10分钟测试 PASS”；不得将这一决定外推成可靠性或性能结论。
 
 ## M1 完成记录
 
