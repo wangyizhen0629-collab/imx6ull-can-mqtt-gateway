@@ -3,16 +3,10 @@
 
 #include "gateway/error.h"
 #include "gateway/telemetry_record.h"
+#include "gateway/vehicle_protocol.h"
 
 #include <stdbool.h>
 #include <stdint.h>
-
-enum {
-    GATEWAY_CAN_ID_VEHICLE_DYNAMICS = 0x100,
-    GATEWAY_CAN_ID_POWER_STATUS = 0x101,
-    GATEWAY_CAN_ID_BODY_STATUS = 0x102,
-    GATEWAY_CAN_TARGET_ID_COUNT = 3
-};
 
 typedef enum {
     GATEWAY_CAN_REJECT_NONE = 0,

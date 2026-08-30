@@ -107,6 +107,19 @@ M3-E 原10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟仍是 NOT
 - M10：计划的 500/1000 帧/s 压力、20 轮 5 分钟 Broker 断线、`/proc` 指标和
   24 小时基准稳定性。
 
+M4 已于 2026-08-30 完成首轮静态测试：20条共享黄金向量覆盖三类消息、小端、缩放/偏移、
+bit mask、信号边界、counter/checksum 和错误路径；另按 M3 固件规则遍历全部
+`3 * 256` counter。默认 warning-clean 和 ASan+UBSan 全量回归均11/11 PASS，证据分别为
+`artifacts/20260830T205736+0800-m4-host-final/` 和
+`artifacts/20260830T205834+0800-m4-asan-ubsan/`；ARMv7 warning-clean 交叉构建证据为
+`artifacts/20260830T205937+0800-m4-arm-cross/`。LeakSanitizer 因已知 `ptrace` 限制为
+`NOT RUN`。新的板端/物理 CAN 解码测试也是 `NOT RUN`：本轮未连接目标板、未部署
+binary、未修改 `can0`。M3 项目所有者确认的真实报文规律只用于静态对应，不冒充本轮
+板端执行结果。项目所有者随后明确要求 STM32 从有物理意义的模拟物理量按 DBC 编码；
+现有向量只覆盖旧原始字节递增算法，因此上述 PASS 保留为首轮历史证据，M4 退出门禁
+仍为 **NOT MET**。Windows 修正固件并提供 Keil/`candump` 依据后，必须用新 run 更新
+物理场景黄金向量并复测，不能覆盖现有 artifact。
+
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。
 

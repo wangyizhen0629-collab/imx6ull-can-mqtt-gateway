@@ -1,0 +1,3 @@
+2f0c4680ddc1a4c39de4782515bae227e0d90ea47815e5e790c5966ba0425ab1  artifacts/20260830T205937+0800-m4-arm-cross/gatewayd.armv7
+aa7864a450b5f236c5e7ca1fce8d49b5d9789c194875687751005bf4a6b3baf2  protocol/vehicle.dbc
+bad9b16ec88bb5852ef66f6acca2ecfbc71b6b5c39aab39a8a3925395a840646  protocol/test_vectors/vehicle_golden.csv

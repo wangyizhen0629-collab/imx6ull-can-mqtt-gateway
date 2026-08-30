@@ -1,0 +1,20 @@
+Consolidate compiler generated dependencies of target gateway_core
+[ 36%] Built target gateway_core
+Consolidate compiler generated dependencies of target test_log
+Consolidate compiler generated dependencies of target test_can_receiver
+Consolidate compiler generated dependencies of target test_vehicle_decoder
+Consolidate compiler generated dependencies of target test_config
+Consolidate compiler generated dependencies of target test_ring_buffer
+Consolidate compiler generated dependencies of target test_error_record
+Consolidate compiler generated dependencies of target test_lifecycle
+Consolidate compiler generated dependencies of target gatewayd
+[ 40%] Building C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o
+[ 48%] Built target test_can_receiver
+[ 56%] Built target test_log
+[ 64%] Built target test_config
+[ 72%] Built target test_error_record
+[ 80%] Built target test_lifecycle
+[ 88%] Built target test_ring_buffer
+[ 96%] Built target gatewayd
+[100%] Linking C executable test_vehicle_decoder
+[100%] Built target test_vehicle_decoder

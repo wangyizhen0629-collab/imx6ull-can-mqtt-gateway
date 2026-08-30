@@ -1,0 +1,24 @@
+{
+  "run_id": "20260830T205736+0800-m4-host-final",
+  "milestone": "M4",
+  "scope": "final default x86_64 warning-clean build and full regression",
+  "start_time": "2026-08-30T20:57:36+08:00",
+  "end_time": "2026-08-30T20:58:12+08:00",
+  "host": "Ubuntu 22.04.5 x86_64 virtual machine",
+  "compiler": "GCC 11.4.0",
+  "cmake": "3.22.1",
+  "git_base": "75900cd969d962fad168f3fa3fb99746ef3e8b73",
+  "source_reference": "source_sha256.txt",
+  "commands": [
+    "cmake -S . -B build-m4-host-final-default",
+    "cmake --build build-m4-host-final-default --parallel",
+    "ctest --test-dir build-m4-host-final-default --output-on-failure"
+  ],
+  "execution_note": "CTest ran outside the restricted sandbox only to permit the existing M2 test to create an unbound PF_CAN socket; no CAN interface was bound or modified",
+  "result": "PASS",
+  "limitations": [
+    "No ARM binary was deployed or executed",
+    "No physical CAN frame was decoded in this run",
+    "M4 decoder APIs were not connected to the M5 producer-consumer path"
+  ]
+}

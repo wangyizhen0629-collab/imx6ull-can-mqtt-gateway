@@ -1,0 +1,17 @@
+{
+  "run_id": "20260830T205606+0800-m4-host-dev",
+  "milestone": "M4",
+  "scope": "M4-only regression after fixing the golden-vector header assertion",
+  "start_time": "2026-08-30T20:56:06+08:00",
+  "end_time": "2026-08-30T20:56:16+08:00",
+  "git_base": "75900cd969d962fad168f3fa3fb99746ef3e8b73",
+  "commands": [
+    "cmake --build build-m4-dev --parallel",
+    "ctest --test-dir build-m4-dev --output-on-failure -L M4"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "Only tests carrying the M4 label were run",
+    "No ARM or board execution was performed"
+  ]
+}

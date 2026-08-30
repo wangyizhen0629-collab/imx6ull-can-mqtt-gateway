@@ -1,0 +1,77 @@
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M gateway/CMakeLists.txt
+ M gateway/include/gateway/can_receiver.h
+ M gateway/include/gateway/telemetry_record.h
+ M gateway/tests/README.md
+ M protocol/README.md
+?? artifacts/20260830T205523+0800-m4-host-dev/build.log
+?? artifacts/20260830T205523+0800-m4-host-dev/configure.log
+?? artifacts/20260830T205523+0800-m4-host-dev/ctest.log
+?? artifacts/20260830T205523+0800-m4-host-dev/manifest.json
+?? artifacts/20260830T205523+0800-m4-host-dev/summary.json
+?? artifacts/20260830T205523+0800-m4-host-dev/test_report.md
+?? artifacts/20260830T205606+0800-m4-host-dev/build.log
+?? artifacts/20260830T205606+0800-m4-host-dev/ctest-m4.log
+?? artifacts/20260830T205606+0800-m4-host-dev/manifest.json
+?? artifacts/20260830T205606+0800-m4-host-dev/summary.json
+?? artifacts/20260830T205606+0800-m4-host-dev/test_report.md
+?? artifacts/20260830T205714+0800-m4-host-final/build.log
+?? artifacts/20260830T205714+0800-m4-host-final/configure.log
+?? artifacts/20260830T205714+0800-m4-host-final/manifest.json
+?? artifacts/20260830T205714+0800-m4-host-final/summary.json
+?? artifacts/20260830T205714+0800-m4-host-final/test_report.md
+?? artifacts/20260830T205736+0800-m4-host-final/build.log
+?? artifacts/20260830T205736+0800-m4-host-final/configure.log
+?? artifacts/20260830T205736+0800-m4-host-final/ctest.log
+?? artifacts/20260830T205736+0800-m4-host-final/git_commit.txt
+?? artifacts/20260830T205736+0800-m4-host-final/git_state.txt
+?? artifacts/20260830T205736+0800-m4-host-final/host_info.txt
+?? artifacts/20260830T205736+0800-m4-host-final/manifest.json
+?? artifacts/20260830T205736+0800-m4-host-final/source_sha256.txt
+?? artifacts/20260830T205736+0800-m4-host-final/summary.json
+?? artifacts/20260830T205736+0800-m4-host-final/test_report.md
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/build.log
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/configure.log
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/ctest.log
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/git_commit.txt
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/git_state.txt
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/host_info.txt
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/manifest.json
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/source_sha256.txt
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/summary.json
+?? artifacts/20260830T205834+0800-m4-asan-ubsan/test_report.md
+?? artifacts/20260830T205937+0800-m4-arm-cross/build.log
+?? artifacts/20260830T205937+0800-m4-arm-cross/compiler.log
+?? artifacts/20260830T205937+0800-m4-arm-cross/configure.log
+?? artifacts/20260830T205937+0800-m4-arm-cross/file.log
+?? artifacts/20260830T205937+0800-m4-arm-cross/gatewayd.armv7
+?? artifacts/20260830T205937+0800-m4-arm-cross/git_commit.txt
+?? artifacts/20260830T205937+0800-m4-arm-cross/git_state.txt
+?? artifacts/20260830T205937+0800-m4-arm-cross/manifest.json
+?? artifacts/20260830T205937+0800-m4-arm-cross/readelf.log
+?? artifacts/20260830T205937+0800-m4-arm-cross/sha256.txt
+?? artifacts/20260830T205937+0800-m4-arm-cross/source_sha256.txt
+?? artifacts/20260830T205937+0800-m4-arm-cross/summary.json
+?? artifacts/20260830T205937+0800-m4-arm-cross/test_report.md
+?? artifacts/20260830T210554+0800-m4-final-audit/json_validation.log
+?? artifacts/20260830T210554+0800-m4-final-audit/manifest.json
+?? artifacts/20260830T210554+0800-m4-final-audit/summary.json
+?? artifacts/20260830T210554+0800-m4-final-audit/test_report.md
+?? artifacts/20260830T210639+0800-m4-final-audit/git_state.txt
+?? artifacts/20260830T210639+0800-m4-final-audit/json_validation.log
+?? artifacts/20260830T210639+0800-m4-final-audit/source_checksum_check.log
+?? artifacts/20260830T210639+0800-m4-final-audit/whitespace_check.log
+?? docs/milestones/M4.md
+?? gateway/include/gateway/vehicle_decoder.h
+?? gateway/include/gateway/vehicle_protocol.h
+?? gateway/src/vehicle_decoder.c
+?? gateway/tests/test_vehicle_decoder.c
+?? protocol/test_vectors/vehicle_golden.csv
+?? protocol/vehicle.dbc
+?? tools/protocol/check_vehicle_dbc.py

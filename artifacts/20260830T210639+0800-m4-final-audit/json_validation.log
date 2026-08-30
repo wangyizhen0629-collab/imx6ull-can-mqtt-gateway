@@ -1,0 +1,13 @@
+PASS: validated 12 M4 JSON files
+artifacts/20260830T205523+0800-m4-host-dev/manifest.json
+artifacts/20260830T205523+0800-m4-host-dev/summary.json
+artifacts/20260830T205606+0800-m4-host-dev/manifest.json
+artifacts/20260830T205606+0800-m4-host-dev/summary.json
+artifacts/20260830T205714+0800-m4-host-final/manifest.json
+artifacts/20260830T205714+0800-m4-host-final/summary.json
+artifacts/20260830T205736+0800-m4-host-final/manifest.json
+artifacts/20260830T205736+0800-m4-host-final/summary.json
+artifacts/20260830T205834+0800-m4-asan-ubsan/manifest.json
+artifacts/20260830T205834+0800-m4-asan-ubsan/summary.json
+artifacts/20260830T205937+0800-m4-arm-cross/manifest.json
+artifacts/20260830T205937+0800-m4-arm-cross/summary.json

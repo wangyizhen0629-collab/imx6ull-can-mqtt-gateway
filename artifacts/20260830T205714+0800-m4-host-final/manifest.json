@@ -1,0 +1,18 @@
+{
+  "run_id": "20260830T205714+0800-m4-host-final",
+  "milestone": "M4",
+  "scope": "candidate Release/FORTIFY x86_64 build",
+  "start_time": "2026-08-30T20:57:14+08:00",
+  "end_time": "2026-08-30T20:57:23+08:00",
+  "git_base": "75900cd969d962fad168f3fa3fb99746ef3e8b73",
+  "commands": [
+    "cmake -S . -B build-m4-host-final -DCMAKE_BUILD_TYPE=Release",
+    "cmake --build build-m4-host-final --parallel"
+  ],
+  "result": "FAIL",
+  "limitations": [
+    "Build stopped on pre-existing lifecycle.c unused-result and log.c format-truncation warnings under Release/FORTIFY",
+    "No M4 source diagnostic was emitted before the build stopped",
+    "CTest was not run and this evidence must not be described as PASS"
+  ]
+}

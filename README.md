@@ -20,8 +20,11 @@ PA11/CAN_RX、PA12/CAN_TX，以 500 kbit/s 发送三类确定性报文，Keil Bu
 0 warning；i.MX6ULL `candump` 已观察到正确 ID、周期、DLC、Rolling Counter 和 XOR。
 `gatewayd` 又在真实 `can0` 完成两次1110帧短时接收，均为 accepted=1110 且接收错误
 为0；项目所有者豁免原计划的10分钟 M3-E 门禁并接受 M3 完成。该状态不代表10分钟、
-可靠性或性能验证。当前没有实现 DBC、真实生产者--消费者数据链路、MQTT、spool I/O
-或 epoll，M4 及后续未开始。
+可靠性或性能验证。M4 已完成实验用自定义 DBC 和定点静态 C 解码器的首轮实现，主机
+普通/ASan+UBSan 测试与 ARMv7 交叉构建均通过；但项目所有者随后明确要求 STM32 生成
+有物理意义的模拟车速、转速等信号，而不是只递增原始字节。因此当前20条黄金向量仍是
+旧规律证据，M4 门禁保持未关闭，等待 Windows 侧按 DBC 修正 STM32 编码后重新验证。
+当前没有实现真实生产者--消费者数据链路、MQTT、spool I/O 或 epoll；M5 及后续未开始。
 
 ## Ubuntu 主机构建
 
@@ -43,4 +46,6 @@ ctest --test-dir build --output-on-failure
 [待确认问题](docs/OPEN_QUESTIONS.md)。M0 证据记录在
 [docs/milestones/M0.md](docs/milestones/M0.md)，M1 证据记录在
 [docs/milestones/M1.md](docs/milestones/M1.md)，M2 完成记录在
-[docs/milestones/M2.md](docs/milestones/M2.md)。
+[docs/milestones/M2.md](docs/milestones/M2.md)，M3/M4 记录分别在
+[docs/milestones/M3.md](docs/milestones/M3.md)和
+[docs/milestones/M4.md](docs/milestones/M4.md)。

@@ -70,6 +70,24 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   修改当前60000 ms超时上限。
 - 保留边界：10分钟测试没有执行，不能在后续文档或简历中写成稳定性/可靠性结果。
 
+## M4 自定义协议与静态解码
+
+- 已解决：`protocol/vehicle.dbc` 已冻结三类消息的 Intel 小端位布局、缩放、偏移、单位、
+  Rolling Counter 和 XOR 字段；协议明确是实验用自定义协议。
+- 首轮已完成：20条共享向量由 C 解码单测和独立 DBC 检查器共同验证；另对旧 STM32
+  三类 base 的全部768种 counter 规律执行静态解码。默认主机和 ASan+UBSan 均11/11
+  PASS，ARMv7 warning-clean 交叉构建 PASS。这些结果保留，但不能单独关闭 M4。
+- 当前阻塞门禁：Windows 侧尚未按 DBC 从有物理意义的模拟车速、转速、油门等物理量
+  编码报文，也没有对应的新 Keil Build、`candump` 和物理场景向量。完成这些输入后，
+  Ubuntu 必须用新 artifact 复测 DBC/解码器；在此之前 M4 为 NOT MET，M5 不得开始。
+- 非阻塞遗留：本轮没有目标板会话，没有部署新的 ARM binary，也没有修改 `can0`；因此
+  “新增解码器在真实 i.MX6ULL 物理 CAN 上运行”为 `NOT RUN`。后续若在 M5 集成链路中
+  验证，必须先获部署/接口或进程操作批准并使用新的 artifact。
+- 非阻塞遗留：`-DCMAKE_BUILD_TYPE=Release` 候选 run 在既有 M1 `lifecycle.c`/`log.c`
+  上触发 FORTIFY `-Werror`，已保留为 FAIL；默认 warning-clean 和 ARM 构建不受影响。
+  是否单独安排历史模块的 Release/FORTIFY 清理，应由后续维护阶段决定，不能把本轮
+  Release 描述为通过。
+
 ## 网络、Broker 和运行策略
 
 - 测试专用 `device_id`、Broker hostname/address、端口、认证方式、topic 规则和 client ID
@@ -86,13 +104,13 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 长时间运行 artifact 的备份和保留策略是什么？
 - M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
 
-## M1/M2 后续验证边界
+## M1～M4 后续验证边界
 
 - M1/M2 当前源码已随 M2 的 ARM `gatewayd` 使用真实 Buildroot SDK 完成交叉编译，并
   在 i.MX6ULL 上完成动态加载和 controller loopback；该结论仅覆盖当前 SHA256 binary。
 - LeakSanitizer 在当前命令执行环境中因 `ptrace` 限制无法运行；M1 有关闭 leak 检测后
-  的 ASan+UBSan 8/8 通过证据，M2 有同条件 9/9 通过证据。若需要无泄漏结论，必须在
-  不受该限制的环境另建 run；当前不得宣称已经通过 LSan。
+  的 ASan+UBSan 8/8 通过证据，M2 有同条件 9/9 通过证据，M4 有同条件11/11通过证据。
+  若需要无泄漏结论，必须在不受该限制的环境另建 run；当前不得宣称已经通过 LSan。
 - M5 接入实际生产者/消费者后，`queue_push_timeout_ms` 的默认值 50 ms 和“超时丢弃
   新记录”策略是否满足 111 帧/s 基准，需要板端证据决定；M1 并发功能测试不能替代。
 - M2 主机单测验证未绑定 CAN_RAW socket 的过滤选项和 datagram timestamp 解析；真实
@@ -122,6 +140,9 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   warning-clean `gatewayd` 已有真实构建证据。
 - M2 板端门禁：SHA256 固定 binary 的动态加载、controller loopback、目标/非目标 ID、
   DLC 拒绝、kernel timestamp 和恢复状态已有真实日志及最终审计，M2 已通过。
+- M4 自定义协议：DBC、20条黄金向量、定点静态解码布局、checksum/error 清零语义和
+  三类消息全部768种 counter 规律已有主机与 ASan+UBSan 证据；ARMv7 交叉构建已通过，
+  但新增 binary 的板端运行仍为 `NOT RUN`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

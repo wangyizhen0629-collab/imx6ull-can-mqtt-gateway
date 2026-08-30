@@ -1,0 +1,7 @@
+{
+  "run_id": "20260830T210554+0800-m4-final-audit",
+  "result": "FAIL",
+  "expected_json_count": 18,
+  "actual_json_count": 12,
+  "json_content_validation": "NOT RUN"
+}

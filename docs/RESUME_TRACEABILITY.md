@@ -1,13 +1,16 @@
 # 简历事实可追溯性
 
-当前仍不能写“完整 CAN--MQTT 网关”、DBC、可靠性或性能结论。M1 已证明
+当前仍不能写“完整 CAN--MQTT 网关”、板端实时 DBC 解码、可靠性或性能结论。M1 已证明
 x86_64 主机上的配置和并发基础设施单元行为；M2 又完成 ARMv7 warning-clean 交叉构建，
 并在真实 i.MX6ULL controller loopback 上证明当前 `gatewayd` 的 SocketCAN 精确过滤、
-DLC 拒绝和内核时间戳提取。只允许使用下表明确标为“是”的窄范围表述。
+DLC 拒绝和内核时间戳提取；M4 完成自定义 DBC 和静态 C 解码器的首轮主机验证及 ARM
+交叉构建，但尚未完成有物理意义的 STM32 模拟信号编码闭环。只允许使用下表明确标为
+“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
-| SocketCAN 接收/过滤/内核时间戳和自定义 DBC 解码 | M2/M4 源码和协议文件 | loopback、过滤、时间戳、黄金/实时报文解码 | M2 已通过；M3 以短时真实接收关闭，M4 未运行 | 已有物理 CAN/短时 `gatewayd`；无长时/DBC 值 | 否 |
+| 为实验用自定义 DBC 实现无动态分配的静态 C 解码器 | M4 `vehicle.dbc`、黄金向量、`vehicle_decoder` | DBC/向量交叉检查、边界/错误、语义化 STM32 规律、ARM 构建 | 首轮主机/ASan/ARM 已有；语义化 STM32 复测待完成 | 3类消息；旧20条向量/768帧规律；主机11/11 | 否，M4 尚未关闭 |
+| SocketCAN 接收/过滤/内核时间戳与 DBC 解码已在 i.MX6ULL 实时链路集成 | M2/M4/M5 源码和协议文件 | loopback、过滤、时间戳、黄金向量及板端实时解码 | M2 已通过；M4 未关闭；M5 未开始 | 新增解码器板端运行 NOT RUN | 否 |
 | 在 i.MX6ULL 上实现 CAN_RAW 精确 ID 过滤、DLC 校验和 SO_TIMESTAMPNS 提取，并以 controller loopback 验证 | M2 `can_receiver`、有限 CLI、toolchain file | 主机错误注入、ARM 构建、真实板端目标/非目标/DLC/timestamp | M2 最终主机、ARM、板端和审计 run | 目标 3/3；非目标 0；DLC reject 1；timestamp 3/3；仅 controller loopback | 是，必须保留 loopback 限定且不得写性能 |
 | STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、接线/终端检查、`candump`、周期/计数器 | 项目所有者简化验收；原始日志未归档 | PA11/PA12、500 kbit/s；三类 ID/周期/DLC/counter/XOR 正常 | 是，但必须注明为项目实测且不写可靠性/性能数字 |
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M1 主机 8/8 已通过；M5 板端未运行 | M1 功能测试：3 producer × 2000 条全部唯一消费；非性能值 | 否 |
@@ -32,8 +35,8 @@ CAN_RAW socket 过滤选项、内核 datagram timestamp 解析及错误路径；
 核验为 `artifacts/20260829T132938+0800-m2-board-deploy-verify/`，只证明板端文件与构建
 产物一致。真实 i.MX6ULL controller loopback 为
 `artifacts/20260829T133148+0800-m2-board-loopback/`，最终逐字节审计为
-`artifacts/20260829T134148+0800-m2-final-audit/`。因此仅第二行的 M2 窄范围描述可用；
-第一行仍受 M4 阻塞。板端时钟未初始化，三个正数 timestamp 不能表述为 CAN
+`artifacts/20260829T134148+0800-m2-final-audit/`。因此表中的 M2 窄范围描述可用；
+板端时钟未初始化，三个正数 timestamp 不能表述为 CAN
 时延、UTC 正确性或性能。
 
 M3 preflight 为 `artifacts/20260829T141730+0800-m3-preflight/`。它只证明当时的 M2
@@ -48,3 +51,17 @@ Windows M3-A 前置审计
 不作为后续 PASS artifact，也没有被改写。当前进度依据是已同步源码和项目所有者的
 简化验收陈述及两次短时 `gatewayd` 输出；M3 已由项目所有者验收关闭。连续10分钟仍
 为 NOT RUN/已豁免。
+
+M4 主机证据为 `artifacts/20260830T205736+0800-m4-host-final/`，默认 warning-clean
+构建和全量 CTest 11/11 PASS；ASan+UBSan 证据为
+`artifacts/20260830T205834+0800-m4-asan-ubsan/`，同样11/11 PASS，LeakSanitizer 为
+`NOT RUN`。ARM 交叉构建证据为 `artifacts/20260830T205937+0800-m4-arm-cross/`，只证明
+静态解码源码能生成 ARMv7 hard-float binary，没有部署或板端运行。M4 的20条黄金向量
+和768帧 STM32 规律是功能测试规模，不是吞吐、时延或可靠性指标。必须把“主机静态
+解码验证”与“M2 binary 的板端 SocketCAN 验证”分开表述，不能拼接成一个已经在目标板
+实时运行的完整链路。
+
+项目所有者随后明确 STM32 必须按 DBC 编码有物理意义的确定性模拟车况。当前向量和
+768帧测试只覆盖旧原始字节递增规律，因此上述 M4 run 保留为首轮实现证据，不能用于
+声称 M4 已关闭或 STM32 已正确模拟车速/转速。新的 Windows Keil/`candump` 与 Ubuntu
+黄金向量复测完成前，相关简历描述保持不可用。

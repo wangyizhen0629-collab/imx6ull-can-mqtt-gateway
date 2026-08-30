@@ -1,0 +1,20 @@
+{
+  "run_id": "20260830T210639+0800-m4-final-audit",
+  "milestone": "M4",
+  "scope": "final evidence, checksum, whitespace, and stage-boundary audit",
+  "start_time": "2026-08-30T21:06:39+08:00",
+  "end_time": "2026-08-30T21:08:10+08:00",
+  "git_base": "75900cd969d962fad168f3fa3fb99746ef3e8b73",
+  "commands": [
+    "parse the 12 manifest/summary JSON files from the six M4 test runs",
+    "git diff --check",
+    "sha256sum -c for the host, sanitizer, and ARM M4 source checksum lists",
+    "git status --short --untracked-files=all"
+  ],
+  "result": "PASS",
+  "limitations": [
+    "This audit does not replace the functional test runs",
+    "Untracked source and evidence are recorded against git base 75900cd until the user commits them",
+    "No hardware, interface, process, or network state was changed"
+  ]
+}

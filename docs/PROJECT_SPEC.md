@@ -148,5 +148,13 @@ M3-A～M3-D 已由项目所有者按实际现象验收：仓库已有 STM32F103C
 项目所有者简化验收，没有新增完整测试 artifact，不外推为 `gatewayd`、DBC 或可靠性
 结果。M3-E 已完成两次1110帧真实 `gatewayd` 短测，均无接收错误；项目所有者取消
 原计划的10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟没有执行，不得写成可靠性
-结果。DBC 解码、MQTT、spool I/O、epoll 和部署功能仍未实现；
-`telemetry_record.decoded_payload` 仍是 M4 预留区。
+结果。
+
+M4 已形成实验用 `vehicle.dbc` 和静态 C 解码器的首轮实现。三类消息采用 Intel 小端和
+显式定点单位；`telemetry_record.decoded_payload` 的32字节语义已定义，并通过 `memcpy`
+访问。默认主机与 ASan+UBSan 全量回归均11/11通过，ARMv7 warning-clean 交叉构建通过。
+但首轮黄金向量和所谓768种 STM32 规律只验证旧的原始字节递增算法，不证明 STM32 已从
+有物理意义的模拟车速、转速等信号按 DBC 编码。项目所有者于 2026-08-30 明确该要求后，
+M4 门禁重新保持未关闭，等待 Windows 修正 STM32 生成/编码并重新执行黄金向量及实际
+规律核对。新增 ARM binary 没有部署或板端运行，物理 CAN 上的实时解码为 `NOT RUN`。
+生产者--消费者接入、MQTT、spool I/O、epoll 和部署功能仍未实现，属于 M5 及后续阶段。

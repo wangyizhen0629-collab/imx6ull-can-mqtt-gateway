@@ -240,6 +240,43 @@
   连续10分钟测试。因此 M3 完成不得描述成10分钟、稳定性、可靠性或性能 PASS，也不
   自动批准进入 M4。
 
+## D-022：M4 使用 DBC + 共享黄金向量 + 定点静态解码布局
+
+- 日期：2026-08-30
+- 状态：首轮技术设计已接受；M4 完成判定由 D-023 撤销
+- 决定：`protocol/vehicle.dbc` 是实验用自定义信号位布局、Intel 小端、缩放、偏移和
+  单位的协议依据。Linux C 解码器不在接收热路径使用浮点，而把物理量保存为显式定点
+  整数单位；32 字节解码区由 schema version、消息类型、counter、checksum、有效信号
+  mask 和24字节消息 union 组成。
+- 布局边界：不把 `uint8_t decoded_payload[32]` 强制转换为结构指针，统一通过 `memcpy`
+  写入/读取，并以 `_Static_assert` 冻结各消息 signal payload 和总大小。checksum 或其他
+  解码错误会清零解码区和 M4 状态位，但保留原始 CAN 数据及已有 timestamp 状态。
+- 一致性方法：C 单测和独立 Python 标准库 DBC 检查器共同读取
+  `protocol/test_vectors/vehicle_golden.csv` 的20条向量；除边界和错误路径外，C 测试按
+  M3 固件规则遍历三类消息全部768种 counter。这样同时约束 DBC、黄金向量、C 布局和
+  STM32 确定性生成规律，不依赖第三方运行库或代码生成器。
+- 集成边界：M4 只提供静态 `decode_frame`/`decode_record` API，没有把解码调用接入
+  ring buffer、生产者--消费者、MQTT 或 spool；实际线程链路仍属于 M5。M4 ARM binary
+  只完成交叉构建，没有部署或板端执行；新的物理 CAN 解码明确为 `NOT RUN`。
+- 证据：默认 warning-clean 和 ASan+UBSan 全量回归均为11/11 PASS，ARMv7 交叉构建
+  PASS；对应 run 为 `artifacts/20260830T205736+0800-m4-host-final/`、
+  `artifacts/20260830T205834+0800-m4-asan-ubsan/` 和
+  `artifacts/20260830T205937+0800-m4-arm-cross/`。LeakSanitizer 仍为 `NOT RUN`。
+
+## D-023：STM32 必须按 DBC 编码有物理意义的确定性模拟车况
+
+- 日期：2026-08-30
+- 状态：已接受，M4 门禁重新为 NOT MET
+- 澄清：项目所有者明确 STM32 不需要真实传感器，但必须模拟有物理意义的车速、转速、
+  油门等信号。旧固件让 byte 0～5 与 counter 同步递增，只证明报文字节确定且可解码；
+  它会造成挡位每10 ms递增、物理量快速跳变和回绕，不能视为合理模拟车况。
+- 决定：`protocol/vehicle.dbc` 继续作为唯一协议依据，Windows 侧不得修改 DBC 迁就固件。
+  STM32 应以整数定点物理量生成确定性场景，再按 DBC factor/offset、Intel 小端布局编码；
+  spare bits 清零，三个独立 Rolling Counter 和 byte 0～6 XOR 保持不变。
+- 门禁影响：现有20条向量、768帧旧规律测试、主机/ASan/ARM PASS artifact 保持真实历史
+  含义，但不再足以关闭 M4。Windows 提交真实 Keil Build 和 `candump` 依据后，Ubuntu
+  必须以新 run 更新物理场景黄金向量并复测；在此之前不得进入 M5。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

@@ -1,0 +1,19 @@
+{
+  "run_id": "20260830T205523+0800-m4-host-dev",
+  "milestone": "M4",
+  "scope": "initial x86_64 M4 development build and full regression",
+  "start_time": "2026-08-30T20:55:23+08:00",
+  "end_time": "2026-08-30T20:55:45+08:00",
+  "git_base": "75900cd969d962fad168f3fa3fb99746ef3e8b73",
+  "commands": [
+    "cmake -S . -B build-m4-dev -DCMAKE_BUILD_TYPE=Debug",
+    "cmake --build build-m4-dev --parallel",
+    "ctest --test-dir build-m4-dev --output-on-failure"
+  ],
+  "result": "FAIL",
+  "limitations": [
+    "test_vehicle_decoder failed because its CSV header-prefix assertion used an incorrect fixed length",
+    "test_can_receiver could not create PF_CAN inside the restricted sandbox",
+    "This run was preserved and was not reused as PASS evidence"
+  ]
+}

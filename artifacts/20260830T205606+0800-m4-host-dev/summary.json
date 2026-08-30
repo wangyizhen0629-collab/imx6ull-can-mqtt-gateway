@@ -1,0 +1,8 @@
+{
+  "run_id": "20260830T205606+0800-m4-host-dev",
+  "result": "PASS",
+  "warning_clean_incremental_build": "PASS",
+  "ctest_m4": {"total": 2, "passed": 2, "failed": 0},
+  "board_execution": "NOT RUN",
+  "m4_exit_gate": "NOT FINAL"
+}

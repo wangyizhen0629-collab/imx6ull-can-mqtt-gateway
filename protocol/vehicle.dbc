@@ -1,0 +1,43 @@
+VERSION "1.0"
+
+NS_ :
+    NS_DESC_
+    CM_
+    BA_DEF_
+    BA_
+    VAL_
+
+BS_:
+
+BU_: STM32_ECU IMX6ULL_Gateway
+
+BO_ 256 VehicleDynamics: 8 STM32_ECU
+ SG_ VehicleSpeed : 0|16@1+ (0.01,0) [0|655.35] "km/h" IMX6ULL_Gateway
+ SG_ EngineSpeed : 16|16@1+ (0.25,0) [0|16383.75] "rpm" IMX6ULL_Gateway
+ SG_ ThrottlePosition : 32|8@1+ (0.4,0) [0|102] "%" IMX6ULL_Gateway
+ SG_ Gear : 40|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+ SG_ RollingCounter : 48|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+ SG_ Checksum : 56|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+
+BO_ 257 PowerStatus: 8 STM32_ECU
+ SG_ BatteryVoltage : 0|16@1+ (0.001,0) [0|65.535] "V" IMX6ULL_Gateway
+ SG_ CoolantTemperature : 16|8@1+ (1,-40) [-40|215] "degC" IMX6ULL_Gateway
+ SG_ StateOfCharge : 24|8@1+ (0.4,0) [0|102] "%" IMX6ULL_Gateway
+ SG_ FaultFlags : 32|16@1+ (1,0) [0|65535] "" IMX6ULL_Gateway
+ SG_ RollingCounter : 48|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+ SG_ Checksum : 56|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+
+BO_ 258 BodyStatus: 8 STM32_ECU
+ SG_ Odometer : 0|24@1+ (0.1,0) [0|1677721.5] "km" IMX6ULL_Gateway
+ SG_ DoorFlags : 24|4@1+ (1,0) [0|15] "" IMX6ULL_Gateway
+ SG_ IgnitionState : 32|2@1+ (1,0) [0|3] "" IMX6ULL_Gateway
+ SG_ RollingCounter : 48|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+ SG_ Checksum : 56|8@1+ (1,0) [0|255] "" IMX6ULL_Gateway
+
+CM_ "实验用自定义车辆遥测协议，不代表 OEM 或量产车辆协议。";
+CM_ SG_ 256 RollingCounter "消息独立的模 256 计数器。";
+CM_ SG_ 257 RollingCounter "消息独立的模 256 计数器。";
+CM_ SG_ 258 RollingCounter "消息独立的模 256 计数器。";
+CM_ SG_ 256 Checksum "byte 0 到 byte 6 的 XOR。";
+CM_ SG_ 257 Checksum "byte 0 到 byte 6 的 XOR。";
+CM_ SG_ 258 Checksum "byte 0 到 byte 6 的 XOR。";

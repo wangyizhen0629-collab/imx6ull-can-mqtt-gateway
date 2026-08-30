@@ -15,6 +15,7 @@ add_library(gateway_core STATIC
     src/log.c
     src/ring_buffer.c
     src/stats.c
+    src/vehicle_decoder.c
 )
 target_compile_features(gateway_core PUBLIC c_std_11)
 # 生命周期代码使用 POSIX.1-2008；SocketCAN/SO_TIMESTAMPNS 还需要 glibc 的
@@ -71,4 +72,19 @@ if(BUILD_TESTING)
     add_gateway_unit_test(test_log M1)
     add_gateway_unit_test(test_ring_buffer M1)
     add_gateway_unit_test(test_can_receiver M2)
+    add_gateway_unit_test(test_vehicle_decoder M4)
+    target_compile_definitions(test_vehicle_decoder PRIVATE
+        "GATEWAY_GOLDEN_VECTOR_PATH=\"${PROJECT_SOURCE_DIR}/protocol/test_vectors/vehicle_golden.csv\""
+    )
+
+    find_program(GATEWAY_PYTHON3_EXECUTABLE NAMES python3 REQUIRED)
+    add_test(
+        NAME test_vehicle_dbc
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE}
+                ${PROJECT_SOURCE_DIR}/tools/protocol/check_vehicle_dbc.py
+                --dbc ${PROJECT_SOURCE_DIR}/protocol/vehicle.dbc
+                --vectors
+                ${PROJECT_SOURCE_DIR}/protocol/test_vectors/vehicle_golden.csv
+    )
+    set_tests_properties(test_vehicle_dbc PROPERTIES LABELS "M4;protocol")
 endif()
