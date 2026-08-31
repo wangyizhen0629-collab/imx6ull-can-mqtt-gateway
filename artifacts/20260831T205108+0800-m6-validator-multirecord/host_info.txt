@@ -1,0 +1,12 @@
+﻿
+
+CapturedAt   : 2026-08-31T20:52:49.6500253+08:00
+ComputerName : 
+OS           : 
+OSVersion    : 
+PowerShell   : 5.1.26100.9168
+Python       : Python 3.11.7
+Git          : git version 2.51.0.windows.1
+
+
+

@@ -67,9 +67,11 @@ def main() -> int:
         batch_sequences.append(batch_seq)
         gateway_sequences.extend(record_sequences)
 
-    expected = list(range(1, args.expected_batches + 1))
-    require(batch_sequences == expected, "batch_seq has missing/duplicate/reordered values")
-    require(gateway_sequences == expected,
+    expected_batch_sequences = list(range(1, args.expected_batches + 1))
+    require(batch_sequences == expected_batch_sequences,
+            "batch_seq has missing/duplicate/reordered values")
+    expected_gateway_sequences = list(range(1, gateway_sequences[-1] + 1))
+    require(gateway_sequences == expected_gateway_sequences,
             "gateway seq has missing/duplicate/reordered values")
     summary = {
         "status": "PASS",

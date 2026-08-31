@@ -1,0 +1,13 @@
+本目录原始 smoke test 的完整执行命令：NOT AVAILABLE。
+
+本次只读审计使用：
+
+- Get-FileHash -Algorithm SHA256 对全部原始文件计算哈希；
+- Get-Content 读取 Broker、subscriber、gateway、CAN 和退出状态原始文件；
+- PowerShell ConvertFrom-Json 检查 subscriber.json 的结构和记录分布；
+- Select-String 统计 broker_stdout.log 中来自板端的 PUBLISH/PUBACK；
+- 修改后的 tools/mqtt/validate_m6_batches.py 在独立 validator artifact 中重放
+  subscriber.json，命令和输出不倒填到本目录。
+
+本次审计没有启动 Broker、subscriber 或 gatewayd，没有访问板端，也没有修改任何已有
+原始文件。

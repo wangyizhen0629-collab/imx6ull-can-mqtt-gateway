@@ -7,3 +7,9 @@
 /artifacts/20260831T171523+0800-m6-windows-broker/** -text
 /artifacts/20260831T172228+0800-m6-windows-broker/** -text
 /artifacts/20260831T172756+0800-m6-windows-broker/** -text
+
+# M6 板端 smoke 与 validator 回归证据逐字节保留，确保 manifest 可跨 clone 复核。
+/artifacts/20260831T183306p0800-m6-board-smoke/** -text
+/artifacts/20260831T204653+0800-m6-validator-multirecord/** -text
+/artifacts/20260831T204926+0800-m6-validator-multirecord/** -text
+/artifacts/20260831T205108+0800-m6-validator-multirecord/** -text

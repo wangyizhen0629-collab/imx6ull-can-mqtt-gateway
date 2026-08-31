@@ -1,0 +1,6 @@
+计划执行三次 tools/mqtt/validate_m6_batches.py，但测试编排在 Python 启动前失败。
+
+失败原因：PowerShell 函数参数误用自动变量 $input，导致 Start-Process 的参数数组包含
+空值。Start-Process 报错后，空进程对象又被错误转换为整数0并写入 *.exit.txt。
+
+因此现有 exit_code=0 不是 validator 的真实退出码，三项测试均为 NOT RUN。

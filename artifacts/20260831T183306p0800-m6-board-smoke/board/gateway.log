@@ -1,0 +1,5 @@
+[1970-01-02T07:30:46.838Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-02T07:30:46.844Z] INFO mqtt: connected broker=192.168.50.1 port=18884 topic=vehicle/imx6ull-gateway-m6/telemetry/20260831T183306p0800-m6-board-smoke qos=1 max_inflight=1
+[1970-01-02T07:30:46.846Z] INFO mqtt: M6 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 qos=1 max_inflight=1
+[1970-01-02T07:32:39.339Z] INFO mqtt: stop requested by signal 2
+[1970-01-02T07:32:39.356Z] INFO mqtt: M6_MQTT_SUMMARY can_accepted=12488 decode_success=12488 queue_success=12487 queue_drop=0 queue_pop=12487 queue_count=0 mqtt_connect_success=1 publish_attempts=109 publish_accepted=109 puback_matched=109 puback_unexpected=0 batches_acked=109 records_acked=12487 last_batch_seq=109 last_gateway_seq=12487 buffered=0 in_flight=0 mqtt_errors=0 reconnects=0

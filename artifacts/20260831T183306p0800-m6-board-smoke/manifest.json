@@ -1,0 +1,57 @@
+{
+  "schema": "m6.board.smoke.audit.v1",
+  "run_id": "20260831T183306p0800-m6-board-smoke",
+  "status": "PASS_WITH_LIMITATIONS",
+  "scope": "existing i.MX6ULL to Windows Broker smoke evidence only",
+  "source_commit": "7ab18cce43617000e8846998c0fd3aca8b67bdfb",
+  "network": {
+    "broker_address": "192.168.50.1",
+    "broker_port": 18884,
+    "board_address": "192.168.50.2",
+    "ping_sent": 4,
+    "ping_received": 4,
+    "ping_loss_percent": 0
+  },
+  "broker": {
+    "version": "2.1.2",
+    "gateway_connections_from_board": 1,
+    "gateway_publish_received": 109,
+    "gateway_puback_sent": 109,
+    "listener_count_after_stop": 0
+  },
+  "gateway": {
+    "exit_code": 0,
+    "running_after_test": false,
+    "can_accepted": 12488,
+    "decode_success": 12488,
+    "queue_success": 12487,
+    "queue_drop": 0,
+    "publish_attempts": 109,
+    "publish_accepted": 109,
+    "puback_matched": 109,
+    "puback_unexpected": 0,
+    "batches_acked": 109,
+    "records_acked": 12487,
+    "last_batch_seq": 109,
+    "last_gateway_seq": 12487,
+    "mqtt_errors": 0,
+    "reconnects": 0
+  },
+  "subscriber_capture": {
+    "captured_batches": 1,
+    "batch_seq_first": 1,
+    "batch_seq_last": 1,
+    "record_count": 111,
+    "gateway_seq_first": 1,
+    "gateway_seq_last": 111,
+    "exact_exit_code": "NOT_AVAILABLE",
+    "exit_code_check": "NOT_RUN"
+  },
+  "limitations": {
+    "absolute_utc_timestamp_correctness": "NOT_RUN - board wall clock reports 1970",
+    "can_error_counter_delta": "NOT_RUN - can_before.txt is unavailable",
+    "remaining_108_batch_payload_validation": "NOT_RUN - subscriber captured only the first batch",
+    "m6_1000_batch_gate": "NOT_RUN",
+    "m7_behaviors": "NOT_RUN"
+  }
+}

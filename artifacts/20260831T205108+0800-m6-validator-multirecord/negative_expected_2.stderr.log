@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m6_batches.py", line 95, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m6_batches.py", line 56, in main
+    require(len(lines) == args.expected_batches,
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m6_batches.py", line 20, in require
+    raise ValueError(message)
+ValueError: raw batch count 1 != 2

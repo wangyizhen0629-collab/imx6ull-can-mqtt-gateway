@@ -1,0 +1,10 @@
+Python: E:\ana\python.exe（Python 3.11.7）
+
+python -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T135630+0800-m6-mqtt-final/subscriber.jsonl --device-id m6-final --expected-batches 1000
+
+python -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json --device-id imx6ull-gateway-m6 --expected-batches 1
+
+python -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json --device-id imx6ull-gateway-m6 --expected-batches 2
+
+每个命令均分别保存 stdout、stderr 和 Start-Process 返回的精确退出码。本 run 没有启动
+Broker、访问板端或运行新的1000-batch数据采集。

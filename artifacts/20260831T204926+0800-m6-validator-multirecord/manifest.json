@@ -1,0 +1,15 @@
+{
+  "schema": "m6.validator.multirecord.test.v1",
+  "run_id": "20260831T204926+0800-m6-validator-multirecord",
+  "status": "FAIL",
+  "reason": "PowerShell orchestration used the reserved automatic variable $input",
+  "validator_process_started": false,
+  "tests": {
+    "single_record_1000": "NOT_RUN",
+    "multi_record_board_smoke": "NOT_RUN",
+    "negative_expected_2": "NOT_RUN"
+  },
+  "exit_files_are_valid_process_results": false,
+  "observed_exit_file_value": 0,
+  "source_commit": "7ab18cce43617000e8846998c0fd3aca8b67bdfb"
+}

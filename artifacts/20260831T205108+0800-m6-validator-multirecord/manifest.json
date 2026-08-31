@@ -1,0 +1,47 @@
+{
+  "schema": "m6.validator.multirecord.test.v1",
+  "run_id": "20260831T205108+0800-m6-validator-multirecord",
+  "status": "PASS",
+  "source_commit": "7ab18cce43617000e8846998c0fd3aca8b67bdfb",
+  "python_version": "3.11.7",
+  "validator_sha256": "5941446265b95ec0960fa8bd6edad3a81919e57a0a8a01fd8e27fd21a5fd78f6",
+  "readme_sha256": "3dad883a52f048973570d38b946703daedbe9f15797dc1ea793e4692f2903ac9",
+  "tests": [
+    {
+      "name": "single_record_1000",
+      "input": "artifacts/20260831T135630+0800-m6-mqtt-final/subscriber.jsonl",
+      "input_sha256": "baa89bac4f85f29f7473cc248aeb95049b993aa57eee378491b4430ab7a0f3ac",
+      "expected_batches": 1000,
+      "exit_code": 0,
+      "status": "PASS",
+      "batch_seq_range": "1..1000",
+      "gateway_seq_range": "1..1000"
+    },
+    {
+      "name": "multi_record_board_smoke",
+      "input": "artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json",
+      "input_sha256": "f589294c09b72aa9a284a6ac7c46fbb46827d43bcb9d287e42770ae36f20496c",
+      "expected_batches": 1,
+      "exit_code": 0,
+      "status": "PASS",
+      "batch_seq_range": "1..1",
+      "gateway_seq_range": "1..111"
+    },
+    {
+      "name": "negative_expected_2",
+      "input": "artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json",
+      "input_sha256": "f589294c09b72aa9a284a6ac7c46fbb46827d43bcb9d287e42770ae36f20496c",
+      "expected_batches": 2,
+      "exit_code": 1,
+      "status": "EXPECTED_FAILURE",
+      "error": "raw batch count 1 != 2"
+    }
+  ],
+  "not_run": [
+    "Broker start or control",
+    "board access or modification",
+    "new 1000-batch execution",
+    "absolute UTC/timestamp correctness",
+    "M7 behavior"
+  ]
+}

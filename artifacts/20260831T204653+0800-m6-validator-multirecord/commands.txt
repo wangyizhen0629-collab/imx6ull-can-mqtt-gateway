@@ -1,0 +1,9 @@
+计划执行三次 tools/mqtt/validate_m6_batches.py：
+
+1. 历史1000个单记录 batch，expected-batches=1000。
+2. board smoke 多记录 batch，expected-batches=1。
+3. 同一 board smoke 输入，故意设置 expected-batches=2。
+
+实际结果：测试编排在启动 Python 前失败。PowerShell 函数误用自动变量 $args，
+Start-Process 拒绝空 ArgumentList。因此三次 validator 均为 NOT RUN，现有空退出码文件
+保持原样，不得解释为程序退出码。
