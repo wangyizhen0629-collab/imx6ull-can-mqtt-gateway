@@ -1,0 +1,23 @@
+mosquitto version 2.1.2
+
+mosquitto is an MQTT v5.0/v3.1.1/v3.1 broker.
+
+Usage: mosquitto [-c config_file] [-d] [-h] [-p port] [-v]
+                 [--tls-keylog file]
+
+ -c : specify the broker config file.
+ -d : put the broker into the background after starting.
+ -h : display this help.
+ -p : start the broker listening on the specified port.
+      Not recommended in conjunction with the -c option.
+ -q : quiet mode - disable all logging types. This overrides
+      any logging options given in the config file, and -v.
+ -v : verbose mode - enable all logging types. This overrides
+      any logging options given in the config file.
+ --test-config : test config file and exit
+ --tls-keylog : log TLS connection information to a file, to allow
+      debugging with e.g. wireshark. Do not use on a production
+      server.
+
+See https://mosquitto.org/ for more information.
+

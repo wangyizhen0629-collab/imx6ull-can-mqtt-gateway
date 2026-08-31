@@ -1,0 +1,5 @@
+download=NOT RUN
+installation=NOT RUN
+reason=本次经批准直接使用既有 E:\mosquitto；未下载、安装或更新 Mosquitto。
+windows_service_control=NOT RUN
+reason_service=既有 Mosquitto Windows 服务只读核对，未启动、停止或修改。

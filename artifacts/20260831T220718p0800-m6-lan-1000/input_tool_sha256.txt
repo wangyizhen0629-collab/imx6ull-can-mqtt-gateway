@@ -1,0 +1,22 @@
+﻿
+
+Path      : E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m6_batches.py
+Algorithm : SHA256
+Hash      : CF7D8CBD5DFD36B500ADFE394ADC14A35020A79E18947C052A946934C44F33EB
+
+Path      : E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\test_validate_m6_batches.py
+Algorithm : SHA256
+Hash      : DCFB7BD93B4F89D266A3BE1304F647F1B6990A0D9860BB51412B7C766610ECDD
+
+Path      : E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260831T220718p0800-m6-lan-1000\subscriber.
+            jsonl
+Algorithm : SHA256
+Hash      : 0645674698CF34F95BE38DD2ADA41D74EB3D672B08B02469C65A4F4FBB46383D
+
+Path      : E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260831T220718p0800-m6-lan-1000\mosquitto.c
+            onf
+Algorithm : SHA256
+Hash      : 5A3BF93074906C960BBCC6984E09B1AA6AA82EB3319C07BC5358C3643864AB1B
+
+
+

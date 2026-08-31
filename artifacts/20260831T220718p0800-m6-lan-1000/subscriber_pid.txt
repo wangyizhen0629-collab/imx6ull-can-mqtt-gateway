@@ -1,0 +1,4 @@
+﻿checked_at=2026-08-31T22:20:04.003+08:00 wrapper_pid=28840 wrapper_has_exited=False subscriber_process_count=1
+subscriber_pid=36712
+subscriber_parent_pid=28840
+subscriber_command_line="E:\mosquitto\mosquitto_sub.exe"  -h 192.168.50.1 -p 18884 -q 1 -t "vehicle/imx6ull-gateway-m6/telemetry/20260831T220718p0800-m6-lan-1000" -C 1000 -F "%p" 

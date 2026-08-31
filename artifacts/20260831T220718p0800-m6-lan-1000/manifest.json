@@ -1,0 +1,85 @@
+{
+  "schema": "m6.lan.1000.test.v1",
+  "run_id": "20260831T220718p0800-m6-lan-1000",
+  "status": "PASS_WITH_LIMITATIONS",
+  "source_commit": "e25ab9131ccaad2f4a71651fb0bd2d17f6f10794",
+  "scope": "M6 i.MX6ULL physical CAN to Windows Mosquitto QoS 1 LAN functional test",
+  "topic": "vehicle/imx6ull-gateway-m6/telemetry/20260831T220718p0800-m6-lan-1000",
+  "network": {
+    "broker_address": "192.168.50.1",
+    "board_address": "192.168.50.2",
+    "broker_port": 18884,
+    "listener_exact_match": true,
+    "final_listener_count": 0
+  },
+  "subscriber": {
+    "exit_code": 0,
+    "lines": 1000,
+    "bytes": 24554669,
+    "sha256": "0645674698cf34f95be38dd2ada41d74eb3d672b08b02469c65a4f4fbb46383d",
+    "raw_batches": 1000,
+    "record_total": 115335,
+    "batch_seq_range": "1..1000",
+    "gateway_seq_range": "1..115335",
+    "missing": 0,
+    "duplicate": 0,
+    "reordered": 0,
+    "validator_exit_code": 0,
+    "validator_status": "PASS"
+  },
+  "gateway": {
+    "exit_code": 0,
+    "publish_attempts": 1033,
+    "publish_accepted": 1033,
+    "puback_matched": 1033,
+    "puback_unexpected": 0,
+    "batches_acked": 1033,
+    "records_acked": 119082,
+    "last_batch_seq": 1033,
+    "last_gateway_seq": 119082,
+    "mqtt_errors": 0,
+    "queue_drop": 0,
+    "reconnects": 0
+  },
+  "broker_log": {
+    "gateway_received_publish": 1033,
+    "gateway_sent_puback": 1033,
+    "subscriber_sent_publish": 1000,
+    "subscriber_received_puback": 1000,
+    "stderr_bytes": 0,
+    "exact_exit_code": null,
+    "exact_exit_code_status": "NOT_AVAILABLE"
+  },
+  "can_delta": {
+    "rx_packets": 119103,
+    "rx_bytes": 952824,
+    "rx_errors": 0,
+    "rx_dropped": 0,
+    "rx_overrun": 0,
+    "restarted": 0,
+    "bus_errors": 0,
+    "arbit_lost": 0,
+    "error_warn": 0,
+    "error_pass": 0,
+    "bus_off": 0
+  },
+  "limitations": [
+    "absolute UTC/timestamp correctness NOT RUN because board wall clock is 1970",
+    "broker exact exit code NOT AVAILABLE",
+    "v3 outer shell command exit code NOT AVAILABLE; gateway exit code is 0",
+    "immediate board process-final check NOT RUN because pgrep is absent; later proc scan found zero gatewayd processes",
+    "can_accepted exceeds queue_success by one at shutdown boundary; cause not independently captured",
+    "initial subscriber and board preparation failures are preserved"
+  ],
+  "not_run": [
+    "M7 reconnect/spool/recovery/deduplication",
+    "M8 epoll",
+    "performance or throughput claims",
+    "long-duration reliability",
+    "latency or correct UTC validation",
+    "kill -9 testing"
+  ],
+  "project_gate_documents_updated": false,
+  "git_commit_created": false,
+  "git_push_performed": false
+}

@@ -1,0 +1,1 @@
+mosquitto_sub_help_exit=1

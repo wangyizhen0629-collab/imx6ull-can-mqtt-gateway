@@ -1,0 +1,1 @@
+broker_exit= shutdown_signal_exit=0

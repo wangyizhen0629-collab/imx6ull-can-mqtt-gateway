@@ -16,3 +16,6 @@
 
 # Ubuntu 严格整数回归证据逐字节保留，供 Windows clone 复核 manifest。
 /artifacts/20260831T212826+0800-m6-validator-strict-int/** -text
+
+# M6 i.MX6ULL 到 Windows Broker 的局域网1000批原始证据逐字节保留。
+/artifacts/20260831T220718p0800-m6-lan-1000/** -text

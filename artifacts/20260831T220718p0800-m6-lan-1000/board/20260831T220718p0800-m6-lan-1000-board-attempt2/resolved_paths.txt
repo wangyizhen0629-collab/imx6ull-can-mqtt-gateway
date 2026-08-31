@@ -1,0 +1,4 @@
+gateway=/tmp/m6-arm-private-20260831T181335/bin/gatewayd
+lib_file=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+lib_real=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+lib_dir=/tmp/m6-arm-private-20260831T181335/lib

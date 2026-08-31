@@ -1,0 +1,16 @@
+﻿checked_at=2026-08-31T22:20:04.015+08:00 subscriber_owned_established_connection_count=1
+
+
+LocalAddress  : 192.168.50.1
+LocalPort     : 60202
+RemoteAddress : 192.168.50.1
+RemotePort    : 18884
+State         : Established
+OwningProcess : 36712
+
+
+
+
+subscriber_stdout_length_before_board=0
+subscriber_stderr_length_before_board=0
+subscriber_ready=True

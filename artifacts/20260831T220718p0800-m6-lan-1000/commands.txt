@@ -1,0 +1,92 @@
+# M6 i.MX6ULL → Windows Broker LAN 1000-batch 实测命令记录
+
+## 同步与只读预检
+
+git pull --ff-only origin master
+git rev-parse HEAD
+git status --short
+Get-NetAdapter -Name "以太网"
+Get-NetIPAddress -InterfaceAlias "以太网" -AddressFamily IPv4
+Get-NetRoute -InterfaceAlias "以太网" -AddressFamily IPv4
+ping.exe -n 4 192.168.50.2
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL"
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallAddressFilter
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallPortFilter
+Get-NetTCPConnection -LocalPort 18884 -ErrorAction SilentlyContinue
+Test-Path "E:\mosquitto\mosquitto.exe"
+Test-Path "E:\mosquitto\mosquitto_sub.exe"
+Test-Path "E:\mosquitto\mosquitto_signal.exe"
+& "E:\mosquitto\mosquitto.exe" -h
+& "E:\mosquitto\mosquitto_sub.exe" -h
+& "E:\mosquitto\mosquitto_sub.exe" --help
+python -B tools/mqtt/test_validate_m6_batches.py
+
+`mosquitto_sub -h` 中 `-h` 是 host 参数，所以该原始命令退出1；补充使用 `--help`
+核对版本。三个可执行文件均存在，离线回归8/8 PASS。
+
+## Windows 临时 Broker 与 subscriber
+
+& "E:\mosquitto\mosquitto.exe" --test-config -c \
+  "artifacts/20260831T220718p0800-m6-lan-1000/mosquitto.conf"
+
+Start-Process -FilePath "E:\mosquitto\mosquitto.exe" \
+  -ArgumentList @("-c", "<run_dir>\mosquitto.conf") \
+  -RedirectStandardOutput "<run_dir>\broker_stdout.log" \
+  -RedirectStandardError "<run_dir>\broker_stderr.log"
+
+临时 Broker PID=27596。Get-NetTCPConnection 确认唯一 listener 为
+192.168.50.1:18884，OwningProcess=27596。
+
+正式 subscriber 的实际命令保存在 subscriber_wrapper.cmd：
+
+E:\mosquitto\mosquitto_sub.exe -h 192.168.50.1 -p 18884 -q 1 \
+  -t vehicle/imx6ull-gateway-m6/telemetry/20260831T220718p0800-m6-lan-1000 \
+  -C 1000 -F %p
+
+wrapper 分离 stdout/stderr，并在进程返回后立即保存 `%ERRORLEVEL%`。正式 wrapper
+PID=28840，subscriber PID=36712。Get-NetTCPConnection 按 PID 验证 subscriber 到
+192.168.50.1:18884 为 Established，板端启动前 subscriber.jsonl 为0字节。
+
+此前两次 subscriber 就绪诊断分别因 Broker/debug stdout 未即时刷新而主动终止；两次
+均未接收 payload，退出-1，原始文件以 setup_attempt1_* 和 setup_attempt2_* 保存。
+
+## 板端
+
+首次交互命令保存在 board_commands.txt；其中 `exit 1` 会退出交互式 SSH，是命令设计
+错误。v2 保存在 board_commands_v2.txt，反向 ICMP失败后脚本退出1。最终实际命令完整
+保存在 board_commands_v3.txt，使用唯一目录：
+
+/tmp/20260831T220718p0800-m6-lan-1000-board-attempt3
+
+实际 gatewayd 前台命令也保存在该目录的 run_gateway.sh：
+
+LD_LIBRARY_PATH=/tmp/m6-arm-private-20260831T181335/lib \
+  /tmp/m6-arm-private-20260831T181335/bin/gatewayd \
+  --config /tmp/20260831T220718p0800-m6-lan-1000-board-attempt3/gateway.conf \
+  --run-mqtt
+
+收到1000批后由项目所有者按一次 Ctrl+C。run_gateway.sh 随即保存 gateway_exit、
+can_after 和进程检查输出。板端没有 pgrep，原始即时进程检查退出127；后续使用 `ps`
+和 `/proc/[0-9]*/comm` 只读扫描补证，命令与结果保存在 board attempt3。
+
+## Windows 验收与清理
+
+python -B tools/mqtt/validate_m6_batches.py \
+  --input artifacts/20260831T220718p0800-m6-lan-1000/subscriber.jsonl \
+  --device-id imx6ull-gateway-m6 --expected-batches 1000
+
+Select-String 对 broker_stdout.log 统计板端 Received PUBLISH、发给板端的 PUBACK、
+转发给正式 subscriber 的 PUBLISH 和正式 subscriber PUBACK。
+
+& "E:\mosquitto\mosquitto_signal.exe" -p 27596 shutdown
+Get-NetTCPConnection -LocalPort 18884 -State Listen -ErrorAction SilentlyContinue
+Get-Process -Id 27596,36712,28840 -ErrorAction SilentlyContinue
+
+最终 listener_count=0，三个临时PID均不存在；既有 Mosquitto 服务 PID=33212 仍运行。
+Broker 最初未通过退出码 wrapper 启动，停止后 Process.ExitCode 没有返回数值，因此精确
+Broker退出码标为 NOT AVAILABLE，不能根据正常关闭日志推测为0。
+
+PowerShell 后处理只读解析 subscriber JSONL、gateway summary、Broker日志和CAN前后
+快照，输出 payload_audit.json、acceptance_checks_v2.*、broker_log_check_v2.* 和
+can_delta.*。首次 acceptance_checks.* 因 broker_log_check.txt 多字段误写为单行而出现
+两个假 False；原文件保留，修正后的 v2 从原始 Broker 日志重新计数。

@@ -1,0 +1,1 @@
+subscriber_exit=-1

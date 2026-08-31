@@ -1,0 +1,68 @@
+﻿{
+    "gateway_summary":  {
+                            "can_accepted":  119083,
+                            "decode_success":  119083,
+                            "queue_success":  119082,
+                            "queue_drop":  0,
+                            "queue_pop":  119082,
+                            "queue_count":  0,
+                            "mqtt_connect_success":  1,
+                            "publish_attempts":  1033,
+                            "publish_accepted":  1033,
+                            "puback_matched":  1033,
+                            "puback_unexpected":  0,
+                            "batches_acked":  1033,
+                            "records_acked":  119082,
+                            "last_batch_seq":  1033,
+                            "last_gateway_seq":  119082,
+                            "buffered":  0,
+                            "in_flight":  0,
+                            "mqtt_errors":  0,
+                            "reconnects":  0
+                        },
+    "subscriber":  {
+                       "exit_code":  0,
+                       "lines":  1000,
+                       "validator":  {
+                                         "duplicate_batch_seq":  0,
+                                         "duplicate_gateway_seq":  0,
+                                         "first_batch_seq":  1,
+                                         "first_gateway_seq":  1,
+                                         "last_batch_seq":  1000,
+                                         "last_gateway_seq":  115335,
+                                         "missing_batch_seq":  0,
+                                         "missing_gateway_seq":  0,
+                                         "raw_batches":  1000,
+                                         "status":  "PASS",
+                                         "unique_batch_seq":  1000,
+                                         "unique_gateway_seq":  115335
+                                     }
+                   },
+    "broker":  {
+                   "gateway_received_publish_count":  1033,
+                   "gateway_sent_puback_count":  1033,
+                   "subscriber_sent_publish_count":  1000,
+                   "subscriber_received_puback_count":  1000
+               },
+    "post_subscriber":  {
+                            "extra_gateway_batches":  33,
+                            "extra_gateway_records":  3747
+                        },
+    "checks":  {
+                   "subscriber_exit_zero":  true,
+                   "subscriber_exactly_1000_lines":  true,
+                   "validator_pass":  true,
+                   "batch_seq_exact_1_to_1000":  true,
+                   "gateway_seq_exact_1_to_last":  true,
+                   "publish_attempts_equals_accepted":  true,
+                   "publish_accepted_equals_puback_matched":  true,
+                   "puback_unexpected_zero":  true,
+                   "mqtt_errors_zero":  true,
+                   "queue_drop_zero":  true,
+                   "batches_acked_at_least_1000":  true,
+                   "broker_gateway_publish_matches_summary":  true,
+                   "broker_gateway_puback_matches_summary":  true,
+                   "gateway_exit_zero":  true,
+                   "followup_gatewayd_process_zero":  true
+               }
+}

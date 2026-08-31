@@ -1,0 +1,15 @@
+﻿subscriber_exit_zero=True
+subscriber_exactly_1000_lines=True
+validator_pass=True
+batch_seq_exact_1_to_1000=True
+gateway_seq_exact_1_to_last=True
+publish_attempts_equals_accepted=True
+publish_accepted_equals_puback_matched=True
+puback_unexpected_zero=True
+mqtt_errors_zero=True
+queue_drop_zero=True
+batches_acked_at_least_1000=True
+broker_gateway_publish_matches_summary=False
+broker_gateway_puback_matches_summary=False
+gateway_exit_zero=True
+followup_gatewayd_process_zero=True

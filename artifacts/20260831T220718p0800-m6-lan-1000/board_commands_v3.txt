@@ -1,0 +1,124 @@
+# 将本文件完整复制，一次性粘贴到 i.MX6ULL 的交互式 Shell。
+# 检查失败只退出临时脚本，不会退出 SSH 登录。
+
+cat > /tmp/m6_prepare_20260831T220718p0800_v3.sh <<'M6_PREP_SCRIPT'
+#!/bin/sh
+umask 077
+
+DEPLOY=/tmp/m6-arm-private-20260831T181335
+RUN_ID=20260831T220718p0800-m6-lan-1000
+BOARD_RUN=/tmp/${RUN_ID}-board-attempt3
+TOPIC=vehicle/imx6ull-gateway-m6/telemetry/${RUN_ID}
+
+fail()
+{
+    echo "PREP_FAIL: $*" >&2
+    exit 1
+}
+
+test -d "$DEPLOY" || fail "missing deploy directory: $DEPLOY"
+test ! -e "$BOARD_RUN" || fail "refusing to overwrite: $BOARD_RUN"
+mkdir -p "$BOARD_RUN" || fail "cannot create: $BOARD_RUN"
+
+GATEWAY=$(find "$DEPLOY" -type f -name gatewayd -print | head -n 1)
+LIB_FILE=$(find "$DEPLOY" -type f -name 'libmosquitto.so*' -print | head -n 1)
+test -n "$GATEWAY" || fail "gatewayd not found under $DEPLOY"
+test -n "$LIB_FILE" || fail "libmosquitto not found under $DEPLOY"
+LIB_REAL=$(readlink -f "$LIB_FILE")
+test -n "$LIB_REAL" || fail "cannot resolve libmosquitto path"
+LIB_DIR=$(dirname "$LIB_REAL")
+
+printf 'gateway=%s\nlib_file=%s\nlib_real=%s\nlib_dir=%s\n' \
+  "$GATEWAY" "$LIB_FILE" "$LIB_REAL" "$LIB_DIR" > "$BOARD_RUN/resolved_paths.txt"
+
+{
+    date -Ins
+    uname -a
+    ip -brief address
+    ip route
+    ip route get 192.168.50.1
+} > "$BOARD_RUN/host_network_before.txt" 2>&1
+HOST_NETWORK_EXIT=$?
+printf 'host_network_before_exit=%s\n' "$HOST_NETWORK_EXIT" > "$BOARD_RUN/host_network_before_exit.txt"
+test "$HOST_NETWORK_EXIT" -eq 0 || fail "board route preflight failed"
+
+# Windows 防火墙只明确放行 TCP 18884；反向 ICMP 仅留证，不作为 MQTT 门禁。
+ping -c 4 192.168.50.1 > "$BOARD_RUN/ping_windows.txt" 2>&1
+PING_WINDOWS_EXIT=$?
+printf 'ping_windows_exit=%s\n' "$PING_WINDOWS_EXIT" > "$BOARD_RUN/ping_windows_exit.txt"
+
+sha256sum "$GATEWAY" "$LIB_REAL" > "$BOARD_RUN/binary_sha256.txt" 2>&1
+HASH_EXIT=$?
+printf 'binary_sha256_exit=%s\n' "$HASH_EXIT" > "$BOARD_RUN/binary_sha256_exit.txt"
+test "$HASH_EXIT" -eq 0 || fail "binary sha256 failed"
+
+LD_LIBRARY_PATH="$LIB_DIR" ldd "$GATEWAY" > "$BOARD_RUN/ldd.txt" 2>&1
+LDD_EXIT=$?
+printf 'ldd_exit=%s\n' "$LDD_EXIT" > "$BOARD_RUN/ldd_exit.txt"
+test "$LDD_EXIT" -eq 0 || fail "ldd failed"
+grep -q 'not found' "$BOARD_RUN/ldd.txt" && fail "ldd has missing libraries"
+grep -Fq "$DEPLOY" "$BOARD_RUN/ldd.txt" || fail "ldd does not resolve a private deployment library"
+
+ip -details -statistics link show can0 > "$BOARD_RUN/can_before.txt" 2>&1
+CAN_EXIT=$?
+printf 'can_before_exit=%s\n' "$CAN_EXIT" > "$BOARD_RUN/can_before_exit.txt"
+test "$CAN_EXIT" -eq 0 || fail "can0 query failed"
+grep -Eq '<[^>]*UP' "$BOARD_RUN/can_before.txt" || fail "can0 is not UP"
+grep -q 'bitrate 500000' "$BOARD_RUN/can_before.txt" || fail "can0 bitrate is not 500000"
+
+pgrep -a gatewayd > "$BOARD_RUN/process_before.txt" 2>&1
+printf 'process_before_pgrep_exit=%s\n' "$?" > "$BOARD_RUN/process_before_exit.txt"
+
+cat > "$BOARD_RUN/gateway.conf" <<EOF
+device_id=imx6ull-gateway-m6
+can_interface=can0
+broker_host=192.168.50.1
+broker_port=18884
+broker_username=
+broker_password=
+mqtt_topic=$TOPIC
+queue_capacity=1024
+queue_push_timeout_ms=50
+batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
+log_level=info
+EOF
+
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$BOARD_RUN/gateway.conf" --print-config \
+  > "$BOARD_RUN/config_check.stdout.log" 2> "$BOARD_RUN/config_check.stderr.log"
+CONFIG_EXIT=$?
+printf 'config_check_exit=%s\n' "$CONFIG_EXIT" > "$BOARD_RUN/config_check_exit.txt"
+test "$CONFIG_EXIT" -eq 0 || fail "gateway config check failed"
+
+cat > "$BOARD_RUN/run_gateway.sh" <<EOF
+#!/bin/sh
+BOARD_RUN='$BOARD_RUN'
+GATEWAY='$GATEWAY'
+LIB_DIR='$LIB_DIR'
+trap ':' INT TERM
+printf 'gateway_started_at=%s\n' "\$(date -Ins)" > "\$BOARD_RUN/gateway_lifecycle.txt"
+LD_LIBRARY_PATH="\$LIB_DIR" "\$GATEWAY" --config "\$BOARD_RUN/gateway.conf" --run-mqtt \
+  > "\$BOARD_RUN/gateway_stdout.log" 2> "\$BOARD_RUN/gateway_stderr.log"
+GATEWAY_EXIT=\$?
+trap - INT TERM
+printf 'gateway_exit=%s\n' "\$GATEWAY_EXIT" > "\$BOARD_RUN/gateway_exit.txt"
+printf 'gateway_finished_at=%s\n' "\$(date -Ins)" >> "\$BOARD_RUN/gateway_lifecycle.txt"
+ip -details -statistics link show can0 > "\$BOARD_RUN/can_after.txt" 2>&1
+printf 'can_after_exit=%s\n' "\$?" > "\$BOARD_RUN/can_after_exit.txt"
+pgrep -a gatewayd > "\$BOARD_RUN/process_final.txt" 2>&1
+printf 'process_final_pgrep_exit=%s\n' "\$?" > "\$BOARD_RUN/process_final_exit.txt"
+date -Ins > "\$BOARD_RUN/board_finished_at.txt" 2>&1
+echo "GATEWAY_FINISHED exit=\$GATEWAY_EXIT BOARD_RUN=\$BOARD_RUN"
+exit "\$GATEWAY_EXIT"
+EOF
+chmod 700 "$BOARD_RUN/run_gateway.sh" || fail "cannot make runner executable"
+printf 'board_preflight=PASS\n' > "$BOARD_RUN/board_preflight.txt"
+echo "PREP_PASS BOARD_RUN=$BOARD_RUN"
+echo "GATEWAY_STARTING topic=$TOPIC"
+echo "收到 Windows 端通知后按一次 Ctrl+C；不要提前停止。"
+exec "$BOARD_RUN/run_gateway.sh"
+M6_PREP_SCRIPT
+
+sh /tmp/m6_prepare_20260831T220718p0800_v3.sh
+M6_COMMAND_EXIT=$?
+echo "M6_COMMAND_EXIT=$M6_COMMAND_EXIT"

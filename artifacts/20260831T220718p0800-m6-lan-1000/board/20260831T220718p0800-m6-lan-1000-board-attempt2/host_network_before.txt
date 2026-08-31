@@ -1,0 +1,12 @@
+1970-01-02T11:37:46,610633238+00:00
+Linux 100ask 4.9.88 #1 SMP PREEMPT Thu Apr 2 14:58:18 EDT 2026 armv7l GNU/Linux
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+can0             UNKNOWN        
+eth0             DOWN           
+eth1             UP             192.168.50.2/24 
+sit0@NONE        DOWN           
+192.168.50.0/24 dev eth1 proto kernel scope link src 192.168.50.2 
+PING 192.168.50.1 (192.168.50.1): 56 data bytes
+
+--- 192.168.50.1 ping statistics ---
+4 packets transmitted, 0 packets received, 100% packet loss

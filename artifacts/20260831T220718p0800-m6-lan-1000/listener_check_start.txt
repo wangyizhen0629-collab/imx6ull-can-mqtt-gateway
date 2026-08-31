@@ -1,0 +1,12 @@
+﻿checked_at=2026-08-31T22:11:48.417+08:00
+broker_pid=27596
+broker_has_exited=False
+listener_count=1
+
+LocalAddress LocalPort  State OwningProcess
+------------ ---------  ----- -------------
+192.168.50.1     18884 Listen         27596
+
+
+
+listener_exact_match=True

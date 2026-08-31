@@ -1,0 +1,1 @@
+/tmp/20260831T220718p0800-m6-lan-1000-board-attempt3/run_gateway.sh: line 14: pgrep: command not found

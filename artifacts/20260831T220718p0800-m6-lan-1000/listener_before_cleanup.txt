@@ -1,0 +1,12 @@
+﻿checked_at=2026-08-31T23:07:15.119+08:00
+broker_pid_27596_running=True
+subscriber_pid_36712_running=False
+tcp_entry_count=2
+
+LocalAddress LocalPort RemoteAddress RemotePort    State OwningProcess
+------------ --------- ------------- ----------    ----- -------------
+192.168.50.1     18884 0.0.0.0                0   Listen         27596
+192.168.50.1     18884 192.168.50.2       51964 TimeWait             0
+
+
+

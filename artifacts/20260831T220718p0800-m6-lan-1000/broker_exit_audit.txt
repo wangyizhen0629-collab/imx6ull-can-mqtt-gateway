@@ -1,0 +1,5 @@
+﻿broker_exit=NOT_AVAILABLE
+reason=temporary broker was not started through an exit-code wrapper; the later Process.ExitCode lookup returned no numeric value
+shutdown_signal_exit=0
+broker_log_termination_seen=True
+inference_prohibited=normal shutdown evidence is not substituted for an exact process exit code

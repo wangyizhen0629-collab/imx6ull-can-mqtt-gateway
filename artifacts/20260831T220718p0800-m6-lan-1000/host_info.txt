@@ -1,0 +1,7 @@
+﻿captured_at=2026-08-31T22:09:42.258+08:00
+computer_name=
+os_caption=Microsoft Windows 11 家庭版 中文版
+os_version=10.0.26200
+os_build=26200
+powershell=5.1.26100.9168
+timezone=China Standard Time

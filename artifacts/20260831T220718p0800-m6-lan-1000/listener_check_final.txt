@@ -1,0 +1,1 @@
+﻿checked_at=2026-08-31T23:08:57.928+08:00 listener_count=0 tcp_entry_count_including_time_wait=0 broker_pid_27596_running=False subscriber_pid_36712_running=False subscriber_wrapper_pid_28840_running=False existing_service_pid_33212_running=True

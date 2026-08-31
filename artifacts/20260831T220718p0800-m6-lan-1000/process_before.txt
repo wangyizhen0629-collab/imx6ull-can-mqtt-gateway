@@ -1,0 +1,24 @@
+﻿captured_at=2026-08-31T22:09:54.512+08:00
+=== existing mosquitto processes before temporary test ===
+process_count=1
+
+
+Id          : 33212
+ProcessName : mosquitto
+Path        : 
+StartTime   : 
+
+
+
+
+=== existing mosquitto service state (read-only) ===
+
+
+Name        : mosquitto
+DisplayName : Mosquitto Broker
+Status      : Running
+StartType   : Automatic
+
+
+
+

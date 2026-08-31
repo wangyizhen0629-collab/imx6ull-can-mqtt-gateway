@@ -1,0 +1,37 @@
+﻿rule_count=1
+=== Get-NetFirewallRule ===
+
+
+Name                  : {cd871547-c505-4dc5-bba8-7cf87feb763c}
+DisplayName           : M6 Mosquitto 18884 from iMX6ULL
+Enabled               : True
+Profile               : Any
+Direction             : Inbound
+Action                : Allow
+PolicyStoreSource     : PersistentStore
+PolicyStoreSourceType : Local
+
+
+
+
+=== Get-NetFirewallAddressFilter ===
+
+
+LocalAddress  : 192.168.50.1
+RemoteAddress : 192.168.50.2
+
+
+
+
+=== Get-NetFirewallPortFilter ===
+
+
+Protocol      : TCP
+LocalPort     : 18884
+RemotePort    : Any
+IcmpType      : Any
+DynamicTarget : Any
+
+
+
+

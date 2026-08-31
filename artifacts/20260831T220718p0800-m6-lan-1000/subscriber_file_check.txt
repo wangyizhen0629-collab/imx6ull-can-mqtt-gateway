@@ -1,0 +1,8 @@
+﻿checked_at=2026-08-31T23:05:42.166+08:00
+subscriber_process_running=False
+wrapper_process_running=False
+line_count=1000
+byte_count=24554669
+sha256=0645674698cf34f95be38dd2ada41d74eb3d672b08b02469c65a4f4fbb46383d
+subscriber_exit_file=subscriber_exit=0
+subscriber_stderr_bytes=0

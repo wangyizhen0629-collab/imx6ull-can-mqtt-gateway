@@ -1,0 +1,18 @@
+﻿checked_at=2026-08-31T23:07:17.287+08:00
+shutdown_signal_exit=0
+broker_pid=27596
+broker_has_exited=True
+broker_exit=
+subscriber_pid=36712
+subscriber_running=False
+wrapper_pid=28840
+wrapper_running=False
+existing_service_pid_33212_running=True
+tcp_entry_count_after=1
+
+LocalAddress LocalPort RemoteAddress RemotePort    State OwningProcess
+------------ --------- ------------- ----------    ----- -------------
+192.168.50.1     18884 192.168.50.2       51964 TimeWait             0
+
+
+

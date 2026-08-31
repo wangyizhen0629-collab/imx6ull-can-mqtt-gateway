@@ -1,0 +1,8 @@
+run_id=20260831T220718p0800-m6-lan-1000
+topic=vehicle/imx6ull-gateway-m6/telemetry/20260831T220718p0800-m6-lan-1000
+device_id=imx6ull-gateway-m6
+broker_host=192.168.50.1
+broker_port=18884
+subscriber_expected_messages=1000
+qos=1
+scope=M6 LAN i.MX6ULL to Windows Broker 1000-batch functional gate

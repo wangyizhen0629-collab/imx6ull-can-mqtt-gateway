@@ -1,0 +1,22 @@
+﻿before_state=ERROR-ACTIVE after_state=ERROR-ACTIVE before_bitrate=500000 after_bitrate=500000
+berr_tx_before=0 berr_tx_after=0 berr_tx_delta=0
+berr_rx_before=0 berr_rx_after=0 berr_rx_delta=0
+bitrate_before=500000 bitrate_after=500000 bitrate_delta=0
+restarted_before=0 restarted_after=0 restarted_delta=0
+bus_errors_before=0 bus_errors_after=0 bus_errors_delta=0
+arbit_lost_before=0 arbit_lost_after=0 arbit_lost_delta=0
+error_warn_before=167 error_warn_after=167 error_warn_delta=0
+error_pass_before=3 error_pass_after=3 error_pass_delta=0
+bus_off_before=0 bus_off_after=0 bus_off_delta=0
+rx_bytes_before=18750568 rx_bytes_after=19703392 rx_bytes_delta=952824
+rx_packets_before=2343821 rx_packets_after=2462924 rx_packets_delta=119103
+rx_errors_before=0 rx_errors_after=0 rx_errors_delta=0
+rx_dropped_before=0 rx_dropped_after=0 rx_dropped_delta=0
+rx_overrun_before=0 rx_overrun_after=0 rx_overrun_delta=0
+rx_mcast_before=0 rx_mcast_after=0 rx_mcast_delta=0
+tx_bytes_before=0 tx_bytes_after=0 tx_bytes_delta=0
+tx_packets_before=0 tx_packets_after=0 tx_packets_delta=0
+tx_errors_before=0 tx_errors_after=0 tx_errors_delta=0
+tx_dropped_before=0 tx_dropped_after=0 tx_dropped_delta=0
+tx_carrier_before=0 tx_carrier_after=0 tx_carrier_delta=0
+tx_collsns_before=0 tx_collsns_after=0 tx_collsns_delta=0

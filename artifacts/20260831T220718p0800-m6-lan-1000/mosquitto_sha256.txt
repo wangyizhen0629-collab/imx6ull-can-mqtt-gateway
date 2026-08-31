@@ -1,0 +1,16 @@
+﻿
+
+Path      : E:\mosquitto\mosquitto.exe
+Algorithm : SHA256
+Hash      : DAA688DBC3685890999084DA72F98EA0FAE9557F7544A2CB96B44EF46563F2A2
+
+Path      : E:\mosquitto\mosquitto_sub.exe
+Algorithm : SHA256
+Hash      : 4A31B29CD3CEE02994B1EB3DFAD69FCDC2878E3187FFEA73807297057B55F2C5
+
+Path      : E:\mosquitto\mosquitto_signal.exe
+Algorithm : SHA256
+Hash      : 0A44F48C542279692EE0D2FF03FBA10F4B9EC72A7FAD5C70F8064310926674E0
+
+
+

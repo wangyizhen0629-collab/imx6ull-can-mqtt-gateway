@@ -1,0 +1,1 @@
+﻿checked_at=2026-08-31T22:17:50.328+08:00 established_loopback_connection_count=1 connack_seen_in_subscriber_stderr=False suback_seen_in_subscriber_stderr=False subscriber_stdout_length_before_board=0 subscriber_ready=False

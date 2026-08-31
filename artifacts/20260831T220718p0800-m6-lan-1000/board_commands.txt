@@ -1,0 +1,84 @@
+# 在 i.MX6ULL 上执行。不得修改系统时间、CAN 配置或系统 libmosquitto。
+
+DEPLOY=/tmp/m6-arm-private-20260831T181335
+RUN_ID=20260831T220718p0800-m6-lan-1000
+BOARD_RUN=/tmp/${RUN_ID}-board
+TOPIC=vehicle/imx6ull-gateway-m6/telemetry/${RUN_ID}
+
+test -d "$DEPLOY" || { echo "missing deploy directory: $DEPLOY"; exit 1; }
+test ! -e "$BOARD_RUN" || { echo "refusing to overwrite: $BOARD_RUN"; exit 1; }
+mkdir -p "$BOARD_RUN"
+
+GATEWAY=$(find "$DEPLOY" -type f -name gatewayd -print | head -n 1)
+LIB_FILE=$(find "$DEPLOY" -type f -name 'libmosquitto.so*' -print | head -n 1)
+test -n "$GATEWAY" || { echo "gatewayd not found under $DEPLOY"; exit 1; }
+test -n "$LIB_FILE" || { echo "libmosquitto not found under $DEPLOY"; exit 1; }
+LIB_REAL=$(readlink -f "$LIB_FILE")
+LIB_DIR=$(dirname "$LIB_REAL")
+printf 'gateway=%s\nlib_file=%s\nlib_real=%s\nlib_dir=%s\n' \
+  "$GATEWAY" "$LIB_FILE" "$LIB_REAL" "$LIB_DIR" > "$BOARD_RUN/resolved_paths.txt"
+
+{
+  date -Ins
+  uname -a
+  ip -brief address
+  ip route
+  ping -c 4 192.168.50.1
+} > "$BOARD_RUN/host_network_before.txt" 2>&1
+printf 'host_network_before_exit=%s\n' "$?" > "$BOARD_RUN/host_network_before_exit.txt"
+
+sha256sum "$GATEWAY" "$LIB_REAL" > "$BOARD_RUN/binary_sha256.txt" 2>&1
+printf 'binary_sha256_exit=%s\n' "$?" > "$BOARD_RUN/binary_sha256_exit.txt"
+LD_LIBRARY_PATH="$LIB_DIR" ldd "$GATEWAY" > "$BOARD_RUN/ldd.txt" 2>&1
+printf 'ldd_exit=%s\n' "$?" > "$BOARD_RUN/ldd_exit.txt"
+
+ip -details -statistics link show can0 > "$BOARD_RUN/can_before.txt" 2>&1
+printf 'can_before_exit=%s\n' "$?" > "$BOARD_RUN/can_before_exit.txt"
+pgrep -a gatewayd > "$BOARD_RUN/process_before.txt" 2>&1
+printf 'process_before_pgrep_exit=%s\n' "$?" > "$BOARD_RUN/process_before_exit.txt"
+
+cat > "$BOARD_RUN/gateway.conf" <<EOF
+device_id=imx6ull-gateway-m6
+can_interface=can0
+broker_host=192.168.50.1
+broker_port=18884
+broker_username=
+broker_password=
+mqtt_topic=$TOPIC
+queue_capacity=1024
+queue_push_timeout_ms=50
+batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
+log_level=info
+EOF
+
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$BOARD_RUN/gateway.conf" --print-config \
+  > "$BOARD_RUN/config_check.stdout.log" 2> "$BOARD_RUN/config_check.stderr.log"
+printf 'config_check_exit=%s\n' "$?" > "$BOARD_RUN/config_check_exit.txt"
+
+# 以下检查只读；任一失败立即停止，不修改板端网络、CAN或时间。
+grep -q '^host_network_before_exit=0$' "$BOARD_RUN/host_network_before_exit.txt" || { echo 'board network preflight failed'; exit 1; }
+grep -q '^binary_sha256_exit=0$' "$BOARD_RUN/binary_sha256_exit.txt" || { echo 'binary sha256 failed'; exit 1; }
+grep -q '^ldd_exit=0$' "$BOARD_RUN/ldd_exit.txt" || { echo 'ldd failed'; exit 1; }
+grep -q 'not found' "$BOARD_RUN/ldd.txt" && { echo 'ldd has missing libraries'; exit 1; }
+grep -Fq "$DEPLOY" "$BOARD_RUN/ldd.txt" || { echo 'ldd does not resolve a private deployment library'; exit 1; }
+grep -q '^can_before_exit=0$' "$BOARD_RUN/can_before_exit.txt" || { echo 'can0 query failed'; exit 1; }
+grep -Eq '<[^>]*UP' "$BOARD_RUN/can_before.txt" || { echo 'can0 is not UP'; exit 1; }
+grep -q 'bitrate 500000' "$BOARD_RUN/can_before.txt" || { echo 'can0 bitrate is not 500000'; exit 1; }
+grep -q '^config_check_exit=0$' "$BOARD_RUN/config_check_exit.txt" || { echo 'gateway config check failed'; exit 1; }
+printf 'board_preflight=PASS\n' > "$BOARD_RUN/board_preflight.txt"
+
+# can0 已验证为 UP、bitrate 500000。执行下面的前台命令。
+# 确认无误后执行下面的前台命令。Windows 收到1000批后按一次 Ctrl+C。
+# Ctrl+C 后不要先执行其他命令，紧接着保存 $?。
+
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$BOARD_RUN/gateway.conf" --run-mqtt \
+  > "$BOARD_RUN/gateway_stdout.log" 2> "$BOARD_RUN/gateway_stderr.log"
+GATEWAY_EXIT=$?
+printf 'gateway_exit=%s\n' "$GATEWAY_EXIT" > "$BOARD_RUN/gateway_exit.txt"
+ip -details -statistics link show can0 > "$BOARD_RUN/can_after.txt" 2>&1
+printf 'can_after_exit=%s\n' "$?" > "$BOARD_RUN/can_after_exit.txt"
+pgrep -a gatewayd > "$BOARD_RUN/process_final.txt" 2>&1
+printf 'process_final_pgrep_exit=%s\n' "$?" > "$BOARD_RUN/process_final_exit.txt"
+date -Ins > "$BOARD_RUN/board_finished_at.txt" 2>&1
+printf 'BOARD_RUN=%s\n' "$BOARD_RUN"
