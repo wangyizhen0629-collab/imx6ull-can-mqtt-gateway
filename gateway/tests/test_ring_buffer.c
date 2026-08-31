@@ -137,6 +137,30 @@ static int test_close_broadcast(void)
     return 0;
 }
 
+static int test_timed_pop(void)
+{
+    gateway_stats stats;
+    gateway_ring_buffer *queue;
+    telemetry_record record = {0};
+    struct timespec start;
+    struct timespec end;
+
+    CHECK(gateway_stats_init(&stats) == GATEWAY_OK);
+    CHECK(gateway_ring_buffer_create(&queue, 1, &stats) == GATEWAY_OK);
+    CHECK(clock_gettime(CLOCK_MONOTONIC, &start) == 0);
+    CHECK(gateway_ring_buffer_pop_timed(queue, &record, 30) ==
+          GATEWAY_ERROR_TIMEOUT);
+    CHECK(clock_gettime(CLOCK_MONOTONIC, &end) == 0);
+    CHECK(milliseconds_between(&start, &end) >= 15.0);
+    CHECK(milliseconds_between(&start, &end) < 1000.0);
+    CHECK(gateway_ring_buffer_close(queue) == GATEWAY_OK);
+    CHECK(gateway_ring_buffer_pop_timed(queue, &record, 30) ==
+          GATEWAY_ERROR_CLOSED);
+    gateway_ring_buffer_destroy(queue);
+    gateway_stats_destroy(&stats);
+    return 0;
+}
+
 enum {
     PRODUCER_COUNT = 3,
     CONSUMER_COUNT = 2,
@@ -279,6 +303,7 @@ int main(void)
 {
     CHECK(test_fifo_full_timeout_and_stats() == 0);
     CHECK(test_close_broadcast() == 0);
+    CHECK(test_timed_pop() == 0);
     CHECK(test_concurrent_invariants() == 0);
     return 0;
 }

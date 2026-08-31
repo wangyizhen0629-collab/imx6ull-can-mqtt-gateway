@@ -172,4 +172,13 @@ receive timeout 只表示此前无输入时的100 ms poll；不能把整段64/69
 本次没有 `can_before/after`、正确 UTC 或 shell `wait` 精确退出码，故不产生 CAN 错误
 增量、持续运行、吞吐、时延或可靠性结论。
 
-MQTT、spool I/O、epoll 和部署功能仍未实现，属于 M6 及后续阶段。
+M6 已在 Ubuntu x86_64 主机实现 libmosquitto MQTT QoS 1 sink：按单调时钟和固定上限
+组成 JSON batch，显式限制单个 in-flight publish，只有收到相同 MID 的 PUBACK 才推进
+batch/record 确认统计；低流量时由 consumer timed pop 的 idle tick 触发到期 batch。
+实际 Mosquitto/libmosquitto 2.0.11 loopback 集成已完成1000个单记录测试 batch，publisher
+的1000次 PUBACK 全部匹配，subscriber 的 batch_seq/gateway seq 均为1～1000且没有缺失
+或重复。该结果是主机 loopback 功能验证，不是局域网跨主机或 i.MX6ULL 证据。
+
+当前 Buildroot SDK 缺少目标 `mosquitto.h` 和 libmosquitto 开发链接输入，M6 ARM交叉构建、
+部署、真实物理 CAN → MQTT 和局域网跨主机测试均为 `NOT RUN`，所以 M6 总退出门禁仍为
+`NOT MET`。spool I/O、重连恢复、去重、epoll 和部署功能仍未实现，属于 M7 及后续阶段。

@@ -53,6 +53,7 @@ static int test_defaults_file_and_override(void)
         "queue_capacity=4\n"
         "queue_push_timeout_ms=10\n"
         "batch_interval_ms=100\n"
+        "mqtt_ack_timeout_ms=2500\n"
         "spool_path=/tmp/gateway-test-spool.data\n"
         "log_level=debug\n";
     char path[] = "/tmp/gateway-config-valid-XXXXXX";
@@ -72,6 +73,7 @@ static int test_defaults_file_and_override(void)
     CHECK(config.queue_capacity == 4);
     CHECK(config.broker_port == 2883);
     CHECK(config.log_level == GATEWAY_LOG_DEBUG);
+    CHECK(config.mqtt_ack_timeout_ms == 2500);
     CHECK(gateway_config_apply_assignment(&config, "queue_capacity=8", &error) ==
           GATEWAY_OK);
     CHECK(config.queue_capacity == 8);
@@ -143,6 +145,14 @@ static int test_invalid_inputs_and_boundaries(void)
                                           &error) == GATEWAY_OK);
     CHECK(gateway_config_apply_assignment(&config, "batch_interval_ms=99",
                                           &error) == GATEWAY_ERROR_RANGE);
+    CHECK(gateway_config_apply_assignment(&config, "mqtt_ack_timeout_ms=100",
+                                          &error) == GATEWAY_OK);
+    CHECK(gateway_config_apply_assignment(&config, "mqtt_ack_timeout_ms=99",
+                                          &error) == GATEWAY_ERROR_RANGE);
+    CHECK(gateway_config_apply_assignment(&config, "broker_password=secret",
+                                          &error) == GATEWAY_OK);
+    CHECK(gateway_config_validate(&config, &error) ==
+          GATEWAY_ERROR_INVALID_VALUE);
     CHECK(gateway_config_apply_assignment(&config, "broker_port=65535", &error) ==
           GATEWAY_OK);
     CHECK(gateway_config_apply_assignment(&config, "broker_port=65536", &error) ==

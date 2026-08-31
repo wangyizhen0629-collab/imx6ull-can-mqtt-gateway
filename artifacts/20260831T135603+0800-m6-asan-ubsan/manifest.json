@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T135603+0800-m6-asan-ubsan",
+  "milestone": "M6",
+  "source_commit": "ae4fd3fdff908eab5112a065e6e3cc23d88f8284",
+  "source_tree": "dirty M6 implementation",
+  "sanitizers": ["AddressSanitizer", "UndefinedBehaviorSanitizer"],
+  "leak_sanitizer": "NOT RUN - execution environment is under ptrace",
+  "status": "PASS",
+  "ctest": "PASS_13_OF_13"
+}

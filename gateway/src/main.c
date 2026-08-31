@@ -3,6 +3,7 @@
 #include "gateway/lifecycle.h"
 #include "gateway/log.h"
 #include "gateway/mock_sink.h"
+#include "gateway/mqtt_sink.h"
 #include "gateway/pipeline.h"
 #include "gateway/stats.h"
 #include "gateway/version.h"
@@ -24,6 +25,7 @@ enum {
     CAN_RECEIVE_TIMEOUT_MS_DEFAULT = 5000,
     CAN_RECEIVE_TIMEOUT_MS_MAX = 60000,
     M5_RECEIVE_POLL_MS = 100,
+    M6_CONSUMER_IDLE_POLL_MS = 50,
     MOCK_SINK_DELAY_MS_MAX = 60000
 };
 
@@ -35,9 +37,10 @@ static void print_usage(const char *program)
            "--can-receive COUNT [--can-timeout-ms MS]\n"
            "       %s [--config PATH] [--set KEY=VALUE] "
            "--run-mock-sink [--mock-sink-delay-ms MS]\n"
+           "       %s [--config PATH] [--set KEY=VALUE] --run-mqtt\n"
            "       %s --help\n"
            "       %s --version\n",
-           program, program, program, program, program);
+           program, program, program, program, program, program);
 }
 
 static bool parse_unsigned_argument(const char *text,
@@ -459,6 +462,209 @@ cleanup:
     return result;
 }
 
+static void log_mqtt_summary(gateway_logger *logger,
+                             gateway_stats *stats,
+                             gateway_mqtt_sink *sink,
+                             gateway_pipeline *pipeline)
+{
+    gateway_stats_snapshot stats_snapshot;
+    gateway_mqtt_sink_snapshot sink_snapshot;
+    gateway_pipeline_snapshot pipeline_snapshot;
+
+    gateway_stats_read(stats, &stats_snapshot);
+    gateway_mqtt_sink_read(sink, &sink_snapshot);
+    gateway_pipeline_read(pipeline, &pipeline_snapshot);
+    gateway_log(
+        logger, GATEWAY_LOG_INFO, "mqtt",
+        "M6_MQTT_SUMMARY can_accepted=%" PRIu64
+        " decode_success=%" PRIu64 " queue_success=%" PRIu64
+        " queue_drop=%" PRIu64 " queue_pop=%" PRIu64
+        " queue_count=%zu mqtt_connect_success=%" PRIu64
+        " publish_attempts=%" PRIu64 " publish_accepted=%" PRIu64
+        " puback_matched=%" PRIu64 " puback_unexpected=%" PRIu64
+        " batches_acked=%" PRIu64 " records_acked=%" PRIu64
+        " last_batch_seq=%" PRIu64 " last_gateway_seq=%" PRIu64
+        " buffered=%zu in_flight=%d mqtt_errors=%" PRIu64
+        " reconnects=%" PRIu64,
+        stats_snapshot.counters[GATEWAY_STAT_CAN_RECEIVE_SUCCESS],
+        stats_snapshot.counters[GATEWAY_STAT_CAN_DECODE_SUCCESS],
+        stats_snapshot.counters[GATEWAY_STAT_QUEUE_PUSH_SUCCESS],
+        stats_snapshot.counters[GATEWAY_STAT_QUEUE_PUSH_TIMEOUTS],
+        stats_snapshot.counters[GATEWAY_STAT_QUEUE_POP_SUCCESS],
+        pipeline_snapshot.queue_count,
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_CONNECT_SUCCESS],
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_PUBLISH_ATTEMPTS],
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_PUBLISH_ACCEPTED],
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_PUBACK_MATCHED],
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_PUBACK_UNEXPECTED],
+        sink_snapshot.batches_acked, sink_snapshot.records_acked,
+        sink_snapshot.last_acked_batch_seq,
+        sink_snapshot.last_acked_gateway_seq,
+        sink_snapshot.buffered_records, sink_snapshot.in_flight ? 1 : 0,
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_ERRORS],
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_RECONNECTS]);
+}
+
+static int run_mqtt_pipeline(const gateway_config *config,
+                             gateway_logger *logger)
+{
+    gateway_can_receiver receiver;
+    gateway_stats stats;
+    gateway_lifecycle lifecycle;
+    gateway_mqtt_sink *sink = NULL;
+    gateway_mqtt_sink_config sink_config;
+    gateway_pipeline *pipeline = NULL;
+    gateway_pipeline_config pipeline_config;
+    bool stats_initialized = false;
+    bool lifecycle_initialized = false;
+    bool pipeline_started = false;
+    bool pipeline_joined = false;
+    bool control_error = false;
+    gateway_error_code flush_code = GATEWAY_ERROR_CLOSED;
+    int result = EXIT_FAILURE_STATUS;
+
+    gateway_can_receiver_init(&receiver);
+    if (gateway_stats_init(&stats) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "stats initialization failed");
+        goto cleanup;
+    }
+    stats_initialized = true;
+    if (gateway_lifecycle_init(&lifecycle) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "lifecycle initialization failed");
+        goto cleanup;
+    }
+    lifecycle_initialized = true;
+    if (gateway_lifecycle_install_signal_handlers(&lifecycle) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "signal handler installation failed");
+        goto cleanup;
+    }
+
+    (void)memset(&sink_config, 0, sizeof(sink_config));
+    sink_config.device_id = config->device_id;
+    sink_config.broker_host = config->broker_host;
+    sink_config.broker_port = config->broker_port;
+    sink_config.broker_username = config->broker_username;
+    sink_config.broker_password = config->broker_password;
+    sink_config.topic = config->mqtt_topic;
+    sink_config.batch_interval_ms = config->batch_interval_ms;
+    sink_config.ack_timeout_ms = config->mqtt_ack_timeout_ms;
+    sink_config.max_records = GATEWAY_MQTT_BATCH_MAX_RECORDS;
+    sink_config.stats = &stats;
+    sink_config.logger = logger;
+    if (gateway_mqtt_sink_create(&sink, &sink_config) != GATEWAY_OK ||
+        gateway_mqtt_sink_connect(sink) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "MQTT sink startup failed");
+        goto cleanup;
+    }
+    if (gateway_can_receiver_open(&receiver, config->can_interface) !=
+        GATEWAY_OK) {
+        int saved_errno = errno;
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "failed to open interface=%s: %s",
+                    config->can_interface, strerror(saved_errno));
+        goto cleanup;
+    }
+
+    (void)memset(&pipeline_config, 0, sizeof(pipeline_config));
+    pipeline_config.queue_capacity = config->queue_capacity;
+    pipeline_config.queue_push_timeout_ms = config->queue_push_timeout_ms;
+    pipeline_config.receive_timeout_ms = M5_RECEIVE_POLL_MS;
+    pipeline_config.receive = receive_pipeline_record;
+    pipeline_config.receive_context = &receiver;
+    pipeline_config.consume = gateway_mqtt_sink_consume;
+    pipeline_config.consume_context = sink;
+    pipeline_config.consumer_idle_timeout_ms = M6_CONSUMER_IDLE_POLL_MS;
+    pipeline_config.consume_idle = gateway_mqtt_sink_poll;
+    pipeline_config.lifecycle = &lifecycle;
+    pipeline_config.stats = &stats;
+    if (gateway_pipeline_create(&pipeline, &pipeline_config) != GATEWAY_OK ||
+        gateway_pipeline_start(pipeline) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                    "producer-MQTT consumer startup failed");
+        goto cleanup;
+    }
+    pipeline_started = true;
+    gateway_log(logger, GATEWAY_LOG_INFO, "mqtt",
+                "M6 pipeline started interface=%s batch_interval_ms=%u "
+                "ack_timeout_ms=%u qos=1 max_inflight=1",
+                config->can_interface, config->batch_interval_ms,
+                config->mqtt_ack_timeout_ms);
+
+    for (;;) {
+        gateway_pipeline_snapshot snapshot;
+        int signal_number = 0;
+        gateway_error_code code = gateway_lifecycle_wait_signal(
+            &lifecycle, M5_RECEIVE_POLL_MS, &signal_number);
+
+        if (code == GATEWAY_OK) {
+            gateway_log(logger, GATEWAY_LOG_INFO, "mqtt",
+                        "stop requested by signal %d", signal_number);
+            (void)gateway_pipeline_request_stop(pipeline, signal_number);
+            break;
+        }
+        if (code != GATEWAY_ERROR_TIMEOUT) {
+            gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
+                        "signal wait failed: %s", gateway_error_string(code));
+            (void)gateway_pipeline_request_stop(pipeline, 0);
+            control_error = true;
+            break;
+        }
+        gateway_pipeline_read(pipeline, &snapshot);
+        if (snapshot.producer_done || snapshot.consumer_done ||
+            gateway_lifecycle_is_stop_requested(&lifecycle, NULL)) {
+            (void)gateway_pipeline_request_stop(pipeline, 0);
+            control_error = true;
+            break;
+        }
+    }
+
+    if (gateway_pipeline_join(pipeline) != GATEWAY_OK) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt", "worker join failed");
+        goto cleanup;
+    }
+    pipeline_joined = true;
+    flush_code = gateway_mqtt_sink_flush(sink);
+    log_mqtt_summary(logger, &stats, sink, pipeline);
+    {
+        gateway_pipeline_snapshot pipeline_snapshot;
+        gateway_mqtt_sink_snapshot sink_snapshot;
+
+        gateway_pipeline_read(pipeline, &pipeline_snapshot);
+        gateway_mqtt_sink_read(sink, &sink_snapshot);
+        if (!control_error && flush_code == GATEWAY_OK &&
+            pipeline_snapshot.producer_error == GATEWAY_OK &&
+            pipeline_snapshot.consumer_error == GATEWAY_OK &&
+            pipeline_snapshot.queue_count == 0 && !sink_snapshot.failed &&
+            !sink_snapshot.in_flight && sink_snapshot.buffered_records == 0 &&
+            sink_snapshot.puback_unexpected == 0) {
+            result = 0;
+        }
+    }
+
+cleanup:
+    if (pipeline_started && !pipeline_joined) {
+        (void)gateway_pipeline_request_stop(pipeline, 0);
+        (void)gateway_pipeline_join(pipeline);
+    }
+    gateway_pipeline_destroy(pipeline);
+    if (sink != NULL) {
+        (void)gateway_mqtt_sink_disconnect(sink);
+    }
+    gateway_mqtt_sink_destroy(sink);
+    gateway_can_receiver_close(&receiver);
+    if (lifecycle_initialized) {
+        gateway_lifecycle_destroy(&lifecycle);
+    }
+    if (stats_initialized) {
+        gateway_stats_destroy(&stats);
+    }
+    return result;
+}
+
 static int report_config_error(const char *context,
                                const gateway_config_error *error)
 {
@@ -489,6 +695,7 @@ int main(int argc, char **argv)
     bool can_receive_enabled = false;
     bool can_timeout_set = false;
     bool run_mock_sink = false;
+    bool run_mqtt = false;
     bool mock_sink_delay_set = false;
     uint64_t can_receive_count = 0;
     int can_timeout_ms = CAN_RECEIVE_TIMEOUT_MS_DEFAULT;
@@ -547,6 +754,12 @@ int main(int argc, char **argv)
                 return EXIT_USAGE;
             }
             run_mock_sink = true;
+        } else if (strcmp(argv[index], "--run-mqtt") == 0) {
+            if (run_mqtt) {
+                print_usage(argv[0]);
+                return EXIT_USAGE;
+            }
+            run_mqtt = true;
         } else if (strcmp(argv[index], "--mock-sink-delay-ms") == 0) {
             unsigned long long parsed;
             if (++index >= argc || mock_sink_delay_set ||
@@ -562,8 +775,10 @@ int main(int argc, char **argv)
             return EXIT_USAGE;
         }
     }
-    if ((wait_for_signal && (can_receive_enabled || run_mock_sink)) ||
-        (can_receive_enabled && run_mock_sink) ||
+    if ((wait_for_signal &&
+         (can_receive_enabled || run_mock_sink || run_mqtt)) ||
+        (can_receive_enabled && (run_mock_sink || run_mqtt)) ||
+        (run_mock_sink && run_mqtt) ||
         (can_timeout_set && !can_receive_enabled) ||
         (mock_sink_delay_set && !run_mock_sink)) {
         print_usage(argv[0]);
@@ -614,6 +829,11 @@ int main(int argc, char **argv)
     if (run_mock_sink) {
         int status = run_mock_sink_pipeline(&config, &logger,
                                             mock_sink_delay_ms);
+        gateway_logger_destroy(&logger);
+        return status;
+    }
+    if (run_mqtt) {
+        int status = run_mqtt_pipeline(&config, &logger);
         gateway_logger_destroy(&logger);
         return status;
     }

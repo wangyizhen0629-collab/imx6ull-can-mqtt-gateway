@@ -19,6 +19,7 @@ enum {
     CONFIG_FIELD_QUEUE_CAPACITY,
     CONFIG_FIELD_QUEUE_PUSH_TIMEOUT_MS,
     CONFIG_FIELD_BATCH_INTERVAL_MS,
+    CONFIG_FIELD_MQTT_ACK_TIMEOUT_MS,
     CONFIG_FIELD_SPOOL_PATH,
     CONFIG_FIELD_LOG_LEVEL,
     CONFIG_FIELD_COUNT
@@ -128,7 +129,7 @@ static int field_index(const char *key)
         "device_id", "can_interface", "broker_host", "broker_port",
         "broker_username", "broker_password", "mqtt_topic",
         "queue_capacity", "queue_push_timeout_ms", "batch_interval_ms",
-        "spool_path", "log_level"
+        "mqtt_ack_timeout_ms", "spool_path", "log_level"
     };
     int index;
 
@@ -235,6 +236,14 @@ static gateway_error_code set_field(gateway_config *config,
         }
         config->batch_interval_ms = (uint32_t)parsed;
         break;
+    case CONFIG_FIELD_MQTT_ACK_TIMEOUT_MS:
+        code = parse_unsigned(value, GATEWAY_MQTT_ACK_TIMEOUT_MS_MIN,
+                              GATEWAY_MQTT_ACK_TIMEOUT_MS_MAX, &parsed);
+        if (code != GATEWAY_OK) {
+            return set_error(error, code, line, key, NULL);
+        }
+        config->mqtt_ack_timeout_ms = (uint32_t)parsed;
+        break;
     case CONFIG_FIELD_SPOOL_PATH:
         if (!valid_visible_string(value, GATEWAY_SPOOL_PATH_SIZE - 1, true) ||
             value[0] != '/') {
@@ -274,6 +283,7 @@ void gateway_config_init_defaults(gateway_config *config)
     config->queue_capacity = 1024;
     config->queue_push_timeout_ms = 50;
     config->batch_interval_ms = 1000;
+    config->mqtt_ack_timeout_ms = 5000;
     (void)snprintf(config->spool_path, sizeof(config->spool_path),
                    "/var/lib/gatewayd/spool.data");
     config->log_level = GATEWAY_LOG_INFO;
@@ -418,6 +428,12 @@ gateway_error_code gateway_config_validate(const gateway_config *config,
         return set_error(error, GATEWAY_ERROR_INVALID_VALUE, 0,
                          "broker_credentials", NULL);
     }
+    if (config->broker_username[0] == '\0' &&
+        config->broker_password[0] != '\0') {
+        return set_error(error, GATEWAY_ERROR_INVALID_VALUE, 0,
+                         "broker_password",
+                         "broker_password requires broker_username");
+    }
     if (!valid_visible_string(config->mqtt_topic,
                               GATEWAY_MQTT_TOPIC_SIZE - 1, true) ||
         strpbrk(config->mqtt_topic, "+#") != NULL) {
@@ -436,6 +452,11 @@ gateway_error_code gateway_config_validate(const gateway_config *config,
         config->batch_interval_ms > GATEWAY_BATCH_INTERVAL_MS_MAX) {
         return set_error(error, GATEWAY_ERROR_RANGE, 0, "batch_interval_ms",
                          NULL);
+    }
+    if (config->mqtt_ack_timeout_ms < GATEWAY_MQTT_ACK_TIMEOUT_MS_MIN ||
+        config->mqtt_ack_timeout_ms > GATEWAY_MQTT_ACK_TIMEOUT_MS_MAX) {
+        return set_error(error, GATEWAY_ERROR_RANGE, 0,
+                         "mqtt_ack_timeout_ms", NULL);
     }
     if (!valid_visible_string(config->spool_path,
                               GATEWAY_SPOOL_PATH_SIZE - 1, true) ||
@@ -461,11 +482,13 @@ void gateway_config_log_redacted(const gateway_config *config,
                 "device_id=%s can_interface=%s broker_host=%s broker_port=%u "
                 "broker_username=%s broker_password=<redacted> mqtt_topic=%s "
                 "queue_capacity=%zu queue_push_timeout_ms=%u "
-                "batch_interval_ms=%u spool_path=%s log_level=%s",
+                "batch_interval_ms=%u mqtt_ack_timeout_ms=%u "
+                "spool_path=%s log_level=%s",
                 config->device_id, config->can_interface, config->broker_host,
                 (unsigned int)config->broker_port,
                 config->broker_username[0] == '\0' ? "<unset>" : "<redacted>",
                 config->mqtt_topic, config->queue_capacity,
                 config->queue_push_timeout_ms, config->batch_interval_ms,
-                config->spool_path, gateway_log_level_name(config->log_level));
+                config->mqtt_ack_timeout_ms, config->spool_path,
+                gateway_log_level_name(config->log_level));
 }

@@ -1,0 +1,8 @@
+2dcff39c976d05449e724e952619fe7b2b6dad557c50f4dd1bcc4bb2050b9cc9  /tmp/imx6ull-m6-mosquitto-debs/libmosquitto1_2.0.11-1ubuntu1.2_amd64.deb
+4bd023c00db3f24ea36c10124c75e9d6585f731577026234b202cebc800e1b2a  /tmp/imx6ull-m6-mosquitto-debs/libev4_1%3a4.33-1_amd64.deb
+685c9da8e29255fc8924fbabcf687b1ad49251fa3814c50fcfa6e7ec2c2d1987  /tmp/imx6ull-m6-mosquitto-debs/mosquitto-clients_2.0.11-1ubuntu1.2_amd64.deb
+996be76466741ec4a8861679ab264f41a83a11d2eabaf58dc2f4207995372da4  /tmp/imx6ull-m6-mosquitto-debs/libmosquitto-dev_2.0.11-1ubuntu1.2_amd64.deb
+9e15ebab8c0a466d4c8bf6e3832f63d1ead1d9f59e93ae4950dc7736f1c0f853  /tmp/imx6ull-m6-mosquitto-debs/mosquitto_2.0.11-1ubuntu1.2_amd64.deb
+d404228bc27f71c5ed5c1f7991acabad3c21393b5a6ae4c064544f56727e50cc  /tmp/imx6ull-m6-mosquitto-debs/libdlt2_2.18.6-2_amd64.deb
+da5a0b01a339c658b7b87bc951cd3c8cc35225a0054677117d4d89fe3a2a3b82  /tmp/imx6ull-m6-mosquitto-debs/libcjson1_1.7.15-1ubuntu0.1_amd64.deb
+fb194622e0447a1c9ee64d39e05013a88508df0c70c0ff7a44bc05aac29974e7  /tmp/imx6ull-m6-mosquitto-debs/libwebsockets16_4.0.20-2ubuntu1.1_amd64.deb

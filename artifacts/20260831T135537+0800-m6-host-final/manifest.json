@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T135537+0800-m6-host-final",
+  "milestone": "M6",
+  "source_commit": "ae4fd3fdff908eab5112a065e6e3cc23d88f8284",
+  "source_tree": "dirty M6 implementation",
+  "host": "Ubuntu 22.04 x86_64",
+  "compiler": "GCC 11.4.0",
+  "libmosquitto": "2.0.11",
+  "status": "PASS",
+  "warning_clean_build": "PASS",
+  "sandbox_ctest": "EXPECTED_ENVIRONMENT_FAIL_PF_CAN_12_OF_13",
+  "nonsandbox_ctest": "PASS_13_OF_13",
+  "scope": "Host build and unit/regression tests only"
+}

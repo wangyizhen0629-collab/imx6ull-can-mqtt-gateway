@@ -1,0 +1,26 @@
+Consolidate compiler generated dependencies of target gateway_core
+[ 35%] Built target gateway_core
+Consolidate compiler generated dependencies of target test_config
+Consolidate compiler generated dependencies of target gatewayd
+[ 41%] Built target test_config
+[ 44%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+Consolidate compiler generated dependencies of target test_error_record
+[ 50%] Built target test_error_record
+Consolidate compiler generated dependencies of target test_lifecycle
+[ 55%] Built target test_lifecycle
+Consolidate compiler generated dependencies of target test_log
+[ 61%] Built target test_log
+[ 64%] Linking C executable gatewayd
+Consolidate compiler generated dependencies of target test_ring_buffer
+[ 70%] Built target test_ring_buffer
+Consolidate compiler generated dependencies of target test_can_receiver
+[ 76%] Built target test_can_receiver
+Consolidate compiler generated dependencies of target test_vehicle_decoder
+[ 82%] Built target test_vehicle_decoder
+[ 82%] Built target gatewayd
+Consolidate compiler generated dependencies of target test_pipeline
+Consolidate compiler generated dependencies of target test_mqtt_sink
+[ 88%] Built target test_pipeline
+[ 94%] Built target test_mqtt_sink
+Consolidate compiler generated dependencies of target test_mqtt_integration
+[100%] Built target test_mqtt_integration

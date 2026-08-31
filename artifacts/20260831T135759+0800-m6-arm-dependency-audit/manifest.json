@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T135759+0800-m6-arm-dependency-audit",
+  "milestone": "M6",
+  "source_commit": "ae4fd3fdff908eab5112a065e6e3cc23d88f8284",
+  "status": "NOT RUN",
+  "cmake_configure_exit": 1,
+  "reason": "Buildroot SDK sysroot contains neither mosquitto.h nor target libmosquitto development library/pkg-config metadata",
+  "required_condition": "Provide matching ARMv7 libmosquitto development files in the target SDK/staging root",
+  "scope": "No ARM M6 binary was built, deployed or run"
+}

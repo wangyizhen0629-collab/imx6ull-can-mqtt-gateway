@@ -1,0 +1,1 @@
+{"schema":"gateway.telemetry.v1","device_id":"m6-timing","batch_seq":1,"record_count":1,"first_seq":1,"last_seq":1,"records":[{"seq":1,"timestamp_ns":1,"can_id":256,"dlc":8,"data":"0000000000000000","ecu_counter":0,"status_flags":7,"decoded_payload":"0000000000000000000000000000000000000000000000000000000000000000"}]}

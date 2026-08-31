@@ -339,6 +339,52 @@
 - 证据限制：未归档 `can_before/after`、正确 UTC 和 shell `wait` 精确退出码，因此不作
   CAN 错误增量、持续运行、吞吐、时延或可靠性结论。M5 在此停止；本决定不授权 M6。
 
+## D-027：M6 使用 libmosquitto 单 in-flight QoS 1 batch 基线
+
+- 日期：2026-08-31
+- 状态：设计已接受并在 Ubuntu x86_64 实现
+- 决定：使用经过实际编译/运行验证的 libmosquitto，不手写 MQTT 协议。M6 使用
+  MQTT 3.1.1、QoS 1、clean session，并把 libmosquitto in-flight上限设为1。每次 publish
+  保存 MID；只有 publish callback 返回相同 MID 才算成功并推进 batch_seq、已确认记录数
+  和 last acknowledged gateway seq。unexpected MID 和网络错误单独统计。
+- batch格式：JSON schema固定为 `gateway.telemetry.v1`，包含 device ID、batch_seq、
+  record_count、first/last seq和记录数组。记录保留原始 CAN data、内核 timestamp、
+  status flags和32字节解码区的十六进制表示。batch内 seq严格递增，但允许上游丢弃形成
+  gap；subscriber按 `device_id + seq` 验证 unique/missing/duplicate。
+- 有界性：生产默认 batch interval为1000 ms，batch最多256条、payload buffer为固定
+  128 KiB。consumer增加可选 timed pop/idle callback；MQTT路径每50 ms维护库loop并检查
+  到期 batch，使稀疏输入不必等待下一条记录。M5 mock sink不设置idle callback，继续
+  使用原阻塞pop和close后drain语义。
+- 配置：新增 `mqtt_ack_timeout_ms`，默认5000 ms、范围100～60000 ms；password不能在
+  username为空时单独存在。真实凭据继续只从配置/CLI取得且日志脱敏。
+- 失败边界：M6不重连、不写spool、不补传。连接或PUBACK失败会停止pipeline，未确认
+  batch不得计为成功。断线恢复、原始重复处理、持久化和seq恢复属于M7；本阶段不调用
+  `mosquitto_socket/loop_read/loop_write/loop_misc`组合的external reactor，epoll仍属M8。
+
+## D-028：M6 主机 loopback 基线通过，但总门禁保持 NOT MET
+
+- 日期：2026-08-31
+- 状态：已接受；M6实现完成、退出门禁 NOT MET
+- 主机证据：`artifacts/20260831T135537+0800-m6-host-final/` warning-clean且沙箱外
+  CTest 13/13 PASS；`artifacts/20260831T135603+0800-m6-asan-ubsan/` 的ASan+UBSan也是
+  13/13 PASS，LeakSanitizer为 `NOT RUN`。
+- MQTT证据：经项目所有者明确批准，
+  `artifacts/20260831T135630+0800-m6-mqtt-final/` 使用实际Mosquitto/libmosquitto 2.0.11
+  和仅监听 `127.0.0.1:18884` 的临时Broker。publisher完成1000次attempt、1000次库接受
+  和1000个匹配PUBACK，unexpected=0；subscriber得到1～1000连续batch_seq/gateway seq，
+  missing/duplicate/reordered均为0。Broker日志也分别计到1000次PUBLISH和PUBACK。
+- timer证据：同一run以100 ms测试interval和1条记录验证idle tick会发送稀疏batch；
+  105.236 ms只作为路径功能值，不作为产品时延或性能指标。
+- 未满足项：上述通信全部发生在同一Ubuntu主机loopback，不是测试计划规定的局域网
+  跨主机链路。`artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 又确认Buildroot
+  SDK缺少目标 `mosquitto.h`、库和pkg-config元数据，所以M6 ARM构建、部署和真实
+  i.MX6ULL物理CAN → MQTT均为 `NOT RUN`。
+- 门禁决定：不能用host loopback替代LAN/目标证据，因此M6总门禁保持 `NOT MET`，也不
+  产生“完整CAN--MQTT网关”、板端QoS、吞吐、时延或可靠性结论。M7不得开始。
+- 收尾复核：`artifacts/20260831T140625+0800-m6-close-audit/` 确认M6专项单测、
+  subscriber重放、归档hash和范围审计通过；临时Broker端口已无listener。
+  这只是证据一致性收尾，不改变上述 `NOT MET` 决定。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

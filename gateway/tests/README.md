@@ -52,3 +52,16 @@ M5 新增 `test_pipeline`：
 signal 15 退出已由项目所有者另行执行，原始日志归档在
 `artifacts/20260831T132341+0800-m5-board-owner-final/`。该板端 run 只证明 M5 功能
 门禁，不提供持续111帧/s、CAN 错误增量、吞吐、时延或可靠性结论。
+
+M6新增 `test_mqtt_sink`，默认CTest只做无需Broker的batch JSON编码、错误边界、实际
+libmosquitto加载和配置检查。`test_mqtt_integration` 与 `test_mqtt_timing` 会连接并改变
+Broker/进程状态，所以只构建、不注册到默认CTest；必须先获批准，再显式启动测试Broker
+和subscriber后运行。
+
+M6最终host loopback集成使用实际Mosquitto/libmosquitto 2.0.11：1000个单记录QoS 1
+batch全部收到匹配PUBACK，subscriber的batch_seq和gateway seq均为1～1000且无缺失、
+重复或乱序。独立100 ms测试interval用例验证低流量idle tick能发送到期batch。证据在
+`artifacts/20260831T135630+0800-m6-mqtt-final/`。
+
+这些测试不是局域网跨主机、ARMv7、i.MX6ULL或真实CAN → MQTT证据；当前目标SDK缺少
+libmosquitto开发文件，相关项目为 `NOT RUN`。断线重连、spool、恢复和epoll不属于M6。

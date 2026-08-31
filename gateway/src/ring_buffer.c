@@ -187,6 +187,55 @@ gateway_error_code gateway_ring_buffer_pop(gateway_ring_buffer *queue,
     return result;
 }
 
+gateway_error_code gateway_ring_buffer_pop_timed(gateway_ring_buffer *queue,
+                                                 telemetry_record *record,
+                                                 uint32_t timeout_ms)
+{
+    gateway_error_code result = GATEWAY_OK;
+    struct timespec deadline;
+
+    if (queue == NULL || record == NULL) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    if (pthread_mutex_lock(&queue->mutex) != 0) {
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    deadline_after(queue->condition_clock, timeout_ms, &deadline);
+    /* MQTT consumer 周期唤醒时仍遵守 close 后先 drain 的既有语义。 */
+    while (queue->count == 0 && !queue->closed) {
+        int status;
+
+        if (timeout_ms == 0) {
+            result = GATEWAY_ERROR_TIMEOUT;
+            break;
+        }
+        status = pthread_cond_timedwait(&queue->not_empty, &queue->mutex,
+                                        &deadline);
+        if (status == ETIMEDOUT) {
+            result = GATEWAY_ERROR_TIMEOUT;
+            break;
+        }
+        if (status != 0) {
+            result = GATEWAY_ERROR_SYSTEM;
+            break;
+        }
+    }
+    if (result == GATEWAY_OK && queue->count == 0 && queue->closed) {
+        result = GATEWAY_ERROR_CLOSED;
+    }
+    if (result == GATEWAY_OK) {
+        *record = queue->records[queue->head];
+        queue->head = (queue->head + 1U) % queue->capacity;
+        queue->count--;
+        gateway_stats_increment(queue->stats, GATEWAY_STAT_QUEUE_POP_SUCCESS);
+        (void)pthread_cond_signal(&queue->not_full);
+    } else if (result == GATEWAY_ERROR_CLOSED) {
+        gateway_stats_increment(queue->stats, GATEWAY_STAT_QUEUE_POP_CLOSED);
+    }
+    (void)pthread_mutex_unlock(&queue->mutex);
+    return result;
+}
+
 gateway_error_code gateway_ring_buffer_close(gateway_ring_buffer *queue)
 {
     if (queue == NULL) {

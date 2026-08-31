@@ -1,0 +1,12 @@
+# 依赖位于 /tmp，不执行系统安装。
+env LD_LIBRARY_PATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu /tmp/imx6ull-m6-mosquitto-root/usr/sbin/mosquitto -c artifacts/20260831T135630+0800-m6-mqtt-final/mosquitto.conf -v
+
+env LD_LIBRARY_PATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu /tmp/imx6ull-m6-mosquitto-root/usr/bin/mosquitto_sub -h 127.0.0.1 -p 18884 -q 1 -t test/m6/final-20260831T135630 -C 1000 -W 60 -F %p
+
+env LD_LIBRARY_PATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu build/m6-host-final/gateway/test_mqtt_integration 127.0.0.1 18884 test/m6/final-20260831T135630 1000 m6-final
+
+python3 tools/mqtt/validate_m6_batches.py --input artifacts/20260831T135630+0800-m6-mqtt-final/subscriber.jsonl --device-id m6-final --expected-batches 1000
+
+env LD_LIBRARY_PATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu build/m6-host-final/gateway/test_mqtt_timing 127.0.0.1 18884 test/m6/timing-20260831T135630 m6-timing
+
+# 测试完成后向前台 Broker 发送 SIGINT，并确认 127.0.0.1:18884 不再监听。

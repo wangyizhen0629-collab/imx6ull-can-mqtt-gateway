@@ -21,9 +21,10 @@
   直接传输路径是否可用，还是继续经 Windows 中转？
 - M2 可使用 `/tmp` tmpfs 做临时部署（审计时可用 245 MiB）；该结论不适用于 M7 spool
   持久化目录。
-- 目标 rootfs/sysroot 是否包含 `libmosquitto.so`、`mosquitto.h`、pkg-config 元数据及
-  M8 所需四个 external loop API？板端只发现 `libmosquitto.so(.1)`，没有 `/usr/include`
-  或 pkg-config；精确版本和 SDK 开发文件仍未知。
+- M6依赖审计已确认当前Buildroot SDK sysroot不含 `mosquitto.h`、目标
+  `libmosquitto.so`/`.a` 或pkg-config元数据。历史板端审计只发现
+  `/usr/lib/libmosquitto.so(.1)`；其精确版本、SONAME/API兼容性，以及如何取得与rootfs
+  匹配的开发文件仍未知。M8所需四个external loop API也尚未在目标库验证。
 - `can0` 已确认是 FlexCAN、clock 30 MHz；M2 controller loopback、timestamp 和错误
   DLC 路径已经批准并 PASS。测试后为 DOWN/STOPPED、loopback off，500000 bit timing
   仍在关闭状态保留。
@@ -92,9 +93,13 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 
 ## 网络、Broker 和运行策略
 
-- 测试专用 `device_id`、Broker hostname/address、端口、认证方式、topic 规则和 client ID
-  冲突策略是什么？
-- PC 测试实例使用哪个 Mosquitto 版本和控制方式？
+- M6 host loopback已解决测试实例：使用临时Mosquitto/libmosquitto 2.0.11，Broker只监听
+  `127.0.0.1:18884`、匿名、禁用持久化，并在测试后停止。该配置只服务M6主机功能证据，
+  不是未来局域网/部署配置。
+- 局域网/目标板测试仍需确定专用 `device_id`、Broker hostname/address、端口、认证方式、
+  topic规则和client ID冲突策略；真实局域网地址和凭据不得提交。
+- PC局域网测试实例采用哪个Mosquitto版本、如何受控启停，以及目标libmosquitto是否与其
+  兼容？M6 host 2.0.11结果不能替代该选择。
 - 目标板哪个目录/存储介质适合 spool durability 测试？容量和写入寿命限制是什么？
 - 耐久策略选择每 batch sync 还是有上限的周期 sync？spool 满时如何处理？
 - 目标板使用什么时间源，wall clock 是否可能跳变？
@@ -106,7 +111,7 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 长时间运行 artifact 的备份和保留策略是什么？
 - M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
 
-## M1～M5 后续验证边界
+## M1～M6 后续验证边界
 
 - M1/M2 当前源码已随 M2 的 ARM `gatewayd` 使用真实 Buildroot SDK 完成交叉编译，并
   在 i.MX6ULL 上完成动态加载和 controller loopback；该结论仅覆盖当前 SHA256 binary。
@@ -123,6 +128,13 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M2 主机单测验证未绑定 CAN_RAW socket 的过滤选项和 datagram timestamp 解析；真实
   i.MX6ULL bind/controller loopback 已另有板端证据。两类结果必须分别引用，不能用
   controller loopback 外推物理 CAN 或性能。
+- M6 Ubuntu主机已使用实际libmosquitto 2.0.11完成1000个QoS 1 loopback batch：publisher
+  匹配PUBACK 1000/1000，subscriber batch_seq/gateway seq为1～1000且无缺失/重复。
+  该结果不是局域网跨主机或板端证据；目标SDK开发文件、ARM构建、部署和真实物理
+  CAN → MQTT仍为 `NOT RUN`，M6总门禁保持 `NOT MET`。
+- M6收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 已复核源码/二进制
+  hash、1000条subscriber JSON和M7/M8边界，且确认临时Broker端口无listener。
+  该收尾不解决目标SDK、LAN或板端的上述待确认项。
 
 ## 本次已解决项
 
@@ -154,6 +166,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   warning-clean 与 ASan+UBSan 全量12/12、主机111帧/s零 queue drop、故意过载、
   `SIGTERM`、ARMv7 交叉构建，以及真实 i.MX6ULL 基准/过载/信号退出均已通过。
   板端证据为 `artifacts/20260831T132341+0800-m5-board-owner-final/`，M5 已关闭。
+- M6主机基线：libmosquitto QoS 1单in-flight状态机、batch JSON、匹配PUBACK统计、
+  低流量timer路径和subscriber seq验证已通过；最终loopback证据为
+  `artifacts/20260831T135630+0800-m6-mqtt-final/`。这项只允许描述为Ubuntu x86_64
+  loopback功能验证，不能写成i.MX6ULL或完整CAN--MQTT链路。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

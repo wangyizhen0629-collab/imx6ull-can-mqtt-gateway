@@ -1,0 +1,3 @@
+usage: validate_m6_batches.py [-h] --input INPUT --device-id DEVICE_ID
+                              --expected-batches EXPECTED_BATCHES
+validate_m6_batches.py: error: unrecognized arguments: --expected-first-seq 1 --expected-last-seq 1000

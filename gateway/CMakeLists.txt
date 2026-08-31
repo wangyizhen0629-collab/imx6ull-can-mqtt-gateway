@@ -1,5 +1,34 @@
 find_package(Threads REQUIRED)
 
+# M6 起 gatewayd 使用经过验证的 libmosquitto，而不是手写 MQTT 协议。
+# 目标 SDK 若未提供开发文件，应明确配置失败并记录 NOT RUN，不能误用主机库交叉链接。
+set(GATEWAY_MOSQUITTO_ROOT "" CACHE PATH
+    "Root containing libmosquitto headers and libraries")
+find_path(GATEWAY_MOSQUITTO_INCLUDE_DIR
+    NAMES mosquitto.h
+    HINTS
+        "${GATEWAY_MOSQUITTO_ROOT}/include"
+        "${GATEWAY_MOSQUITTO_ROOT}/usr/include"
+)
+find_library(GATEWAY_MOSQUITTO_LIBRARY
+    NAMES mosquitto
+    HINTS
+        "${GATEWAY_MOSQUITTO_ROOT}/lib"
+        "${GATEWAY_MOSQUITTO_ROOT}/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+        "${GATEWAY_MOSQUITTO_ROOT}/usr/lib"
+        "${GATEWAY_MOSQUITTO_ROOT}/usr/lib/${CMAKE_LIBRARY_ARCHITECTURE}"
+)
+if(NOT GATEWAY_MOSQUITTO_INCLUDE_DIR OR NOT GATEWAY_MOSQUITTO_LIBRARY)
+    message(FATAL_ERROR
+        "M6 requires libmosquitto development files. Install them or set "
+        "GATEWAY_MOSQUITTO_ROOT to a matching target root.")
+endif()
+add_library(Mosquitto::Mosquitto UNKNOWN IMPORTED)
+set_target_properties(Mosquitto::Mosquitto PROPERTIES
+    IMPORTED_LOCATION "${GATEWAY_MOSQUITTO_LIBRARY}"
+    INTERFACE_INCLUDE_DIRECTORIES "${GATEWAY_MOSQUITTO_INCLUDE_DIR}"
+)
+
 set(GATEWAY_WARNING_OPTIONS
     -Wall
     -Wextra
@@ -14,6 +43,7 @@ add_library(gateway_core STATIC
     src/lifecycle.c
     src/log.c
     src/mock_sink.c
+    src/mqtt_sink.c
     src/pipeline.c
     src/ring_buffer.c
     src/stats.c
@@ -29,7 +59,7 @@ target_compile_definitions(gateway_core PUBLIC
 target_include_directories(gateway_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
-target_link_libraries(gateway_core PUBLIC Threads::Threads)
+target_link_libraries(gateway_core PUBLIC Threads::Threads Mosquitto::Mosquitto)
 
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(gateway_core PRIVATE ${GATEWAY_WARNING_OPTIONS})
@@ -91,4 +121,23 @@ if(BUILD_TESTING)
     set_tests_properties(test_vehicle_dbc PROPERTIES LABELS "M4;protocol")
 
     add_gateway_unit_test(test_pipeline M5)
+    add_gateway_unit_test(test_mqtt_sink M6)
+
+    # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
+    # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。
+    add_executable(test_mqtt_integration tests/test_mqtt_integration.c)
+    target_compile_features(test_mqtt_integration PRIVATE c_std_11)
+    target_link_libraries(test_mqtt_integration PRIVATE gateway_core)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(test_mqtt_integration PRIVATE
+                               ${GATEWAY_WARNING_OPTIONS})
+    endif()
+
+    add_executable(test_mqtt_timing tests/test_mqtt_timing.c)
+    target_compile_features(test_mqtt_timing PRIVATE c_std_11)
+    target_link_libraries(test_mqtt_timing PRIVATE gateway_core)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(test_mqtt_timing PRIVATE
+                               ${GATEWAY_WARNING_OPTIONS})
+    endif()
 endif()

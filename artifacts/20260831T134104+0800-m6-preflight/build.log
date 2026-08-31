@@ -1,0 +1,39 @@
+[  3%] Building C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o
+[  6%] Building C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o
+[ 10%] Building C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o
+[ 13%] Building C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o
+[ 17%] Building C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o
+[ 20%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o
+[ 24%] Building C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o
+[ 27%] Building C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o
+[ 31%] Building C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o
+[ 34%] Building C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o
+[ 37%] Linking C static library libgateway_core.a
+[ 37%] Built target gateway_core
+[ 41%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+[ 44%] Building C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o
+[ 48%] Linking C executable gatewayd
+[ 51%] Linking C executable test_config
+[ 51%] Built target gatewayd
+[ 55%] Building C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o
+[ 55%] Built target test_config
+[ 58%] Building C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o
+[ 62%] Linking C executable test_error_record
+[ 65%] Linking C executable test_lifecycle
+[ 65%] Built target test_error_record
+[ 68%] Building C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o
+[ 68%] Built target test_lifecycle
+[ 72%] Building C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o
+[ 75%] Linking C executable test_log
+[ 75%] Built target test_log
+[ 79%] Linking C executable test_ring_buffer
+[ 82%] Building C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o
+[ 82%] Built target test_ring_buffer
+[ 86%] Linking C executable test_can_receiver
+[ 89%] Building C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o
+[ 89%] Built target test_can_receiver
+[ 93%] Building C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o
+[ 96%] Linking C executable test_vehicle_decoder
+[100%] Linking C executable test_pipeline
+[100%] Built target test_vehicle_decoder
+[100%] Built target test_pipeline

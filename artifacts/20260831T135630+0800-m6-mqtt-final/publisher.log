@@ -1,0 +1,2 @@
+[2026-08-31T05:57:28.281Z] INFO mqtt: connected broker=127.0.0.1 port=18884 topic=test/m6/final-20260831T135630 qos=1 max_inflight=1
+M6_MQTT_SUMMARY library=2.0.11 batches=1000 records=1000 publish_attempts=1000 publish_accepted=1000 puback_matched=1000 puback_unexpected=0 last_batch_seq=1000 last_gateway_seq=1000 failed=0

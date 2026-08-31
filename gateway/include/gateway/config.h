@@ -20,7 +20,9 @@ enum {
     GATEWAY_QUEUE_CAPACITY_MAX = 65536,
     GATEWAY_QUEUE_PUSH_TIMEOUT_MS_MAX = 60000,
     GATEWAY_BATCH_INTERVAL_MS_MIN = 100,
-    GATEWAY_BATCH_INTERVAL_MS_MAX = 60000
+    GATEWAY_BATCH_INTERVAL_MS_MAX = 60000,
+    GATEWAY_MQTT_ACK_TIMEOUT_MS_MIN = 100,
+    GATEWAY_MQTT_ACK_TIMEOUT_MS_MAX = 60000
 };
 
 typedef struct {
@@ -34,6 +36,7 @@ typedef struct {
     size_t queue_capacity;
     uint32_t queue_push_timeout_ms;
     uint32_t batch_interval_ms;
+    uint32_t mqtt_ack_timeout_ms;
     char spool_path[GATEWAY_SPOOL_PATH_SIZE];
     gateway_log_level log_level;
 } gateway_config;

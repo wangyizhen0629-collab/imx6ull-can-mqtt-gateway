@@ -1,4 +1,12 @@
 # MQTT 工具
 
-PC 端 Broker 控制、subscriber 校验和序列分析安排在 M6 以后。启停 Broker 前必须取得
-明确批准。
+M6 使用 libmosquitto，不手写 MQTT 协议。`mosquitto-m6-local.conf` 只监听
+`127.0.0.1:18884`、允许匿名测试连接且禁用持久化；它必须由测试命令显式启动，不能
+安装为系统服务。启停任何 Broker 前仍须取得明确批准。
+
+`validate_m6_batches.py` 读取 `mosquitto_sub -F %p` 保存的逐行 JSON，验证 schema、
+device ID、batch 元数据、DLC/十六进制字段，以及从1开始严格连续且无重复的
+`batch_seq` 和 gateway `seq`。M6 的1000-batch gate 还必须同时核对 publisher 侧
+`publish_attempts`、`publish_accepted`、匹配 PUBACK 和 unexpected PUBACK 统计。
+
+该工具不测试断线、重连、spool、去重恢复或 epoll；这些仍属于 M7/M8。

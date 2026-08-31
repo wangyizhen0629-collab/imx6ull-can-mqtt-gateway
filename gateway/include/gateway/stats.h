@@ -24,7 +24,16 @@ typedef enum {
     GATEWAY_STAT_CAN_RECEIVE_ERRORS = 13,
     GATEWAY_STAT_CAN_DECODE_SUCCESS = 14,
     GATEWAY_STAT_CAN_DECODE_ERRORS = 15,
-    GATEWAY_STAT_COUNT = 16
+    GATEWAY_STAT_MQTT_CONNECT_ATTEMPTS = 16,
+    GATEWAY_STAT_MQTT_CONNECT_SUCCESS = 17,
+    GATEWAY_STAT_MQTT_PUBLISH_ATTEMPTS = 18,
+    GATEWAY_STAT_MQTT_PUBLISH_ACCEPTED = 19,
+    GATEWAY_STAT_MQTT_PUBACK_MATCHED = 20,
+    GATEWAY_STAT_MQTT_PUBACK_UNEXPECTED = 21,
+    GATEWAY_STAT_MQTT_RECORDS_ACKED = 22,
+    GATEWAY_STAT_MQTT_ERRORS = 23,
+    GATEWAY_STAT_MQTT_RECONNECTS = 24,
+    GATEWAY_STAT_COUNT = 25
 } gateway_stat_counter;
 
 typedef struct {
@@ -40,6 +49,9 @@ typedef struct {
 gateway_error_code gateway_stats_init(gateway_stats *stats);
 void gateway_stats_destroy(gateway_stats *stats);
 void gateway_stats_increment(gateway_stats *stats, gateway_stat_counter counter);
+void gateway_stats_add(gateway_stats *stats,
+                       gateway_stat_counter counter,
+                       uint64_t value);
 void gateway_stats_update_queue_high_watermark(gateway_stats *stats,
                                                size_t count);
 void gateway_stats_read(gateway_stats *stats, gateway_stats_snapshot *snapshot);

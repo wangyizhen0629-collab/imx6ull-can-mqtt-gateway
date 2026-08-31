@@ -1,0 +1,2 @@
+mosquitto_sub is a simple mqtt client that will subscribe to a set of topics and print all messages it receives.
+mosquitto_sub version 2.0.11 running on libmosquitto 2.0.11.

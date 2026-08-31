@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T140625+0800-m6-close-audit",
+  "milestone": "M6",
+  "started_at": "2026-08-31T14:06:25+08:00",
+  "completed_at": "2026-08-31T14:08:38+08:00",
+  "base_commit": "ae4fd3fdff908eab5112a065e6e3cc23d88f8284",
+  "audit_status": "PASS",
+  "milestone_gate": "NOT_MET",
+  "results": {
+    "m6_ctest": "PASS_1_OF_1",
+    "subscriber_validator_replay": "PASS_1000_OF_1000",
+    "archived_source_hashes": "PASS_18_OF_18",
+    "archived_binary_hashes": "PASS_3_OF_3",
+    "json_validation": "PASS_9_OF_9",
+    "python_compile": "PASS",
+    "git_diff_check": "PASS",
+    "m7_scope_audit": "PASS_NO_MATCHES",
+    "broker_listener_after": "PASS_NO_LISTENER"
+  },
+  "preserved_command_error": {
+    "file": "validator_replay.log",
+    "exit_code": 2,
+    "reason": "unsupported command-line arguments; corrected replay is in validator_replay_pass.log"
+  },
+  "not_run": [
+    "ARMv7 M6 cross-build",
+    "i.MX6ULL deployment and execution",
+    "physical CAN to MQTT end-to-end",
+    "LAN cross-host MQTT gate",
+    "hardware, performance, latency, endurance and reliability tests"
+  ],
+  "m7_or_later_implemented": false
+}

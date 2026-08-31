@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T135420+0800-m6-mqtt-dev",
+  "milestone": "M6",
+  "authorization": "Project owner approved temporary loopback Broker/subscriber testing",
+  "status": "PASS_DEVELOPMENT",
+  "batches": 10,
+  "puback_matched": 10,
+  "puback_unexpected": 0,
+  "subscriber_missing": 0,
+  "subscriber_duplicates": 0,
+  "scope": "Development smoke test; superseded by 1000-batch final run"
+}

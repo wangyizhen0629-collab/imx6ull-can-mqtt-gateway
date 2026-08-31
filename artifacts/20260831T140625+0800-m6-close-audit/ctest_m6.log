@@ -1,0 +1,12 @@
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-host-final
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-host-final
+    Start 13: test_mqtt_sink
+1/1 Test #13: test_mqtt_sink ...................   Passed    0.00 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+M6      =   0.00 sec*proc (1 test)
+unit    =   0.00 sec*proc (1 test)
+
+Total Test time (real) =   0.00 sec

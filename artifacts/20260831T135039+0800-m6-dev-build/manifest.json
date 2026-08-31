@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T135039+0800-m6-dev-build",
+  "milestone": "M6",
+  "status": "PASS_DEVELOPMENT",
+  "result": "Initial warning-clean build of the MQTT sink and tests passed",
+  "scope": "Development evidence; superseded by m6-host-final"
+}

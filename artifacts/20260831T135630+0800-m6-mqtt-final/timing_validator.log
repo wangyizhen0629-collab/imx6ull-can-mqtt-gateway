@@ -1,0 +1,1 @@
+{"duplicate_batch_seq": 0, "duplicate_gateway_seq": 0, "first_batch_seq": 1, "first_gateway_seq": 1, "last_batch_seq": 1, "last_gateway_seq": 1, "missing_batch_seq": 0, "missing_gateway_seq": 0, "raw_batches": 1, "status": "PASS", "unique_batch_seq": 1, "unique_gateway_seq": 1}

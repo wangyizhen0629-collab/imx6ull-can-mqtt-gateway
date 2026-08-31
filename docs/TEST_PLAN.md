@@ -150,6 +150,31 @@ post-join summary。项目所有者确认 STM32 是进程启动后中途开启�
 在测试开始前启动 STM32，同时保存 binary hash、配置、`can_before/after`、完整日志、
 summary 和 shell 退出状态；不得倒填本次 M5 证据。
 
+M6 主机最终测试如下：
+
+- `artifacts/20260831T135537+0800-m6-host-final/` 使用实际libmosquitto 2.0.11完成
+  warning-clean fresh build；沙箱外全量CTest 13/13 PASS。沙箱内12/13的唯一失败仍是
+  PF_CAN权限限制，两个结果均保留；
+- `artifacts/20260831T135603+0800-m6-asan-ubsan/` 的ASan+UBSan全量13/13 PASS；
+  LeakSanitizer因 `ptrace` 限制为 **NOT RUN**；
+- 经项目所有者明确批准，`artifacts/20260831T135630+0800-m6-mqtt-final/` 使用仅监听
+  `127.0.0.1:18884`、禁用持久化的临时Mosquitto 2.0.11。publisher必须满足
+  `publish_attempts=publish_accepted=puback_matched=1000`、unexpected=0；subscriber
+  validator必须确认1000条batch的batch_seq和gateway seq均为1～1000，missing、
+  duplicate和reordered均为0。上述条件均实际PASS；
+- 同一MQTT run还以100 ms测试interval和单记录验证idle tick触发到期batch。观测
+  105.236 ms只用于确认功能路径，不能作为时延或性能数字；生产默认interval为1000 ms；
+- `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认Buildroot SDK缺少目标
+  libmosquitto开发文件，所以ARM交叉构建、部署和板端运行均为 **NOT RUN**；
+- 正式计划要求的局域网跨主机、真实i.MX6ULL物理CAN → MQTT也是 **NOT RUN**。
+  host loopback不能代替该证据，因此M6总退出门禁保持 **NOT MET**。
+- 收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 重跑M6单测、重放1000条
+  subscriber JSON、复核归档hash与M7/M8范围，全部PASS；临时Broker端口已
+  确认无listener。该审计不会将上述 `NOT RUN` 项转为PASS。
+
+M6的1000个单记录测试batch用于覆盖1000次QoS 1状态转换，不是1秒生产负载、吞吐或
+运行时长测试。Broker断线/恢复、spool、`kill -9`、去重和epoll属于M7/M8，M6不得执行。
+
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。
 

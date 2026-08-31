@@ -23,11 +23,18 @@ void gateway_stats_destroy(gateway_stats *stats)
 
 void gateway_stats_increment(gateway_stats *stats, gateway_stat_counter counter)
 {
+    gateway_stats_add(stats, counter, 1);
+}
+
+void gateway_stats_add(gateway_stats *stats,
+                       gateway_stat_counter counter,
+                       uint64_t value)
+{
     if (stats == NULL || counter < 0 || counter >= GATEWAY_STAT_COUNT) {
         return;
     }
     (void)pthread_mutex_lock(&stats->mutex);
-    stats->values.counters[counter]++;
+    stats->values.counters[counter] += value;
     (void)pthread_mutex_unlock(&stats->mutex);
 }
 

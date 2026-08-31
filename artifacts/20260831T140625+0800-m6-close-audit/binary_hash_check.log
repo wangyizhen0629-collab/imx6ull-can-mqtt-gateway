@@ -1,0 +1,3 @@
+build/m6-host-final/gateway/test_mqtt_integration: 成功
+build/m6-host-final/gateway/gatewayd: 成功
+build/m6-host-final/gateway/test_mqtt_timing: 成功

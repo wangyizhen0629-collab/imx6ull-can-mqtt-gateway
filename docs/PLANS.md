@@ -34,7 +34,13 @@
   和消费且 queue drop 0；慢消费者过载6532条解码输入中2970条消费、3561条 drop、
   1条在关闭竞争中拒绝，计数守恒；两次 signal 15 后均输出 post-join summary。
   timeout 由 STM32 在进程启动后才开启解释，不作为队列失败，也不宣称全程连续负载。
-  M5 于2026-08-31通过；M6 及后续未开始。
+  M5 于2026-08-31通过。
+- M6 已获项目所有者授权并完成 Ubuntu x86_64 主机实现与 loopback 基线。实际
+  Mosquitto/libmosquitto 2.0.11 下1000个 QoS 1测试 batch 均收到匹配 PUBACK，subscriber
+  的 batch_seq/gateway seq 均为1～1000且 missing/duplicate 为0；主机 warning-clean
+  和 ASan+UBSan 全量13/13通过。由于正式门禁要求局域网验证，而本次只有同机 loopback；
+  且 Buildroot SDK 缺少目标 libmosquitto 开发文件，ARM交叉构建和 i.MX6ULL 运行均为
+  `NOT RUN`。因此 M6 实现已完成，但总退出门禁为 `NOT MET`；M7 及后续未开始。
 
 ## Milestone 总表
 
@@ -50,7 +56,7 @@
 | M3-E | `gatewayd` 接入真实 CAN | 在真实 `can0` 完成有限接收；原10分钟门禁由项目所有者豁免 | 已完成；两次1110帧 smoke 正常，10分钟测试 NOT RUN/已豁免 |
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
-| M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 未开始 |
+| M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 主机实现/loopback 1000-batch PASS；局域网、ARM及板端 NOT RUN，门禁 NOT MET |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 未开始 |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
@@ -276,7 +282,51 @@ M4 退出条件已经满足，状态为 **2026-08-31 已通过**。该判定只�
 M5 退出条件已经满足，状态为 **2026-08-31 已通过**。该判定覆盖真实 i.MX6ULL 上的
 物理 CAN → 实时解码 → queue → mock sink 基准零 drop、故意慢消费者过载策略和
 signal 15 graceful shutdown；不产生持续运行、CAN error增量、吞吐、时延或可靠性结论。
-M6 及后续功能不得开始，进入 M6 仍需项目所有者另行确认。
+上述是M5关闭时的历史边界；本轮项目所有者随后已另行授权M6，当前M6结果见下节。
+
+## M6 当前记录
+
+1. 新增 `gateway_mqtt_sink` 并链接实际 libmosquitto；使用 MQTT 3.1.1 QoS 1、clean
+   session 和 `mosquitto_max_inflight_messages_set(..., 1)`。代码不手写 MQTT 协议，
+   M6 也不调用 M8 external loop API。
+2. batch JSON schema 为 `gateway.telemetry.v1`，包含 device ID、batch_seq、record_count、
+   first/last seq及每条记录的原始 CAN、timestamp、状态和解码区。batch 内 seq 必须严格
+   递增，允许队列丢弃导致的合法 gap。
+3. 默认 `batch_interval_ms=1000`，固定安全上限256条。consumer 使用50 ms timed pop
+   idle tick，使低流量下没有下一条记录时仍能发送到期 batch；关闭后先 drain queue，
+   再 flush 最后一批并等待 PUBACK。
+4. 每次 publish 前统计 attempt，libmosquitto 接受后统计 accepted；只有 callback 的 MID
+   与当前单个 in-flight MID 完全相同才统计 matched PUBACK并推进 batch/record确认游标。
+   unexpected PUBACK 和 MQTT error 独立统计。
+5. M6 没有重连、spool、断线补传或去重。连接/PUBACK失败会令 consumer失败并走现有
+   stop/close/join路径；未确认的内存 batch 不被伪装成已交付。恢复语义属于 M7。
+6. 配置新增 `mqtt_ack_timeout_ms`，默认5000 ms、允许100～60000 ms；password不能在
+   username为空时单独配置。日志继续对用户名和密码脱敏。
+7. 前置审计 `artifacts/20260831T134104+0800-m6-preflight/` 重新确认 M5 门禁 MET。
+   主机最终 run `artifacts/20260831T135537+0800-m6-host-final/` warning-clean，沙箱外
+   全量CTest 13/13 PASS；沙箱内唯一失败仍是已知 PF_CAN权限限制。
+8. ASan+UBSan run `artifacts/20260831T135603+0800-m6-asan-ubsan/` 全量13/13 PASS；
+   LeakSanitizer 因 `ptrace` 限制为 `NOT RUN`。
+9. 经项目所有者明确批准，`artifacts/20260831T135630+0800-m6-mqtt-final/` 使用仅监听
+   `127.0.0.1:18884`、禁用持久化的临时 Mosquitto 2.0.11。1000个单记录测试 batch 的
+   publish attempt/accepted/matched PUBACK均为1000，unexpected=0；subscriber 原始
+   1000条 JSON 的 batch_seq和gateway seq均为1～1000，missing/duplicate/reordered均为0。
+10. 同一 run 的低流量定时用例配置100 ms测试 interval，只放入1条记录；idle tick在
+    105.236 ms后完成 publish/PUBACK。该数值只证明 timer路径，不作为时延或性能指标；
+    正式默认仍为1000 ms。
+11. ARM依赖审计 `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认当前
+    Buildroot SDK sysroot没有 `mosquitto.h`、目标库或`.pc`文件，CMake配置退出1。因此
+    ARM交叉构建、部署和板端执行全部为 `NOT RUN`，没有生成 M6 ARM binary。
+12. 局域网跨主机、真实 i.MX6ULL 物理 CAN → MQTT、正确板端 UTC及目标库精确版本均
+    `NOT RUN`。本次 loopback不能替代 `docs/TEST_PLAN.md` 要求的局域网门禁。
+13. 收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 重跑M6专项单测、
+    重放1000条subscriber JSON validator，复核归档源码/二进制哈希、JSON、
+    文档格式与M7/M8范围，全部PASS。获批准的只读端口检查确认18884
+    无listener；收尾过程没有重新启动Broker。
+
+M6 源码和 Ubuntu loopback 基线已经完成，但正式退出条件尚缺局域网/目标环境证据，
+所以当前状态为 **NOT MET**。不得据此写成 i.MX6ULL CAN--MQTT 完整链路、吞吐、时延、
+可靠性或持久化结果。M7 及后续未开始。
 
 ## M1 完成记录
 

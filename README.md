@@ -31,7 +31,14 @@ consumer 链路，并完成 Ubuntu warning-clean/ASan+UBSan 全量12/12、主机
 queue drop、故意慢消费者、`SIGTERM` 和 ARMv7 交叉构建。SHA256 固定的 ARM binary
 随后在真实 i.MX6ULL 物理 CAN 上运行：基准窗口3694条全部解码/入队/消费且 queue drop
 为0；慢消费者过载产生3561次明确 drop，计数守恒；两次 signal 15 后均完成 post-join
-summary。M5 已通过。MQTT、spool I/O、epoll 和部署均未实现，M6 及后续未开始。
+summary。M5 已通过。
+
+M6 已实现 `libmosquitto` MQTT 3.1.1 QoS 1 sink、有界批量 JSON、批次定时刷新、
+PUBACK 计数与 `gatewayd --run-mqtt` 链路。Ubuntu 主机 warning-clean 和
+ASan+UBSan 回归通过；受批准启动的临时本机 Mosquitto 完成1000批/1000条、
+1000个匹配 PUBACK，订阅端验证无缺失、重复或乱序。但 Buildroot SDK 不含目标侧
+`libmosquitto` 开发文件，局域网跨主机和 i.MX6ULL 物理 CAN 端到端验证均为
+`NOT RUN`，因此 M6 总门禁仍为 `NOT MET`。spool I/O、epoll 和 M7 及后续功能未实现。
 
 ## Ubuntu 主机构建
 
@@ -45,6 +52,13 @@ ctest --test-dir build --output-on-failure
   --set queue_capacity=128 --print-config
 ```
 
+M6 构建需要 `libmosquitto` 头文件和链接库。它们不在系统默认路径时，可以在配置
+阶段指定一个已展开的依赖根目录：
+
+```sh
+cmake -S . -B build -DGATEWAY_MOSQUITTO_ROOT=/path/to/mosquitto/root
+```
+
 `--can-receive COUNT --can-timeout-ms MS` 是 M2 板端有限验证入口，不会自动修改 CAN
 接口状态。使用它之前必须按仓库规则获得修改目标板 `can0` 和启动测试进程的明确批准；
 流程见 [tools/can/README.md](tools/can/README.md)。
@@ -53,6 +67,10 @@ ctest --test-dir build --output-on-failure
 `can0`，但会打开配置的 CAN 接口并启动工作线程；在目标板部署/运行、修改接口状态或
 发送进程信号前仍必须取得明确批准。
 
+`--run-mqtt` 是 M6 实时链路入口，它同样不会自行配置 `can0` 或启动 Broker，
+但会打开 CAN 接口、连接配置的 Broker 并启动工作线程。目标板部署/运行、Broker
+状态改动或网络/CAN 状态改动仍受仓库批准规则约束。
+
 请先阅读[项目规范](docs/PROJECT_SPEC.md)、[阶段计划](docs/PLANS.md)和
 [待确认问题](docs/OPEN_QUESTIONS.md)。M0 证据记录在
 [docs/milestones/M0.md](docs/milestones/M0.md)，M1 证据记录在
@@ -60,4 +78,5 @@ ctest --test-dir build --output-on-failure
 [docs/milestones/M2.md](docs/milestones/M2.md)，M3/M4/M5 记录分别在
 [docs/milestones/M3.md](docs/milestones/M3.md)和
 [docs/milestones/M4.md](docs/milestones/M4.md)、
-[docs/milestones/M5.md](docs/milestones/M5.md)。
+[docs/milestones/M5.md](docs/milestones/M5.md)，M6 执行记录在
+[docs/milestones/M6.md](docs/milestones/M6.md)。

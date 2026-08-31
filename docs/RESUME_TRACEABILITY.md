@@ -5,8 +5,9 @@ x86_64 主机上的配置和并发基础设施单元行为；M2 又完成 ARMv7 
 并在真实 i.MX6ULL controller loopback 上证明当前 `gatewayd` 的 SocketCAN 精确过滤、
 DLC 拒绝和内核时间戳提取；M4 又完成自定义 DBC、静态 C 解码器、语义化 STM32
 模拟信号和实物 CAN 输入一致性闭环。M5 又在真实 i.MX6ULL 上完成物理 CAN → 实时
-DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 退出验证。只允许使用
-下表明确标为“是”的窄范围表述。
+DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 退出验证。M6 已在
+Ubuntu x86_64 loopback上完成实际libmosquitto QoS 1的1000-batch/PUBACK/seq功能验证，
+但没有ARM、i.MX6ULL或局域网跨主机证据。只允许使用下表明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
@@ -15,7 +16,8 @@ DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 
 | 在 i.MX6ULL 上实现 CAN_RAW 精确 ID 过滤、DLC 校验和 SO_TIMESTAMPNS 提取，并以 controller loopback 验证 | M2 `can_receiver`、有限 CLI、toolchain file | 主机错误注入、ARM 构建、真实板端目标/非目标/DLC/timestamp | M2 最终主机、ARM、板端和审计 run | 目标 3/3；非目标 0；DLC reject 1；timestamp 3/3；仅 controller loopback | 是，必须保留 loopback 限定且不得写性能 |
 | STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、接线/终端检查、`candump`、周期/计数器 | 项目所有者简化验收；原始日志未归档 | PA11/PA12、500 kbit/s；三类 ID/周期/DLC/counter/XOR 正常 | 是，但必须注明为项目实测且不写可靠性/性能数字 |
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M5 主机/ASan全量12/12、ARM构建及板端基准/过载通过 | 板端基准3694条queue drop 0；容量4慢consumer按策略drop 3561；均为单次功能值 | 是，不得写成吞吐、时延或可靠性指标 |
-| MQTT QoS 1、seq、PUBACK、本地 spool、重连补传 | M6/M7 源码和 spool 格式/配置 | 1000 batch、断线、损坏、崩溃恢复 | M6/M7 集成 run | 未测量 | 否 |
+| Ubuntu x86_64 loopback 上的 libmosquitto QoS 1 单 in-flight batch | M6 `mqtt_sink`、配置、validator | 实际Broker、1000 batch、匹配PUBACK和subscriber seq | M6 host/ASan及loopback集成run | libmosquitto 2.0.11；1000/1000匹配PUBACK；seq 1～1000无缺失/重复 | 是，必须注明host loopback，不能写板端/完整链路 |
+| i.MX6ULL MQTT、持久化spool、断线重连补传 | M6目标构建及M7源码/格式/配置 | ARM/板端、局域网、断线、损坏、崩溃恢复 | M6目标及M7集成run | ARM和板端NOT RUN；spool/恢复未实现 | 否 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor 和 API 兼容性记录 | 与 M7 等价的 reactor/重连/退出测试 | M8 目标 run | 未测量 | 否 |
 | BusyBox 开机启动和异常退出恢复 | M9 init/supervisor/config | 启动和受控 crash/restart | M9 板端 run | 未测量 | 否 |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 工具和精确配置 | 经批准的压力/断网/稳定性流程 | M10 报告 | 未测量 | 否 |
@@ -91,4 +93,28 @@ drop 为0；过载 capacity 4、push timeout 0、sink delay 20 ms：2970条消�
 无输入的空闲 poll；不能用进程完整64/69秒计算或声称持续111帧/s。证据未包含
 `can_before/after`、正确 UTC 或 shell `wait` 精确退出码，故只支持表中受限的板端实时
 mock-sink 集成和队列策略描述，不支持 CAN 错误增量、吞吐、时延、持续运行或可靠性
-结论。M5 已通过；MQTT 仍未实现。
+结论。M5已通过；在M5关闭当时MQTT仍未实现，后续M6主机结果如下。
+
+M6前置审计 `artifacts/20260831T134104+0800-m6-preflight/` 重新确认M5门禁。Ubuntu
+主机最终证据 `artifacts/20260831T135537+0800-m6-host-final/` 使用实际libmosquitto
+2.0.11 warning-clean构建，沙箱外全量CTest 13/13 PASS；ASan+UBSan证据
+`artifacts/20260831T135603+0800-m6-asan-ubsan/` 同样13/13 PASS，LeakSanitizer仍为
+`NOT RUN`。
+
+经项目所有者明确批准，`artifacts/20260831T135630+0800-m6-mqtt-final/` 在同一Ubuntu
+主机上启动仅监听loopback且禁用持久化的临时Mosquitto 2.0.11。1000个单记录测试batch
+均被libmosquitto接受并收到匹配MID的PUBACK；unexpected PUBACK为0。subscriber保存
+1000条原始JSON，batch_seq和gateway seq均严格为1～1000，missing/duplicate/reordered
+全部为0。另一个100 ms测试interval用例证明低流量idle tick可触发到期batch；其
+105.236 ms观测值不是性能指标。
+
+上述结果只支持表中的“Ubuntu x86_64 loopback libmosquitto QoS 1功能验证”。ARM依赖
+审计 `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 证明当前Buildroot SDK
+缺少目标libmosquitto头文件和链接输入，因此ARM构建、部署、真实i.MX6ULL物理CAN →
+MQTT和局域网跨主机测试均为 `NOT RUN`。M6总门禁为 `NOT MET`，不能写成完整网关、
+板端QoS、吞吐、时延或可靠性；M7未开始。
+
+最终收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 重放上述1000条原始
+subscriber JSON，复核M6源码和x86_64二进制hash，并确认没有M7重连/spool或M8
+epoll源码。收尾时临时Broker端口18884无listener。这些证据不改变目标侧和
+LAN为 `NOT RUN`、M6总门禁为 `NOT MET` 的状态。

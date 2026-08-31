@@ -162,11 +162,26 @@ static void *run_consumer(void *argument)
 
     for (;;) {
         telemetry_record record;
-        gateway_error_code code = gateway_ring_buffer_pop(pipeline->queue,
-                                                          &record);
+        gateway_error_code code;
+
+        if (pipeline->config.consume_idle == NULL) {
+            code = gateway_ring_buffer_pop(pipeline->queue, &record);
+        } else {
+            code = gateway_ring_buffer_pop_timed(
+                pipeline->queue, &record,
+                pipeline->config.consumer_idle_timeout_ms);
+        }
 
         if (code == GATEWAY_ERROR_CLOSED) {
             break;
+        }
+        if (code == GATEWAY_ERROR_TIMEOUT &&
+            pipeline->config.consume_idle != NULL) {
+            code = pipeline->config.consume_idle(
+                pipeline->config.consume_context);
+            if (code == GATEWAY_OK) {
+                continue;
+            }
         }
         if (code != GATEWAY_OK) {
             worker_error = code;
@@ -193,7 +208,9 @@ gateway_error_code gateway_pipeline_create(gateway_pipeline **pipeline,
     if (pipeline == NULL || config == NULL || config->queue_capacity == 0 ||
         config->receive_timeout_ms < 0 || config->receive == NULL ||
         config->consume == NULL || config->lifecycle == NULL ||
-        config->stats == NULL) {
+        config->stats == NULL ||
+        (config->consume_idle != NULL &&
+         config->consumer_idle_timeout_ms == 0)) {
         return GATEWAY_ERROR_ARGUMENT;
     }
     *pipeline = NULL;

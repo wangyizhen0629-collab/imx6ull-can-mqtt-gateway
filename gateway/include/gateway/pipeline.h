@@ -27,6 +27,8 @@ typedef gateway_error_code (*gateway_pipeline_consume_fn)(
     void *context,
     const telemetry_record *record);
 
+typedef gateway_error_code (*gateway_pipeline_idle_fn)(void *context);
+
 typedef struct {
     size_t queue_capacity;
     uint32_t queue_push_timeout_ms;
@@ -35,6 +37,8 @@ typedef struct {
     void *receive_context;
     gateway_pipeline_consume_fn consume;
     void *consume_context;
+    uint32_t consumer_idle_timeout_ms;
+    gateway_pipeline_idle_fn consume_idle;
     gateway_lifecycle *lifecycle;
     gateway_stats *stats;
 } gateway_pipeline_config;

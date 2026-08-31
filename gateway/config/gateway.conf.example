@@ -15,5 +15,6 @@ mqtt_topic=vehicle/imx6ull-gateway-lab/telemetry
 queue_capacity=1024
 queue_push_timeout_ms=50
 batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
 spool_path=/var/lib/gatewayd/spool.data
 log_level=info

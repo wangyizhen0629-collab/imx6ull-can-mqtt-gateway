@@ -26,6 +26,9 @@ gateway_error_code gateway_ring_buffer_push(gateway_ring_buffer *queue,
                                             uint32_t timeout_ms);
 gateway_error_code gateway_ring_buffer_pop(gateway_ring_buffer *queue,
                                            telemetry_record *record);
+gateway_error_code gateway_ring_buffer_pop_timed(gateway_ring_buffer *queue,
+                                                 telemetry_record *record,
+                                                 uint32_t timeout_ms);
 gateway_error_code gateway_ring_buffer_close(gateway_ring_buffer *queue);
 void gateway_ring_buffer_read(gateway_ring_buffer *queue,
                               gateway_ring_buffer_snapshot *snapshot);
