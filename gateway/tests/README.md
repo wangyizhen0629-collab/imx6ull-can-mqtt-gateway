@@ -38,3 +38,17 @@ M4 新增 `test_vehicle_decoder` 和 `test_vehicle_dbc`：
 当前42条向量中31条取自实物捕获，另含边界和错误路径。物理原始证据由
 `tools/protocol/check_stm32_candump.py` 独立逐帧复核。这些测试不会连接或修改真实
 `can0`；即使输入来自实物，也不能把离线审计描述成 M4 解码器已在 i.MX6ULL 实时运行。
+
+M5 新增 `test_pipeline`：
+
+- 以单调时钟定时生成100/10/1 Hz组成的111条合成 CAN 记录，验证 receive、DBC decode、
+  queue 和 mock sink 全链路 queue drop 为0；
+- 以 capacity 4、push timeout 0和2 ms慢消费者制造过载，验证丢弃新记录以及
+  push/pop/consumed/high-watermark/close-drain 不变量；
+- 注入 checksum 错误，验证错误记录不入队且 seq gap 可观察；
+- 使用真实 `SIGTERM` 和 self-pipe，验证 producer/consumer 唤醒、drain 和 join。
+
+这些用例本身仍是 Ubuntu 主机功能测试。真实 i.MX6ULL 物理 CAN 基准、板端过载和
+signal 15 退出已由项目所有者另行执行，原始日志归档在
+`artifacts/20260831T132341+0800-m5-board-owner-final/`。该板端 run 只证明 M5 功能
+门禁，不提供持续111帧/s、CAN 错误增量、吞吐、时延或可靠性结论。

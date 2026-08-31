@@ -79,11 +79,12 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   M4 已于2026-08-31关闭。
 - 证据限制：Keil 0 error/0 warning和Download是项目所有者确认，完整原始控制台输出
   未归档；捕获没有固件镜像哈希，故只能证明行为与源码模型一致，不能证明密码学绑定。
-- 非阻塞遗留：当前语义测试的 Windows sanitizer 为 `NOT RUN`，因为 MinGW GCC 6.3.0
-  缺少 `libasan` 且 UBSan 编译内部错误；应在 Ubuntu clone 用受支持工具链补跑。
-- 非阻塞遗留：本轮没有目标板会话，没有部署新的 ARM binary，也没有修改 `can0`；因此
-  “新增解码器在真实 i.MX6ULL 物理 CAN 上运行”为 `NOT RUN`。后续若在 M5 集成链路中
-  验证，必须先获部署/接口或进程操作批准并使用新的 artifact。
+- 已解决：Windows 上的语义测试 sanitizer 仍保留历史 `NOT RUN`，但当前 Ubuntu clone
+  已在 M5 ASan+UBSan 全量12/12中补跑当前测试；LeakSanitizer 仍单独为 `NOT RUN`。
+- 已解决：项目所有者已在真实 i.MX6ULL 物理 CAN 上运行 M5 ARM binary，新增解码器、
+  有界队列和 mock sink 的基准/过载/信号退出证据已归档，M5 门禁关闭。原始日志没有
+  `can_before/after`、正确 UTC 或 shell `wait` 精确退出码；这些限制禁止外推 CAN 错误
+  增量、持续运行、性能或可靠性结论，但不再是 M5 功能门禁的待办。
 - 非阻塞遗留：`-DCMAKE_BUILD_TYPE=Release` 候选 run 在既有 M1 `lifecycle.c`/`log.c`
   上触发 FORTIFY `-Werror`，已保留为 FAIL；默认 warning-clean 和 ARM 构建不受影响。
   是否单独安排历史模块的 Release/FORTIFY 清理，应由后续维护阶段决定，不能把本轮
@@ -105,15 +106,20 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 长时间运行 artifact 的备份和保留策略是什么？
 - M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
 
-## M1～M4 后续验证边界
+## M1～M5 后续验证边界
 
 - M1/M2 当前源码已随 M2 的 ARM `gatewayd` 使用真实 Buildroot SDK 完成交叉编译，并
   在 i.MX6ULL 上完成动态加载和 controller loopback；该结论仅覆盖当前 SHA256 binary。
 - LeakSanitizer 在当前命令执行环境中因 `ptrace` 限制无法运行；M1 有关闭 leak 检测后
   的 ASan+UBSan 8/8 通过证据，M2 有同条件 9/9 通过证据，M4 有同条件11/11通过证据。
   若需要无泄漏结论，必须在不受该限制的环境另建 run；当前不得宣称已经通过 LSan。
-- M5 接入实际生产者/消费者后，`queue_push_timeout_ms` 的默认值 50 ms 和“超时丢弃
-  新记录”策略是否满足 111 帧/s 基准，需要板端证据决定；M1 并发功能测试不能替代。
+- M5 已接入实际 producer/consumer、DBC 解码和 mock sink；主机定时合成111帧/s用例
+  queue drop 为0，慢消费者过载和 `SIGTERM` 通过。项目所有者又在真实 i.MX6ULL 上
+  使用同一 SHA256 ARM binary 完成物理基准和容量4慢消费者测试：基准3694条 queue
+  drop 为0，过载3561条按策略 drop，两次均在 signal 15 后输出最终 summary。M5 已关闭。
+- 后续若要形成可靠性或性能结论，仍需另行授权并新建 run，测试开始前启动 STM32，
+  保存 `can_before/after`、正确时间源、精确进程退出码及预先规定的持续时间和采样方法；
+  这些属于后续专项验证，不得倒填到本次 M5。
 - M2 主机单测验证未绑定 CAN_RAW socket 的过滤选项和 datagram timestamp 解析；真实
   i.MX6ULL bind/controller loopback 已另有板端证据。两类结果必须分别引用，不能用
   controller loopback 外推物理 CAN 或性能。
@@ -142,8 +148,12 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M2 板端门禁：SHA256 固定 binary 的动态加载、controller loopback、目标/非目标 ID、
   DLC 拒绝、kernel timestamp 和恢复状态已有真实日志及最终审计，M2 已通过。
 - M4 自定义协议：DBC、42条黄金向量、定点静态解码布局、完整6660帧语义场景和60秒
-  实物逐帧审计已通过；历史 ASan+UBSan 与 ARMv7 交叉构建仍有效，但当前测试 sanitizer
-  尚未补跑，新增 binary 的板端实时解码也仍为 `NOT RUN`。
+  实物逐帧审计已通过；M5 的当前 Ubuntu ASan+UBSan 全量12/12已覆盖当前语义测试，
+  新增 binary 的板端实时解码已由后述 M5 证据补齐。
+- M5：producer 执行 CAN receive/DBC decode/有界入队，consumer 调用 mock sink；
+  warning-clean 与 ASan+UBSan 全量12/12、主机111帧/s零 queue drop、故意过载、
+  `SIGTERM`、ARMv7 交叉构建，以及真实 i.MX6ULL 基准/过载/信号退出均已通过。
+  板端证据为 `artifacts/20260831T132341+0800-m5-board-owner-final/`，M5 已关闭。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

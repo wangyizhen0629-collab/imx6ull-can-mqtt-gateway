@@ -120,6 +120,36 @@ spare-bit 规则，CAN 错误计数增量为0。Keil 0 error/0 warning及Downloa
 错误为 `NOT RUN`；新增解码器在 i.MX6ULL 实时运行也仍为 `NOT RUN`。这些限制不改变
 M4 静态协议与真实输入一致性门禁已于2026-08-31通过，但不得外推为 M5 集成结果。
 
+M5 当前 Ubuntu 主机测试 `artifacts/20260831T123149+0800-m5-host-final/` 必须同时验证：
+
+- 定时合成100/10/1 Hz三类输入共111帧，decode/queue/mock sink 全链路 queue drop 为0；
+- capacity 4、push timeout 0和2 ms慢消费者造成真实过载，且
+  `push_success + push_timeout = attempts`、`pop = push_success = consumed`、
+  high-watermark 不超过容量、close 后队列为空；
+- checksum 错误不入队并保留可观察的 gateway seq gap；
+- 真实 `SIGTERM` 经 signal handler/self-pipe 触发，producer/consumer 唤醒、drain、
+  join 后退出。
+
+上述主机 warning-clean 全量12/12已通过；ASan+UBSan
+`artifacts/20260831T123218+0800-m5-asan-ubsan/` 也是12/12 PASS，LeakSanitizer 为
+`NOT RUN`。ARMv7 warning-clean 交叉构建
+`artifacts/20260831T123256+0800-m5-arm-cross/` 已通过；binary SHA256 为
+`567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01`。
+
+M5 目标板证据 `artifacts/20260831T132341+0800-m5-board-owner-final/` 归档项目所有者
+从真实 i.MX6ULL 拉回的完整 `gateway` 原始日志。基准 capacity 1024、push timeout
+50 ms、sink delay 0：3694条物理输入全部 decode/queue/pop/consume，queue drop 为0；
+过载 capacity 4、push timeout 0、sink delay 20 ms：6532次尝试中2970次成功、3561次
+按策略 drop、退出时1次 closed，high-watermark 4/4。两次均记录 signal 15，随后输出
+post-join summary。项目所有者确认 STM32 是进程启动后中途开启，故305/75次 timeout
+仅是此前无输入的100 ms poll，不是 queue drop。M5 功能门禁据此为 MET。
+
+本 run 没有保存 `can_before/after`、正确 UTC 或 shell `wait` 精确退出码，这些项目保持
+**NOT RUN**。因此不得声称 CAN 错误计数无增量、完整64/69秒持续111帧/s、精确退出码、
+吞吐、时延、持续运行或可靠性。今后如需这些结论，必须另行授权并新建唯一 artifact，
+在测试开始前启动 STM32，同时保存 binary hash、配置、`can_before/after`、完整日志、
+summary 和 shell 退出状态；不得倒填本次 M5 证据。
+
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。
 

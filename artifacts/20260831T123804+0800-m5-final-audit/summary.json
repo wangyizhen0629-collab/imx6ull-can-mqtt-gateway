@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123804+0800-m5-final-audit",
+  "milestone": "M5",
+  "status": "PASS",
+  "implementation": "COMPLETE",
+  "gate": "NOT_MET",
+  "host_warning_clean_ctest": "PASS_12_OF_12",
+  "asan_ubsan_ctest": "PASS_12_OF_12",
+  "arm_cross_build": "PASS",
+  "host_baseline_queue_drop": 0,
+  "target_baseline": "NOT RUN",
+  "target_overload": "NOT RUN",
+  "target_sigterm": "NOT RUN",
+  "next_milestone": "M6 NOT STARTED"
+}

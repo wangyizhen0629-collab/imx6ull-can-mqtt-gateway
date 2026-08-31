@@ -156,6 +156,20 @@ STM32 已用整数定点实现60秒语义车况循环，严格按 DBC 编码，s
 独立 counter/XOR。42条黄金向量和完整6660帧主机模型通过；60秒实物 `candump` 中
 `0x100`/`0x101`/`0x102` 分别为6000/600/60帧，逐帧模型差异、counter、XOR、spare
 bit 差异和 CAN 错误计数增量均为0。项目所有者确认 Keil Build 0 error/0 warning 且
-已 Download，但完整原始 Keil 输出未归档。新增 ARM binary 没有部署或板端运行，物理
-CAN 上由 `gatewayd` 实时解码仍为 `NOT RUN`，属于 M5 集成边界。
-生产者--消费者接入、MQTT、spool I/O、epoll 和部署功能仍未实现，属于 M5 及后续阶段。
+已 Download，但完整原始 Keil 输出未归档。M4 关闭时新增 ARM binary 尚未部署或板端
+运行；该历史缺口已在后续 M5 目标板测试中补齐。
+
+M5 已实现一个 CAN producer 和一个 mock-sink consumer：producer 以100 ms有限 poll
+调用 M2 receiver，通过 M4 checksum/DBC 解码后按 M1 配置有界入队；满队列有界等待后
+丢弃新记录。consumer 在 close 后先 drain，并统计消费、seq gap、非单调和无效记录。
+`SIGINT`/`SIGTERM` 通过 self-pipe 唤醒主线程，再 close/broadcast 和 join 工作线程。
+Ubuntu 主机 warning-clean/ASan+UBSan、111帧/s合成基准、故意过载、SIGTERM及 ARMv7
+交叉构建已经通过。项目所有者随后在真实 i.MX6ULL 上运行 SHA256 固定的 ARM binary：
+基准物理输入3694条全部 decode/入队/消费且 queue drop 为0；容量4、零等待、20 ms慢
+consumer 的过载测试按策略记录3561次 queue drop；两次均在 signal 15 后输出线程 join
+后的 summary。M5 已于2026-08-31通过。STM32 在进程启动后才中途开启，因此305/75次
+receive timeout 只表示此前无输入时的100 ms poll；不能把整段64/69秒写成持续111帧/s。
+本次没有 `can_before/after`、正确 UTC 或 shell `wait` 精确退出码，故不产生 CAN 错误
+增量、持续运行、吞吐、时延或可靠性结论。
+
+MQTT、spool I/O、epoll 和部署功能仍未实现，属于 M6 及后续阶段。

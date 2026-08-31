@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123049+0800-m5-host-dev",
+  "milestone": "M5",
+  "phase": "development",
+  "source_commit": "2249a45142e0210b7a5aaed6c65798cb07402aab",
+  "source_tree": "dirty",
+  "status": "PASS",
+  "checks": {
+    "warning_clean_build": "PASS",
+    "test_pipeline": "PASS"
+  }
+}

@@ -1,0 +1,5 @@
+Usage: ./build/m5-host-final/gateway/gatewayd [--config PATH] [--set KEY=VALUE] [--print-config] [--wait-for-signal]
+       ./build/m5-host-final/gateway/gatewayd [--config PATH] [--set KEY=VALUE] --can-receive COUNT [--can-timeout-ms MS]
+       ./build/m5-host-final/gateway/gatewayd [--config PATH] [--set KEY=VALUE] --run-mock-sink [--mock-sink-delay-ms MS]
+       ./build/m5-host-final/gateway/gatewayd --help
+       ./build/m5-host-final/gateway/gatewayd --version

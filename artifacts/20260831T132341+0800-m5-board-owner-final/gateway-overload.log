@@ -1,0 +1,4 @@
+[1970-01-02T02:07:30.305Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-02T02:07:30.311Z] INFO pipeline: M5 mock sink started interface=can0 queue_capacity=4 queue_push_timeout_ms=0 sink_delay_ms=20
+[1970-01-02T02:08:38.942Z] INFO pipeline: stop requested by signal 15
+[1970-01-02T02:08:39.001Z] INFO pipeline: M5_PIPELINE_SUMMARY can_attempts=6607 can_accepted=6532 can_timeouts=75 can_rejected_length=0 can_rejected_dlc=0 can_rejected_id=0 timestamp_errors=0 receive_errors=0 decode_success=6532 decode_errors=0 queue_attempts=6532 queue_success=2970 queue_drop=3561 queue_closed=1 queue_pop=2970 queue_high_watermark=4 queue_capacity=4 sink_consumed=2970 sink_gap_records=3561 sink_non_monotonic=0 sink_invalid=0

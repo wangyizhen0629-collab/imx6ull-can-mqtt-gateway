@@ -295,6 +295,50 @@
   新增解码器尚未在 i.MX6ULL 实时路径运行，生产者--消费者属于 M5；M4 关闭不自动
   授权进入 M5，也不产生可靠性或性能结论。
 
+## D-025：M5 使用单生产者、单消费者和可注入 mock sink
+
+- 日期：2026-08-31
+- 状态：设计已接受并实现；本条记录的是板端证据到达前状态，后由 D-026 关闭门禁
+- 决定：`gateway_pipeline` 固定为一个 CAN producer 和一个 consumer。producer 通过
+  有上界的 receive 回调取得 M2 `telemetry_record`，在接收热路径调用 M4 解码器后再
+  使用 M1 ring buffer 有界入队；consumer 排空队列并调用 M5 mock sink。实际 CAN
+  回调每100 ms返回一次以检查退出，不在热路径执行 MQTT、spool 或复杂序列化。
+- seq/丢弃语义：每个通过 M2 原始帧校验的记录都会推进 gateway seq；checksum/解码
+  拒绝和满队列丢弃因此形成可观察的 seq gap。满队列继续采用 D-012 冻结的“有界等待
+  后丢弃新记录”，queue timeout、CAN receive error 和 decode error 分开统计。
+- 退出语义：`SIGINT`/`SIGTERM` 继续由 self-pipe 唤醒主线程；主线程 request stop 并
+  close/broadcast，producer 最迟在有界 receive 返回后退出，consumer 先 drain 已入队
+  记录再返回 CLOSED，所有线程 join 后才销毁 queue、stats 和 lifecycle。
+- mock sink：只验证 timestamp/checksum/decode 状态并统计 consumed、seq gap、非单调和
+  无效记录。`--mock-sink-delay-ms` 只用于 M5 故意慢消费者，不是 MQTT batch 或未来
+  sink 配置。
+- 证据：主机 warning-clean 与 ASan+UBSan 全量回归均12/12 PASS；主机111帧/s定时合成
+  输入 queue drop 0，容量4的故意过载和真实 `SIGTERM` 用例通过；Buildroot GCC 7.5.0
+  ARMv7 warning-clean 交叉构建通过。
+- 当时边界：设计与主机测试完成时尚没有目标板证据，因此当时 M5 为 NOT MET。项目
+  所有者此后自行完成板端测试并提供原始日志；最终门禁判定见 D-026。D-025 的设计
+  语义保持不变。
+
+## D-026：以项目所有者提供的板端原始日志关闭 M5
+
+- 日期：2026-08-31
+- 状态：已接受；M5 门禁 MET
+- 决定：归档项目所有者从 i.MX6ULL 拉回的基准和过载原始日志，并以交叉构建 binary
+  SHA256 `567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01`
+  绑定板端运行对象。证据位于
+  `artifacts/20260831T132341+0800-m5-board-owner-final/`。
+- 基准判定：capacity 1024、push timeout 50 ms、sink delay 0；3694条物理 CAN 输入全部
+  decode、入队、pop 和消费，queue drop、sink gap、非单调和无效记录均为0。
+- 过载判定：capacity 4、push timeout 0、sink delay 20 ms；6532次入队尝试中2970次
+  成功、3561次按策略丢弃、1次因退出时 queue closed，`pop=consumed=2970`、
+  `sink_gap=3561`、high-watermark 4/4。两次日志均记录 signal 15，并随后输出线程 join
+  后的 summary，满足 M5 graceful-shutdown 门禁。
+- timeout 解释：项目所有者确认 STM32 在两个进程启动后才中途开启；305/75次 receive
+  timeout 是此前无输入阶段的100 ms空闲 poll，不是 queue drop。不能把进程的完整
+  64/69秒描述为持续111帧/s。
+- 证据限制：未归档 `can_before/after`、正确 UTC 和 shell `wait` 精确退出码，因此不作
+  CAN 错误增量、持续运行、吞吐、时延或可靠性结论。M5 在此停止；本决定不授权 M6。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

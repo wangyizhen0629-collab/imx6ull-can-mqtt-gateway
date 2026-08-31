@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123149+0800-m5-host-final",
+  "milestone": "M5",
+  "status": "PASS",
+  "ctest": {
+    "passed": 12,
+    "total": 12
+  },
+  "host_baseline": {
+    "source": "paced synthetic 100/10/1 Hz CAN records",
+    "frames": 111,
+    "elapsed_ms": 990.599,
+    "queue_drop": 0,
+    "queue_high_watermark": 2,
+    "sink_consumed": 111
+  },
+  "host_overload": {
+    "produced": 200,
+    "queue_capacity": 4,
+    "queue_push_timeout_ms": 0,
+    "sink_delay_ms": 2,
+    "queued": 5,
+    "queue_drop": 195,
+    "consumed": 5,
+    "queue_high_watermark": 4,
+    "invariants": "PASS"
+  },
+  "host_sigterm": {
+    "signal": 15,
+    "exit_ms": 10.154,
+    "producer_done": true,
+    "consumer_done": true,
+    "queue_drained": true
+  },
+  "not_run": [
+    "Real i.MX6ULL physical-CAN M5 baseline",
+    "Real i.MX6ULL slow-consumer overload",
+    "Real gatewayd process SIGTERM on i.MX6ULL"
+  ],
+  "scope": "Ubuntu x86_64 functional evidence; elapsed values are not target performance claims"
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T132341+0800-m5-board-owner-final",
+  "milestone": "M5",
+  "status": "PASS",
+  "gate": "MET",
+  "baseline": {
+    "runtime_start_to_signal_ms": 64019,
+    "can_attempts": 3999,
+    "can_accepted": 3694,
+    "can_timeouts": 305,
+    "decode_success": 3694,
+    "decode_errors": 0,
+    "queue_success": 3694,
+    "queue_drop": 0,
+    "queue_pop": 3694,
+    "queue_high_watermark": 2,
+    "queue_capacity": 1024,
+    "sink_consumed": 3694,
+    "sink_gap_records": 0,
+    "sink_non_monotonic": 0,
+    "sink_invalid": 0,
+    "stop_signal": 15
+  },
+  "overload": {
+    "runtime_start_to_signal_ms": 68631,
+    "can_attempts": 6607,
+    "can_accepted": 6532,
+    "can_timeouts": 75,
+    "decode_success": 6532,
+    "decode_errors": 0,
+    "queue_success": 2970,
+    "queue_drop": 3561,
+    "queue_push_closed": 1,
+    "queue_pop": 2970,
+    "queue_high_watermark": 4,
+    "queue_capacity": 4,
+    "sink_consumed": 2970,
+    "sink_gap_records": 3561,
+    "sink_non_monotonic": 0,
+    "sink_invalid": 0,
+    "stop_signal": 15
+  },
+  "owner_confirmation": "STM32 transmission was enabled after each gatewayd process had already started; the recorded receive timeouts are expected pre-input idle polls",
+  "limitations": [
+    "The board wall clock was not initialized and log timestamps are in 1970.",
+    "The input was not active for each complete process interval, so these runs are not continuous 64/69-second 111-fps or reliability measurements.",
+    "can_before.txt and can_after.txt were not captured for these runs.",
+    "The exact shell wait exit status was not archived; graceful completion is evidenced by signal 15 followed by the post-join summary."
+  ]
+}

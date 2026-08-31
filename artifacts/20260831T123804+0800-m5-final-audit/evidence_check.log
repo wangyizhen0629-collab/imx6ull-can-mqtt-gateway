@@ -1,0 +1,11 @@
+artifacts/20260831T123256+0800-m5-arm-cross/test_report.md:6:`567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01`。
+artifacts/20260831T123218+0800-m5-asan-ubsan/ctest.log:28:100% tests passed, 0 tests failed out of 12
+artifacts/20260831T123256+0800-m5-arm-cross/sha256.log:1:567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01  build/m5-arm-cross/gateway/gatewayd
+artifacts/20260831T123256+0800-m5-arm-cross/summary.json:8:  "sha256": "567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01",
+artifacts/20260831T123218+0800-m5-asan-ubsan/test_pipeline.log:1:M5_HOST_BASELINE frames=111 elapsed_ms=992.700 queue_drop=0 high_watermark=2 sink_consumed=111
+artifacts/20260831T123218+0800-m5-asan-ubsan/test_pipeline.log:2:M5_HOST_OVERLOAD produced=200 queued=5 queue_drop=195 consumed=5 high_watermark=4
+artifacts/20260831T123218+0800-m5-asan-ubsan/test_pipeline.log:3:M5_HOST_SIGTERM signal=15 exit_ms=10.197 producer_done=1 consumer_done=1
+artifacts/20260831T123149+0800-m5-host-final/ctest.log:28:100% tests passed, 0 tests failed out of 12
+artifacts/20260831T123149+0800-m5-host-final/test_pipeline.log:1:M5_HOST_BASELINE frames=111 elapsed_ms=990.599 queue_drop=0 high_watermark=2 sink_consumed=111
+artifacts/20260831T123149+0800-m5-host-final/test_pipeline.log:2:M5_HOST_OVERLOAD produced=200 queued=5 queue_drop=195 consumed=5 high_watermark=4
+artifacts/20260831T123149+0800-m5-host-final/test_pipeline.log:3:M5_HOST_SIGTERM signal=15 exit_ms=10.154 producer_done=1 consumer_done=1

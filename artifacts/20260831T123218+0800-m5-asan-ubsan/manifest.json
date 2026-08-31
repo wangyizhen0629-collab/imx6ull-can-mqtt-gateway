@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123218+0800-m5-asan-ubsan",
+  "milestone": "M5",
+  "source_commit": "2249a45142e0210b7a5aaed6c65798cb07402aab",
+  "source_tree": "dirty",
+  "sanitizers": ["AddressSanitizer", "UndefinedBehaviorSanitizer"],
+  "leak_sanitizer": "NOT RUN: detect_leaks=0 because the execution environment uses ptrace",
+  "status": "PASS",
+  "checks": {
+    "sanitized_build": "PASS",
+    "ctest": "PASS_12_OF_12",
+    "m5_pipeline": "PASS"
+  }
+}

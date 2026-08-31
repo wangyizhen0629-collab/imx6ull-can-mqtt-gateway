@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T132341+0800-m5-board-owner-final",
+  "milestone": "M5",
+  "status": "PASS",
+  "gate": "MET",
+  "source_commit": "2249a45142e0210b7a5aaed6c65798cb07402aab",
+  "source_tree": "dirty M5 implementation documented by source hashes in the host-final artifact",
+  "target": "100ASK i.MX6ULL / ARMv7 / Linux 4.9.88 historical identity",
+  "binary_sha256": "567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01",
+  "binary_sha256_evidence": "Project owner supplied the target sha256sum output in the conversation",
+  "raw_files": [
+    {
+      "path": "gateway-baseline.log",
+      "sha256": "e78c374048d9f463f4e200aa88fce446128d404d232ea74dba6b3b1a4a849e0a",
+      "bytes": 719
+    },
+    {
+      "path": "gateway-overload.log",
+      "sha256": "4ab817c94db6540436606be7e87ee7c3631ab33688d6dd92bebaa44e23c80c99",
+      "bytes": 718
+    }
+  ],
+  "checks": {
+    "arm_binary_identity": "PASS",
+    "physical_can_decode_queue_mock_sink_baseline": "PASS",
+    "slow_consumer_overload": "PASS",
+    "sigterm_15_graceful_summary": "PASS"
+  }
+}

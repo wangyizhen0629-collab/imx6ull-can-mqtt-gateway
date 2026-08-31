@@ -1,0 +1,3 @@
+M5_HOST_BASELINE frames=111 elapsed_ms=992.700 queue_drop=0 high_watermark=2 sink_consumed=111
+M5_HOST_OVERLOAD produced=200 queued=5 queue_drop=195 consumed=5 high_watermark=4
+M5_HOST_SIGTERM signal=15 exit_ms=10.197 producer_done=1 consumer_done=1

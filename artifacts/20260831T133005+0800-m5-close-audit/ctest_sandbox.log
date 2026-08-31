@@ -1,0 +1,14 @@
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m5-host-final
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m5-host-final
+92% tests passed, 1 tests failed out of 12
+
+The following tests FAILED:
+      9 - test_can_receiver (Failed)
+
+Failure detail:
+CHECK failed at gateway/tests/test_can_receiver.c:66: descriptor >= 0
+CHECK failed at gateway/tests/test_can_receiver.c:215: test_kernel_socket_options() == 0
+
+Environment interpretation: the workspace sandbox denied PF_CAN socket creation. The M5
+test_pipeline passed in this same run. The identical suite was rerun outside the sandbox without
+changing source or can0; see ctest_nonsandbox.log.

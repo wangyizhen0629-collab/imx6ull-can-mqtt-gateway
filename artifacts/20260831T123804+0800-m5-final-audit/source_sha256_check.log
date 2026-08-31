@@ -1,0 +1,8 @@
+gateway/CMakeLists.txt: 成功
+gateway/include/gateway/mock_sink.h: 成功
+gateway/include/gateway/pipeline.h: 成功
+gateway/include/gateway/stats.h: 成功
+gateway/src/main.c: 成功
+gateway/src/mock_sink.c: 成功
+gateway/src/pipeline.c: 成功
+gateway/tests/test_pipeline.c: 成功

@@ -1,0 +1,7 @@
+PASS: host-final source hashes 8/8 match the current M5 source files
+PASS: ARM binary SHA256 567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01
+PASS: ARM binary is ELF32 little-endian ARM EABI5, dynamically linked, interpreter /lib/ld-linux-armhf.so.3
+PASS: board raw log hashes 2/2 match sha256.txt
+PASS: M5 artifact manifest/summary JSON files parse successfully
+PASS: git diff --check
+PASS: current authority documents say M5 MET; remaining M5 NOT RUN mentions are explicit limitations or historical state

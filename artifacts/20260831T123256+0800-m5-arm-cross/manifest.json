@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123256+0800-m5-arm-cross",
+  "milestone": "M5",
+  "source_commit": "2249a45142e0210b7a5aaed6c65798cb07402aab",
+  "source_tree": "dirty",
+  "sdk": "ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot (gitignored)",
+  "status": "PASS",
+  "checks": {
+    "warning_clean_cross_build": "PASS",
+    "elf_identity": "PASS",
+    "target_deploy": "NOT RUN",
+    "target_execution": "NOT RUN"
+  }
+}

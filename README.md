@@ -24,9 +24,14 @@ PA11/CAN_RX、PA12/CAN_TX，以 500 kbit/s 发送三类确定性报文，Keil Bu
 模拟车况闭环。当前42条黄金向量与完整60秒/6660帧主机模型通过，实物 `candump` 的
 6000/600/60帧逐帧符合 DBC、独立 counter、XOR 和 spare-bit 规则，CAN 错误计数增量
 为0。Keil 0 error/0 warning 及 Download 是项目所有者确认，完整原始控制台输出未归档；
-离线实物日志审计也不等于新增解码器已在 i.MX6ULL 实时运行。M4 已关闭，进入 M5 仍需
-项目所有者另行授权。
-当前没有实现真实生产者--消费者数据链路、MQTT、spool I/O 或 epoll；M5 及后续未开始。
+离线实物日志审计也不等于新增解码器已在 i.MX6ULL 实时运行。M4 已关闭。
+
+M5 已实现 CAN receive → checksum/DBC decode → 有界队列 → mock sink 的单 producer/
+consumer 链路，并完成 Ubuntu warning-clean/ASan+UBSan 全量12/12、主机111帧/s零
+queue drop、故意慢消费者、`SIGTERM` 和 ARMv7 交叉构建。SHA256 固定的 ARM binary
+随后在真实 i.MX6ULL 物理 CAN 上运行：基准窗口3694条全部解码/入队/消费且 queue drop
+为0；慢消费者过载产生3561次明确 drop，计数守恒；两次 signal 15 后均完成 post-join
+summary。M5 已通过。MQTT、spool I/O、epoll 和部署均未实现，M6 及后续未开始。
 
 ## Ubuntu 主机构建
 
@@ -44,10 +49,15 @@ ctest --test-dir build --output-on-failure
 接口状态。使用它之前必须按仓库规则获得修改目标板 `can0` 和启动测试进程的明确批准；
 流程见 [tools/can/README.md](tools/can/README.md)。
 
+`--run-mock-sink [--mock-sink-delay-ms MS]` 是 M5 实时链路入口。它不会自行配置
+`can0`，但会打开配置的 CAN 接口并启动工作线程；在目标板部署/运行、修改接口状态或
+发送进程信号前仍必须取得明确批准。
+
 请先阅读[项目规范](docs/PROJECT_SPEC.md)、[阶段计划](docs/PLANS.md)和
 [待确认问题](docs/OPEN_QUESTIONS.md)。M0 证据记录在
 [docs/milestones/M0.md](docs/milestones/M0.md)，M1 证据记录在
 [docs/milestones/M1.md](docs/milestones/M1.md)，M2 完成记录在
-[docs/milestones/M2.md](docs/milestones/M2.md)，M3/M4 记录分别在
+[docs/milestones/M2.md](docs/milestones/M2.md)，M3/M4/M5 记录分别在
 [docs/milestones/M3.md](docs/milestones/M3.md)和
-[docs/milestones/M4.md](docs/milestones/M4.md)。
+[docs/milestones/M4.md](docs/milestones/M4.md)、
+[docs/milestones/M5.md](docs/milestones/M5.md)。

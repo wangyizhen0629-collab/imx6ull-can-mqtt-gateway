@@ -25,8 +25,16 @@
   编码；42条黄金向量、完整6660帧主机模型和60秒实物 `candump` 逐帧审计均通过。
   `0x100`/`0x101`/`0x102` 实收6000/600/60帧，payload/counter/XOR/spare-bit 差异及
   CAN 错误计数增量均为0。项目所有者确认 Keil Build 0 error/0 warning 并已 Download，
-  但完整原始 Keil 控制台输出未归档。新增解码器在 i.MX6ULL 实时运行仍为 `NOT RUN`；
-  这是 M5 集成范围。M5 及后续未开始，进入 M5 需项目所有者另行确认。
+  但完整原始 Keil 控制台输出未归档。M4 关闭时新增解码器在 i.MX6ULL 实时运行仍为
+  `NOT RUN`；该历史缺口后来已由 M5 板端集成证据补齐。
+- M5 已由项目所有者于2026-08-31明确授权并完成源码实现。Ubuntu warning-clean
+  全量回归12/12、ASan+UBSan 12/12和 ARMv7 warning-clean 交叉构建均通过；主机定时
+  合成111帧/s用例 queue drop 为0，故意慢消费者和 `SIGTERM` 用例也通过。项目所有者
+  随后在真实 i.MX6ULL 运行 SHA256 固定的 ARM binary：基准窗口3694条全部解码、入队
+  和消费且 queue drop 0；慢消费者过载6532条解码输入中2970条消费、3561条 drop、
+  1条在关闭竞争中拒绝，计数守恒；两次 signal 15 后均输出 post-join summary。
+  timeout 由 STM32 在进程启动后才开启解释，不作为队列失败，也不宣称全程连续负载。
+  M5 于2026-08-31通过；M6 及后续未开始。
 
 ## Milestone 总表
 
@@ -41,7 +49,7 @@
 | M3-D | i.MX6ULL 物理 CAN 与 `candump` | 烧录 STM32、关闭 loopback；`candump` 看到三类 ID、正确周期和 Rolling Counter | 已完成；项目所有者确认物理 `candump` 及10分钟运行现象正常 |
 | M3-E | `gatewayd` 接入真实 CAN | 在真实 `can0` 完成有限接收；原10分钟门禁由项目所有者豁免 | 已完成；两次1110帧 smoke 正常，10分钟测试 NOT RUN/已豁免 |
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
-| M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 未开始 |
+| M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 未开始 |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 未开始 |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
@@ -211,14 +219,64 @@ timestamp/receive error 为0；项目所有者确认干净复测的 CAN 状态�
 10. 项目所有者确认当前固件真实 Keil Build 为0 error、0 warning并已 Download；完整
     原始 Keil Build/Download 控制台输出没有归档，因此只按 owner confirmation 记录。
     原始 run_id 中的1970年源于目标板时钟未初始化，不代表实际采集日期。
-11. 当前 Windows 环境的 sanitizer 为 `NOT RUN`：MinGW GCC 6.3.0 缺少 `libasan`，
-    UBSan 编译触发编译器内部错误。历史 Ubuntu ASan+UBSan 11/11仍证明未修改的生产
-    解码器，但新增语义测试本身应在 Ubuntu clone 补跑，不能把历史结果写成当前运行。
+11. M4 当时 Windows 环境的 sanitizer 为 `NOT RUN`：MinGW GCC 6.3.0 缺少 `libasan`，
+    UBSan 编译触发编译器内部错误。该历史限制保持原义；当前语义测试后来已由 M5 的
+    Ubuntu ASan+UBSan 全量12/12补跑，但不能倒写成 M4 Windows run 的结果。
 
 M4 退出条件已经满足，状态为 **2026-08-31 已通过**。该判定只覆盖自定义 DBC、静态
 解码器、语义化 STM32 生成器和实物 CAN 输入一致性。真实 i.MX6ULL 上由 `gatewayd`
-实时调用新增解码器仍为 **NOT RUN**；生产者--消费者链路及后续功能属于 M5。M5 及
-后续尚未开始，进入下一阶段仍需项目所有者另行确认。
+实时调用新增解码器在 M4 结束时仍为 **NOT RUN**；该历史边界不代表后续 M5 目标板
+门禁已经通过。
+
+## M5 当前记录
+
+1. 新增 `gateway_pipeline`，用一个 producer 线程执行有限超时的 CAN receive、M4
+   checksum/DBC 解码和有界入队；一个 consumer 线程从 M1 ring buffer 排空记录并调用
+   mock sink。接收回调必须在 `receive_timeout_ms` 内返回，实际 `gatewayd` 使用100 ms
+   poll 周期检查退出请求。
+2. gateway seq 在每个通过 M2 原始帧校验的记录上推进；解码失败和满队列丢弃仍保留
+   seq 缺口。满队列继续采用冻结的“有界等待后丢弃新记录”策略，queue drop 对应
+   `GATEWAY_STAT_QUEUE_PUSH_TIMEOUTS`，不与 CAN 接收或解码错误混合。
+3. mock sink 校验 timestamp/checksum/decode 状态，统计消费数、seq gap、非单调记录和
+   无效记录。`gatewayd --run-mock-sink` 接入真实 `can_interface`，可选
+   `--mock-sink-delay-ms` 只用于 M5 故意慢消费者测试；没有实现 MQTT 或持久化。
+4. 正常 `SIGTERM`/`SIGINT` 仍通过 self-pipe 进入主线程；随后 request stop、close/
+   broadcast、producer 有界退出、consumer drain 和 join，销毁前不留下使用 queue 的
+   线程。
+5. 前置审计 `artifacts/20260831T122305+0800-m5-preflight/` 重新确认 M4 门禁 MET。
+   最终主机证据 `artifacts/20260831T123149+0800-m5-host-final/` warning-clean、全量
+   CTest 12/12 PASS；M5 定时合成基准为111帧、queue drop 0、sink consumed 111。
+6. 同一主机 run 的故意过载使用 queue capacity 4、push timeout 0、mock sink delay
+   2 ms；直接运行观测到200条输入中5条入队/消费、195条按策略 drop、high-watermark 4，
+   所有 `push_success + timeout = attempts`、`pop = push_success = consumed` 和关闭后空队列
+   不变量通过。该次数受线程调度影响，只是本 run 的功能证据，不是吞吐或性能指标。
+7. `SIGTERM` 15 经真实 signal handler/self-pipe 传递后 producer/consumer 均退出并排空；
+   ASan+UBSan run `artifacts/20260831T123218+0800-m5-asan-ubsan/` 全量12/12 PASS，
+   LeakSanitizer 仍因 `ptrace` 限制为 `NOT RUN`。
+8. ARM run `artifacts/20260831T123256+0800-m5-arm-cross/` 使用 Buildroot GCC 7.5.0
+   warning-clean 构建成功；输出为 Cortex-A7/ARMv7 EABI5 hard-float ELF32，SHA256
+   `567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01`。ARM 构建 run
+   本身不含部署；后续板端执行见第9项。
+
+9. 板端最终证据 `artifacts/20260831T132341+0800-m5-board-owner-final/` 归档项目所有者
+   从 i.MX6ULL 拉回的两个原始日志。板端 binary SHA256 与 ARM构建一致。基准配置
+   capacity 1024/push timeout 50 ms/sink delay 0，3694条物理输入全部 decode、queue、
+   pop、consume，queue drop和sink gap均为0，high-watermark 2。
+10. 板端过载配置 capacity 4/push timeout 0/sink delay 20 ms，满足
+    `2970 success + 3561 drop + 1 push_closed = 6532 attempts`、
+    `2970 pop = 2970 consumed`、`3561 drop = 3561 sink gap`，high-watermark 4/4。
+    两次均记录 signal 15，随后输出 post-join summary。
+11. 项目所有者确认 STM32 是在两个 `gatewayd` 进程启动后才中途开启，因此305/75次
+    timeout 是无输入阶段的100 ms空闲 poll。结果不描述为完整64/69秒持续111帧/s；
+    本次也没有归档 CAN before/after 或 shell `wait` 精确退出码。
+12. 最终关闭审计 `artifacts/20260831T133005+0800-m5-close-audit/` 复核当前源码哈希、
+    ARM/板端 binary 身份、两个板端原始日志哈希和文档范围；沙箱内 PF_CAN 环境失败
+    如实保留，相同全量 CTest 在沙箱外12/12 PASS，M5 专项直接运行 PASS。
+
+M5 退出条件已经满足，状态为 **2026-08-31 已通过**。该判定覆盖真实 i.MX6ULL 上的
+物理 CAN → 实时解码 → queue → mock sink 基准零 drop、故意慢消费者过载策略和
+signal 15 graceful shutdown；不产生持续运行、CAN error增量、吞吐、时延或可靠性结论。
+M6 及后续功能不得开始，进入 M6 仍需项目所有者另行确认。
 
 ## M1 完成记录
 

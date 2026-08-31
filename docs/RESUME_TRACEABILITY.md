@@ -1,19 +1,20 @@
 # 简历事实可追溯性
 
-当前仍不能写“完整 CAN--MQTT 网关”、板端实时 DBC 解码、可靠性或性能结论。M1 已证明
+当前仍不能写“完整 CAN--MQTT 网关”、可靠性或性能结论。M1 已证明
 x86_64 主机上的配置和并发基础设施单元行为；M2 又完成 ARMv7 warning-clean 交叉构建，
 并在真实 i.MX6ULL controller loopback 上证明当前 `gatewayd` 的 SocketCAN 精确过滤、
 DLC 拒绝和内核时间戳提取；M4 又完成自定义 DBC、静态 C 解码器、语义化 STM32
-模拟信号和实物 CAN 输入一致性闭环。只允许使用下表明确标为
-“是”的窄范围表述。
+模拟信号和实物 CAN 输入一致性闭环。M5 又在真实 i.MX6ULL 上完成物理 CAN → 实时
+DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 退出验证。只允许使用
+下表明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
 | 为实验用自定义 DBC 实现无动态分配的静态 C 解码器 | M4 `vehicle.dbc`、黄金向量、`vehicle_decoder` | DBC/向量交叉检查、边界/错误、语义化 STM32 规律、ARM 构建 | 历史主机/ASan/ARM与当前语义主机/实物CAN证据 | 3类消息；42条向量；6660帧主机模型和实物捕获均匹配 | 是，必须注明自定义协议和离线静态解码 |
-| SocketCAN 接收/过滤/内核时间戳与 DBC 解码已在 i.MX6ULL 实时链路集成 | M2/M4/M5 源码和协议文件 | loopback、过滤、时间戳、黄金向量及板端实时解码 | M2/M4 已通过；M5 未开始 | 新增解码器板端实时运行 NOT RUN | 否 |
+| SocketCAN 接收/过滤/内核时间戳与自定义 DBC 解码已在 i.MX6ULL 实时 mock-sink 链路集成 | M2/M4/M5 源码和协议文件 | loopback、过滤、时间戳、黄金向量及板端实时解码 | M2/M4 已通过；M5 主机/ARM及板端物理 CAN 基准/过载通过 | 基准3694条 decode/消费、queue drop 0；仅 mock sink，不含 MQTT、性能或可靠性 | 是，必须注明自定义协议、mock sink 和功能验证限定 |
 | 在 i.MX6ULL 上实现 CAN_RAW 精确 ID 过滤、DLC 校验和 SO_TIMESTAMPNS 提取，并以 controller loopback 验证 | M2 `can_receiver`、有限 CLI、toolchain file | 主机错误注入、ARM 构建、真实板端目标/非目标/DLC/timestamp | M2 最终主机、ARM、板端和审计 run | 目标 3/3；非目标 0；DLC reject 1；timestamp 3/3；仅 controller loopback | 是，必须保留 loopback 限定且不得写性能 |
 | STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、接线/终端检查、`candump`、周期/计数器 | 项目所有者简化验收；原始日志未归档 | PA11/PA12、500 kbit/s；三类 ID/周期/DLC/counter/XOR 正常 | 是，但必须注明为项目实测且不写可靠性/性能数字 |
-| pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M1 主机 8/8 已通过；M5 板端未运行 | M1 功能测试：3 producer × 2000 条全部唯一消费；非性能值 | 否 |
+| pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M5 主机/ASan全量12/12、ARM构建及板端基准/过载通过 | 板端基准3694条queue drop 0；容量4慢consumer按策略drop 3561；均为单次功能值 | 是，不得写成吞吐、时延或可靠性指标 |
 | MQTT QoS 1、seq、PUBACK、本地 spool、重连补传 | M6/M7 源码和 spool 格式/配置 | 1000 batch、断线、损坏、崩溃恢复 | M6/M7 集成 run | 未测量 | 否 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor 和 API 兼容性记录 | 与 M7 等价的 reactor/重连/退出测试 | M8 目标 run | 未测量 | 否 |
 | BusyBox 开机启动和异常退出恢复 | M9 init/supervisor/config | 启动和受控 crash/restart | M9 板端 run | 未测量 | 否 |
@@ -59,12 +60,35 @@ M4 主机证据为 `artifacts/20260830T205736+0800-m4-host-final/`，默认 warn
 静态解码源码能生成 ARMv7 hard-float binary，没有部署或板端运行。当前语义主机证据
 `artifacts/20260831T112833+0800-m4-host-semantic-final/` 覆盖42条向量和6660帧模型；
 实物证据 `artifacts/20260831T111733+0800-m4-stm32-physical-final/` 覆盖60秒
-6000/600/60帧且逐帧匹配。这些是功能测试规模，不是吞吐、时延或可靠性指标。必须把“主机静态
-解码验证”与“M2 binary 的板端 SocketCAN 验证”分开表述，不能拼接成一个已经在目标板
-实时运行的完整链路。
+6000/600/60帧且逐帧匹配。这些是功能测试规模，不是吞吐、时延或可靠性指标。M4 结束
+时必须把“主机静态解码验证”与“M2 binary 的板端 SocketCAN 验证”分开表述；后续 M5
+已用新的、SHA256 固定的 ARM binary 补齐实时集成证据，但仍只到 mock sink。
 
 项目所有者确认 Keil Build 0 error/0 warning且已Download，但完整原始 Keil 输出未归档；
 实物捕获也没有固件镜像哈希。因此可写“语义化 STM32 输入与自定义 DBC 离线解码预期
-逐帧一致”，不能写“源码与烧录镜像已哈希绑定”，也不能写“新增解码器已在 i.MX6ULL
-实时链路运行”。当前 Windows sanitizer 对新增语义测试为 `NOT RUN`，不影响表中窄范围
-功能描述，但不能宣称当前源码已经完成 sanitizer 验证。
+逐帧一致”，不能写“源码与烧录镜像已哈希绑定”。M4 当时不能写“新增解码器已在
+i.MX6ULL 实时链路运行”；该缺口后来由 M5 板端证据补齐。Windows sanitizer 对新增
+语义测试的历史 `NOT RUN` 保持不变；当前
+Ubuntu clone 已在后述 M5 ASan+UBSan run 中补跑全量测试，但 LeakSanitizer 仍未运行。
+
+M5 前置审计 `artifacts/20260831T122305+0800-m5-preflight/` 重新确认 M4 门禁。Ubuntu
+主机最终证据 `artifacts/20260831T123149+0800-m5-host-final/` warning-clean 且全量
+CTest 12/12 PASS；定时合成100/10/1 Hz共111帧的主机用例 queue drop 0，容量4、零等待
+和2 ms慢消费者的故意过载观测到195次 drop，计数不变量通过，真实 `SIGTERM` 自管道
+退出也通过。ASan+UBSan 证据 `artifacts/20260831T123218+0800-m5-asan-ubsan/` 为
+12/12 PASS，LeakSanitizer 仍为 `NOT RUN`。ARMv7 交叉构建
+`artifacts/20260831T123256+0800-m5-arm-cross/` warning-clean PASS，binary SHA256 为
+`567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01`。
+
+项目所有者随后在真实 i.MX6ULL 上运行该 binary，原始日志和验证报告归档于
+`artifacts/20260831T132341+0800-m5-board-owner-final/`。基准 capacity 1024、push
+timeout 50 ms、sink delay 0：3694条物理输入全部 decode、入队、pop 和消费，queue
+drop 为0；过载 capacity 4、push timeout 0、sink delay 20 ms：2970条消费、3561条按
+策略 drop、退出时1次 push closed，high-watermark 4/4。两次均记录 signal 15，随后
+输出 post-join summary。
+
+项目所有者确认 STM32 在进程启动后才中途开启，故305/75次 receive timeout 是此前
+无输入的空闲 poll；不能用进程完整64/69秒计算或声称持续111帧/s。证据未包含
+`can_before/after`、正确 UTC 或 shell `wait` 精确退出码，故只支持表中受限的板端实时
+mock-sink 集成和队列策略描述，不支持 CAN 错误增量、吞吐、时延、持续运行或可靠性
+结论。M5 已通过；MQTT 仍未实现。

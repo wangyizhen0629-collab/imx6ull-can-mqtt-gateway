@@ -13,6 +13,8 @@ add_library(gateway_core STATIC
     src/error.c
     src/lifecycle.c
     src/log.c
+    src/mock_sink.c
+    src/pipeline.c
     src/ring_buffer.c
     src/stats.c
     src/vehicle_decoder.c
@@ -87,4 +89,6 @@ if(BUILD_TESTING)
                 ${PROJECT_SOURCE_DIR}/protocol/test_vectors/vehicle_golden.csv
     )
     set_tests_properties(test_vehicle_dbc PROPERTIES LABELS "M4;protocol")
+
+    add_gateway_unit_test(test_pipeline M5)
 endif()

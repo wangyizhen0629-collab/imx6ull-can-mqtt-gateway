@@ -1,0 +1,11 @@
+README.md:33:NOT MET。MQTT、spool I/O、epoll 和部署均未实现，M6 及后续未开始。
+docs/DECISION_LOG.md:301:- 状态：设计已接受并实现；目标板退出门禁 NOT MET
+docs/DECISION_LOG.md:320:  `NOT RUN`，所以 M5 只能记录为“实现完成、门禁 NOT MET”；不得进入 M6。
+docs/PLANS.md:35:  **NOT MET**；M6 及后续未开始。
+docs/PLANS.md:50:| M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 实现完成；主机/ASan/ARM构建通过，目标板测试 NOT RUN，门禁 NOT MET |
+docs/PLANS.md:51:| M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 未开始 |
+docs/PLANS.md:259:M5 当前判定为 **实现完成、退出门禁 NOT MET**。真实 i.MX6ULL 上的物理 CAN → 实时
+docs/milestones/M5.md:6:- 退出门禁：**NOT MET**
+docs/milestones/M5.md:7:- M6 及后续阶段：**未开始**
+docs/milestones/M5.md:112:证据决定。当前目标板实时链路、板端过载和板端 SIGTERM 全部 `NOT RUN`，因此 M5
+docs/milestones/M5.md:113:退出门禁为 **NOT MET**。项目在此立即停止，M6 不得开始。

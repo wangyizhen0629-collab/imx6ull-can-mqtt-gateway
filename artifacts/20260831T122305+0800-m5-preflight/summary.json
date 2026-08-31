@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T122305+0800-m5-preflight",
+  "milestone": "M5",
+  "status": "PASS",
+  "prerequisite_gate": "M4_MET",
+  "ctest": {
+    "passed": 11,
+    "total": 11,
+    "sandboxed_first_attempt": "FAIL: PF_CAN socket creation denied"
+  },
+  "golden_vectors": 42,
+  "physical_frames_reaudited": 6660,
+  "physical_payload_mismatches": 0,
+  "can_error_delta": 0,
+  "limitations": [
+    "This is a read-only prerequisite audit; no target interface, process, firmware, or broker state was changed.",
+    "The old Windows sha256.txt source paths are not directly portable from its artifact directory on Ubuntu, and some archived source hashes reflect CRLF bytes. Raw evidence hashes match and current-source behavior was rerun instead.",
+    "The first CTest attempt is retained as FAIL because the sandbox denied PF_CAN; the approved rerun passed 11/11."
+  ]
+}

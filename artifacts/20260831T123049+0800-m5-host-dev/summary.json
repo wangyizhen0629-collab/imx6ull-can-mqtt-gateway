@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123049+0800-m5-host-dev",
+  "milestone": "M5",
+  "status": "PASS",
+  "host_baseline": {
+    "synthetic_frames": 111,
+    "elapsed_ms": 990.611,
+    "queue_drop": 0,
+    "queue_high_watermark": 2,
+    "sink_consumed": 111
+  },
+  "host_overload": {
+    "produced": 200,
+    "queued": 4,
+    "queue_drop": 196,
+    "consumed": 4,
+    "queue_capacity": 4,
+    "queue_high_watermark": 4
+  },
+  "host_sigterm": {
+    "signal": 15,
+    "exit_ms": 0.597,
+    "producer_done": true,
+    "consumer_done": true
+  },
+  "scope": "Development host run only; final regression, sanitizers, ARM build, and target hardware were not part of this run."
+}

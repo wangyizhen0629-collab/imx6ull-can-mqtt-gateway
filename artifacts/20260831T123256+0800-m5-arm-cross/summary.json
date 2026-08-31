@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T123256+0800-m5-arm-cross",
+  "milestone": "M5",
+  "status": "PASS",
+  "compiler": "Buildroot GCC 7.5.0",
+  "binary": "build/m5-arm-cross/gateway/gatewayd",
+  "sha256": "567079d01f4fb1e682a959cd01bac3709e4062f42c1f18903596dc47181d0a01",
+  "elf": "ELF32 LSB ARM EABI5 hard-float Cortex-A7/ARMv7 dynamically linked",
+  "interpreter": "/lib/ld-linux-armhf.so.3",
+  "target_deploy": "NOT RUN",
+  "target_execution": "NOT RUN",
+  "reason": "No target-board connection or separate approval to deploy, modify can0, or start/stop a board process in this session"
+}
