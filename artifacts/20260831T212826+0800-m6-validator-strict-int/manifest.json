@@ -1,0 +1,62 @@
+{
+  "schema": "m6.validator.strict_integer.test.v1",
+  "run_id": "20260831T212826+0800-m6-validator-strict-int",
+  "status": "PASS",
+  "source_commit": "68ec4699df91fd837655996b014eb40a6e15b834",
+  "validator_fix_commit": "917253e6a514ea0e65df3de07accf7a9f284f0c4",
+  "python_version": "3.10.12",
+  "tracked_worktree_clean_before_test": true,
+  "tests": {
+    "warning_clean_fresh_configure": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "warning_clean_fresh_build": {
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "strict_integer_unit_regression": {
+      "cases": 8,
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "single_record_1000_replay": {
+      "raw_batches": 1000,
+      "gateway_seq_range": "1..1000",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "multi_record_board_smoke_replay": {
+      "raw_batches": 1,
+      "records": 111,
+      "gateway_seq_range": "1..111",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    "negative_expected_batches_2": {
+      "exit_code": 1,
+      "status": "EXPECTED_FAILURE",
+      "error": "raw batch count 1 != 2"
+    },
+    "ctest_sandbox": {
+      "passed": 13,
+      "total": 14,
+      "exit_code": 8,
+      "status": "EXPECTED_ENVIRONMENT_FAILURE",
+      "reason": "PF_CAN socket creation denied by sandbox"
+    },
+    "ctest_external": {
+      "passed": 14,
+      "total": 14,
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  },
+  "not_run": [
+    "Broker start or control",
+    "board access or modification",
+    "new 1000-batch acquisition",
+    "absolute UTC/timestamp correctness",
+    "M7 behavior"
+  ]
+}

@@ -1,0 +1,13 @@
+test_boolean_batch_seq_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_boolean_first_and_last_seq_are_rejected (__main__.ValidatorRegressionTest) ... ok
+test_boolean_record_count_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_boolean_record_seq_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_cross_batch_duplicate_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_cross_batch_gap_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_non_integer_dlc_is_rejected (__main__.ValidatorRegressionTest) ... ok
+test_two_multirecord_batches_pass (__main__.ValidatorRegressionTest) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.764s
+
+OK

@@ -1,0 +1,49 @@
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260831T212826+0800-m6-validator-strict-int
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260831T212826+0800-m6-validator-strict-int
+      Start  1: gatewayd_version
+ 1/14 Test  #1: gatewayd_version .................   Passed    0.00 sec
+      Start  2: gatewayd_default_config
+ 2/14 Test  #2: gatewayd_default_config ..........   Passed    0.00 sec
+      Start  3: gatewayd_example_config
+ 3/14 Test  #3: gatewayd_example_config ..........   Passed    0.00 sec
+      Start  4: test_config
+ 4/14 Test  #4: test_config ......................   Passed    0.00 sec
+      Start  5: test_error_record
+ 5/14 Test  #5: test_error_record ................   Passed    0.00 sec
+      Start  6: test_lifecycle
+ 6/14 Test  #6: test_lifecycle ...................   Passed    0.02 sec
+      Start  7: test_log
+ 7/14 Test  #7: test_log .........................   Passed    0.00 sec
+      Start  8: test_ring_buffer
+ 8/14 Test  #8: test_ring_buffer .................   Passed    0.13 sec
+      Start  9: test_can_receiver
+ 9/14 Test  #9: test_can_receiver ................***Failed    0.00 sec
+CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_can_receiver.c:66: descriptor >= 0
+CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_can_receiver.c:215: test_kernel_socket_options() == 0
+
+      Start 10: test_vehicle_decoder
+10/14 Test #10: test_vehicle_decoder .............   Passed    0.00 sec
+      Start 11: test_vehicle_dbc
+11/14 Test #11: test_vehicle_dbc .................   Passed    0.04 sec
+      Start 12: test_pipeline
+12/14 Test #12: test_pipeline ....................   Passed    1.02 sec
+      Start 13: test_mqtt_sink
+13/14 Test #13: test_mqtt_sink ...................   Passed    0.00 sec
+      Start 14: test_mqtt_validator
+14/14 Test #14: test_mqtt_validator ..............   Passed    0.76 sec
+
+93% tests passed, 1 tests failed out of 14
+
+Label Time Summary:
+M1          =   0.16 sec*proc (5 tests)
+M2          =   0.00 sec*proc (1 test)
+M4          =   0.04 sec*proc (2 tests)
+M5          =   1.02 sec*proc (1 test)
+M6          =   0.76 sec*proc (2 tests)
+protocol    =   0.04 sec*proc (1 test)
+unit        =   1.94 sec*proc (10 tests)
+
+Total Test time (real) =   1.99 sec
+
+The following tests FAILED:
+	  9 - test_can_receiver (Failed)

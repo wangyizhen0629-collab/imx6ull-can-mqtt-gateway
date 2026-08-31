@@ -1,0 +1,1 @@
+tracked_worktree_clean=true

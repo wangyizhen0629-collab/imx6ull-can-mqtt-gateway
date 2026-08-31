@@ -1,0 +1,2 @@
+GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/tmp/imx6ull-m6-mosquitto-root/usr/include
+GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so

@@ -1,0 +1,29 @@
+源码提交和输入标识：
+
+git rev-parse HEAD
+git rev-parse HEAD:tools/mqtt/validate_m6_batches.py
+git rev-parse HEAD:tools/mqtt/test_validate_m6_batches.py
+git rev-parse HEAD:tools/mqtt/README.md
+git rev-parse HEAD:gateway/CMakeLists.txt
+sha256sum tools/mqtt/validate_m6_batches.py tools/mqtt/test_validate_m6_batches.py tools/mqtt/README.md gateway/CMakeLists.txt artifacts/20260831T135630+0800-m6-mqtt-final/subscriber.jsonl artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json
+
+warning-clean fresh build：
+
+cmake -S . -B build/20260831T212826+0800-m6-validator-strict-int -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_MOSQUITTO_ROOT=/tmp/imx6ull-m6-mosquitto-root/usr
+cmake --build build/20260831T212826+0800-m6-validator-strict-int --parallel 2
+rg '^GATEWAY_MOSQUITTO_(INCLUDE_DIR|LIBRARY):' build/20260831T212826+0800-m6-validator-strict-int/CMakeCache.txt
+sha256sum /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11 /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h
+
+无网络回归和已有payload重放：
+
+python3 -B tools/mqtt/test_validate_m6_batches.py
+python3 -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T135630+0800-m6-mqtt-final/subscriber.jsonl --device-id m6-final --expected-batches 1000
+python3 -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json --device-id imx6ull-gateway-m6 --expected-batches 1
+python3 -B tools/mqtt/validate_m6_batches.py --input artifacts/20260831T183306p0800-m6-board-smoke/subscriber.json --device-id imx6ull-gateway-m6 --expected-batches 2
+
+全量CTest：
+
+ctest --test-dir build/20260831T212826+0800-m6-validator-strict-int --output-on-failure
+
+同一CTest先在沙箱内运行；唯一失败为既有PF_CAN权限限制。随后获批准在沙箱外重跑，
+不启动Broker、不访问板端、不修改网络状态。
