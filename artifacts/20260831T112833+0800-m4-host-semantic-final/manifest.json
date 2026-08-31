@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T112833+0800-m4-host-semantic-final",
+  "milestone": "M4",
+  "status": "PASS",
+  "source_commit": "1a7c35202ee717663bb4741a149133668bd9c6f0",
+  "source_tree": "dirty",
+  "compiler": "MinGW.org GCC 6.3.0",
+  "checks": [
+    {
+      "name": "strict C compile",
+      "status": "PASS"
+    },
+    {
+      "name": "test_vehicle_decoder",
+      "status": "PASS",
+      "semantic_frames": 6660,
+      "golden_vectors": 42
+    },
+    {
+      "name": "check_vehicle_dbc",
+      "status": "PASS",
+      "dbc_messages": 3,
+      "golden_vectors": 42
+    }
+  ]
+}

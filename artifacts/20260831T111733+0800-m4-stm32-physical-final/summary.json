@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T111733+0800-m4-stm32-physical-final",
+  "milestone": "M4",
+  "status": "PASS",
+  "capture_seconds": 60,
+  "frames": 6660,
+  "frames_by_id": {
+    "0x100": 6000,
+    "0x101": 600,
+    "0x102": 60
+  },
+  "payload_mismatches": 0,
+  "checksum_mismatches": 0,
+  "counter_mismatches": 0,
+  "spare_bit_mismatches": 0,
+  "can_rx_packet_delta": 6740,
+  "can_rx_byte_delta": 53920,
+  "can_error_delta": 0,
+  "can_state_before": "ERROR-ACTIVE",
+  "can_state_after": "ERROR-ACTIVE",
+  "bitrate": 500000,
+  "limitations": [
+    "The raw run_id starts at 1970 because the board clock was not initialized; it is not the wall-clock capture time.",
+    "The 80 packets outside candump are explained by the gap between the statistics snapshots and the 60-second candump window.",
+    "The evidence behaviorally matches the archived source but does not cryptographically attest the flashed image.",
+    "The complete raw Keil Build/Download console output is not archived; only the owner's 0-error/0-warning and download confirmation is available.",
+    "The 0x102 physical sample contains only counters 0 through 59, so its physical wrap is not claimed."
+  ]
+}

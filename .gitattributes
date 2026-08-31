@@ -1,0 +1,4 @@
+# 实物捕获证据必须逐字节保留，禁止 core.autocrlf 改写原始输出。
+/artifacts/20260831T111733+0800-m4-stm32-physical-final/can_before.txt -text
+/artifacts/20260831T111733+0800-m4-stm32-physical-final/can_after.txt -text
+/artifacts/20260831T111733+0800-m4-stm32-physical-final/candump_60s.log -text

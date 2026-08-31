@@ -1,0 +1,12 @@
+PASS: parsed 6 new JSON evidence files
+PASS: verified 3 physical raw-file SHA256 values
+PASS: validated 3 DBC messages and 42 golden vectors
+PASS: test_vehicle_decoder exit code 0 (42 vectors plus 6660-frame semantic cycle)
+PASS: 0x100: count=6000, interval_min=0.009926, interval_mean=0.010000, interval_max=0.010080
+PASS: 0x101: count=600, interval_min=0.099965, interval_mean=0.099997, interval_max=0.100025
+PASS: 0x102: count=60, interval_min=0.999941, interval_mean=0.999972, interval_max=1.000006
+PASS: CAN stats: rx_packets_delta=6740, rx_bytes_delta=53920, outside_capture=80, error_deltas=0
+PASS: all 6660 physical frames match the deterministic DBC scenario
+PASS: git diff --check for tracked source/document changes exited 0 before raw evidence was staged
+EXPECTED: git diff --cached --check reports the original trailing spaces in can_before.txt/can_after.txt; the raw evidence is preserved byte-for-byte with -text attributes
+PASS: no current-status M4 NOT MET/waiting statement found in authoritative/current documentation

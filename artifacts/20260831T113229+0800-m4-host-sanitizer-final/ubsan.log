@@ -1,0 +1,4 @@
+COMMAND: gcc ... -fsanitize=undefined ...
+EXIT CODE: 1
+gateway/tests/test_vehicle_decoder.c:219:12: internal compiler error: in pp_format, at pretty-print.c:630
+gcc.exe: internal compiler error: Aborted (program cc1)

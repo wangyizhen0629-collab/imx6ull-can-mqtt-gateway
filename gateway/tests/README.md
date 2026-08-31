@@ -31,9 +31,10 @@ M4 新增 `test_vehicle_decoder` 和 `test_vehicle_dbc`：
 
 - C 解码器读取 `protocol/test_vectors/vehicle_golden.csv`，验证三类消息、Intel 小端、
   定点缩放/偏移、bit mask、counter/checksum、信号边界及错误清零语义；
-- 对 M3 固件三个 base 的全部 `3 * 256` counter 规律执行静态解码；
+- 对当前 STM32 的完整60秒整数定点语义场景执行静态解码，共验证6660帧；
 - Python 标准库检查器独立读取同一黄金向量和 `vehicle.dbc`，验证 DBC 位提取、物理量
   缩放及 XOR 规则，避免 C 实现和协议文件各自维护互不相干的期望值。
 
-这些测试是离线主机证据，不会连接或修改真实 `can0`。若没有新的硬件输入日志，不能
-把它们描述成 M4 解码器已在 i.MX6ULL 物理 CAN 上运行。
+当前42条向量中31条取自实物捕获，另含边界和错误路径。物理原始证据由
+`tools/protocol/check_stm32_candump.py` 独立逐帧复核。这些测试不会连接或修改真实
+`can0`；即使输入来自实物，也不能把离线审计描述成 M4 解码器已在 i.MX6ULL 实时运行。

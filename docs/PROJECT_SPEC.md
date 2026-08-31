@@ -150,11 +150,12 @@ M3-A～M3-D 已由项目所有者按实际现象验收：仓库已有 STM32F103C
 原计划的10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟没有执行，不得写成可靠性
 结果。
 
-M4 已形成实验用 `vehicle.dbc` 和静态 C 解码器的首轮实现。三类消息采用 Intel 小端和
-显式定点单位；`telemetry_record.decoded_payload` 的32字节语义已定义，并通过 `memcpy`
-访问。默认主机与 ASan+UBSan 全量回归均11/11通过，ARMv7 warning-clean 交叉构建通过。
-但首轮黄金向量和所谓768种 STM32 规律只验证旧的原始字节递增算法，不证明 STM32 已从
-有物理意义的模拟车速、转速等信号按 DBC 编码。项目所有者于 2026-08-30 明确该要求后，
-M4 门禁重新保持未关闭，等待 Windows 修正 STM32 生成/编码并重新执行黄金向量及实际
-规律核对。新增 ARM binary 没有部署或板端运行，物理 CAN 上的实时解码为 `NOT RUN`。
+M4 已于2026-08-31完成。实验用 `vehicle.dbc` 冻结三类消息的 Intel 小端布局与定点
+单位；`telemetry_record.decoded_payload` 的32字节语义已定义，并通过 `memcpy` 访问。
+STM32 已用整数定点实现60秒语义车况循环，严格按 DBC 编码，spare bits 清零并保留三类
+独立 counter/XOR。42条黄金向量和完整6660帧主机模型通过；60秒实物 `candump` 中
+`0x100`/`0x101`/`0x102` 分别为6000/600/60帧，逐帧模型差异、counter、XOR、spare
+bit 差异和 CAN 错误计数增量均为0。项目所有者确认 Keil Build 0 error/0 warning 且
+已 Download，但完整原始 Keil 输出未归档。新增 ARM binary 没有部署或板端运行，物理
+CAN 上由 `gatewayd` 实时解码仍为 `NOT RUN`，属于 M5 集成边界。
 生产者--消费者接入、MQTT、spool I/O、epoll 和部署功能仍未实现，属于 M5 及后续阶段。

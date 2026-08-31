@@ -15,15 +15,17 @@ PC 端 Mosquitto validator。
 
 ## 当前状态
 
-M1、M2 已完成。M3-A～M3-D 已由项目所有者按实际现象验收：STM32F103C8T6 使用
+M1～M4 已完成。M3-A～M3-D 已由项目所有者按实际现象验收：STM32F103C8T6 使用
 PA11/CAN_RX、PA12/CAN_TX，以 500 kbit/s 发送三类确定性报文，Keil Build 0 error、
 0 warning；i.MX6ULL `candump` 已观察到正确 ID、周期、DLC、Rolling Counter 和 XOR。
 `gatewayd` 又在真实 `can0` 完成两次1110帧短时接收，均为 accepted=1110 且接收错误
 为0；项目所有者豁免原计划的10分钟 M3-E 门禁并接受 M3 完成。该状态不代表10分钟、
-可靠性或性能验证。M4 已完成实验用自定义 DBC 和定点静态 C 解码器的首轮实现，主机
-普通/ASan+UBSan 测试与 ARMv7 交叉构建均通过；但项目所有者随后明确要求 STM32 生成
-有物理意义的模拟车速、转速等信号，而不是只递增原始字节。因此当前20条黄金向量仍是
-旧规律证据，M4 门禁保持未关闭，等待 Windows 侧按 DBC 修正 STM32 编码后重新验证。
+可靠性或性能验证。M4 已完成实验用自定义 DBC、整数定点静态 C 解码器和语义化 STM32
+模拟车况闭环。当前42条黄金向量与完整60秒/6660帧主机模型通过，实物 `candump` 的
+6000/600/60帧逐帧符合 DBC、独立 counter、XOR 和 spare-bit 规则，CAN 错误计数增量
+为0。Keil 0 error/0 warning 及 Download 是项目所有者确认，完整原始控制台输出未归档；
+离线实物日志审计也不等于新增解码器已在 i.MX6ULL 实时运行。M4 已关闭，进入 M5 仍需
+项目所有者另行授权。
 当前没有实现真实生产者--消费者数据链路、MQTT、spool I/O 或 epoll；M5 及后续未开始。
 
 ## Ubuntu 主机构建

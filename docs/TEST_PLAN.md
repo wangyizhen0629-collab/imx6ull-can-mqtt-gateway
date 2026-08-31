@@ -107,18 +107,18 @@ M3-E 原10分钟/按 ID gap 门禁并接受 M3 完成。连续10分钟仍是 NOT
 - M10：计划的 500/1000 帧/s 压力、20 轮 5 分钟 Broker 断线、`/proc` 指标和
   24 小时基准稳定性。
 
-M4 已于 2026-08-30 完成首轮静态测试：20条共享黄金向量覆盖三类消息、小端、缩放/偏移、
-bit mask、信号边界、counter/checksum 和错误路径；另按 M3 固件规则遍历全部
-`3 * 256` counter。默认 warning-clean 和 ASan+UBSan 全量回归均11/11 PASS，证据分别为
-`artifacts/20260830T205736+0800-m4-host-final/` 和
-`artifacts/20260830T205834+0800-m4-asan-ubsan/`；ARMv7 warning-clean 交叉构建证据为
-`artifacts/20260830T205937+0800-m4-arm-cross/`。LeakSanitizer 因已知 `ptrace` 限制为
-`NOT RUN`。新的板端/物理 CAN 解码测试也是 `NOT RUN`：本轮未连接目标板、未部署
-binary、未修改 `can0`。M3 项目所有者确认的真实报文规律只用于静态对应，不冒充本轮
-板端执行结果。项目所有者随后明确要求 STM32 从有物理意义的模拟物理量按 DBC 编码；
-现有向量只覆盖旧原始字节递增算法，因此上述 PASS 保留为首轮历史证据，M4 退出门禁
-仍为 **NOT MET**。Windows 修正固件并提供 Keil/`candump` 依据后，必须用新 run 更新
-物理场景黄金向量并复测，不能覆盖现有 artifact。
+M4 首轮20条/768帧历史测试、Ubuntu warning-clean/ASan+UBSan 11/11和 ARMv7 交叉构建
+证据保持不变。2026-08-31 又完成语义化门禁：当前42条共享向量包含31条实物代表帧、
+8条静态边界和3条错误路径；C 测试重建完整60秒/6660帧整数定点场景，DBC 检查器独立
+验证3条消息和全部向量。主机证据为
+`artifacts/20260831T112833+0800-m4-host-semantic-final/`。
+
+实物证据 `artifacts/20260831T111733+0800-m4-stm32-physical-final/` 保存60秒
+`candump` 和 CAN 前后统计：6000/600/60帧逐帧符合场景、DBC、独立 counter、XOR 和
+spare-bit 规则，CAN 错误计数增量为0。Keil 0 error/0 warning及Download为项目所有者
+确认，完整原始控制台输出未归档。当前 Windows sanitizer 因旧 MinGW 缺少运行库/内部
+错误为 `NOT RUN`；新增解码器在 i.MX6ULL 实时运行也仍为 `NOT RUN`。这些限制不改变
+M4 静态协议与真实输入一致性门禁已于2026-08-31通过，但不得外推为 M5 集成结果。
 
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。

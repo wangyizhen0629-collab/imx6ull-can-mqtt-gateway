@@ -1,0 +1,4 @@
+COMMAND: gcc ... -fsanitize=address ...
+EXIT CODE: 1
+d:/mingw/mingw/bin/../lib/gcc/mingw32/6.3.0/../../../../mingw32/bin/ld.exe: cannot find -lasan
+collect2.exe: error: ld returned 1 exit status

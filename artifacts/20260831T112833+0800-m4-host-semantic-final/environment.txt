@@ -1,0 +1,5 @@
+Host: Windows, PowerShell
+Compiler: gcc.exe (MinGW.org GCC-6.3.0-1) 6.3.0
+WSL: NOT AVAILABLE (no installed Linux distribution)
+Source commit: 1a7c35202ee717663bb4741a149133668bd9c6f0
+Source tree: dirty; exact source hashes are listed in source_sha256.txt

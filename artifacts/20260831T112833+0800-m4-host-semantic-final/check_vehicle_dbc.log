@@ -1,0 +1,3 @@
+COMMAND: python tools/protocol/check_vehicle_dbc.py --dbc protocol/vehicle.dbc --vectors protocol/test_vectors/vehicle_golden.csv
+EXIT CODE: 0
+PASS: validated 3 DBC messages and 42 golden vectors

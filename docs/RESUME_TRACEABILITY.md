@@ -3,14 +3,14 @@
 当前仍不能写“完整 CAN--MQTT 网关”、板端实时 DBC 解码、可靠性或性能结论。M1 已证明
 x86_64 主机上的配置和并发基础设施单元行为；M2 又完成 ARMv7 warning-clean 交叉构建，
 并在真实 i.MX6ULL controller loopback 上证明当前 `gatewayd` 的 SocketCAN 精确过滤、
-DLC 拒绝和内核时间戳提取；M4 完成自定义 DBC 和静态 C 解码器的首轮主机验证及 ARM
-交叉构建，但尚未完成有物理意义的 STM32 模拟信号编码闭环。只允许使用下表明确标为
+DLC 拒绝和内核时间戳提取；M4 又完成自定义 DBC、静态 C 解码器、语义化 STM32
+模拟信号和实物 CAN 输入一致性闭环。只允许使用下表明确标为
 “是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
-| 为实验用自定义 DBC 实现无动态分配的静态 C 解码器 | M4 `vehicle.dbc`、黄金向量、`vehicle_decoder` | DBC/向量交叉检查、边界/错误、语义化 STM32 规律、ARM 构建 | 首轮主机/ASan/ARM 已有；语义化 STM32 复测待完成 | 3类消息；旧20条向量/768帧规律；主机11/11 | 否，M4 尚未关闭 |
-| SocketCAN 接收/过滤/内核时间戳与 DBC 解码已在 i.MX6ULL 实时链路集成 | M2/M4/M5 源码和协议文件 | loopback、过滤、时间戳、黄金向量及板端实时解码 | M2 已通过；M4 未关闭；M5 未开始 | 新增解码器板端运行 NOT RUN | 否 |
+| 为实验用自定义 DBC 实现无动态分配的静态 C 解码器 | M4 `vehicle.dbc`、黄金向量、`vehicle_decoder` | DBC/向量交叉检查、边界/错误、语义化 STM32 规律、ARM 构建 | 历史主机/ASan/ARM与当前语义主机/实物CAN证据 | 3类消息；42条向量；6660帧主机模型和实物捕获均匹配 | 是，必须注明自定义协议和离线静态解码 |
+| SocketCAN 接收/过滤/内核时间戳与 DBC 解码已在 i.MX6ULL 实时链路集成 | M2/M4/M5 源码和协议文件 | loopback、过滤、时间戳、黄金向量及板端实时解码 | M2/M4 已通过；M5 未开始 | 新增解码器板端实时运行 NOT RUN | 否 |
 | 在 i.MX6ULL 上实现 CAN_RAW 精确 ID 过滤、DLC 校验和 SO_TIMESTAMPNS 提取，并以 controller loopback 验证 | M2 `can_receiver`、有限 CLI、toolchain file | 主机错误注入、ARM 构建、真实板端目标/非目标/DLC/timestamp | M2 最终主机、ARM、板端和审计 run | 目标 3/3；非目标 0；DLC reject 1；timestamp 3/3；仅 controller loopback | 是，必须保留 loopback 限定且不得写性能 |
 | STM32 确定性模拟 ECU 提供真实物理 CAN 输入 | M3-A/B `.ioc`、Keil 工程和业务源码 | Keil Build、接线/终端检查、`candump`、周期/计数器 | 项目所有者简化验收；原始日志未归档 | PA11/PA12、500 kbit/s；三类 ID/周期/DLC/counter/XOR 正常 | 是，但必须注明为项目实测且不写可靠性/性能数字 |
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M1 主机 8/8 已通过；M5 板端未运行 | M1 功能测试：3 producer × 2000 条全部唯一消费；非性能值 | 否 |
@@ -56,12 +56,15 @@ M4 主机证据为 `artifacts/20260830T205736+0800-m4-host-final/`，默认 warn
 构建和全量 CTest 11/11 PASS；ASan+UBSan 证据为
 `artifacts/20260830T205834+0800-m4-asan-ubsan/`，同样11/11 PASS，LeakSanitizer 为
 `NOT RUN`。ARM 交叉构建证据为 `artifacts/20260830T205937+0800-m4-arm-cross/`，只证明
-静态解码源码能生成 ARMv7 hard-float binary，没有部署或板端运行。M4 的20条黄金向量
-和768帧 STM32 规律是功能测试规模，不是吞吐、时延或可靠性指标。必须把“主机静态
+静态解码源码能生成 ARMv7 hard-float binary，没有部署或板端运行。当前语义主机证据
+`artifacts/20260831T112833+0800-m4-host-semantic-final/` 覆盖42条向量和6660帧模型；
+实物证据 `artifacts/20260831T111733+0800-m4-stm32-physical-final/` 覆盖60秒
+6000/600/60帧且逐帧匹配。这些是功能测试规模，不是吞吐、时延或可靠性指标。必须把“主机静态
 解码验证”与“M2 binary 的板端 SocketCAN 验证”分开表述，不能拼接成一个已经在目标板
 实时运行的完整链路。
 
-项目所有者随后明确 STM32 必须按 DBC 编码有物理意义的确定性模拟车况。当前向量和
-768帧测试只覆盖旧原始字节递增规律，因此上述 M4 run 保留为首轮实现证据，不能用于
-声称 M4 已关闭或 STM32 已正确模拟车速/转速。新的 Windows Keil/`candump` 与 Ubuntu
-黄金向量复测完成前，相关简历描述保持不可用。
+项目所有者确认 Keil Build 0 error/0 warning且已Download，但完整原始 Keil 输出未归档；
+实物捕获也没有固件镜像哈希。因此可写“语义化 STM32 输入与自定义 DBC 离线解码预期
+逐帧一致”，不能写“源码与烧录镜像已哈希绑定”，也不能写“新增解码器已在 i.MX6ULL
+实时链路运行”。当前 Windows sanitizer 对新增语义测试为 `NOT RUN`，不影响表中窄范围
+功能描述，但不能宣称当前源码已经完成 sanitizer 验证。

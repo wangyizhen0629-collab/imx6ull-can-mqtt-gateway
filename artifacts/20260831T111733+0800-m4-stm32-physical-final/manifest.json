@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T111733+0800-m4-stm32-physical-final",
+  "milestone": "M4",
+  "status": "PASS",
+  "source_commit": "1a7c35202ee717663bb4741a149133668bd9c6f0",
+  "source_tree": "dirty",
+  "raw_capture_run_id": "19700101T232647+0000-m4-stm32-physical",
+  "files": [
+    {
+      "path": "candump_60s.log",
+      "sha256": "48bf7ce75f9ea723af291f14ba469e5ce91692bb0b189c31c33d4c90629a138c",
+      "bytes": 372960
+    },
+    {
+      "path": "can_before.txt",
+      "sha256": "c1d9871a0b941457ae6a700a9d97ba1be9d97441b7dafed1b20331451d9e529c",
+      "bytes": 877
+    },
+    {
+      "path": "can_after.txt",
+      "sha256": "034a1ba103adb6bcf02d5d2eb59cdf6b913e820239a96fcfacab96d78d4a6780",
+      "bytes": 877
+    }
+  ],
+  "source_sha256": {
+    "stm32_main_c": "cc57297ba9e1aab8e7201da2ce427aee511313892a35681349914a7747dd7351",
+    "vehicle_dbc": "bacd67dabfe7e91aa6efec613c614e4700eb2835064904de0da3de957e90f7ac",
+    "validator": "9c77026f7aeb1b0b68766be740a76f61e16d133a466728a0ad850f502d05fa4b"
+  }
+}

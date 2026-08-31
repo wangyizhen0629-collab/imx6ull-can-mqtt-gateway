@@ -277,6 +277,24 @@
   含义，但不再足以关闭 M4。Windows 提交真实 Keil Build 和 `candump` 依据后，Ubuntu
   必须以新 run 更新物理场景黄金向量并复测；在此之前不得进入 M5。
 
+## D-024：以语义化主机模型和实物逐帧审计关闭 M4
+
+- 日期：2026-08-31
+- 状态：已接受，M4 门禁 MET
+- 决定：保留 D-023 对 DBC 不可迁就固件的约束。STM32 在 `USER CODE` 区域使用整数
+  定点生成60秒熄火/怠速/加速/巡航/减速/停车循环，按冻结 DBC 的 Intel 小端和
+  factor/offset 编码，spare bits 清零，并继续维护三类独立 counter 与 XOR。
+- 复核方法：共享黄金向量扩展为42条，其中31条取自实物捕获；C 测试重建完整6660帧
+  场景，Python 检查器验证 DBC/向量，独立 candump 审计器对实物6000/600/60帧逐帧
+  检查 payload、counter、XOR、spare bits 和前后 CAN 统计。
+- 证据：`artifacts/20260831T112833+0800-m4-host-semantic-final/` 与
+  `artifacts/20260831T111733+0800-m4-stm32-physical-final/` 均 PASS。项目所有者确认
+  Keil 0 error/0 warning并已Download，但完整原始控制台输出未归档；当前 Windows
+  sanitizer 因旧 MinGW 工具链限制为 `NOT RUN`。
+- 边界：M4 关闭只证明自定义 DBC、静态解码器、STM32 语义模型和实物 CAN 输入一致。
+  新增解码器尚未在 i.MX6ULL 实时路径运行，生产者--消费者属于 M5；M4 关闭不自动
+  授权进入 M5，也不产生可靠性或性能结论。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

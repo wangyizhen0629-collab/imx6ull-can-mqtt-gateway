@@ -21,12 +21,12 @@
   timeout/reject/timestamp/receive error 全为0；干净复测期间 CAN 状态和错误计数无新增
   异常。项目所有者决定不再执行原计划的10分钟 M3-E 测试，也不增加长时/按 ID gap
   统计，并接受 M3 完成。该决定不等价于10分钟或可靠性 PASS。
-- M4 已于 2026-08-30 完成首轮 `vehicle.dbc`、20条向量和32字节定点解码布局；默认
-  warning-clean 与 ASan+UBSan 全量回归均11/11 PASS，ARMv7 warning-clean 交叉构建
-  PASS。随后项目所有者明确：STM32 必须生成有物理意义的模拟车速、转速等信号并按
-  DBC 编码。现有全部768种 counter 测试只证明旧原始字节递增规律可解码，不能满足该
-  语义要求。因此 M4 门禁当前为 **NOT MET**，等待 Windows 修正固件、Keil/`candump`
-  依据和新的物理场景黄金向量；已有 artifact 保持历史结果不变。M5 及后续未开始。
+- M4 已于2026-08-31通过。STM32 使用整数定点生成60秒语义车况并严格按冻结 DBC
+  编码；42条黄金向量、完整6660帧主机模型和60秒实物 `candump` 逐帧审计均通过。
+  `0x100`/`0x101`/`0x102` 实收6000/600/60帧，payload/counter/XOR/spare-bit 差异及
+  CAN 错误计数增量均为0。项目所有者确认 Keil Build 0 error/0 warning 并已 Download，
+  但完整原始 Keil 控制台输出未归档。新增解码器在 i.MX6ULL 实时运行仍为 `NOT RUN`；
+  这是 M5 集成范围。M5 及后续未开始，进入 M5 需项目所有者另行确认。
 
 ## Milestone 总表
 
@@ -36,11 +36,11 @@
 | M1 | 配置、日志、错误、生命周期、stats、记录类型、有界环形缓冲区 | 主机单元测试覆盖正常、满队列、退出唤醒和并发行为 | 2026-08-28 已通过 |
 | M2 | i.MX6ULL SocketCAN loopback 接收、过滤、时间戳 | ARM 交叉编译和真实板端日志证明目标/非目标 ID 过滤及时间戳提取 | 2026-08-29 已通过 |
 | M3-A | Windows CubeMX 基础工程 | `.ioc` 已保存；Keil 工程生成成功；Keil Build 成功 | 已完成；项目所有者确认 Build 0 error/0 warning，采用 PA11/PA12 默认映射 |
-| M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 历史字节规律已验收；M4 澄清所需语义化物理信号编码待 Windows 修正 |
+| M3-B | Windows STM32 确定性模拟 ECU | 三类周期报文、Rolling Counter、XOR 和确定性数据实现；Keil Build 成功 | 已完成；M4 后续语义化模型也已通过实物复核 |
 | M3-C | 断电物理层检查 | 接线/模块记录完整；CANH--CANL 终端检查合理 | 已完成；项目所有者确认接线和终端已核对，具体欧姆值未归档 |
 | M3-D | i.MX6ULL 物理 CAN 与 `candump` | 烧录 STM32、关闭 loopback；`candump` 看到三类 ID、正确周期和 Rolling Counter | 已完成；项目所有者确认物理 `candump` 及10分钟运行现象正常 |
 | M3-E | `gatewayd` 接入真实 CAN | 在真实 `can0` 完成有限接收；原10分钟门禁由项目所有者豁免 | 已完成；两次1110帧 smoke 正常，10分钟测试 NOT RUN/已豁免 |
-| M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 进行中；首轮静态测试 PASS，但等待 STM32 按 DBC 语义化编码和复测 |
+| M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 未开始 |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 未开始 |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 未开始 |
@@ -173,7 +173,7 @@ timestamp/receive error 为0；项目所有者确认干净复测的 CAN 状态�
 接受 M3 以现有短时结果关闭。M3 状态据此为“已完成（10分钟门禁已豁免）”，而不是
 “10分钟测试 PASS”；不得将这一决定外推成可靠性或性能结论。
 
-## M4 首轮实现与待完成门禁
+## M4 完成记录
 
 1. `protocol/vehicle.dbc` 冻结三类 DLC-8 标准帧的 Intel 小端位布局、缩放、偏移和单位；
    byte 6 为各消息独立的 `RollingCounter`，byte 7 为 byte 0～6 XOR。该协议明确是实验
@@ -182,13 +182,12 @@ timestamp/receive error 为0；项目所有者确认干净复测的 CAN 状态�
    定点单位。`gateway_vehicle_decode_record()` 通过 `memcpy` 写入原有 32 字节
    `decoded_payload`，成功时设置 checksum/decode 状态位，失败时清零解码区并保留其他
    原始记录状态。M4 没有把该调用接入生产者--消费者线程。
-3. `protocol/test_vectors/vehicle_golden.csv` 保存20条首轮人工向量，覆盖三类消息、
-   小端、缩放/偏移、bit mask、最小/最大值、counter 0/1/255、checksum mismatch、
-   未知 ID 和错误 DLC。C 单测和独立 Python 标准库 DBC 检查器读取同一文件。
-4. `test_vehicle_decoder` 还按照旧 M3 固件的三个 base 和
-   `(base + counter + byte_index) mod 256` 规则遍历全部768帧，解码后的信号、counter
-   和 XOR 均通过。M3 中项目所有者已确认真实 `candump` 遵循同一规律；这只建立静态
-   规律对应关系，不等价于本轮执行了新的硬件解码。
+3. 首轮20条向量和旧 byte 递增规律仅作为历史证据保留。当前
+   `protocol/test_vectors/vehicle_golden.csv` 有42条向量：31条实物代表帧、8条静态
+   边界和3条错误路径；C 单测与 Python DBC 检查器读取同一文件。
+4. STM32 在 `USER CODE` 区域使用整数定点实现60秒循环：熄火、启动怠速、加速、
+   巡航、减速、停车怠速、熄火。编码严格遵循冻结 DBC 的 Intel 小端和 factor/offset，
+   spare bits 清零；只有发送成功后才推进对应 counter 和状态。
 5. 最终主机证据 `artifacts/20260830T205736+0800-m4-host-final/` 为默认配置
    warning-clean build 和 CTest 11/11 PASS；其中 M4 标签2/2 PASS。ASan+UBSan 证据
    `artifacts/20260830T205834+0800-m4-asan-ubsan/` 也是11/11 PASS；LeakSanitizer 因
@@ -201,13 +200,25 @@ timestamp/receive error 为0；项目所有者确认干净复测的 CAN 状态�
 7. 过程证据没有覆盖：首个开发 run 的表头断言失败和受限沙箱 PF_CAN 失败、修正后的
    M4-only PASS，以及 Release/FORTIFY 暴露既有 M1 警告的 FAIL run 均保持原样。Release
    失败不改写成 PASS，也没有在 M4 越界修改 `lifecycle.c`/`log.c`。
+8. 当前语义模型主机证据
+   `artifacts/20260831T112833+0800-m4-host-semantic-final/` 使用 MinGW GCC 6.3.0
+   以 C11 和 `-Wall -Wextra -Wpedantic -Werror` 编译并运行通过；42条向量、3条 DBC
+   消息和完整6660帧模型均 PASS。该 run 不是 Ubuntu CMake/CTest 或 ARM 证据。
+9. 实物证据 `artifacts/20260831T111733+0800-m4-stm32-physical-final/` 保存60秒原始
+   `candump` 和前后 CAN 统计。逐帧审计得到6000/600/60帧，模型、counter、XOR、spare
+   bits 差异均为0；接收6740包、53920字节，错误计数增量为0。多出的80包位于统计快照
+   与 candump 窗口之间，不是捕获丢包结论。
+10. 项目所有者确认当前固件真实 Keil Build 为0 error、0 warning并已 Download；完整
+    原始 Keil Build/Download 控制台输出没有归档，因此只按 owner confirmation 记录。
+    原始 run_id 中的1970年源于目标板时钟未初始化，不代表实际采集日期。
+11. 当前 Windows 环境的 sanitizer 为 `NOT RUN`：MinGW GCC 6.3.0 缺少 `libasan`，
+    UBSan 编译触发编译器内部错误。历史 Ubuntu ASan+UBSan 11/11仍证明未修改的生产
+    解码器，但新增语义测试本身应在 Ubuntu clone 补跑，不能把历史结果写成当前运行。
 
-上述结果只满足首轮静态实现。项目所有者随后明确“STM32 在不接传感器时也必须生成
-有物理意义的模拟车速、转速等信号，并按同一 DBC 编码”，因此 M4 退出门禁当前为
-**NOT MET**。关闭前还需要：Windows 侧使用整数定点物理场景生成器替换旧 byte 递增
-算法；提供真实 Keil Build 和 `candump` 依据；更新/扩展黄金向量并在新 run 中复测 DBC
-与 C 解码器。真实 i.MX6ULL 物理 CAN 上运行新增解码器仍为 **NOT RUN**。M5 及后续
-功能未实现，进入下一阶段仍需用户另行确认。
+M4 退出条件已经满足，状态为 **2026-08-31 已通过**。该判定只覆盖自定义 DBC、静态
+解码器、语义化 STM32 生成器和实物 CAN 输入一致性。真实 i.MX6ULL 上由 `gatewayd`
+实时调用新增解码器仍为 **NOT RUN**；生产者--消费者链路及后续功能属于 M5。M5 及
+后续尚未开始，进入下一阶段仍需项目所有者另行确认。
 
 ## M1 完成记录
 

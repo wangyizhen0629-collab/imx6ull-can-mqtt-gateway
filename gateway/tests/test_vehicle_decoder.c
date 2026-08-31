@@ -13,7 +13,8 @@
 
 enum {
     VECTOR_COLUMN_COUNT = 18,
-    EXPECTED_VECTOR_COUNT = 20
+    EXPECTED_VECTOR_COUNT = 42,
+    SEMANTIC_DRIVE_CYCLE_TICKS = 6000
 };
 
 #define CHECK(condition)                                                       \
@@ -92,6 +93,28 @@ static int parse_i32(const char *text, int32_t *value)
     }
     *value = (int32_t)parsed;
     return 0;
+}
+
+static char *next_csv_field(char *text, char **context)
+{
+    char *field;
+    char *separator;
+
+    if (context == NULL) {
+        return NULL;
+    }
+    field = text != NULL ? text : *context;
+    if (field == NULL) {
+        return NULL;
+    }
+    separator = strchr(field, ',');
+    if (separator == NULL) {
+        *context = NULL;
+    } else {
+        *separator = '\0';
+        *context = separator + 1;
+    }
+    return field;
 }
 
 static int expect_u32(const char *text, uint32_t actual)
@@ -222,10 +245,10 @@ static int test_golden_vectors(void)
         size_t index;
 
         line[strcspn(line, "\r\n")] = '\0';
-        token = strtok_r(line, ",", &save);
+        token = next_csv_field(line, &save);
         while (token != NULL && field_count < VECTOR_COLUMN_COUNT) {
             fields[field_count++] = token;
-            token = strtok_r(NULL, ",", &save);
+            token = next_csv_field(NULL, &save);
         }
         CHECK(field_count == VECTOR_COLUMN_COUNT);
         CHECK(token == NULL);
@@ -284,84 +307,283 @@ static int test_golden_vectors(void)
     return 0;
 }
 
-static int test_stm32_pattern_all_counters(void)
+typedef struct {
+    uint16_t speed_centi_kph;
+    uint16_t engine_quarter_rpm;
+    uint16_t throttle_tenth_percent;
+    uint16_t battery_millivolt;
+    uint32_t odometer_tenth_km;
+    int16_t coolant_celsius;
+    uint16_t soc_tenth_percent;
+    uint16_t fault_flags;
+    uint8_t gear;
+    uint8_t door_flags;
+    uint8_t ignition_state;
+} semantic_vehicle_state;
+
+static void pack_u16_le(uint8_t *payload, size_t offset, uint16_t value)
 {
-    static const struct {
-        uint32_t can_id;
-        uint8_t base;
-    } messages[] = {
-        {GATEWAY_CAN_ID_VEHICLE_DYNAMICS, 0x10},
-        {GATEWAY_CAN_ID_POWER_STATUS, 0x20},
-        {GATEWAY_CAN_ID_BODY_STATUS, 0x30},
-    };
-    size_t message_index;
-    unsigned int counter;
+    payload[offset] = (uint8_t)(value & UINT16_C(0x00ff));
+    payload[offset + 1U] = (uint8_t)(value >> 8);
+}
 
-    for (message_index = 0;
-         message_index < sizeof(messages) / sizeof(messages[0]);
-         message_index++) {
-        for (counter = 0; counter <= UINT8_MAX; counter++) {
-            gateway_decoded_payload decoded;
-            uint8_t payload[GATEWAY_CAN_DATA_SIZE];
-            uint8_t checksum = 0;
-            size_t byte_index;
+static void pack_u24_le(uint8_t *payload, size_t offset, uint32_t value)
+{
+    payload[offset] = (uint8_t)(value & UINT32_C(0x000000ff));
+    payload[offset + 1U] =
+        (uint8_t)((value >> 8) & UINT32_C(0x000000ff));
+    payload[offset + 2U] =
+        (uint8_t)((value >> 16) & UINT32_C(0x000000ff));
+}
 
-            for (byte_index = 0; byte_index < 6; byte_index++) {
-                payload[byte_index] =
-                    (uint8_t)(messages[message_index].base + counter +
-                              byte_index);
-                checksum ^= payload[byte_index];
+static void finalize_payload(uint8_t payload[GATEWAY_CAN_DATA_SIZE],
+                             uint8_t counter)
+{
+    uint8_t checksum = 0;
+    size_t index;
+
+    payload[6] = counter;
+    for (index = 0; index < GATEWAY_CAN_DATA_SIZE - 1U; index++) {
+        checksum ^= payload[index];
+    }
+    payload[7] = checksum;
+}
+
+static uint8_t select_semantic_gear(uint16_t speed_centi_kph)
+{
+    if (speed_centi_kph <= 1200U) {
+        return 1U;
+    }
+    if (speed_centi_kph <= 2500U) {
+        return 2U;
+    }
+    if (speed_centi_kph <= 4000U) {
+        return 3U;
+    }
+    return 4U;
+}
+
+static uint16_t calculate_semantic_engine_speed(uint16_t speed_centi_kph,
+                                                uint8_t gear)
+{
+    uint32_t rpm;
+
+    if (speed_centi_kph == 0U) {
+        rpm = 800U;
+    } else if (gear == 1U) {
+        rpm = 900U + ((uint32_t)speed_centi_kph * 7U) / 5U;
+    } else if (gear == 2U) {
+        rpm = 900U + ((uint32_t)speed_centi_kph * 7U) / 10U;
+    } else if (gear == 3U) {
+        rpm = 900U + ((uint32_t)speed_centi_kph * 9U) / 20U;
+    } else {
+        rpm = 900U + (uint32_t)speed_centi_kph / 4U;
+    }
+    return (uint16_t)(rpm * 4U);
+}
+
+static void update_semantic_fast_state(semantic_vehicle_state *state,
+                                       unsigned int phase)
+{
+    uint32_t ramp_tick;
+
+    if (phase < 300U || phase >= 5800U) {
+        state->speed_centi_kph = 0U;
+        state->engine_quarter_rpm = 0U;
+        state->throttle_tenth_percent = 0U;
+        state->gear = 0U;
+        state->door_flags = 1U;
+        state->ignition_state = 0U;
+    } else if (phase < 500U || phase >= 5500U) {
+        state->speed_centi_kph = 0U;
+        state->engine_quarter_rpm = 800U * 4U;
+        state->throttle_tenth_percent = 0U;
+        state->gear = 0U;
+        state->door_flags = 0U;
+        state->ignition_state = 2U;
+    } else {
+        if (phase < 2000U) {
+            ramp_tick = phase - 500U;
+            state->speed_centi_kph =
+                (uint16_t)(ramp_tick * 6000U / 1500U);
+            state->throttle_tenth_percent = 320U;
+        } else if (phase < 4000U) {
+            state->speed_centi_kph = 6000U;
+            state->throttle_tenth_percent = 160U;
+        } else {
+            ramp_tick = phase - 4000U;
+            state->speed_centi_kph =
+                (uint16_t)(6000U - ramp_tick * 6000U / 1500U);
+            state->throttle_tenth_percent = 0U;
+        }
+        state->gear = select_semantic_gear(state->speed_centi_kph);
+        state->engine_quarter_rpm = calculate_semantic_engine_speed(
+            state->speed_centi_kph, state->gear);
+        state->door_flags = 0U;
+        state->ignition_state = 2U;
+    }
+    state->battery_millivolt =
+        state->engine_quarter_rpm == 0U ? 12600U : 13800U;
+}
+
+static void advance_semantic_slow_state(semantic_vehicle_state *state,
+                                        uint32_t *distance_accumulator,
+                                        uint16_t *warmup_ticks,
+                                        uint16_t *cooldown_ticks)
+{
+    *distance_accumulator += state->speed_centi_kph;
+    if (*distance_accumulator >= UINT32_C(3600000)) {
+        *distance_accumulator -= UINT32_C(3600000);
+        if (state->odometer_tenth_km < UINT32_C(0x00ffffff)) {
+            state->odometer_tenth_km++;
+        }
+    }
+
+    if (state->engine_quarter_rpm != 0U) {
+        *cooldown_ticks = 0U;
+        (*warmup_ticks)++;
+        if (*warmup_ticks >= 100U) {
+            *warmup_ticks = 0U;
+            if (state->coolant_celsius < 90) {
+                state->coolant_celsius++;
             }
-            payload[6] = (uint8_t)counter;
-            checksum ^= payload[6];
-            payload[7] = checksum;
-            CHECK(gateway_vehicle_decode_frame(
-                      messages[message_index].can_id, GATEWAY_CAN_DATA_SIZE,
-                      payload, &decoded) == GATEWAY_DECODE_OK);
-            CHECK(decoded.rolling_counter == (uint8_t)counter);
-            CHECK(decoded.checksum == checksum);
-            switch (messages[message_index].can_id) {
-            case GATEWAY_CAN_ID_VEHICLE_DYNAMICS:
-                CHECK(decoded.signals.vehicle_dynamics
-                          .vehicle_speed_centi_kph ==
-                      ((uint32_t)payload[0] |
-                       ((uint32_t)payload[1] << 8)));
-                CHECK(decoded.signals.vehicle_dynamics
-                          .engine_speed_quarter_rpm ==
-                      ((uint32_t)payload[2] |
-                       ((uint32_t)payload[3] << 8)));
-                CHECK(decoded.signals.vehicle_dynamics
-                          .throttle_tenth_percent ==
-                      (uint16_t)payload[4] * 4U);
-                CHECK(decoded.signals.vehicle_dynamics.gear == payload[5]);
-                break;
-            case GATEWAY_CAN_ID_POWER_STATUS:
-                CHECK(decoded.signals.power_status.battery_millivolt ==
-                      ((uint32_t)payload[0] |
-                       ((uint32_t)payload[1] << 8)));
-                CHECK(decoded.signals.power_status.coolant_celsius ==
-                      (int16_t)payload[2] - 40);
-                CHECK(decoded.signals.power_status.soc_tenth_percent ==
-                      (uint16_t)payload[3] * 4U);
-                CHECK(decoded.signals.power_status.fault_flags ==
-                      ((uint16_t)payload[4] |
-                       ((uint16_t)payload[5] << 8)));
-                break;
-            case GATEWAY_CAN_ID_BODY_STATUS:
-                CHECK(decoded.signals.body_status.odometer_tenth_km ==
-                      ((uint32_t)payload[0] |
-                       ((uint32_t)payload[1] << 8) |
-                       ((uint32_t)payload[2] << 16)));
-                CHECK(decoded.signals.body_status.door_flags ==
-                      (payload[3] & UINT8_C(0x0f)));
-                CHECK(decoded.signals.body_status.ignition_state ==
-                      (payload[4] & UINT8_C(0x03)));
-                break;
-            default:
-                CHECK(0);
+        }
+    } else {
+        *warmup_ticks = 0U;
+        (*cooldown_ticks)++;
+        if (*cooldown_ticks >= 500U) {
+            *cooldown_ticks = 0U;
+            if (state->coolant_celsius > 20) {
+                state->coolant_celsius--;
             }
         }
     }
+}
+
+static void build_semantic_vehicle_payload(
+    const semantic_vehicle_state *state,
+    uint8_t counter,
+    uint8_t payload[GATEWAY_CAN_DATA_SIZE])
+{
+    (void)memset(payload, 0, GATEWAY_CAN_DATA_SIZE);
+    pack_u16_le(payload, 0U, state->speed_centi_kph);
+    pack_u16_le(payload, 2U, state->engine_quarter_rpm);
+    payload[4] = (uint8_t)(state->throttle_tenth_percent / 4U);
+    payload[5] = state->gear;
+    finalize_payload(payload, counter);
+}
+
+static void build_semantic_power_payload(
+    const semantic_vehicle_state *state,
+    uint8_t counter,
+    uint8_t payload[GATEWAY_CAN_DATA_SIZE])
+{
+    (void)memset(payload, 0, GATEWAY_CAN_DATA_SIZE);
+    pack_u16_le(payload, 0U, state->battery_millivolt);
+    payload[2] = (uint8_t)(state->coolant_celsius + 40);
+    payload[3] = (uint8_t)(state->soc_tenth_percent / 4U);
+    pack_u16_le(payload, 4U, state->fault_flags);
+    finalize_payload(payload, counter);
+}
+
+static void build_semantic_body_payload(
+    const semantic_vehicle_state *state,
+    uint8_t counter,
+    uint8_t payload[GATEWAY_CAN_DATA_SIZE])
+{
+    (void)memset(payload, 0, GATEWAY_CAN_DATA_SIZE);
+    pack_u24_le(payload, 0U, state->odometer_tenth_km);
+    payload[3] = (uint8_t)(state->door_flags & UINT8_C(0x0f));
+    payload[4] = (uint8_t)(state->ignition_state & UINT8_C(0x03));
+    finalize_payload(payload, counter);
+}
+
+static int verify_semantic_payload(uint32_t can_id,
+                                   const semantic_vehicle_state *state,
+                                   const uint8_t payload[GATEWAY_CAN_DATA_SIZE])
+{
+    gateway_decoded_payload decoded;
+
+    CHECK(gateway_vehicle_decode_frame(can_id, GATEWAY_CAN_DATA_SIZE,
+                                       payload, &decoded) ==
+          GATEWAY_DECODE_OK);
+    CHECK(decoded.rolling_counter == payload[6]);
+    CHECK(decoded.checksum == payload[7]);
+    switch (can_id) {
+    case GATEWAY_CAN_ID_VEHICLE_DYNAMICS:
+        CHECK(decoded.signals.vehicle_dynamics.vehicle_speed_centi_kph ==
+              state->speed_centi_kph);
+        CHECK(decoded.signals.vehicle_dynamics.engine_speed_quarter_rpm ==
+              state->engine_quarter_rpm);
+        CHECK(decoded.signals.vehicle_dynamics.throttle_tenth_percent ==
+              state->throttle_tenth_percent);
+        CHECK(decoded.signals.vehicle_dynamics.gear == state->gear);
+        break;
+    case GATEWAY_CAN_ID_POWER_STATUS:
+        CHECK(decoded.signals.power_status.battery_millivolt ==
+              state->battery_millivolt);
+        CHECK(decoded.signals.power_status.coolant_celsius ==
+              state->coolant_celsius);
+        CHECK(decoded.signals.power_status.soc_tenth_percent ==
+              state->soc_tenth_percent);
+        CHECK(decoded.signals.power_status.fault_flags == state->fault_flags);
+        break;
+    case GATEWAY_CAN_ID_BODY_STATUS:
+        CHECK(decoded.signals.body_status.odometer_tenth_km ==
+              state->odometer_tenth_km);
+        CHECK(decoded.signals.body_status.door_flags == state->door_flags);
+        CHECK(decoded.signals.body_status.ignition_state ==
+              state->ignition_state);
+        CHECK((payload[3] & UINT8_C(0xf0)) == 0U);
+        CHECK((payload[4] & UINT8_C(0xfc)) == 0U);
+        CHECK(payload[5] == 0U);
+        break;
+    default:
+        CHECK(0);
+    }
+    return 0;
+}
+
+static int test_stm32_semantic_drive_cycle(void)
+{
+    semantic_vehicle_state state = {
+        0U, 0U, 0U, 12600U, UINT32_C(1234567), 20, 800U, 0U, 0U, 1U, 0U
+    };
+    uint32_t distance_accumulator = 0;
+    uint16_t warmup_ticks = 0;
+    uint16_t cooldown_ticks = 0;
+    unsigned int phase;
+    unsigned int power_index = 0;
+    unsigned int body_index = 0;
+
+    for (phase = 0; phase < SEMANTIC_DRIVE_CYCLE_TICKS; phase++) {
+        uint8_t payload[GATEWAY_CAN_DATA_SIZE];
+
+        update_semantic_fast_state(&state, phase);
+        build_semantic_vehicle_payload(&state, (uint8_t)phase, payload);
+        CHECK(verify_semantic_payload(GATEWAY_CAN_ID_VEHICLE_DYNAMICS,
+                                      &state, payload) == 0);
+
+        if (phase % 10U == 9U) {
+            build_semantic_power_payload(&state, (uint8_t)power_index,
+                                         payload);
+            CHECK(verify_semantic_payload(GATEWAY_CAN_ID_POWER_STATUS,
+                                          &state, payload) == 0);
+            power_index++;
+        }
+        if (phase % 100U == 99U) {
+            build_semantic_body_payload(&state, (uint8_t)body_index,
+                                        payload);
+            CHECK(verify_semantic_payload(GATEWAY_CAN_ID_BODY_STATUS,
+                                          &state, payload) == 0);
+            body_index++;
+        }
+        advance_semantic_slow_state(&state, &distance_accumulator,
+                                    &warmup_ticks, &cooldown_ticks);
+    }
+    CHECK(power_index == 600U);
+    CHECK(body_index == 60U);
+    CHECK(state.odometer_tenth_km == UINT32_C(1234572));
     return 0;
 }
 
@@ -391,6 +613,6 @@ int main(void)
 {
     CHECK(test_arguments() == 0);
     CHECK(test_golden_vectors() == 0);
-    CHECK(test_stm32_pattern_all_counters() == 0);
+    CHECK(test_stm32_semantic_drive_cycle() == 0);
     return 0;
 }

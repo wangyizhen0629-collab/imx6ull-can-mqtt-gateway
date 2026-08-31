@@ -74,12 +74,13 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 
 - 已解决：`protocol/vehicle.dbc` 已冻结三类消息的 Intel 小端位布局、缩放、偏移、单位、
   Rolling Counter 和 XOR 字段；协议明确是实验用自定义协议。
-- 首轮已完成：20条共享向量由 C 解码单测和独立 DBC 检查器共同验证；另对旧 STM32
-  三类 base 的全部768种 counter 规律执行静态解码。默认主机和 ASan+UBSan 均11/11
-  PASS，ARMv7 warning-clean 交叉构建 PASS。这些结果保留，但不能单独关闭 M4。
-- 当前阻塞门禁：Windows 侧尚未按 DBC 从有物理意义的模拟车速、转速、油门等物理量
-  编码报文，也没有对应的新 Keil Build、`candump` 和物理场景向量。完成这些输入后，
-  Ubuntu 必须用新 artifact 复测 DBC/解码器；在此之前 M4 为 NOT MET，M5 不得开始。
+- 已解决：STM32 使用整数定点生成60秒语义车况并严格按 DBC 编码；当前42条向量、
+  完整6660帧主机模型及60秒实物 `candump` 逐帧审计通过，CAN 错误计数增量为0。
+  M4 已于2026-08-31关闭。
+- 证据限制：Keil 0 error/0 warning和Download是项目所有者确认，完整原始控制台输出
+  未归档；捕获没有固件镜像哈希，故只能证明行为与源码模型一致，不能证明密码学绑定。
+- 非阻塞遗留：当前语义测试的 Windows sanitizer 为 `NOT RUN`，因为 MinGW GCC 6.3.0
+  缺少 `libasan` 且 UBSan 编译内部错误；应在 Ubuntu clone 用受支持工具链补跑。
 - 非阻塞遗留：本轮没有目标板会话，没有部署新的 ARM binary，也没有修改 `can0`；因此
   “新增解码器在真实 i.MX6ULL 物理 CAN 上运行”为 `NOT RUN`。后续若在 M5 集成链路中
   验证，必须先获部署/接口或进程操作批准并使用新的 artifact。
@@ -140,9 +141,9 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   warning-clean `gatewayd` 已有真实构建证据。
 - M2 板端门禁：SHA256 固定 binary 的动态加载、controller loopback、目标/非目标 ID、
   DLC 拒绝、kernel timestamp 和恢复状态已有真实日志及最终审计，M2 已通过。
-- M4 自定义协议：DBC、20条黄金向量、定点静态解码布局、checksum/error 清零语义和
-  三类消息全部768种 counter 规律已有主机与 ASan+UBSan 证据；ARMv7 交叉构建已通过，
-  但新增 binary 的板端运行仍为 `NOT RUN`。
+- M4 自定义协议：DBC、42条黄金向量、定点静态解码布局、完整6660帧语义场景和60秒
+  实物逐帧审计已通过；历史 ASan+UBSan 与 ARMv7 交叉构建仍有效，但当前测试 sanitizer
+  尚未补跑，新增 binary 的板端实时解码也仍为 `NOT RUN`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。
