@@ -122,6 +122,12 @@ if(BUILD_TESTING)
 
     add_gateway_unit_test(test_pipeline M5)
     add_gateway_unit_test(test_mqtt_sink M6)
+    add_test(
+        NAME test_mqtt_validator
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
+                ${PROJECT_SOURCE_DIR}/tools/mqtt/test_validate_m6_batches.py
+    )
+    set_tests_properties(test_mqtt_validator PROPERTIES LABELS "M6;unit")
 
     # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
     # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。

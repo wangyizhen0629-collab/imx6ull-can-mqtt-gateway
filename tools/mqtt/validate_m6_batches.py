@@ -20,22 +20,34 @@ def require(condition: bool, message: str) -> None:
         raise ValueError(message)
 
 
+def is_json_integer(value: Any) -> bool:
+    # bool 是 int 的子类，但 JSON true/false 不能充当协议整数。
+    return type(value) is int
+
+
 def validate_message(message: Any, device_id: str) -> tuple[int, list[int]]:
     require(isinstance(message, dict), "payload is not a JSON object")
     require(message.get("schema") == "gateway.telemetry.v1", "schema mismatch")
     require(message.get("device_id") == device_id, "device_id mismatch")
     batch_seq = message.get("batch_seq")
     records = message.get("records")
-    require(isinstance(batch_seq, int) and batch_seq > 0, "invalid batch_seq")
+    record_count = message.get("record_count")
+    first_seq = message.get("first_seq")
+    last_seq = message.get("last_seq")
+    require(is_json_integer(batch_seq) and batch_seq > 0, "invalid batch_seq")
     require(isinstance(records, list) and records, "records must be non-empty")
-    require(message.get("record_count") == len(records), "record_count mismatch")
+    require(is_json_integer(record_count), "invalid record_count")
+    require(record_count == len(records), "record_count mismatch")
+    require(is_json_integer(first_seq), "invalid first_seq")
+    require(is_json_integer(last_seq), "invalid last_seq")
 
     sequences: list[int] = []
     for record in records:
         require(isinstance(record, dict), "record is not an object")
         sequence = record.get("seq")
-        require(isinstance(sequence, int) and sequence > 0, "invalid record seq")
-        require(record.get("dlc") == 8, "DLC mismatch")
+        dlc = record.get("dlc")
+        require(is_json_integer(sequence) and sequence > 0, "invalid record seq")
+        require(is_json_integer(dlc) and dlc == 8, "DLC mismatch")
         require(isinstance(record.get("data"), str) and len(record["data"]) == 16,
                 "CAN data hex length mismatch")
         require(isinstance(record.get("decoded_payload"), str)
@@ -44,8 +56,8 @@ def validate_message(message: Any, device_id: str) -> tuple[int, list[int]]:
         sequences.append(sequence)
     require(all(left < right for left, right in zip(sequences, sequences[1:])),
             "record seq is not strictly increasing inside batch")
-    require(message.get("first_seq") == sequences[0], "first_seq mismatch")
-    require(message.get("last_seq") == sequences[-1], "last_seq mismatch")
+    require(first_seq == sequences[0], "first_seq mismatch")
+    require(last_seq == sequences[-1], "last_seq mismatch")
     return batch_seq, sequences
 
 
