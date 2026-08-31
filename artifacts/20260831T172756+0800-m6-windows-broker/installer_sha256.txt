@@ -1,0 +1,2 @@
+NOT RUN - 本次未下载或安装 Mosquitto；项目所有者明确授权使用现有 E:\mosquitto。
+现有目录文件无 Authenticode 签名，不能仅凭该目录证明官方安装包来源。

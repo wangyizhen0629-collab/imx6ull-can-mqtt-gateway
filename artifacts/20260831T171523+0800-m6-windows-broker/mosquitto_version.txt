@@ -1,0 +1,54 @@
+﻿mosquitto.exe : 1788167818: mosquitto version 2.1.2 terminating
+At line:13 char:1
++ & "E:\mosquitto\mosquitto.exe" -h 2>&1 | Out-File -LiteralPath (Join- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (1788167818: mos...1.2 terminating:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+mosquitto version 2.1.2
+
+mosquitto is an MQTT v5.0/v3.1.1/v3.1 broker.
+
+Usage: mosquitto [-c config_file] [-d] [-h] [-p port] [-v]
+                 [--tls-keylog file]
+
+ -c : specify the broker config file.
+ -d : put the broker into the background after starting.
+ -h : display this help.
+ -p : start the broker listening on the specified port.
+      Not recommended in conjunction with the -c option.
+ -q : quiet mode - disable all logging types. This overrides
+      any logging options given in the config file, and -v.
+ -v : verbose mode - enable all logging types. This overrides
+      any logging options given in the config file.
+ --test-config : test config file and exit
+ --tls-keylog : log TLS connection information to a file, to allow
+      debugging with e.g. wireshark. Do not use on a production
+      server.
+
+See https://mosquitto.org/ for more information.
+
+mosquitto_sub is a simple mqtt client that will subscribe to a set of topics and print all messages it receives.
+mosquitto_sub version 2.1.2 running on libmosquitto 2.1.0.
+
+mosquitto_pub is a simple mqtt client that will publish a message on a single topic and exit.
+mosquitto_pub version 2.1.2 running on libmosquitto 2.1.0.
+
+
+Path                           Hash                                                            
+----                           ----                                                            
+E:\mosquitto\mosquitto.exe     DAA688DBC3685890999084DA72F98EA0FAE9557F7544A2CB96B44EF46563F2A2
+E:\mosquitto\mosquitto_sub.exe 4A31B29CD3CEE02994B1EB3DFAD69FCDC2878E3187FFEA73807297057B55F2C5
+E:\mosquitto\mosquitto_pub.exe E30C89632BCBA20EFAC6E77B2AB7317B71570F45F53A7849A50BA26048B2C0D2
+E:\mosquitto\mosquitto.dll     61CEEBEC10C4F9D8DF41FA76E761AB18BD0013050F025DBA1542E9C257CFA28A
+
+
+
+Path                              Status
+----                              ------
+E:\mosquitto\mosquitto.exe     NotSigned
+E:\mosquitto\mosquitto_sub.exe NotSigned
+E:\mosquitto\mosquitto_pub.exe NotSigned
+E:\mosquitto\mosquitto.dll     NotSigned
+
+

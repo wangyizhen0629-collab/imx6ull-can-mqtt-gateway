@@ -1,0 +1,86 @@
+﻿mosquitto.exe : 1788168607: Configuration file is OK.
+At line:18 char:1
++ & "E:\mosquitto\mosquitto.exe" --test-config -c (Join-Path $m6Artifac ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (1788168607: Configuration file is OK.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+1788168607: mosquitto version 2.1.2 terminating
+config_test_exit=0
+BEFORE START
+before_listener_count=0
+DURING BROKER
+broker_pid=31280
+
+
+LocalAddress  : 192.168.50.1
+LocalPort     : 18884
+State         : Listen
+OwningProcess : 31280
+
+
+
+subscriber_pid=25812
+publisher_exit=0
+subscriber_exit=0
+AFTER STOP
+stop_mode=mosquitto_signal shutdown
+after_listener_count=0
+payload_sha256=B848CA752A000D85B803C01FC8E24FFFA1676E1D250B893ED631C619D7C9EA57
+subscriber_sha256=B848CA752A000D85B803C01FC8E24FFFA1676E1D250B893ED631C619D7C9EA57
+broker_log_connect=True
+broker_log_publish=True
+broker_log_puback=True
+FINAL READ-ONLY VERIFICATION
+listener_count=0
+test_process_count=0
+
+
+Name        : mosquitto
+DisplayName : Mosquitto Broker
+Status      : Running
+StartType   : Automatic
+
+
+
+OBSERVED EXISTING MOSQUITTO SERVICE (READ-ONLY; PRE-TEST STATE NOT CAPTURED)
+
+SC QUERYEX
+
+SERVICE_NAME: mosquitto 
+        TYPE               : 10  WIN32_OWN_PROCESS  
+        STATE              : 4  RUNNING 
+                                (STOPPABLE, NOT_PAUSABLE, ACCEPTS_SHUTDOWN)
+        WIN32_EXIT_CODE    : 0  (0x0)
+        SERVICE_EXIT_CODE  : 0  (0x0)
+        CHECKPOINT         : 0x0
+        WAIT_HINT          : 0x0
+        PID                : 33212
+        FLAGS              : 
+
+SC QC
+[SC] QueryServiceConfig SUCCESS
+
+SERVICE_NAME: mosquitto
+        TYPE               : 10  WIN32_OWN_PROCESS 
+        START_TYPE         : 2   AUTO_START
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : "E:\mosquitto\mosquitto.exe" run
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Mosquitto Broker
+        DEPENDENCIES       : 
+        SERVICE_START_NAME : LocalSystem
+
+SERVICE PROCESS/TCP (READ-ONLY)
+
+
+Id          : 33212
+ProcessName : mosquitto
+StartTime   : 
+Path        : 
+
+
+
+
+No TCP listener found for service PID.

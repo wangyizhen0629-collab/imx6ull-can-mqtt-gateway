@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T172228+0800-m6-windows-broker",
+  "milestone": "M6",
+  "status": "FAIL",
+  "source_commit": "03afe1f",
+  "broker_version": "2.1.2",
+  "broker_pid": 25264,
+  "listener": "192.168.50.1:18884",
+  "publisher_exit": 0,
+  "subscriber_exit": "NOT RECORDED",
+  "subscriber_payload_lines": 1,
+  "payload_json_valid": false,
+  "broker_log": {
+    "connect": true,
+    "publish": true,
+    "puback": true
+  },
+  "cleanup": {
+    "method": "mosquitto_signal shutdown",
+    "listener_count_after": 0
+  },
+  "failure": "Subscriber exit code was not available and PowerShell native argument parsing removed JSON quotes from the -m payload.",
+  "limitations": [
+    "No i.MX6ULL MQTT traffic or 1000-batch test was run.",
+    "Existing E:\\mosquitto provenance was owner-authorized but not independently proven from a signed installer."
+  ]
+}

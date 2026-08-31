@@ -1,0 +1,29 @@
+1788168753: mosquitto version 2.1.2 starting
+1788168753: Config loaded from E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260831T172756+0800-m6-windows-broker\mosquitto.conf.
+1788168753: Bridge support available.
+1788168753: Persistence support available.
+1788168753: TLS support available.
+1788168753: TLS-PSK support available.
+1788168753: Websockets support available.
+1788168753: Opening ipv4 listen socket on port 18884.
+1788168753: mosquitto version 2.1.2 running
+1788168754: New connection from 192.168.50.1:63514 on port 18884.
+1788168754: New client connected from 192.168.50.1:63514 as auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 (p4, c1, k60).
+1788168754: No will message specified.
+1788168754: Sending CONNACK to auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 (0, 0)
+1788168754: Received SUBSCRIBE from auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2
+1788168754: 	test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker (QoS 1)
+1788168754: auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 1 test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker
+1788168754: Sending SUBACK to auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2
+1788168755: New connection from 192.168.50.1:63517 on port 18884.
+1788168755: New client connected from 192.168.50.1:63517 as auto-B7069DDB-81CA-C2F4-935A-7D669CE82940 (p4, c1, k60).
+1788168755: No will message specified.
+1788168755: Sending CONNACK to auto-B7069DDB-81CA-C2F4-935A-7D669CE82940 (0, 0)
+1788168755: Received PUBLISH from auto-B7069DDB-81CA-C2F4-935A-7D669CE82940 (d0, q1, r0, m1, 'test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker', ... (45 bytes))
+1788168755: Sending PUBLISH to auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 (d0, q1, r0, m1, 'test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker', ... (45 bytes))
+1788168755: Sending PUBACK to auto-B7069DDB-81CA-C2F4-935A-7D669CE82940 (m1, rc0)
+1788168755: Received PUBACK from auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 (Mid: 1, RC:0)
+1788168755: Client auto-B7069DDB-81CA-C2F4-935A-7D669CE82940 [192.168.50.1:63517] disconnected: connection closed by client.
+1788168755: Received DISCONNECT from auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2
+1788168755: Client auto-C2471C14-2AFF-C794-1C48-B015BF82B4B2 [192.168.50.1:63514] disconnected.
+1788168755: mosquitto version 2.1.2 terminating

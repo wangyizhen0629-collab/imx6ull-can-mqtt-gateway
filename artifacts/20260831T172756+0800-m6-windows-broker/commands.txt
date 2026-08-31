@@ -1,0 +1,57 @@
+M6 Windows Broker 本地 smoke test 命令记录
+Run ID: 20260831T172756+0800-m6-windows-broker
+
+说明：以下均在 Windows PowerShell 中执行；未使用密码或云凭据。Mosquitto 使用现有
+E:\mosquitto，不下载、不安装、不注册或控制 Windows 服务。
+
+只读前置检查
+Get-NetAdapter -Name "以太网"
+Get-NetIPAddress -InterfaceAlias "以太网" -AddressFamily IPv4
+Get-NetRoute -InterfaceAlias "以太网" -AddressFamily IPv4
+ping.exe 192.168.50.2
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL"
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallAddressFilter
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallPortFilter
+where.exe mosquitto
+where.exe mosquitto_sub
+where.exe mosquitto_pub
+Test-Path -LiteralPath "C:\Program Files\mosquitto"
+Get-NetTCPConnection -LocalPort 18884 -ErrorAction SilentlyContinue
+
+现有程序检查
+& "E:\mosquitto\mosquitto.exe" -h
+& "E:\mosquitto\mosquitto_sub.exe" -h
+& "E:\mosquitto\mosquitto_pub.exe" -h
+Get-FileHash -Algorithm SHA256 -LiteralPath "E:\mosquitto\mosquitto.exe"
+Get-FileHash -Algorithm SHA256 -LiteralPath "E:\mosquitto\mosquitto_sub.exe"
+Get-FileHash -Algorithm SHA256 -LiteralPath "E:\mosquitto\mosquitto_pub.exe"
+Get-FileHash -Algorithm SHA256 -LiteralPath "E:\mosquitto\mosquitto.dll"
+Get-AuthenticodeSignature -LiteralPath "E:\mosquitto\mosquitto.exe"
+Get-AuthenticodeSignature -LiteralPath "E:\mosquitto\mosquitto_sub.exe"
+Get-AuthenticodeSignature -LiteralPath "E:\mosquitto\mosquitto_pub.exe"
+Get-AuthenticodeSignature -LiteralPath "E:\mosquitto\mosquitto.dll"
+
+配置检查与显式临时进程
+& "E:\mosquitto\mosquitto.exe" --test-config -c ".\artifacts\20260831T172756+0800-m6-windows-broker\mosquitto.conf"
+Start-Process -FilePath "E:\mosquitto\mosquitto.exe" -ArgumentList '-c','<absolute artifact path>\mosquitto.conf' -RedirectStandardOutput '<absolute artifact path>\broker_stdout.log' -RedirectStandardError '<absolute artifact path>\broker_stderr.log' -WindowStyle Hidden -PassThru
+Get-NetTCPConnection -LocalPort 18884 -State Listen
+
+本地 QoS 1 smoke test
+# subscriber 通过 System.Diagnostics.Process 启动，以可靠采集 ExitCode。
+E:\mosquitto\mosquitto_sub.exe -h 192.168.50.1 -p 18884 -q 1 -C 1 -N -F %p -t test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker
+E:\mosquitto\mosquitto_pub.exe -h 192.168.50.1 -p 18884 -q 1 -t test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker -f .\artifacts\20260831T172756+0800-m6-windows-broker\smoke_payload.json
+
+停止和最终只读检查
+& "E:\mosquitto\mosquitto_signal.exe" -p 31280 shutdown
+Get-NetTCPConnection -LocalPort 18884 -ErrorAction SilentlyContinue
+Get-Process -Id 31280,25812 -ErrorAction SilentlyContinue
+Get-Service -Name mosquitto -ErrorAction SilentlyContinue
+Get-CimInstance Win32_Service -Filter "Name='mosquitto'"  # Access denied；已保留结果
+sc.exe queryex mosquitto
+sc.exe qc mosquitto
+Get-NetTCPConnection -State Listen -OwningProcess 33212 -ErrorAction SilentlyContinue
+
+证据完整性
+Get-FileHash -Algorithm SHA256 -LiteralPath .\artifacts\20260831T172756+0800-m6-windows-broker\smoke_payload.json
+Get-FileHash -Algorithm SHA256 -LiteralPath .\artifacts\20260831T172756+0800-m6-windows-broker\smoke_subscriber.jsonl
+# manifest.sha256 在所有证据文件完成后生成，且不包含自身。

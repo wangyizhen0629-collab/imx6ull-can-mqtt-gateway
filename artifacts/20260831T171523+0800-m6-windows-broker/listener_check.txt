@@ -1,0 +1,19 @@
+﻿BEFORE START
+before_listener_count=0
+DURING BROKER
+broker_pid=8380
+
+
+LocalAddress  : 192.168.50.1
+LocalPort     : 18884
+State         : Listen
+OwningProcess : 8380
+
+
+
+AFTER STOP
+stop_mode=mosquitto_signal shutdown
+after_listener_count=0
+broker_log_connect=False
+broker_log_publish=False
+broker_log_puback=False

@@ -1,0 +1,43 @@
+﻿
+
+Name                 : 以太网
+InterfaceDescription : Realtek PCIe GbE Family Controller
+Status               : Up
+LinkSpeed            : 100 Mbps
+MacAddress           : 84-A9-38-8E-33-39
+ifIndex              : 20
+
+
+
+
+
+InterfaceAlias : 以太网
+InterfaceIndex : 20
+IPAddress      : 192.168.50.1
+PrefixLength   : 24
+AddressState   : Preferred
+Type           : Unicast
+
+
+
+
+InterfaceAlias DestinationPrefix  NextHop RouteMetric State
+-------------- -----------------  ------- ----------- -----
+以太网            192.168.50.0/24    0.0.0.0         256 Alive
+以太网            192.168.50.1/32    0.0.0.0         256 Alive
+以太网            192.168.50.255/32  0.0.0.0         256 Alive
+以太网            224.0.0.0/4        0.0.0.0         256 Alive
+以太网            255.255.255.255/32 0.0.0.0         256 Alive
+
+
+
+Pinging 192.168.50.2 with 32 bytes of data:
+Reply from 192.168.50.2: bytes=32 time=1ms TTL=64
+Reply from 192.168.50.2: bytes=32 time=3ms TTL=64
+Reply from 192.168.50.2: bytes=32 time=1ms TTL=64
+Reply from 192.168.50.2: bytes=32 time=1ms TTL=64
+
+Ping statistics for 192.168.50.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 1ms, Maximum = 3ms, Average = 1ms

@@ -1,0 +1,29 @@
+1788168339: mosquitto version 2.1.2 starting
+1788168339: Config loaded from E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260831T172228+0800-m6-windows-broker\mosquitto.conf.
+1788168339: Bridge support available.
+1788168339: Persistence support available.
+1788168339: TLS support available.
+1788168339: TLS-PSK support available.
+1788168339: Websockets support available.
+1788168339: Opening ipv4 listen socket on port 18884.
+1788168339: mosquitto version 2.1.2 running
+1788168340: New connection from 192.168.50.1:59788 on port 18884.
+1788168340: New client connected from 192.168.50.1:59788 as auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 (p4, c1, k60).
+1788168340: No will message specified.
+1788168340: Sending CONNACK to auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 (0, 0)
+1788168340: Received SUBSCRIBE from auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8
+1788168340: 	test/m6/windows-broker-smoke/20260831T172228p0800-m6-windows-broker (QoS 1)
+1788168340: auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 1 test/m6/windows-broker-smoke/20260831T172228p0800-m6-windows-broker
+1788168340: Sending SUBACK to auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8
+1788168341: New connection from 192.168.50.1:59791 on port 18884.
+1788168341: New client connected from 192.168.50.1:59791 as auto-7C676866-2D9F-8A7E-3867-673E60A654D1 (p4, c1, k60).
+1788168341: No will message specified.
+1788168341: Sending CONNACK to auto-7C676866-2D9F-8A7E-3867-673E60A654D1 (0, 0)
+1788168341: Received PUBLISH from auto-7C676866-2D9F-8A7E-3867-673E60A654D1 (d0, q1, r0, m1, 'test/m6/windows-broker-smoke/20260831T172228p0800-m6-windows-broker', ... (38 bytes))
+1788168341: Sending PUBLISH to auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 (d0, q1, r0, m1, 'test/m6/windows-broker-smoke/20260831T172228p0800-m6-windows-broker', ... (38 bytes))
+1788168341: Sending PUBACK to auto-7C676866-2D9F-8A7E-3867-673E60A654D1 (m1, rc0)
+1788168341: Received PUBACK from auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 (Mid: 1, RC:0)
+1788168341: Client auto-7C676866-2D9F-8A7E-3867-673E60A654D1 [192.168.50.1:59791] disconnected: connection closed by client.
+1788168341: Received DISCONNECT from auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8
+1788168341: Client auto-FA29B6A3-69C2-A8FE-DC00-3E1DD64E36A8 [192.168.50.1:59788] disconnected.
+1788168341: mosquitto version 2.1.2 terminating

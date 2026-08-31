@@ -1,0 +1,12 @@
+﻿
+
+RunId        : 20260831T172228+0800-m6-windows-broker
+CapturedAt   : 2026-08-31T17:23:40.8112838+08:00
+GitCommit    : 03afe1f200d5a8a39d4a30ab8ea733a6e1dbc9e8
+PowerShell   : 5.1.26100.9168
+OS           : Microsoft Windows 11 家庭版 中文版
+OSVersion    : 10.0.26200
+Architecture : 
+
+
+

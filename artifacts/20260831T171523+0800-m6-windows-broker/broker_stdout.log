@@ -1,0 +1,10 @@
+1788168000: mosquitto version 2.1.2 starting
+1788168000: Config loaded from E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260831T171523+0800-m6-windows-broker\mosquitto.conf.
+1788168000: Bridge support available.
+1788168000: Persistence support available.
+1788168000: TLS support available.
+1788168000: TLS-PSK support available.
+1788168000: Websockets support available.
+1788168000: Opening ipv4 listen socket on port 18884.
+1788168000: mosquitto version 2.1.2 running
+1788168002: mosquitto version 2.1.2 terminating

@@ -2,3 +2,8 @@
 /artifacts/20260831T111733+0800-m4-stm32-physical-final/can_before.txt -text
 /artifacts/20260831T111733+0800-m4-stm32-physical-final/can_after.txt -text
 /artifacts/20260831T111733+0800-m4-stm32-physical-final/candump_60s.log -text
+
+# Windows Broker 原始证据同样逐字节保留，确保 manifest.sha256 跨 clone 可复核。
+/artifacts/20260831T171523+0800-m6-windows-broker/** -text
+/artifacts/20260831T172228+0800-m6-windows-broker/** -text
+/artifacts/20260831T172756+0800-m6-windows-broker/** -text

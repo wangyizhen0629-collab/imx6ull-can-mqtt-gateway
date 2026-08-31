@@ -1,0 +1,20 @@
+# 只读与配置检查
+Get-NetAdapter -Name "以太网"
+Get-NetIPAddress -InterfaceAlias "以太网" -AddressFamily IPv4
+Get-NetRoute -InterfaceAlias "以太网" -AddressFamily IPv4
+ping 192.168.50.2
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL"
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallAddressFilter
+Get-NetFirewallRule -DisplayName "M6 Mosquitto 18884 from iMX6ULL" | Get-NetFirewallPortFilter
+Get-NetTCPConnection -LocalPort 18884 -ErrorAction SilentlyContinue
+E:\mosquitto\mosquitto.exe --test-config -c <artifact>\mosquitto.conf
+
+# 本次失败 smoke 的等价命令
+E:\mosquitto\mosquitto.exe -c <artifact>\mosquitto.conf
+E:\mosquitto\mosquitto_sub.exe -h 192.168.50.1 -p 18884 -q 1 -C 1 -F %p -t test/m6/windows-broker-smoke/20260831T171523+0800-m6-windows-broker
+E:\mosquitto\mosquitto_pub.exe -h 192.168.50.1 -p 18884 -q 1 -t <topic> -m {"schema":"m6.windows.broker.smoke","seq":1}
+E:\mosquitto\mosquitto_signal.exe -p 8380 shutdown
+
+# 结果
+subscriber 在 publish 前拒绝含嵌入式“+”的 subscription filter；publisher NOT RUN。
+Broker 已停止，after_listener_count=0。

@@ -1,0 +1,3 @@
+Error: Invalid subscription topic 'test/m6/windows-broker-smoke/20260831T171523+0800-m6-windows-broker', are all '+' and '#' wildcards correct?
+
+Use 'mosquitto_sub --help' to see usage.

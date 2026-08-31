@@ -1,0 +1,95 @@
+{
+  "schema": "m6.windows.broker.evidence.v1",
+  "run_id": "20260831T172756+0800-m6-windows-broker",
+  "status": "PASS",
+  "scope": "Windows local Broker QoS 1 smoke test only",
+  "source_commit": "03afe1f200d5a8a39d4a30ab8ea733a6e1dbc9e8",
+  "network": {
+    "interface_alias": "以太网",
+    "local_ipv4": "192.168.50.1/24",
+    "peer_ipv4": "192.168.50.2",
+    "ping_sent": 4,
+    "ping_received": 4,
+    "ping_loss_percent": 0
+  },
+  "firewall": {
+    "display_name": "M6 Mosquitto 18884 from iMX6ULL",
+    "rule_count": 1,
+    "enabled": true,
+    "direction": "Inbound",
+    "action": "Allow",
+    "protocol": "TCP",
+    "local_address": "192.168.50.1",
+    "local_port": 18884,
+    "remote_address": "192.168.50.2"
+  },
+  "software": {
+    "directory": "E:\\mosquitto",
+    "broker_executable_version": "2.1.2",
+    "client_executable_version": "2.1.2",
+    "client_libmosquitto_version": "2.1.0",
+    "download_or_install_performed": false,
+    "official_installer_provenance_verified": false,
+    "authenticode_status": "NotSigned"
+  },
+  "broker": {
+    "launch_mode": "explicit ordinary process",
+    "pid": 31280,
+    "config_test_exit_code": 0,
+    "listener": {
+      "local_address": "192.168.50.1",
+      "local_port": 18884,
+      "state": "Listen",
+      "owning_process": 31280
+    }
+  },
+  "smoke_test": {
+    "topic": "test/m6/windows-broker-smoke/20260831T172756p0800-m6-windows-broker",
+    "qos": 1,
+    "payload": {
+      "schema": "m6.windows.broker.smoke",
+      "seq": 1
+    },
+    "payload_sha256": "B848CA752A000D85B803C01FC8E24FFFA1676E1D250B893ED631C619D7C9EA57",
+    "subscriber_output_sha256": "B848CA752A000D85B803C01FC8E24FFFA1676E1D250B893ED631C619D7C9EA57",
+    "subscriber_output_lines": 1,
+    "publisher_exit_code": 0,
+    "subscriber_pid": 25812,
+    "subscriber_exit_code": 0,
+    "broker_log": {
+      "new_client_connected_count": 2,
+      "received_publish_count": 1,
+      "sending_puback_count": 1,
+      "received_puback_count": 1
+    }
+  },
+  "cleanup": {
+    "broker_stop_mode": "mosquitto_signal shutdown",
+    "listener_count_after_stop": 0,
+    "test_process_count_after_stop": 0
+  },
+  "observed_existing_service": {
+    "name": "mosquitto",
+    "state": "RUNNING",
+    "start_type": "AUTO_START",
+    "pid": 33212,
+    "binary_path": "E:\\mosquitto\\mosquitto.exe run",
+    "tcp_listener_count": 0,
+    "used_or_modified_by_this_test": false,
+    "pre_test_state_captured": false
+  },
+  "not_run": [
+    "official installer download and installation",
+    "i.MX6ULL to Windows MQTT path",
+    "target gatewayd",
+    "1000-batch target test",
+    "target ARM execution",
+    "hardware end-to-end gate",
+    "throughput and reliability gate",
+    "M7 reconnect, spool, recovery, and deduplication"
+  ],
+  "preserved_failed_runs": [
+    "20260831T171523+0800-m6-windows-broker",
+    "20260831T172228+0800-m6-windows-broker"
+  ]
+}

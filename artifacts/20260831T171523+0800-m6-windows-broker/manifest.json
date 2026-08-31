@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "run_id": "20260831T171523+0800-m6-windows-broker",
+  "milestone": "M6",
+  "status": "FAIL",
+  "source_commit": "03afe1f",
+  "broker_path": "E:\\mosquitto\\mosquitto.exe",
+  "broker_version": "2.1.2",
+  "broker_pid": 8380,
+  "listener": "192.168.50.1:18884",
+  "publisher": "NOT RUN",
+  "subscriber_payload_lines": 0,
+  "failure": "The topic filter embedded +0800 in a level, so mosquitto_sub rejected it before publish.",
+  "cleanup": {
+    "method": "mosquitto_signal shutdown",
+    "listener_count_after": 0
+  },
+  "limitations": [
+    "Existing E:\\mosquitto binaries were owner-authorized but their official installer provenance was not independently verified.",
+    "No i.MX6ULL MQTT traffic or 1000-batch test was run."
+  ]
+}

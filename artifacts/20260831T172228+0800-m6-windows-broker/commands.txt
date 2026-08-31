@@ -1,0 +1,11 @@
+# 只读、配置和监听检查与首个run相同。
+E:\mosquitto\mosquitto.exe --test-config -c <artifact>\mosquitto.conf
+E:\mosquitto\mosquitto.exe -c <artifact>\mosquitto.conf
+E:\mosquitto\mosquitto_sub.exe -h 192.168.50.1 -p 18884 -q 1 -C 1 -F %p -t test/m6/windows-broker-smoke/20260831T172228p0800-m6-windows-broker
+E:\mosquitto\mosquitto_pub.exe -h 192.168.50.1 -p 18884 -q 1 -t <topic> -m <PowerShell JSON string>
+E:\mosquitto\mosquitto_signal.exe -p 25264 shutdown
+
+# 结果
+publisher_exit=0；Broker记录CONNECT/PUBLISH/PUBACK；subscriber stderr为空。
+Start-Process未提供可用subscriber ExitCode，且-m参数的JSON双引号在Windows参数解析中丢失。
+Broker已停止，after_listener_count=0。

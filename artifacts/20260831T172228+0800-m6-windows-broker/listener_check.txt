@@ -1,0 +1,31 @@
+﻿mosquitto.exe : 1788168232: Configuration file is OK.
+At line:18 char:1
++ & "E:\mosquitto\mosquitto.exe" --test-config -c (Join-Path $m6Artifac ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (1788168232: Configuration file is OK.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+1788168232: mosquitto version 2.1.2 terminating
+config_test_exit=0
+BEFORE START
+before_listener_count=0
+DURING BROKER
+broker_pid=25264
+
+
+LocalAddress  : 192.168.50.1
+LocalPort     : 18884
+State         : Listen
+OwningProcess : 25264
+
+
+
+subscriber_pid=19884
+publisher_exit=0
+subscriber_exit=
+AFTER STOP
+stop_mode=mosquitto_signal shutdown
+after_listener_count=0
+broker_log_connect=True
+broker_log_publish=True
+broker_log_puback=True
