@@ -1,0 +1,8 @@
+normalized_at=2026-09-01T18:44:32.8136294+08:00
+initial_cached_diff_check_exit=2
+preserved_attempt1_manifest_sha256=f43be179489bfe213be86fe054c37a1894afef0e5aae1cd348a42c04d3a10f31
+preserved_attempt1_manifest_check_sha256=6d4fbf457377f212f3f737cdd0da8e67c1a941ac83ad34ba65fb9f007367899d
+private_raw_unchanged=true
+scope=public artifact files only; trailing spaces removed and EOF normalized to one LF
+semantic_content=unchanged
+reason=generated ps/ip output contained trailing spaces that made the full staged git diff --check fail

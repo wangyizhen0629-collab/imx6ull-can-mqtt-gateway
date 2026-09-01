@@ -46,3 +46,8 @@ M9选择BusyBox `inittab`的`respawn`动作承载常驻supervisor，不使用sys
 
 写入`/etc`、修改inittab、reboot、发送进程信号、修改CAN/Broker状态前均必须取得明确
 批准。无法执行真实目标板步骤时必须标记`NOT RUN`，主机BusyBox测试不能替代开机门禁。
+
+目标镜像可能采用链接`libbusybox.so.<version>`的standalone applet，未必存在
+`/bin/busybox`命令。版本核验应同时保存`/proc/1/{comm,cmdline,exe}`、`ldd /sbin/init`
+和对应`libbusybox`版本字符串。部署前还必须从授权构建侧重新计算精确ARM binary的
+SHA256；文件不可用时禁止用预期值或旧binary替代，并应在staging及`/etc`修改前停止。

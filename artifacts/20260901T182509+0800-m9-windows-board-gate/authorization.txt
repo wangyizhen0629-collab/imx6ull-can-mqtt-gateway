@@ -1,0 +1,9 @@
+run_id=20260901T182509+0800-m9-windows-board-gate
+authorized_scope=M9 real i.MX6ULL BusyBox deployment and process-recovery gate only
+authorized_target_changes=/etc/inittab;/etc/init.d/gatewayd;/etc/default/gatewayd;/etc/gatewayd/gateway.conf
+authorized_process_actions=verified BusyBox init reload;one controlled reboot if required;verified supervisor/gatewayd restart and one child SIGKILL;isolated fake-gateway storm test
+authorized_staging=unique non-system target test directory after target and backup confirmation
+forbidden=can0 mutation;Broker mutation;network configuration;firmware;STM32;dependency installation;performance/stress/long-duration/24h testing;M10
+binary_source=Ubuntu build/m9-arm-cross/gateway/gatewayd
+expected_binary_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958
+failure_policy=If login,binary,target library,CAN,or Broker is unavailable,do not change external conditions;record NOT RUN with reason and prerequisites.

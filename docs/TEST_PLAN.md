@@ -111,7 +111,11 @@ M9当前主机实现已通过Ubuntu BusyBox ash专项、warning-clean全量CTest
 ASan+UBSan全量18/18及ARMv7无RPATH/RUNPATH交叉构建。专项实际覆盖异常退出42后重拉、
 受控restart PID变化、stop/start以及3次快速失败后的cooldown。真实i.MX6ULL `/etc`安装、
 BusyBox 1.31.1 PID 1启动顺序、reboot、受控restart/异常终止和风暴冷却均为`NOT RUN`；
-这些目标板项目未通过前M9门禁为`NOT MET`，不得开始M10。
+Windows续跑`artifacts/20260901T182509+0800-m9-windows-board-gate/`已只读确认真实目标
+PID 1链接`libbusybox.so.1.31.1`，但未能从Ubuntu认证取得指定M9 binary，Windows和
+目标也没有预期SHA文件；因此没有把预期SHA当作实算值，并在staging及所有目标修改前
+停止。真实安装、开机、restart、异常拉起和cooldown继续为`NOT RUN`；这些项目未全部
+通过前M9门禁为`NOT MET`，不得开始M10。
 
 M4 首轮20条/768帧历史测试、Ubuntu warning-clean/ASan+UBSan 11/11和 ARMv7 交叉构建
 证据保持不变。2026-08-31 又完成语义化门禁：当前42条共享向量包含31条实物代表帧、

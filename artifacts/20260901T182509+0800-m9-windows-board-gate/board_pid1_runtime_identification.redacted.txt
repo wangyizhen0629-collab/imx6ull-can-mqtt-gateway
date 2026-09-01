@@ -1,0 +1,97 @@
+started_at=2026-09-01T18:34:25.4536597+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 root@<PRIVATE> sh
+exit_code=0
+ended_at=2026-09-01T18:34:26.7363533+08:00
+--- stdout full output ---
+remote_started_at=1970-01-03T07:29:59,946866432+00:00
+--- pid1 exact identity ---
+comm=init
+cmdline=init
+exe=/sbin/init
+mode=755 uid=0 gid=0 inode=695 size=5408 path=/sbin/init
+4049a7642d9e01a52f75399a810e4cda11f85156838844a17495db50e99c1632  /sbin/init
+/sbin/init: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+	linux-vdso.so.1 (0x7eea1000)
+	libbusybox.so.1.31.1 => /lib/libbusybox.so.1.31.1 (0x76ef1000)
+	libc.so.6 => /lib/libc.so.6 (0x76db0000)
+	libresolv.so.2 => /lib/libresolv.so.2 (0x76d8d000)
+	libselinux.so.1 => /usr/lib/libselinux.so.1 (0x76d5f000)
+	/lib/ld-linux-armhf.so.3 (0x76fca000)
+	libpcre.so.1 => /usr/lib/libpcre.so.1 (0x76d15000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76ceb000)
+	libdl.so.2 => /lib/libdl.so.2 (0x76cd8000)
+--- related applets and libraries ---
+78 lrwxrwxrwx 1 root root 4 Jul 21  2024 /bin/sh -> bash
+/bin/sh: symbolic link to bash
+f26fe33db7a4b87af0beadea228bf945058c7f4ffcdfd9a0b53b2a1e1a366123  /bin/sh
+14 -rwxr-xr-x 1 root root 5408 Jul 21  2024 /bin/ash
+/bin/ash: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+25ddeaa873c1bf8e616bd6af754562047e471f9161f7a6193f736dc74cc14b79  /bin/ash
+50 -rwxr-xr-x 1 root root 108676 Jul 21  2024 /bin/ls
+/bin/ls: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+994d1eedaad86f438fe6b090a543e82567f31fc4c33b115d553cef81f88ec603  /bin/ls
+74 -rwxr-xr-x 1 root root 124872 Jul 21  2024 /bin/sed
+/bin/sed: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+2382670843467436ea7eab67ab0c3978acb9ed3359ee35a4aedefb295c05ccd0  /bin/sed
+39 -rwxr-xr-x 1 root root 153504 Jul 21  2024 /bin/grep
+/bin/grep: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+1a703f41c80920e99a0e4a344b933999d02288c6c085614558ad901b46154116  /bin/grep
+695 -rwxr-xr-x 1 root root 5408 Jul 21  2024 /sbin/init
+/sbin/init: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, stripped
+4049a7642d9e01a52f75399a810e4cda11f85156838844a17495db50e99c1632  /sbin/init
+385 -rw-r--r-- 1 root root 822464 Jul 21  2024 /lib/libbusybox.so.1.31.1
+/lib/libbusybox.so.1.31.1: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, stripped
+19efcfbf1f5bbc410bda06b8502ab80f08098c5459859dfaca89903733f9411e  /lib/libbusybox.so.1.31.1
+--- complete init strings ---
+/lib/ld-linux-armhf.so.3
+libbusybox.so.1.31.1
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+init_main
+lbb_prepare
+libc.so.6
+abort
+__libc_start_main
+GLIBC_2.4
+init
+aeabi
+Cortex-A7
+.shstrtab
+.interp
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rel.dyn
+.rel.plt
+.init
+.text
+.fini
+.rodata
+.ARM.exidx
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.got
+.bss
+.ARM.attributes
+--- libbusybox version and init/reload strings ---
+library=/lib/libbusybox.so.1.31.1
+It (re)spawns children according to /etc/inittab.
+BusyBox v1.31.1 (2024-07-21 02:57:02 EDT)
+force-reload
+syslogd started: BusyBox v1.31.1
+Calling ioctl() to re-read partition table
+respawn
+reloading /etc/inittab
+Bad inittab entry at line %d
+LD_PRELOAD
+LD_AOUT_PRELOAD
+library_scan_exit=0
+remote_completed_at=1970-01-03T07:30:00,678599766+00:00
+--- stderr full output ---
+sh: line 1: $'\357\273\277set': command not found

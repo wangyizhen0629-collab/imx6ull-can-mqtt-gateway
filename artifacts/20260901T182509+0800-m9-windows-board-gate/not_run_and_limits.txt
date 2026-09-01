@@ -1,0 +1,17 @@
+M9_binary_handoff=NOT RUN; required Ubuntu build/m9-arm-cross/gateway/gatewayd could not be authenticated/read from Windows and was absent on the target.
+M9_binary_sha256_recalculation=NOT RUN; no source binary was available, so the expected value was not reused as an observed result.
+M9_non_system_staging=NOT RUN; mandatory binary precondition was not met.
+M9_ELF_dynamic_dependency_config_audit=NOT RUN; the exact M9 binary was unavailable.
+M9_etc_backup_install=NOT RUN; deployment stopped before target mutation.
+M9_init_reload=NOT RUN; /etc/inittab was not changed.
+M9_controlled_reboot=NOT RUN; no installed service existed to verify.
+M9_boot_autostart=NOT RUN.
+M9_single_supervisor_single_child=NOT RUN as a service gate; final read-only count was zero/zero because no service was installed.
+M9_controlled_restart=NOT RUN.
+M9_child_SIGKILL_recovery=NOT RUN.
+M9_fake_gateway_restart_storm_cooldown=NOT RUN; staging stopped at the binary prerequisite.
+correct_UTC=NOT RUN; target wall clock remained in 1970.
+CAN_mutation=NOT RUN and forbidden; can0 was observed read-only only.
+Broker_mutation=NOT RUN and forbidden; existing Broker state was observed only in the process table.
+performance_stress_long_duration_24h=NOT RUN and outside M9 authorization.
+M10=NOT RUN; not started.

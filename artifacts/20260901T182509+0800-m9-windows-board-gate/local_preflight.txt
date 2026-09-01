@@ -1,0 +1,35 @@
+started_at=2026-09-01T18:30:52.1232983+08:00
+command=git status --porcelain=v1 --untracked-files=no
+exit_code=0
+tracked_status_count=0
+command=git ls-files --others --exclude-standard
+exit_code=0
+untracked_count=1309
+head_before_pull=e673856f8ce789442b63464c1bc9753c4d97f619
+rev_parse_before_exit=0
+expected_commit_ancestor_exit=0
+command=git pull --ff-only origin master
+pull_exit=0
+--- pull full output ---
+git.exe : From https://github.com/wangyizhen0629-collab/imx6ull-can-mqtt-gateway
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T182509+0800-m9-windows-board-gate\capture_lo
+cal_preflight.ps1:18 char:15
++ $PullOutput = & git pull --ff-only origin master 2>&1 | Out-String
++               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (From https://gi...an-mqtt-gateway:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+ * branch            master     -> FETCH_HEAD
+Already up to date.
+--- end pull full output ---
+command=git rev-parse HEAD
+rev_parse_exit=0
+head_after_pull=e673856f8ce789442b63464c1bc9753c4d97f619
+ubuntu_vm_state=running
+ubuntu_binary_transfer=NOT RUN
+ubuntu_binary_transfer_reason=Ubuntu SSH port is reachable, but the existing Windows side has no offered public key and BatchMode authentication was rejected; credentials were not guessed or extracted.
+incoming_binary_exists=false
+incoming_binary_sha256=NOT_AVAILABLE
+private_board_endpoint_sha256=b92ef88b5bad0f5ff97863bec9fbb0471c13e9e0b458ba7d22ed22b264e010c5
+private_board_endpoint_git_ignored=true
+ended_at=2026-09-01T18:30:55.7831634+08:00

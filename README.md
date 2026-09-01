@@ -44,8 +44,10 @@ seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UB
 损坏恢复均有证据，M7门禁为`MET`。M8随后确认目标libmosquitto external-loop API并
 实现epoll/eventfd/timerfd reactor；离线/ARM和真实Broker等价恢复均通过，M8为`MET`。
 M9已实现BusyBox inittab/前台supervisor、受控restart、异常重拉和风暴冷却，主机全量
-CTest/ASan+UBSan及ARM构建通过；真实目标板`/etc`、开机和异常恢复仍为`NOT RUN`，所以
-M9总门禁为`NOT MET`。M10尚未开始。
+CTest/ASan+UBSan及ARM构建通过。Windows续跑已只读确认真实目标PID 1链接BusyBox
+1.31.1，但指定M9 ARM binary未能从Ubuntu认证转交，Windows和目标板也没有预期SHA
+文件；因此未部署或修改`/etc`，开机、restart、异常恢复和cooldown仍为`NOT RUN`。
+M9总门禁为`NOT MET`，M10尚未开始。
 
 ## Ubuntu 主机构建
 

@@ -1,0 +1,7 @@
+file=board_busybox_identification.ps1 parse_error_count=0
+file=board_final_readonly_audit.ps1 parse_error_count=0
+file=board_pid1_runtime_identification.ps1 parse_error_count=0
+file=board_readonly_preflight.ps1 parse_error_count=0
+file=capture_local_preflight.ps1 parse_error_count=0
+file=finalize_evidence.ps1 parse_error_count=0
+total_parse_errors=0

@@ -1,0 +1,6 @@
+scanned_file_count=35
+exact_endpoint_leak_count=0
+private_ipv4_literal_count=0
+private_key_marker_count=0
+nonempty_credential_assignment_count=0
+status=PASS

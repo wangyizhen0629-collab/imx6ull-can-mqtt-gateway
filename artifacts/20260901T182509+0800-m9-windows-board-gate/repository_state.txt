@@ -1,0 +1,16 @@
+captured_at=2026-09-01T18:42:08.5393280+08:00
+head=e673856f8ce789442b63464c1bc9753c4d97f619
+branch=master
+tracked_status_count=9
+ M README.md
+ M deploy/README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M docs/milestones/M9.md
+untracked_total_count=1329
+current_run_public_file_count=24
+unrelated_untracked_files=preserved and intentionally not enumerated in this artifact

@@ -1,0 +1,69 @@
+command=git diff --cached --check
+exit_code=2
+--- full output ---
+artifacts/20260901T182509+0800-m9-windows-board-gate/authorization.txt:10: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_busybox_identification.ps1:68: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_busybox_identification.redacted.txt:13: trailing whitespace.
++
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_busybox_identification.redacted.txt:17: trailing whitespace.
++cmdline=init
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_busybox_identification.redacted.txt:69: trailing whitespace.
++HUP INT QUIT ILL TRAP ABRT BUS FPE KILL USR1 SEGV USR2 PIPE ALRM TERM STKFLT CHLD CONT STOP TSTP TTIN TTOU URG XCPU XFSZ VTALRM PROF WINCH IO PWR SYS
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.ps1:105: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:21: trailing whitespace.
++pid1_cmdline=init
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:25: trailing whitespace.
++    link/can  promiscuity 0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:26: trailing whitespace.
++    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:27: trailing whitespace.
++	  bitrate 500000 sample-point 0.866
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:31: trailing whitespace.
++	  clock 30000000
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:33: trailing whitespace.
++	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:34: trailing whitespace.
++    RX: bytes  packets  errors  dropped overrun mcast
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:35: trailing whitespace.
++    65019344   8127418  0       0       0       0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:36: trailing whitespace.
++    TX: bytes  packets  errors  dropped carrier collsns
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_final_readonly_audit.redacted.txt:37: trailing whitespace.
++    0          0        0       0       0       0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_pid1_runtime_identification.ps1:90: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_pid1_runtime_identification.redacted.txt:9: trailing whitespace.
++cmdline=init
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.ps1:136: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:13: trailing whitespace.
++
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:25: trailing whitespace.
++pid1_cmdline=init
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:214: trailing whitespace.
++    link/can  promiscuity 0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:215: trailing whitespace.
++    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:216: trailing whitespace.
++	  bitrate 500000 sample-point 0.866
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:220: trailing whitespace.
++	  clock 30000000
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:222: trailing whitespace.
++	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:223: trailing whitespace.
++    RX: bytes  packets  errors  dropped overrun mcast
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:224: trailing whitespace.
++    64756464   8094558  0       0       0       0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:225: trailing whitespace.
++    TX: bytes  packets  errors  dropped carrier collsns
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight.redacted.txt:226: trailing whitespace.
++    0          0        0       0       0       0
+artifacts/20260901T182509+0800-m9-windows-board-gate/board_readonly_preflight_attempt1_failure.txt:7: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/finalize_attempt1_failure.txt:7: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/finalize_evidence.ps1:139: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/git_diff_check.txt:11: trailing whitespace.
++
+artifacts/20260901T182509+0800-m9-windows-board-gate/local_preflight.txt:21: trailing whitespace.
++
+artifacts/20260901T182509+0800-m9-windows-board-gate/local_preflight_attempt1_failure.txt:7: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/not_run_and_limits.txt:18: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/result.txt:9: new blank line at EOF.
+artifacts/20260901T182509+0800-m9-windows-board-gate/test_report.md:60: new blank line at EOF.

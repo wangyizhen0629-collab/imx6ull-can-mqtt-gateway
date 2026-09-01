@@ -1,0 +1,5 @@
+raw_sha256=d94b7ed877481b7129dac6026594f3a9c4a52ef8f0ee9cf12794e823d623d443
+redaction_method=exact target endpoint replacement;all IPv4 literals replaced;broker host/username/password assignments replaced
+expected_binary_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958
+redacted_sha256=23240b10e09c0510e0d2c565563bc294ee6085e1037ef59c24e79db6d8261e16
+public_normalization=trailing spaces removed and one LF retained at EOF; private_raw is byte-for-byte unchanged

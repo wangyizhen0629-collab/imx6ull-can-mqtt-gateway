@@ -62,7 +62,10 @@
   失败冷却；Ubuntu warning-clean及ASan+UBSan全量CTest均18/18，M9专项1/1，ARMv7
   warning-clean构建和无RPATH/RUNPATH审计通过。真实i.MX6ULL的`/etc`安装、BusyBox
   1.31.1、开机启动、restart、异常退出恢复和风暴防护均为`NOT RUN`，因此不能关闭M9。
-  M10及后续未开始。
+  Windows续跑`artifacts/20260901T182509+0800-m9-windows-board-gate/`已只读确认目标
+  PID 1链接`libbusybox.so.1.31.1`且inittab支持respawn/reload，但指定M9 ARM binary
+  无法从Ubuntu认证转交，Windows和目标板也均无该SHA文件；所以在staging和任何目标
+  修改前停止，全部开机/恢复必测项继续为`NOT RUN`。M10及后续未开始。
 
 ## Milestone 总表
 
@@ -81,7 +84,7 @@
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 2026-09-01 已通过；Ubuntu/ARM构建与真实i.MX6ULL/Windows Broker重连、SIGKILL/state恢复、reactor计数及validator PASS |
-| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 源码/主机/ARM PASS；真实目标板启动与恢复 NOT RUN；总门禁 NOT MET |
+| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 源码/主机/ARM PASS；目标BusyBox 1.31.1只读身份PASS；binary转交及真实启动/恢复NOT RUN；总门禁NOT MET |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
 
 ## M2 完成记录
@@ -493,9 +496,16 @@ epoll以及M9/M10均未实现、未测试、未批准。
    reboot。所需条件是目标访问路径、指定操作批准及脱敏原始板端证据。
 8. 正式artifact前两次直接BusyBox开发测试没有进入唯一run，明确不作为门禁证据；所有
    结论只引用后续正式run。M10压力、性能、`/proc`和24小时测试均未实现或执行。
+9. Windows续跑`artifacts/20260901T182509+0800-m9-windows-board-gate/`从真实目标只读
+   证明PID 1是链接`libbusybox.so.1.31.1`的standalone init，且目标库包含respawn和
+   `reloading /etc/inittab`语义；目标时钟仍为1970。指定M9 binary未能从Ubuntu侧认证
+   转交，Windows/目标也没有预期SHA文件，因此没有重新计算部署输入hash，并按约束在
+   staging、`/etc`、HUP/reboot和进程信号前停止。结束审计证明inittab hash未变、M9
+   staging不存在、supervisor/gatewayd为0/0且无遗留测试进程；这不是一/一服务PASS。
 
-因此M9源码/主机/ARM验证为PASS，但“开机启动和异常拉起”退出条件没有目标板真实证据，
-M9总门禁为 **NOT MET**。本轮停止在M9，不进入M10。
+因此M9源码/主机/ARM验证和目标BusyBox身份只读检查为PASS，但binary转交、安装、开机
+启动、restart、异常拉起和cooldown没有目标板真实证据，M9总门禁为 **NOT MET**。
+本轮停止在M9，不进入M10。
 
 ## M1 完成记录
 

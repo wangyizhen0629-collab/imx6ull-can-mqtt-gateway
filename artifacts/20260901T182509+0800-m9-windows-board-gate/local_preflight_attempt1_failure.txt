@@ -1,0 +1,6 @@
+attempt=1
+status=FAIL
+result_file_created=false
+target_board_modified=false
+reason=PowerShell ErrorActionPreference=Stop converted git pull's normal remote-information stderr into a terminating NativeCommandError before the script could record its result.
+correction=Capture git stderr with ErrorActionPreference=Continue, preserve the real process exit code, then restore Stop behavior.

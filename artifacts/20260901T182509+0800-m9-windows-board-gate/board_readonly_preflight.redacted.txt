@@ -1,0 +1,242 @@
+started_at=2026-09-01T18:31:45.5164944+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 root@<PRIVATE> sh
+exit_code=0
+ended_at=2026-09-01T18:31:50.6917856+08:00
+--- full output ---
+ssh.exe : sh: line 1: $'\357\273\277set': command not found
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T182509+0800-m9-windows-board-gate\board_read
+only_preflight.ps1:105 char:27
++ ... oteScript | & ssh -o BatchMode=yes -o ConnectTimeout=10 "root@$BoardH ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (sh: line 1: $'\...mmand not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+remote_started_at=1970-01-03T07:27:19,976085080+00:00
+date_epoch=199639
+--- identity ---
+Linux 100ask 4.9.88 #1 SMP PREEMPT Thu Apr 2 14:58:18 EDT 2026 armv7l GNU/Linux
+uid=0(root) gid=0(root) groups=0(root),10(wheel)
+--- busybox ---
+sh: line 8: busybox: command not found
+sh: line 9: busybox: command not found
+busybox_init_help_exit=127
+--- pid1 ---
+pid1_comm=init
+pid1_cmdline=init
+pid1_exe=/sbin/init
+pid1_exe_sha256=4049a7642d9e01a52f75399a810e4cda11f85156838844a17495db50e99c1632  /sbin/init
+--- process table ---
+PID   USER     COMMAND
+    1 root     init
+    2 root     [kthreadd]
+    3 root     [ksoftirqd/0]
+    5 root     [kworker/0:0H]
+    7 root     [rcu_preempt]
+    8 root     [rcu_sched]
+    9 root     [rcu_bh]
+   10 root     [migration/0]
+   11 root     [lru-add-drain]
+   12 root     [cpuhp/0]
+   13 root     [kdevtmpfs]
+   14 root     [oom_reaper]
+   15 root     [writeback]
+   16 root     [kcompactd0]
+   17 root     [crypto]
+   18 root     [bioset]
+   19 root     [kblockd]
+   21 root     [ata_sff]
+   22 root     [cfg80211]
+   23 root     [watchdogd]
+   24 root     [rpciod]
+   25 root     [xprtiod]
+   26 root     [kswapd0]
+   27 root     [vmstat]
+   28 root     [nfsiod]
+   74 root     [bioset]
+   75 root     [bioset]
+   76 root     [bioset]
+   77 root     [bioset]
+   78 root     [bioset]
+   79 root     [bioset]
+   80 root     [bioset]
+   81 root     [bioset]
+   82 root     [bioset]
+   83 root     [bioset]
+   84 root     [bioset]
+   85 root     [bioset]
+   86 root     [bioset]
+   87 root     [bioset]
+   88 root     [bioset]
+   89 root     [bioset]
+   90 root     [bioset]
+   91 root     [bioset]
+   92 root     [bioset]
+   93 root     [bioset]
+   94 root     [bioset]
+   95 root     [bioset]
+   96 root     [bioset]
+   97 root     [bioset]
+   98 root     [spi32766]
+   99 root     [spi0]
+  100 root     [spi2]
+  104 root     [ci_otg]
+  105 root     [irq/84-gt9xx]
+  107 root     [cfinteractive]
+  108 root     [irq/64-mmc0]
+  109 root     [irq/98-2190000.]
+  110 root     [irq/65-mmc1]
+  111 root     [mxs_dcp_chan/sh]
+  112 root     [mxs_dcp_chan/ae]
+  117 root     [bioset]
+  118 root     [mmcqd/1]
+  119 root     [bioset]
+  120 root     [mmcqd/1boot0]
+  121 root     [bioset]
+  122 root     [mmcqd/1boot1]
+  123 root     [bioset]
+  124 root     [mmcqd/1rpmb]
+  126 root     [ipv6_addrconf]
+  127 root     [krfcommd]
+  128 root     [kworker/u3:0]
+  129 root     [hci0]
+  130 root     [hci0]
+  132 root     [kworker/u3:2]
+  133 root     [pxp_dispatch]
+  134 root     [irq/44-imx_ther]
+  135 root     [kworker/0:1H]
+  136 root     [jbd2/mmcblk1p2-]
+  137 root     [ext4-rsv-conver]
+  151 root     psplash -n
+  155 root     /sbin/syslogd -n
+  159 root     /sbin/klogd -n
+  177 root     /sbin/udevd -d
+  217 dbus     dbus-daemon --system
+  247 root     /usr/sbin/ModemManager
+  255 root     /usr/sbin/NetworkManager
+  261 root     /usr/sbin/ntpd -g
+  267 mosquitt /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  273 root     /usr/bin/pulseaudio --system --daemonize --disallow-module-loading --disallow-exit --exit-idle-time=-1 --use-pid-file --disable-shm
+  280 root     /usr/libexec/pulse/gsettings-helper
+  288 root     /usr/sbin/sshd
+  293 root     /usr/sbin/telnetd -F
+  304 root     /usr/bin/swupdate-progress -w -r
+  307 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  316 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  329 root     /usr/bin/adbd
+  782 root     -bash
+  842 root     [kworker/0:2]
+ 3458 root     [kworker/u2:0]
+ 7529 root     [kworker/0:1]
+ 7760 root     [kworker/u2:2]
+ 8251 root     sshd: root@notty
+ 8253 root     sh
+ 8270 root     ps w
+--- matching process identity ---
+--- inittab before ---
+mode=644 uid=0 gid=0 size=1240 path=/etc/inittab
+77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380  /etc/inittab
+# /etc/inittab
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+::sysinit:/bin/mount -t proc proc /proc
+::sysinit:/bin/mount -o remount,rw /
+::sysinit:/bin/mkdir -p /dev/pts /dev/shm
+::sysinit:/bin/mount -a
+::sysinit:/sbin/swapon -a
+null::sysinit:/bin/ln -sf /proc/self/fd /dev/fd
+null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
+null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
+null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
+::sysinit:/bin/hostname -F /etc/hostname
+# now run any rc scripts
+::sysinit:/etc/init.d/rcS
+
+# Put a getty on the serial port
+ttymxc0::respawn:/sbin/getty -L  ttymxc0 0 vt100 # GENERIC_SERIAL
+
+# Stuff to do for the 3-finger salute
+#::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+::shutdown:/etc/init.d/rcK
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+--- managed files before ---
+MISSING /etc/init.d/gatewayd
+MISSING /etc/default/gatewayd
+MISSING /etc/gatewayd/gateway.conf
+MISSING /usr/bin/gatewayd
+--- target gatewayd candidates ---
+mode=700 uid=0 gid=0 size=198576 path=/tmp/m8-reactor-gate-20260901T170636/bin/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T170636/bin/gatewayd
+mode=666 uid=0 gid=0 size=198576 path=/tmp/m8-reactor-gate-20260901T170636/incoming/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T170636/incoming/gatewayd
+mode=700 uid=0 gid=0 size=198576 path=/tmp/m8-reactor-gate-20260901T163809/bin/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T163809/bin/gatewayd
+mode=666 uid=0 gid=0 size=198576 path=/tmp/m8-reactor-gate-20260901T163809/incoming/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T163809/incoming/gatewayd
+mode=700 uid=0 gid=0 size=198180 path=/tmp/m8-reactor-gate-20260901T155449/bin/gatewayd
+c27cae52c6e746035e058cc77e78cb0dc1003f58f3036312b000579e0af9e368  /tmp/m8-reactor-gate-20260901T155449/bin/gatewayd
+mode=666 uid=0 gid=0 size=198180 path=/tmp/m8-reactor-gate-20260901T155449/incoming/gatewayd
+c27cae52c6e746035e058cc77e78cb0dc1003f58f3036312b000579e0af9e368  /tmp/m8-reactor-gate-20260901T155449/incoming/gatewayd
+mode=700 uid=0 gid=0 size=248036 path=/tmp/m8-reactor-gate-20260901T143500/bin/gatewayd
+2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b  /tmp/m8-reactor-gate-20260901T143500/bin/gatewayd
+mode=666 uid=0 gid=0 size=248036 path=/tmp/m8-reactor-gate-20260901T143500/incoming/gatewayd
+2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b  /tmp/m8-reactor-gate-20260901T143500/incoming/gatewayd
+mode=755 uid=0 gid=0 size=186124 path=/tmp/m7/bin/gatewayd
+9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25  /tmp/m7/bin/gatewayd
+mode=700 uid=0 gid=0 size=191316 path=/tmp/m6-arm-private-20260831T181335/bin/gatewayd
+7dc84bc0fa4cffc85abbb88e023e1cfa7e8796bc38c8e91cba9088f7a832c8df  /tmp/m6-arm-private-20260831T181335/bin/gatewayd
+--- expected binary candidate detail ---
+--- libmosquitto candidates ---
+link=/tmp/m7/lib/libmosquitto.so.1 real=/tmp/m7/lib/libmosquitto.so.2.0.11 b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
+link=/tmp/m7/lib/libmosquitto.so.2.0.11 real=/tmp/m7/lib/libmosquitto.so.2.0.11 b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
+link=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11 real=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11 b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+link=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so real=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11 b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+link=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.1 real=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11 b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+link=/usr/lib/libmosquitto.so real=/usr/lib/libmosquitto.so.1 ced9fba0a9560b8babc670db910e5216257fcf5aa0491688e269de617bd53199  /usr/lib/libmosquitto.so.1
+link=/usr/lib/libmosquitto.so.1 real=/usr/lib/libmosquitto.so.1 ced9fba0a9560b8babc670db910e5216257fcf5aa0491688e269de617bd53199  /usr/lib/libmosquitto.so.1
+--- can0 read-only ---
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+	  bitrate 500000 sample-point 0.866
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    64756464   8094558  0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+--- mounts and storage ---
+/dev/root / ext4 rw,relatime,data=ordered 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=86120k,nr_inodes=21530,mode=755 0 0
+sysfs /sys sysfs rw,relatime 0 0
+proc /proc proc rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620,ptmxmode=666 0 0
+tmpfs /dev/shm tmpfs rw,relatime,mode=777 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,relatime,mode=755 0 0
+debugfs /sys/kernel/debug debugfs rw,relatime 0 0
+none /sys/kernel/config configfs rw,relatime 0 0
+adb /dev/usb-ffs/adb functionfs rw,relatime 0 0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       1.5G  725M  658M  53% /
+tmpfs           245M   15M  231M   6% /tmp
+remote_completed_at=1970-01-03T07:27:24,635966747+00:00

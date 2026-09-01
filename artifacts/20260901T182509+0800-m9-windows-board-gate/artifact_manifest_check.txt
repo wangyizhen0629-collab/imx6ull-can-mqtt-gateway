@@ -1,0 +1,36 @@
+OK artifact_manifest_attempt1.sha256
+OK artifact_manifest_check_attempt1.txt
+OK authorization.txt
+OK board_busybox_identification.ps1
+OK board_busybox_identification.redacted.txt
+OK board_busybox_identification.redaction-trace.txt
+OK board_final_readonly_audit.ps1
+OK board_final_readonly_audit.redacted.txt
+OK board_final_readonly_audit.redaction-trace.txt
+OK board_pid1_runtime_identification.ps1
+OK board_pid1_runtime_identification.redacted.txt
+OK board_pid1_runtime_identification.redaction-trace.txt
+OK board_readonly_preflight.ps1
+OK board_readonly_preflight.redacted.txt
+OK board_readonly_preflight.redaction-trace.txt
+OK board_readonly_preflight_attempt1_failure.txt
+OK capture_local_preflight.ps1
+OK finalize_attempt1_failure.txt
+OK finalize_evidence.ps1
+OK git_diff_cached_check_attempt1.txt
+OK git_diff_check.txt
+OK local_preflight.txt
+OK local_preflight_attempt1_failure.txt
+OK normalize_public_evidence.ps1
+OK not_run_and_limits.txt
+OK powershell_syntax_check.txt
+OK public_whitespace_normalization.txt
+OK raw_private_sha256.txt
+OK repository_state.txt
+OK result.txt
+OK sensitive_scan.exit.txt
+OK sensitive_scan.txt
+OK test_report.md
+checked=33
+mismatches=0
+status=PASS

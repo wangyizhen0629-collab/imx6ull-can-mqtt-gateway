@@ -1,0 +1,8 @@
+status=NOT RUN
+milestone=M9
+gate=NOT MET
+reason=The required M9 ARM binary was unavailable in the Windows clone and on the target; Ubuntu SSH authentication could not use an existing key. The expected SHA256 was therefore not recomputed from the required source file, so deployment stopped before staging or target mutation.
+target_readonly_access=PASS
+target_busybox_init_identification=PASS (standalone /sbin/init linked to libbusybox.so.1.31.1)
+target_modified=false
+m10_started=false

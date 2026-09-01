@@ -500,6 +500,23 @@
 - 影响：部署方案和可执行测试骨架已经冻结，但没有目标板开机与异常拉起证据前，M9不得
   标为`MET`，对应简历表述仍不可用。M10不得开始。
 
+## D-035：M9目标续跑以构建产物身份失败为停止点
+
+- 日期：2026-09-01
+- 状态：已接受；M9总门禁仍为`NOT MET`
+- 只读事实：`artifacts/20260901T182509+0800-m9-windows-board-gate/`通过Windows既有
+  目标路径确认PID 1为链接`libbusybox.so.1.31.1`的standalone `/sbin/init`；目标库含
+  `respawn`和`reloading /etc/inittab`字符串。目标wall clock仍为1970。
+- 阻塞事实：要求的Ubuntu `build/m9-arm-cross/gateway/gatewayd`无法用Windows现有SSH
+  认证读取；Windows clone和目标板也没有预期M9 SHA文件。因此没有重新计算部署输入
+  SHA256，禁止把预期值或旧M8 binary当作本次输入。
+- 决定：按用户授权中的binary不可用停止规则，在非系统staging、`/etc`备份/安装、init
+  HUP/reboot和所有进程信号前停止。结束只读审计证明inittab hash未变、M9 staging不
+  存在、supervisor/gatewayd为0/0且无遗留测试进程；零/零不等于最终一/一门禁PASS。
+- 影响：部署、开机、restart、SIGKILL恢复、fake storm cooldown和最终服务状态全部
+  `NOT RUN`。后续必须先安全取得并实算匹配的M9 binary，再以全新artifact重试；M10
+  不得开始。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

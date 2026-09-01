@@ -1,0 +1,6 @@
+attempt=1
+status=FAIL
+result_files_created=false
+target_board_modified=false
+reason=Windows PowerShell native-command stdin added a UTF-8 BOM; target sh reported the first token as $'\\357\\273\\277set', and local ErrorActionPreference=Stop aborted evidence capture.
+correction=Use a BOM-less UTF-8 OutputEncoding for SSH stdin and capture stderr without converting it to a terminating PowerShell exception.

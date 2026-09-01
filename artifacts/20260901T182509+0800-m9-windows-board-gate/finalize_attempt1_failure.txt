@@ -1,0 +1,6 @@
+attempt=1
+status=FAIL
+finalize_script_started=false
+outputs_created=false
+reason=The current PowerShell process refused to load the newly created script because script execution is disabled by policy.
+correction=Run a child powershell.exe with process-scoped -ExecutionPolicy Bypass; do not change machine or user policy.
