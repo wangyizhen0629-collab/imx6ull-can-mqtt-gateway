@@ -1,0 +1,17 @@
+Script started on 2026-09-01 16:09:17+08:00 [<not executed on terminal>]
++ rg -n 'create_silent_loopback_listener|listen\(|elapsed_milliseconds|< 250\.0|spool_pending_records == 4|MQTT_CONNECT_ATTEMPTS.*> 1|mosquitto_connect_async|durable_reconnect_step' gateway/tests/test_mqtt_sink.c gateway/src/mqtt_sink.c
+gateway/src/mqtt_sink.c
+875:static gateway_error_code durable_reconnect_step(gateway_mqtt_sink *sink)
+894:        code = mosquitto_connect_async(sink->mosq, sink->broker_host,
+1145:        reactor_code = durable_reconnect_step(sink);
+
+gateway/tests/test_mqtt_sink.c
+52:static double elapsed_milliseconds(const struct timespec *start,
+59:static int create_silent_loopback_listener(uint16_t *port)
+80:    if (listen(descriptor, 8) != 0) {
+246:    reserved_socket = create_silent_loopback_listener(&closed_port);
+269:        CHECK(elapsed_milliseconds(&consume_start, &consume_end) < 250.0);
+274:    CHECK(snapshot.spool_pending_records == 4);
+275:    CHECK(stats_snapshot.counters[GATEWAY_STAT_MQTT_CONNECT_ATTEMPTS] > 1);
+
+Script done on 2026-09-01 16:09:17+08:00 [COMMAND_EXIT_CODE="0"]

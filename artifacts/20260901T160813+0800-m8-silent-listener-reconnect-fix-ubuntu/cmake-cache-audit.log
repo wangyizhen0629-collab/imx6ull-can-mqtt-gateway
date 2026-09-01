@@ -1,0 +1,30 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ rg -n 'CMAKE_BUILD_TYPE:|BUILD_TESTING:|CMAKE_C_FLAGS:|CMAKE_EXE_LINKER_FLAGS:|GATEWAY_MOSQUITTO_(INCLUDE_DIR|LIBRARY):|CMAKE_SKIP_RPATH:' build/20260901T160813-m8-silent-listener-host/CMakeCache.txt build/20260901T160813-m8-silent-listener-asan-ubsan/CMakeCache.txt build/20260901T160813-m8-silent-listener-arm/CMakeCache.txt
+build/20260901T160813-m8-silent-listener-arm/CMakeCache.txt
+18:BUILD_TESTING:BOOL=OFF
+28:CMAKE_BUILD_TYPE:STRING=Debug
+42:CMAKE_C_FLAGS:STRING=
+60:CMAKE_EXE_LINKER_FLAGS:STRING=
+170:CMAKE_SKIP_RPATH:BOOL=TRUE
+208:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/include
+211:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+
+build/20260901T160813-m8-silent-listener-host/CMakeCache.txt
+18:BUILD_TESTING:BOOL=ON
+28:CMAKE_BUILD_TYPE:STRING=Debug
+45:CMAKE_C_FLAGS:STRING=
+63:CMAKE_EXE_LINKER_FLAGS:STRING=
+173:CMAKE_SKIP_RPATH:BOOL=NO
+224:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/tmp/imx6ull-m6-mosquitto-root/usr/include
+227:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+
+build/20260901T160813-m8-silent-listener-asan-ubsan/CMakeCache.txt
+18:BUILD_TESTING:BOOL=ON
+28:CMAKE_BUILD_TYPE:STRING=Debug
+45:CMAKE_C_FLAGS:STRING=-fsanitize=address,undefined -fno-omit-frame-pointer -g
+63:CMAKE_EXE_LINKER_FLAGS:STRING=-fsanitize=address,undefined
+173:CMAKE_SKIP_RPATH:BOOL=NO
+224:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/tmp/imx6ull-m6-mosquitto-root/usr/include
+227:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]

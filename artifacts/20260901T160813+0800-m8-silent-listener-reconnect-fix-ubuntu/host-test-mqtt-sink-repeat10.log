@@ -1,0 +1,36 @@
+Script started on 2026-09-01 16:09:55+08:00 [<not executed on terminal>]
++ ctest --test-dir build/20260901T160813-m8-silent-listener-host -R '^test_mqtt_sink$' --repeat until-fail:10 --output-on-failure
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-host
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-host
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.53 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.53 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.53 sec
+    Start 13: test_mqtt_sink
+    Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+    Start 13: test_mqtt_sink
+1/1 Test #13: test_mqtt_sink ...................   Passed    0.52 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+M6      =   0.52 sec*proc (1 test)
+M7      =   0.52 sec*proc (1 test)
+M8      =   0.52 sec*proc (1 test)
+unit    =   0.52 sec*proc (1 test)
+
+Total Test time (real) =   5.24 sec
+
+Script done on 2026-09-01 16:10:00+08:00 [COMMAND_EXIT_CODE="0"]

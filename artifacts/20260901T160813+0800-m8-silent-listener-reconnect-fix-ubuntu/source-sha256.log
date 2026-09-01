@@ -1,0 +1,9 @@
+Script started on 2026-09-01 16:09:17+08:00 [<not executed on terminal>]
++ sha256sum gateway/src/mqtt_sink.c gateway/tests/test_mqtt_sink.c gateway/src/mqtt_reactor.c gateway/tests/test_mqtt_reactor.c gateway/cmake/toolchains/imx6ull-buildroot.cmake
+0497917a2e8b2ed78baffc6d8c12010ae4e70dbb3e34dedab4e18e561b422fb5  gateway/src/mqtt_sink.c
+2416a5a38d9f5c1cbd3cfc8373568ec2b9127983cad99b324446e382fb3f3e4a  gateway/tests/test_mqtt_sink.c
+0b65705e4f548bba5a8120a2413bd0d182d3f7c65c668c60c57c3a979a142c85  gateway/src/mqtt_reactor.c
+f07c56133d77578705c6939bd1fd5a7c361ee433f81d74adaa1b1839ae082f7d  gateway/tests/test_mqtt_reactor.c
+df5632066a095307885dfd056f7acfba5f084d47abcdb794dd8079d05dd05e71  gateway/cmake/toolchains/imx6ull-buildroot.cmake
+
+Script done on 2026-09-01 16:09:17+08:00 [COMMAND_EXIT_CODE="0"]

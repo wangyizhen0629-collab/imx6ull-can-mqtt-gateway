@@ -1,0 +1,8 @@
+Script started on 2026-09-01 16:09:17+08:00 [<not executed on terminal>]
++ git show --stat --oneline 25681d871a32ed3936962144418058d1af2700b4
+25681d8 (HEAD -> master, origin/master) fix(m8): make runtime reconnect asynchronous
+ gateway/src/mqtt_sink.c        | 83 +++++++++++++++++++++++++++++++++++++++---
+ gateway/tests/test_mqtt_sink.c | 24 ++++++++++--
+ 2 files changed, 98 insertions(+), 9 deletions(-)
+
+Script done on 2026-09-01 16:09:17+08:00 [COMMAND_EXIT_CODE="0"]

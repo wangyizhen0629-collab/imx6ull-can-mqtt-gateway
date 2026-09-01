@@ -1,0 +1,9 @@
+Script started on 2026-09-01 16:12:57+08:00 [<not executed on terminal>]
++ git status --short
+?? 20260831T220718p0800-m6-lan-1000-board/
+?? artifacts/20260831T181335+0800-m6-arm-private/
+?? artifacts/20260831T235934+0800-m7-preflight/
+?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+?? artifacts/20260901T160813+0800-m8-silent-listener-reconnect-fix-ubuntu/
+
+Script done on 2026-09-01 16:12:57+08:00 [COMMAND_EXIT_CODE="0"]

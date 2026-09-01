@@ -1,0 +1,5 @@
+Script started on 2026-09-01 16:12:57+08:00 [<not executed on terminal>]
++ du -sh artifacts/20260901T160813+0800-m8-silent-listener-reconnect-fix-ubuntu
+208K	artifacts/20260901T160813+0800-m8-silent-listener-reconnect-fix-ubuntu
+
+Script done on 2026-09-01 16:12:57+08:00 [COMMAND_EXIT_CODE="0"]

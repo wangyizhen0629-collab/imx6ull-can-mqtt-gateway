@@ -1,0 +1,5 @@
+Script started on 2026-09-01 16:11:16+08:00 [<not executed on terminal>]
++ awk 'BEGIN { count=0 } /accept\(|send\(|sendto\(|write\(/ { count++ } END { print "listener_response_calls=" count; exit(count != 0) }' gateway/tests/test_mqtt_sink.c
+listener_response_calls=0
+
+Script done on 2026-09-01 16:11:16+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,18 @@
+Script started on 2026-09-01 16:10:12+08:00 [<not executed on terminal>]
++ cmake -S . -B build/20260901T160813-m8-silent-listener-asan-ubsan -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/tmp/imx6ull-m6-mosquitto-root/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so '-DCMAKE_C_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer -g' -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=address,undefined
+-- The C compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-asan-ubsan
+
+Script done on 2026-09-01 16:10:13+08:00 [COMMAND_EXIT_CODE="0"]

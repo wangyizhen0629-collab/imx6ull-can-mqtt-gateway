@@ -1,0 +1,20 @@
+Script started on 2026-09-01 16:10:32+08:00 [<not executed on terminal>]
++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/20260901T160813-m8-silent-listener-asan-ubsan -R '^(test_mqtt_sink|test_mqtt_reactor)$' --output-on-failure
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-asan-ubsan
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-asan-ubsan
+    Start 13: test_mqtt_sink
+1/2 Test #13: test_mqtt_sink ...................   Passed    0.53 sec
+    Start 14: test_mqtt_reactor
+2/2 Test #14: test_mqtt_reactor ................   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+M6      =   0.53 sec*proc (1 test)
+M7      =   0.53 sec*proc (1 test)
+M8      =   0.55 sec*proc (2 tests)
+unit    =   0.55 sec*proc (2 tests)
+
+Total Test time (real) =   0.55 sec
+
+Script done on 2026-09-01 16:10:33+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,4 @@
+Script started on 2026-09-01 16:10:32+08:00 [<not executed on terminal>]
++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 build/20260901T160813-m8-silent-listener-asan-ubsan/gateway/test_mqtt_sink
+
+Script done on 2026-09-01 16:10:32+08:00 [COMMAND_EXIT_CODE="0"]

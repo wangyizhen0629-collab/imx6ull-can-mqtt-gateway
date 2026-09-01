@@ -1,0 +1,5 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ file build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]

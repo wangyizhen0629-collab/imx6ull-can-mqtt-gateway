@@ -1,0 +1,32 @@
+Script started on 2026-09-01 16:11:16+08:00 [<not executed on terminal>]
++ sed -n '/static int create_silent_loopback_listener/,/^}/p' gateway/tests/test_mqtt_sink.c
+static int create_silent_loopback_listener(uint16_t *port)
+{
+    struct sockaddr_in address;
+    socklen_t address_size = sizeof(address);
+    int descriptor;
+
+    descriptor = socket(AF_INET, SOCK_STREAM, 0);
+    if (descriptor < 0) {
+        return -1;
+    }
+    (void)memset(&address, 0, sizeof(address));
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    address.sin_port = 0;
+    if (bind(descriptor, (const struct sockaddr *)&address,
+             sizeof(address)) != 0 ||
+        getsockname(descriptor, (struct sockaddr *)&address,
+                    &address_size) != 0) {
+        (void)close(descriptor);
+        return -1;
+    }
+    if (listen(descriptor, 8) != 0) {
+        (void)close(descriptor);
+        return -1;
+    }
+    *port = ntohs(address.sin_port);
+    return descriptor;
+}
+
+Script done on 2026-09-01 16:11:16+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,55 @@
+Script started on 2026-09-01 16:13:59+08:00 [<not executed on terminal>]
+ .../arm-binary-identity.log                        |   9 ++
+ .../arm-build.log                                  |  22 ++++
+ .../arm-configure.log                              |  22 ++++
+ .../arm-file.log                                   |   5 +
+ .../arm-mqtt-api-audit.log                         |  11 ++
+ .../arm-mqtt-api-count.log                         |   5 +
+ .../arm-mqtt-api-unique.log                        |  12 +++
+ .../arm-readelf-dynamic.log                        |  34 +++++++
+ .../arm-readelf-header.log                         |  24 +++++
+ .../arm-readelf-program-headers.log                |  33 ++++++
+ .../arm-readelf-relocations.log                    | 112 +++++++++++++++++++++
+ .../arm-rpath-audit.log                            |   5 +
+ .../arm-toolchain-version.log                      |   9 ++
+ .../artifact-file-list-before-stage.log            |  52 ++++++++++
+ .../artifact-size.log                              |   5 +
+ .../asan-ubsan-build.log                           |  64 ++++++++++++
+ .../asan-ubsan-configure.log                       |  18 ++++
+ .../asan-ubsan-ctest-m8.log                        |  20 ++++
+ .../asan-ubsan-test-mqtt-sink-direct.log           |   4 +
+ .../cmake-cache-audit.log                          |  30 ++++++
+ .../command_index.md                               |  47 +++++++++
+ .../focused-requirements-audit.log                 |  17 ++++
+ .../focused-test-no-explicit-poll-retry.log        |   5 +
+ .../focused-test-no-explicit-poll.log              |   5 +
+ .../focused-test-source.log                        |  68 +++++++++++++
+ .../forbidden-artifact-scan.log                    |   7 ++
+ .../fresh-build-dir-check.log                      |   6 ++
+ .../git-ancestor.log                               |   4 +
+ .../git-diff-check-before-stage.log                |   4 +
+ .../git-head.log                                   |   5 +
+ .../git-show-stat.log                              |   8 ++
+ .../git-status-after-pull.log                      |  10 ++
+ .../git-status-before-stage.log                    |   9 ++
+ .../host-build.log                                 |  64 ++++++++++++
+ .../host-configure.log                             |  18 ++++
+ .../host-ctest-full.log                            |  55 ++++++++++
+ .../host-ctest-m8.log                              |  20 ++++
+ .../host-fresh-binary-audit.log                    |  10 ++
+ .../host-libmosquitto-audit.log                    |  15 +++
+ .../host-test-mqtt-sink-direct.log                 |   4 +
+ .../host-test-mqtt-sink-repeat10.log               |  36 +++++++
+ .../host-tool-versions.log                         |  22 ++++
+ .../initial_pull.log                               |  21 ++++
+ .../ipv4-scan.log                                  |   6 ++
+ .../secret-scan.log                                |   6 ++
+ .../silent-listener-no-response-audit.log          |   5 +
+ .../silent-listener-source.log                     |  32 ++++++
+ .../source-sha256.log                              |   9 ++
+ .../target-libmosquitto-audit.log                  |   8 ++
+ .../test_report.md                                 |  66 ++++++++++++
+ .../warning-audit.log                              |   5 +
+ 51 files changed, 1093 insertions(+)
+
+Script done on 2026-09-01 16:13:59+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,10 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ stat -c '%n size=%s mtime=%y' build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_sink gateway/tests/test_mqtt_sink.c gateway/src/mqtt_sink.c
+build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_sink size=121240 mtime=2026-09-01 16:09:33.382206741 +0800
+gateway/tests/test_mqtt_sink.c size=10790 mtime=2026-09-01 16:08:08.741277223 +0800
+gateway/src/mqtt_sink.c size=45294 mtime=2026-09-01 16:08:08.741277223 +0800
++ sha256sum build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_sink build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_reactor
+bfae4c46ff6284048844b18849b80cc4e8297a1aec77d6d0fee42f5ef83c612c  build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_sink
+4e8c2819e85b00a0683a28cfa6941c5ccdae1a7c70765d94800820e35ea7388e  build/20260901T160813-m8-silent-listener-host/gateway/test_mqtt_reactor
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]

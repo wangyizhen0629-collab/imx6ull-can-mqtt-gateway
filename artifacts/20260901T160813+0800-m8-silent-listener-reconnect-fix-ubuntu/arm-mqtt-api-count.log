@@ -1,0 +1,5 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ grep -Ec '^mosquitto_(connect_async|socket|loop_read|loop_write|loop_misc|want_write)' artifacts/20260901T160813+0800-m8-silent-listener-reconnect-fix-ubuntu/arm-mqtt-api-unique.log
+6
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]

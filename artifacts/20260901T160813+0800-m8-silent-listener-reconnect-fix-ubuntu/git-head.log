@@ -1,0 +1,5 @@
+Script started on 2026-09-01 16:09:17+08:00 [<not executed on terminal>]
++ git rev-parse HEAD
+25681d871a32ed3936962144418058d1af2700b4
+
+Script done on 2026-09-01 16:09:17+08:00 [COMMAND_EXIT_CODE="0"]

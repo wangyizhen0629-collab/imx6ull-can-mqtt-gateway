@@ -1,0 +1,9 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ sha256sum build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
++ stat -c '%n size=%s mtime=%y' build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd size=198576 mtime=2026-09-01 16:10:44.447949498 +0800
++ realpath build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]

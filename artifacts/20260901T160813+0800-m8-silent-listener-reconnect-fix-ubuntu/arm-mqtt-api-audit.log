@@ -1,0 +1,11 @@
+Script started on 2026-09-01 16:11:02+08:00 [<not executed on terminal>]
++ readelf -rW build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
++ rg 'mosquitto_(connect_async|socket|loop_read|loop_write|loop_misc|want_write)'
+00032018  00001516 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_read
+00032088  00003016 R_ARM_JUMP_SLOT        00000000   mosquitto_socket
+000320c8  00001916 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_write
+000320f8  00000e16 R_ARM_JUMP_SLOT        00000000   mosquitto_connect_async
+00032108  00005616 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_misc
+00032148  00005c16 R_ARM_JUMP_SLOT        00000000   mosquitto_want_write
+
+Script done on 2026-09-01 16:11:02+08:00 [COMMAND_EXIT_CODE="0"]
