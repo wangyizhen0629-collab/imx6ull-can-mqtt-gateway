@@ -17,11 +17,10 @@
 - 板端 Buildroot 修订 `g65177d4` 与 SDK 修订 `gee85cab` 不同；M2 已用 SHA256 固定的
   `gatewayd` 完成真实动态加载和 loopback，因此该差异对当前 M2 binary 的运行兼容性
   已由实测关闭，不能外推到未来新增依赖或其他 binary。
-- Windows既有SSH/MobaXterm路径和安全binary转交已在最终M9续跑中实际可用，指定M9
-  binary已在板端重新计算为预期SHA，因此早期转交阻塞已关闭。新的阻塞是唯一一次
-  reboot后目标SSH持续不可用：48次只读探测均exit255，未取得新boot ID。恢复目标登录
-  是否需要项目所有者物理检查/供电介入，以及如何在不修改网络的前提下取回post-boot
-  证据，仍待确认；禁止重复reboot或猜测新地址。
+- Windows既有SSH/MobaXterm路径、安全binary转交和唯一reboot后的目标登录均已实际
+  恢复；补充run取得新boot ID并关闭早期post-boot证据阻塞。仍需产品阶段决定：当前
+  reboot后`can0`默认为DOWN，既有500000 bit/s基线本次由操作者单独授权手工恢复；未来
+  由哪个已批准的系统启动环节提供CAN持久配置？M9不擅自修改网络/CAN启动配置。
 - M2 可使用 `/tmp` tmpfs 做临时部署（审计时可用 245 MiB）；该结论不适用于 M7 spool
   持久化目录。
 - M6历史依赖审计确认Buildroot SDK原始sysroot不含libmosquitto开发文件；后续M6/M7已用
@@ -118,10 +117,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 每次 `can0` 状态修改、STM32 烧录、Broker 启停、进程 kill、`/etc`/inittab 修改、
   reboot、压力测试和 24 小时测试由谁在执行前授权？
 - 长时间运行 artifact 的备份和保留策略是什么？
-- 已选择：M9使用BusyBox `inittab` respawn启动仓库内前台supervisor，不依赖未知的镜像
-  supervisor，也不使用systemd。真实目标安装、PID 1 HUP、唯一进程、restart、SIGKILL
-  恢复和ash隔离cooldown已经通过；唯一一次reboot后目标SSH不可达，所以开机自启、最终
-  状态和可能需要的回滚仍待目标登录恢复后只读核验。
+- 已选择并验证：M9使用BusyBox `inittab` respawn启动仓库内前台supervisor，不依赖未知
+  的镜像supervisor，也不使用systemd。真实目标安装、PID 1 HUP、唯一进程、restart、
+  SIGKILL恢复、ash隔离cooldown、reboot后PID 1自动拉起supervisor和最终1/1均已通过。
+  CAN持久启动配置仍是外部产品问题，不纳入M9实现。
 
 ## M1～M7 后续验证边界
 
@@ -199,10 +198,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
 - 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
   和长期可靠性仍未运行。不得用M8短时功能门禁回答这些问题。
-- M9仓库实现、主机/ASan+UBSan、ARM、板端安装/reload/restart/SIGKILL恢复和BusyBox ash
-  cooldown已有真实证据。未解决的是reboot后目标SSH不可达，导致新boot ID、开机自启、
-  最终1/1、post-boot CAN/Broker及回滚无法核验。下一步只能在目标登录恢复后新建唯一
-  artifact做只读post-boot审计；未补齐前M9总门禁保持`NOT MET`。
+- M9仓库实现、主机/ASan+UBSan、ARM、板端安装/reload/restart/SIGKILL恢复、BusyBox ash
+  cooldown和手动post-boot补充门禁已有真实证据，M9为`MET`。仍未解决的产品问题是正确
+  UTC、CAN持久启动配置、Broker交付以及性能/长期可靠性；这些不得从M9短时进程监督门禁
+  外推。M10仍未开始。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

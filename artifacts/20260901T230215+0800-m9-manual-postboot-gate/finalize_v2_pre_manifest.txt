@@ -1,0 +1,3 @@
+captured_at=2026-09-01T23:17:57.4588452+08:00
+pre_manifest_result=PASS
+v1_partial_outputs_preserved=YES

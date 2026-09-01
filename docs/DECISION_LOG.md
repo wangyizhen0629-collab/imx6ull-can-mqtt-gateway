@@ -537,6 +537,25 @@
 - 影响：目标登录恢复前不得修改网络或重复reboot；应先只读取得新boot ID和最终身份，
   必要时按已保存回滚脚本恢复。本run不关闭M9，M10不得开始。
 
+## D-037：手动post-boot补证关闭M9 BusyBox进程监督门禁
+
+- 日期：2026-09-01
+- 状态：已接受；M9总门禁为`MET`，M10仍未开始
+- 补充证据：`artifacts/20260901T230215+0800-m9-manual-postboot-gate/`由操作者手动执行板端
+  命令。新boot ID与基础run不同；操作者确认首次检查前未人工start/restart/HUP。唯一
+  supervisor PID 337的PPID为1，cmdline与inittab respawn入口一致，因此BusyBox init
+  自动启动supervisor为PASS。
+- 外部条件：post-boot `can0`初始为DOWN/STOPPED，真实child不能保持；该观察不伪装成
+  PASS，也不把CAN状态武断写成唯一退出原因。操作者新增明确授权后只恢复仓库既有
+  500000 bit/s、loopback off、UP基线；没有修改Broker、网络配置或STM32。
+- 最终事实：受控start exit0；5秒和超过60秒检查均status exit0，supervisor/child精确
+  1/1，child PID 9951不变、PPID 337、exe/cmdline/SHA和固定libmosquitto映射正确，其他
+  gatewayd和测试进程为0，CAN保持UP/ERROR-ACTIVE且berr 0/0。
+- 组合判定：本run补齐开机init和最终状态；D-036基础run已经通过restart换PID、一次
+  SIGKILL恢复和目标BusyBox ash隔离storm cooldown。六项门禁均有真实证据，故M9关闭为
+  `MET`。该决定不证明CAN持久自动配置、Broker交付、正确UTC、完整无人值守产品ready、
+  性能或可靠性，也不授权开始M10。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

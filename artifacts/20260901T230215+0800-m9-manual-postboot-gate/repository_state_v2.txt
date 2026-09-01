@@ -1,0 +1,17 @@
+captured_at=2026-09-01T23:17:57.0311156+08:00
+head=dab30be3291b86b069fbd4a3f6dbcc5fd1777aaf
+origin_master=dab30be3291b86b069fbd4a3f6dbcc5fd1777aaf
+tracked_change_count=8
+untracked_count=1329
+tmp_evidence_status=
+artifact_status=?? artifacts/20260901T230215+0800-m9-manual-postboot-gate/
+tracked_status:
+## master...origin/master
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M docs/milestones/M9.md

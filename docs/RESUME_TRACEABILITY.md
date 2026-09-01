@@ -25,7 +25,7 @@ ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成
 | i.MX6ULL物理CAN到Windows LAN Broker的QoS 1基线 | M6 ARM构建、私有目标库、配置和validator | 真实板端、物理CAN、1000 batch、PUBACK及原始证据复核 | M6 LAN run及2026-09-01独立gate review | subscriber 1000批/115335条连续记录；gateway/Broker 1033次publish/PUBACK一致 | 是，必须注明单次功能门禁，不写性能、时延或可靠性 |
 | 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 Ubuntu/ARM证据及最终Windows/i.MX6ULL gate | API兼容、全量17/17、M8/ASan/UBSan 2/2；真实323 batch、unique seq 1～27434、missing/effective duplicate 0，reactor必需计数非零 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写性能、时延或长期可靠性 |
-| BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM、目标安装/reload/restart/SIGKILL/ash cooldown PASS；reboot后自启/最终状态NOT RUN | 真实目标HUP后1/1；SIGKILL与restart均换PID；3次快速失败后cooldown；未取得post-boot boot ID | 否，必须等目标开机/最终门禁 |
+| BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM、目标安装/reload/restart/SIGKILL/ash cooldown及手动post-boot补充run | 新boot ID；PID 1自动拉起supervisor；最终1/1；SIGKILL/restart换PID；3次快速失败后cooldown | 是，但只写真实i.MX6ULL单次BusyBox进程监督门禁；注明CAN基线手工恢复，不写完整无人值守产品ready |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 工具和精确配置 | 经批准的压力/断网/稳定性流程 | M10 报告 | 未测量 | 否 |
 
 一行满足条件后，只能用已有不可变 run 计算出的数值替换“未测量”，并补充精确源码、
@@ -191,7 +191,12 @@ binary/目标库SHA，完成备份与安装。HUP后精确一个supervisor和一
 SIGKILL把子PID 11348替换为14335，受控restart再替换为15095；目标BusyBox 1.31.1 ash
 隔离测试证明3次快速失败后cooldown且可恢复。
 
-但唯一一次reboot命令发出后，48次SSH探测均无法读取新boot ID；开机自启、最终1/1、
-post-boot状态和回滚为`NOT RUN`。Broker在reboot前仅观察到SYN-SENT且没有被控制，板端
-时钟仍为1970；这些都不支持MQTT交付、正确UTC、性能或可靠性结论。因此表中完整M9
-简历表述仍不可用，总门禁`NOT MET`。M10没有开始。
+基础run在唯一reboot后因SSH不可达而保持`NOT MET`，该历史结论不覆盖。补充run
+`artifacts/20260901T230215+0800-m9-manual-postboot-gate/`随后取得不同boot ID；操作者确认
+首次检查前未人工start/restart/HUP，PID 337由PID 1自动拉起。重启后的CAN初始DOWN，
+操作者在新增授权下恢复既有500000 bit/s基线并受控start；child PID 9951在60秒前后
+不变，最终status exit0、1/1、无其他gatewayd/测试进程，binary SHA与库映射正确。
+
+因此组合证据关闭M9为`MET`，表中受限的BusyBox进程监督表述可用。必须同时注明CAN基线
+由操作者手工恢复；Broker交付、正确UTC、完整冷启动ready、性能和可靠性仍不成立。
+M10没有开始。

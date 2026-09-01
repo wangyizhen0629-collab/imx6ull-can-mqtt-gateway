@@ -113,9 +113,12 @@ M9主机实现已通过Ubuntu BusyBox ash专项、warning-clean全量CTest18/18�
 libmosquitto实算SHA、ext4备份、`/opt`/四个授权`/etc`文件安装、PID 1 HUP启动及精确
 1 supervisor/1 gatewayd分类。一次已核验子进程SIGKILL由同一supervisor拉起不同PID；
 受控restart也替换子PID；目标BusyBox 1.31.1 ash隔离fake测试证明3次快速失败后进入
-2秒cooldown、1秒内无第4次启动并可恢复。唯一一次reboot命令发出后，48次SSH探测均
-未取得新boot ID；开机自动启动、最终1/1、post-boot外部状态和回滚均为`NOT RUN`。
-这些项目未全部通过前M9门禁为`NOT MET`，不得开始M10。
+2秒cooldown、1秒内无第4次启动并可恢复。补充run
+`artifacts/20260901T230215+0800-m9-manual-postboot-gate/`取得不同boot ID，并由操作者确认
+首次检查前未人工start/restart/HUP；唯一supervisor PID 337由PID 1拉起。重启后CAN初始
+DOWN，操作者在新增授权下恢复既有500000 bit/s基线，再受控start；最终child PID 9951
+在60秒前后不变、身份/SHA/库映射正确、status exit0、进程1/1且无其他/测试进程。组合
+证据满足M9六项门禁，M9为`MET`，M10仍不得自动开始。
 
 M4 首轮20条/768帧历史测试、Ubuntu warning-clean/ASan+UBSan 11/11和 ARMv7 交叉构建
 证据保持不变。2026-08-31 又完成语义化门禁：当前42条共享向量包含31条实物代表帧、

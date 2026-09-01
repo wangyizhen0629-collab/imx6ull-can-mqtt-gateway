@@ -1,0 +1,6 @@
+shell_files=NONE
+powershell_parse_results:
+capture_evidence.ps1=PASS error_count=0
+finalize_evidence.ps1=PASS error_count=0
+finalize_evidence_v2.ps1=PASS error_count=0
+result=PASS

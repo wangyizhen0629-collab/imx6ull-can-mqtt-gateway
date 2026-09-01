@@ -1,0 +1,6 @@
+raw_sha256=31fcd09dd50de4f4fc12064dbbd1a7c1c5af777cb1a9a9deeaa1ee8c3e940bb2
+redacted_sha256=3d63378e28494a0ed4885e7f69fcd7683039d2ef54b1c3954aac09b34c22972b
+raw_bytes=22327
+raw_line_count=522
+method=redact login prompt/target/private IPv4/credential assignments; strip public trailing whitespace only
+raw_location=private_raw/operator_terminal_evidence.txt (Git ignored)

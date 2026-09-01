@@ -1,0 +1,521 @@
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/sys/kernel/random/boot_id
+0abefcf0-9d85-4a4b-b335-f339b33b8db4
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/uptime
+3049.00 2646.04
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# date -Ins
+1970-01-03T11:00:15,581229029+00:00
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/1/comm
+init
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# tr '\0' ' ' </proc/1/cmdline
+init       [<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo
+
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== INITTAB ==='
+=== INITTAB ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# grep -n 'gatewayd' /etc/inittab
+41:null::respawn:/etc/init.d/gatewayd supervise
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "grep_exit=$?"
+grep_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== SERVICE STATUS ==='
+=== SERVICE STATUS ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+echo "status_exit=$?"
+1970-01-03T11:02:15Z gatewayd-supervisor[5489]: status=starting supervisor_pid=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "status_exit=$?"
+status_exit=3
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FILE IDENTITY ==='
+=== FILE IDENTITY ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# for f in \
+>   /etc/inittab \
+>   /etc/init.d/gatewayd \
+>   /etc/default/gatewayd \
+>   /etc/gatewayd/gateway.conf \
+>   /opt/gatewayd/bin/gatewayd \
+>   /opt/gatewayd/lib/libmosquitto.so.2.0.11
+> do
+>   ls -ld "$f"
+>   sha256sum "$f"
+> done
+-rw-r--r-- 1 root root 1286 Jan  3 09:51 /etc/inittab
+fef0324868e70582fef1d76c8dd3bcd6025ae2159ba383a8585dc091d9dfad84  /etc/inittab
+-rwxr-xr-x 1 root root 9837 Jan  3 09:51 /etc/init.d/gatewayd
+
+b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1  /etc/init.d/gatewayd
+-rw-r--r-- 1 root root 277 Jan  3 09:51 /etc/default/gatewayd
+ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061  /etc/default/gatewayd
+-rw------- 1 root root 393 Jan  3 09:51 /etc/gatewayd/gateway.conf
+0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0  /etc/gatewayd/gateway.conf
+-rwxr-xr-x 1 root root 104860 Jan  3 09:51 /opt/gatewayd/bin/gatewayd
+6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958  /opt/gatewayd/bin/gatewayd
+-rw-r--r-- 1 root root 404688 Jan  3 09:51 /opt/gatewayd/lib/libmosquitto.so.2.0.11
+snapshot()
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /opt/gatewayd/lib/libmosquitto.so.2.0.11
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot()
+> {
+>   echo "snapshot_uptime=$(cat /proc/uptime)"
+>   sup=0
+>   child=0
+>   other=0
+>   testproc=0
+>
+>   for d in /proc/[0-9]*
+>   do
+>     pid=${d##*/}
+>     [ "$pid" = "$$" ] && continue
+>     [ -r "$d/cmdline" ] || continue
+>     cmd=$(tr '\0' ' ' < "$d/cmdline")
+>
+>     case "$cmd" in
+>       *m9-board-gate*|*gatewayd-m9-test*)
+>         testproc=$((testproc + 1))
+>         echo "role=test_process pid=$pid cmdline=$cmd"
+>         ;;
+>     esac
+>
+>     case "$cmd" in
+>       "/bin/sh /etc/init.d/gatewayd supervise "*|\
+>       "/bin/ash /etc/init.d/gatewayd supervise "*)
+>         role=supervisor
+>         sup=$((sup + 1))
+>         ;;
+>       "/opt/gatewayd/bin/gatewayd "*)
+>         role=child
+>         child=$((child + 1))
+>         ;;
+>       *gatewayd*)
+>         role=other_gatewayd
+>         other=$((other + 1))
+>         ;;
+>       *)
+>         continue
+>         ;;
+>     esac
+>
+>     comm=$(cat "$d/comm" 2>/dev/null)
+>     ppid=$(awk '$1 == "PPid:" { print $2 }' "$d/status")
+>     exe=$(readlink -f "$d/exe" 2>/dev/null)
+>     echo "role=$role pid=$pid ppid=$ppid comm=$comm exe=$exe cmdline=$cmd"
+>
+>     if [ "$role" = child ]; then
+>       sha256sum "$d/exe"
+>       grep '/opt/gatewayd/lib/libmosquitto' "$d/maps"
+>     fi
+>   done
+>
+>   echo "counts supervisor=$sup child=$child other_gatewayd=$other test_process=$testproc"
+> }
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== PROCESS SNAPSHOT 1 ==='
+=== PROCESS SNAPSHOT 1 ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=3177.85 2756.62
+sleep 5
+echo '=== PROCESS SNAPSHOT 2 ==='
+snapshotrole=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 5
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== PROCESS SNAPSHOT 2 ==='
+=== PROCESS SNAPSHOT 2 ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=3209.26 2778.74
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== SUPERVISOR ENV ==='
+=== SUPERVISOR ENV ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sed -n '1,200p' /etc/default/gatewayd
+LD_LIBRARY_PATH=/opt/gatewayd/lib
+export LD_LIBRARY_PATH
+GATEWAYD_BIN=/opt/gatewayd/bin/gatewayd
+GATEWAYD_CONFIG=/etc/gatewayd/gateway.conf
+GATEWAYD_RUN_DIR=/var/run/gatewayd
+GATEWAYD_RESTART_LIMIT=5
+GATEWAYD_STABLE_SEC=60
+GATEWAYD_COOLDOWN_SEC=60
+GATEWAYD_STOP_TIMEOUT_SEC=15
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== RUN DIRECTORY ==='
+=== RUN DIRECTORY ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ls -la /var/run/gatewayd
+total 4
+drwxr-xr-x 3 root root  80 Jan  3 11:07 .
+drwxr-xr-x 7 root root 320 Jan  3 10:09 ..
+drwxr-xr-x 2 root root  40 Jan  3 10:09 supervisor.lock
+-rw-r--r-- 1 root root   4 Jan  3 10:09 supervisor.pid
+
+===== OPERATOR-PASTED CHAT ADDENDUM =====
+source_note=The following terminal records were pasted by the operator in the Codex conversation and appended on request; they are not claimed to be a byte-exact MobaXterm export.
+
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== CAN RESTORE BEFORE ==='
+=== CAN RESTORE BEFORE ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/sys/kernel/random/boot_id
+0abefcf0-9d85-4a4b-b335-f339b33b8db4
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/uptime
+4991.27 4440.48
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# date -Ins
+1970-01-03T11:32:37,861019261+00:00
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details -statistics link show can0
+2: can0: <NOARP,ECHO> mtu 16 qdisc noop state DOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 0
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    0          0        0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "before_query_exit=$?"
+before_query_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip link set can0 down &&
+> ip link set can0 type can bitrate 500000 loopback off &&
+> ip link set can0 up
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# restore_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "restore_exit=$restore_exit"
+restore_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== CAN RESTORE AFTER ==='
+=== CAN RESTORE AFTER ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details -statistics link show can0
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+          bitrate 500000 sample-point 0.866
+          tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    10528      1316     0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "after_query_exit=$?"
+after_query_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /sys/class/net/can0/operstate
+unknown
+
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FINAL START ATTEMPT ==='
+=== FINAL START ATTEMPT ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/sys/kernel/random/boot_id
+0abefcf0-9d85-4a4b-b335-f339b33b8db4
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/uptime
+5823.30 5219.15
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details link show can0
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+          bitrate 500000 sample-point 0.866
+          tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd start
+1970-01-03T11:46:31Z gatewayd-supervisor[9942]: action=start result=started
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# start_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "start_exit=$start_exit"
+start_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 5
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:46:39Z gatewayd-supervisor[9960]: status=running supervisor_pid=337 child_pid=9951
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# status_5s_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "status_5s_exit=$status_5s_exit"
+status_5s_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=5833.12 5219.81
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+role=child pid=9951 ppid=337 comm=gatewayd exe=/opt/gatewayd/bin/gatewayd cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt
+6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958  /proc/9951/exe
+76ee9000-76ef8000 r-xp 00000000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76ef8000-76f07000 ---p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76f07000-76f08000 r--p 0000e000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76f08000-76f09000 rw-p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+counts supervisor=1 child=1 other_gatewayd=0 test_process=0
+
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FINAL STABILITY CHECK ==='
+=== FINAL STABILITY CHECK ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# child_before=$(cat /var/run/gatewayd/gatewayd.pid)
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "child_before=$child_before"
+child_before=9951
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 60
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:50:41Z gatewayd-supervisor[10189]: status=running supervisor_pid=337 child_pid=9951
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# final_status_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "final_status_exit=$final_status_exit"
+final_status_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# child_after=$(cat /var/run/gatewayd/gatewayd.pid)
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "child_after=$child_after"
+child_after=9951
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# if [ "$child_before" = "$child_after" ]; then
+> echo "stable_child_pid=PASS"
+> else
+> echo "stable_child_pid=FAIL"
+> fi
+stable_child_pid=PASS
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=6075.82 5219.81
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+role=child pid=9951 ppid=337 comm=gatewayd exe=/opt/gatewayd/bin/gatewayd cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt
+6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958  /proc/9951/exe
+76ee9000-76ef8000 r-xp 00000000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76ef8000-76f07000 ---p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76f07000-76f08000 r--p 0000e000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+76f08000-76f09000 rw-p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.2.0.11
+counts supervisor=1 child=1 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FINAL RUN DIRECTORY ==='
+=== FINAL RUN DIRECTORY ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ls -la /var/run/gatewayd
+total 8
+drwxr-xr-x 3 root root 100 Jan  3 11:46 .
+drwxr-xr-x 7 root root 320 Jan  3 10:09 ..
+-rw-r--r-- 1 root root   5 Jan  3 11:46 gatewayd.pid
+drwxr-xr-x 2 root root  40 Jan  3 10:09 supervisor.lock
+-rw-r--r-- 1 root root   4 Jan  3 10:09 supervisor.pid
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FINAL CAN STATE ==='
+=== FINAL CAN STATE ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details -statistics link show can0
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+          bitrate 500000 sample-point 0.866
+          tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    939648     117456   0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "final_can_query_exit=$?"
+final_can_query_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/sys/kernel/random/boot_id
+0abefcf0-9d85-4a4b-b335-f339b33b8db4
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/uptime
+6079.48 5219.81
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# date -Ins
+1970-01-03T11:50:46,077237390+00:00
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# for f in supervisor.pid gatewayd.pid disabled
+> do
+>     if [ -e "/var/run/gatewayd/$f" ]; then
+>         echo "$f=present"
+>         cat "/var/run/gatewayd/$f"
+>     else
+>         echo "$f=absent"
+>     fi
+> done
+supervisor.pid=present
+337
+gatewayd.pid=absent
+disabled=absent
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== SUPERVISOR PROC ==='
+=== SUPERVISOR PROC ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sup=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# grep -E '^(Name|State|Pid|PPid):' "/proc/$sup/status"
+Name:   gatewayd
+State:  S (sleeping)
+Pid:    337
+PPid:   1
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "wchan=$(cat /proc/$sup/wchan)"
+wchan=do_wait
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "children=$(cat /proc/$sup/task/$sup/children)"
+cat: /proc/337/task/337/children: No such file or directory
+children=
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "fd0=$(readlink /proc/$sup/fd/0)"
+fd0=/dev/null
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "fd1=$(readlink /proc/$sup/fd/1)"
+fd1=/dev/null
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "fd2=$(readlink /proc/$sup/fd/2)"
+fd2=/dev/null
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== 10 SECOND CHILD OBSERVATION ==='
+=== 10 SECOND CHILD OBSERVATION ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# i=1
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# while [ "$i" -le 10 ]
+> do
+>     kids=$(cat "/proc/$sup/task/$sup/children")
+>     echo "sample=$i uptime=$(cut -d' ' -f1 /proc/uptime) children=$kids"
+>     for p in $kids
+>     do
+>         comm=$(cat "/proc/$p/comm" 2>/dev/null)
+>         exe=$(readlink -f "/proc/$p/exe" 2>/dev/null)
+>         cmd=$(tr '\0' ' ' < "/proc/$p/cmdline" 2>/dev/null)
+>         echo "child_pid=$p comm=$comm exe=$exe cmdline=$cmd"
+>     done
+>     sleep 1
+>     i=$((i + 1))
+> done
+cat: /proc/337/task/337/children: No such file or directory
+sample=1 uptime=3501.65 children=
+
+echo '=== CAN READ ONLY ==='
+ip -details -statistics link show can0
+echo "can_query_exit=$?"cat: /proc/337/task/337/children: No such file or directory
+sample=2 uptime=3502.69 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=3 uptime=3503.74 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=4 uptime=3504.78 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=5 uptime=3505.82 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=6 uptime=3506.89 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=7 uptime=3507.96 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=8 uptime=3509.02 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=9 uptime=3510.08 children=
+cat: /proc/337/task/337/children: No such file or directory
+sample=10 uptime=3511.15 children=
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== CAN READ ONLY ==='
+=== CAN READ ONLY ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details -statistics link show can0
+2: can0: <NOARP,ECHO> mtu 16 qdisc noop state DOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state STOPPED (berr-counter tx 0 rx 0) restart-ms 0
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    0          0        0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "can_query_exit=$?"
+can_query_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd stop
+tewayd status
+status_exit=$?
+
+echo "stop_exit=$stop_exit"
+echo "status_exit=$status_exit"
+
+ls -la /var/run/gatewayd
+snapshot1970-01-03T11:13:17Z gatewayd-supervisor[7065]: action=stop result=stopped
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# stop_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 2
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:13:19Z gatewayd-supervisor[7077]: status=disabled supervisor_pid=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# status_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "stop_exit=$stop_exit"
+stop_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "status_exit=$status_exit"
+status_exit=3
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ls -la /var/run/gatewayd
+total 4
+drwxr-xr-x 3 root root 100 Jan  3 11:13 .
+drwxr-xr-x 7 root root 320 Jan  3 10:09 ..
+-rw-r--r-- 1 root root   0 Jan  3 11:13 disabled
+drwxr-xr-x 2 root root  40 Jan  3 10:09 supervisor.lock
+-rw-r--r-- 1 root root   4 Jan  3 10:09 supervisor.pid
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=3835.53 3322.04
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+
+
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== BEFORE SERVICE START ==='
+=== BEFORE SERVICE START ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/sys/kernel/random/boot_id
+0abefcf0-9d85-4a4b-b335-f339b33b8db4
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# cat /proc/uptime
+5395.92 4832.69
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:39:22Z gatewayd-supervisor[8840]: status=disabled supervisor_pid=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "before_status_exit=$?"
+before_status_exit=3
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ls -la /var/run/gatewayd
+total 4
+drwxr-xr-x 3 root root 100 Jan  3 11:13 .
+drwxr-xr-x 7 root root 320 Jan  3 10:09 ..
+-rw-r--r-- 1 root root   0 Jan  3 11:13 disabled
+drwxr-xr-x 2 root root  40 Jan  3 10:09 supervisor.lock
+-rw-r--r-- 1 root root   4 Jan  3 10:09 supervisor.pid
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=5398.37 4834.69
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd start
+1970-01-03T11:39:32Z gatewayd-supervisor[9067]: action=start result=started
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# start_exit=$?
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "start_exit=$start_exit"
+start_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd stop
+1970-01-03T11:39:55Z gatewayd-supervisor[9084]: action=stop result=stopped
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "safety_stop_exit=$?"
+safety_stop_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== AFTER START 5S ==='
+=== AFTER START 5S ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 5
+/etc/init.d/gatewayd status
+echo "status_5s_exit=$?"
+snapshot
+
+echo '=== AFTER START 65S ==='
+sleep 60
+/etc/init.d/gatewayd status
+echo "status_65s_exit=$?"
+snapshot
+
+echo '=== FINAL CAN READ ONLY ==='
+ip -details -statistics link show can0
+echo "final_can_query_exit=$?"
+ls -la /var/run/gatewayd
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:40:52Z gatewayd-supervisor[9168]: status=disabled supervisor_pid=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "status_5s_exit=$?"
+status_5s_exit=3
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=5486.27 4895.44
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== AFTER START 65S ==='
+=== AFTER START 65S ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# sleep 60
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# /etc/init.d/gatewayd status
+1970-01-03T11:41:54Z gatewayd-supervisor[9448]: status=disabled supervisor_pid=337
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "status_65s_exit=$?"
+status_65s_exit=3
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# snapshot
+snapshot_uptime=5548.28 4953.89
+role=supervisor pid=337 ppid=1 comm=gatewayd exe=/bin/bash cmdline=/bin/sh /etc/init.d/gatewayd supervise
+counts supervisor=1 child=0 other_gatewayd=0 test_process=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]#
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo '=== FINAL CAN READ ONLY ==='
+=== FINAL CAN READ ONLY ===
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ip -details -statistics link show can0
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+          bitrate 500000 sample-point 0.866
+          tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+          flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+          flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+          clock 30000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    469720     58715    0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# echo "final_can_query_exit=$?"
+final_can_query_exit=0
+[<REDACTED_LOGIN>@<REDACTED_TARGET>:<REDACTED_PATH>]# ls -la /var/run/gatewayd
+total 4
+drwxr-xr-x 3 root root 100 Jan  3 11:39 .
+drwxr-xr-x 7 root root 320 Jan  3 10:09 ..
+-rw-r--r-- 1 root root   0 Jan  3 11:39 disabled
+drwxr-xr-x 2 root root  40 Jan  3 10:09 supervisor.lock
+-rw-r--r-- 1 root root   4 Jan  3 10:09 supervisor.pid

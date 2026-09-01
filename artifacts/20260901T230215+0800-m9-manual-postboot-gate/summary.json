@@ -1,0 +1,18 @@
+{
+  "run_id": "20260901T230215+0800-m9-manual-postboot-gate",
+  "result": "MET",
+  "m10_started": false,
+  "new_boot_id_observed": true,
+  "busybox_init_supervisor_autostart": "PASS",
+  "final_supervisor_count": 1,
+  "final_gatewayd_count": 1,
+  "final_supervisor_pid": 337,
+  "final_child_pid": 9951,
+  "stable_child_pid_over_60_seconds": true,
+  "gatewayd_sha256": "6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958",
+  "can_final_state": "UP/LOWER_UP; ERROR-ACTIVE; bitrate 500000; berr 0/0",
+  "board_clock_valid_utc": false,
+  "broker_modified": false,
+  "network_modified": false,
+  "stm32_modified": false
+}

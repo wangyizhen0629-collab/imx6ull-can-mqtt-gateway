@@ -1,0 +1,7 @@
+attempted_at=2026-09-01T23:15:18+08:00
+exit_code=1
+result=SCRIPT_COMPATIBILITY_FAILURE
+reason=PowerShell ErrorActionPreference Stop promoted git diff --check CRLF warning on stderr to NativeCommandError before exit-code capture
+repository_diff_failure=NO
+overwrite_after_failure=NO
+next_action=preserve partial outputs and run independent finalize_evidence_v2.ps1 with distinct output names

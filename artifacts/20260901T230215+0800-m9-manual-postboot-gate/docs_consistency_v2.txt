@@ -1,0 +1,10 @@
+README.md=PASS required=2 missing=0
+docs/PLANS.md=PASS required=3 missing=0
+docs/DECISION_LOG.md=PASS required=4 missing=0
+docs/OPEN_QUESTIONS.md=PASS required=2 missing=0
+docs/RESUME_TRACEABILITY.md=PASS required=3 missing=0
+docs/TEST_PLAN.md=PASS required=3 missing=0
+docs/PROJECT_SPEC.md=PASS required=3 missing=0
+docs/milestones/M9.md=PASS required=3 missing=0
+m10_implementation_files_changed=NO
+result=PASS

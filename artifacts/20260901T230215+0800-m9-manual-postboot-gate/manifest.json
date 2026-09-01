@@ -1,0 +1,10 @@
+{
+  "run_id": "20260901T230215+0800-m9-manual-postboot-gate",
+  "scope": "M9 manual post-boot completion only",
+  "operator": "manual board operation; identity redacted",
+  "host": "Windows evidence processing",
+  "timezone": "Asia/Shanghai (+08:00)",
+  "board_clock_status": "1970; not valid UTC",
+  "base_evidence": "artifacts/20260901T204152+0800-m9-windows-board-gate-final",
+  "result": "MET"
+}

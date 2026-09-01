@@ -57,14 +57,13 @@
   51523条raw record、24089条raw duplicate、27434条unique seq，missing=0、effective
   duplicate=0；Broker/gateway/subscriber均为323次PUBLISH/PUBACK。正确UTC、真实掉电、
   性能和长期可靠性仍为`NOT RUN`；M9及后续未开始。
-- M9已完成BusyBox部署源码、主机/ASan+UBSan 18/18、M9专项1/1及ARMv7无RPATH构建。
-  最终Windows板端run `artifacts/20260901T204152+0800-m9-windows-board-gate-final/`实算
-  指定binary和libmosquitto SHA256，通过ext4备份、`/opt`私有运行集及四个授权`/etc`
-  文件安装。PID 1 HUP后精确分类为一个supervisor和一个gatewayd binary；受控restart
-  更换子PID，一次子进程SIGKILL由同一supervisor拉起新PID，目标BusyBox 1.31.1 ash的
-  隔离fake测试验证3次快速失败、cooldown和恢复。唯一一次reboot命令已发出，但随后
-  48次SSH探测均未取得新boot ID；真实开机自启、最终1/1、post-boot状态和回滚为
-  `NOT RUN`。因此M9仍为`NOT MET`，M10及后续未开始。
+- M9已完成BusyBox部署源码、主机/ASan+UBSan 18/18、M9专项1/1、ARMv7构建及真实板端
+  binary/库SHA、备份安装、reload、restart、SIGKILL恢复和BusyBox ash隔离cooldown。
+  补充run `artifacts/20260901T230215+0800-m9-manual-postboot-gate/`取得唯一reboot后的新
+  boot ID，证明PID 1在无人工start/restart/HUP时自动拉起唯一supervisor。操作者经新增
+  授权恢复重启后DOWN的既有CAN基线，再受控start；最终supervisor/child为1/1，child PID
+  9951超过60秒不变且身份/SHA/库映射正确。因此M9 BusyBox进程监督门禁为`MET`，M10及
+  后续未开始。CAN持久配置、Broker交付、正确UTC和完整无人值守产品ready仍未验证。
 
 ## Milestone 总表
 
@@ -83,7 +82,7 @@
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 2026-09-01 已通过；Ubuntu/ARM构建与真实i.MX6ULL/Windows Broker重连、SIGKILL/state恢复、reactor计数及validator PASS |
-| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 源码/主机/ARM、板端安装、reload、restart、SIGKILL恢复和ash cooldown PASS；reboot后SSH不可达，开机自启/最终状态NOT RUN；总门禁NOT MET |
+| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 2026-09-01 已通过；主机/ARM、真实安装、init开机拉起supervisor、最终1/1、restart、SIGKILL恢复和ash cooldown PASS |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
 
 ## M2 完成记录
@@ -469,7 +468,7 @@ epoll以及M9/M10均未实现、未测试、未批准。
     compaction和长期可靠性仍为`NOT RUN`。M9及后续未开始，进入M9仍需项目所有者另行
     授权。
 
-## M9 当前记录
+## M9 完成记录
 
 1. 用户在M8关闭后单独授权只执行M9。前置run
    `artifacts/20260901T175107+0800-m9-preflight/`确认HEAD与origin一致，M8最终validator
@@ -519,10 +518,20 @@ epoll以及M9/M10均未实现、未测试、未批准。
     reboot并执行48次只读探测，但均exit255，无法读取新boot ID。开机自启、最终1/1、
     post-boot CAN/Broker和回滚因此`NOT RUN`；目标wall clock此前仍为1970，Broker连接
     只观察到SYN-SENT且未被修改。
+14. 手动补充run `artifacts/20260901T230215+0800-m9-manual-postboot-gate/`随后取得新boot ID
+    `0abefcf0-9d85-4a4b-b335-f339b33b8db4`。操作者确认首次检查前未人工start/restart/HUP；
+    supervisor PID 337、PPID 1且cmdline匹配inittab，因此init自动拉起为PASS。
+15. post-boot CAN初始为DOWN/STOPPED，supervisor存在但child为0。为避免真实binary继续
+    周期尝试，操作者先受控stop；在新增明确授权后只恢复既有500000 bit/s、loopback off、
+    UP基线，前后统计均保存，没有修改Broker、网络配置或STM32。
+16. 最终受控start exit0；5秒及超过60秒status均exit0，supervisor/child精确1/1，child
+    PID 9951不变，PPID、exe、cmdline、预期binary SHA及固定libmosquitto映射通过，其他
+    gatewayd/测试进程为0；CAN最终UP/ERROR-ACTIVE、berr 0/0。
 
-因此M9源码/主机/ARM、目标安装、reload启动、restart、异常拉起和cooldown有真实PASS
-证据，但必需的真实开机自动启动及最终服务状态没有本轮证据，M9总门禁仍为
-**NOT MET**。本轮停止在M9，不进入M10。
+因此基础run与补充run组合覆盖init开机拉起supervisor、最终1/1、restart换PID、异常拉起、
+隔离storm cooldown和最终正常状态，M9总门禁为 **MET**。该结论只覆盖BusyBox进程监督；
+CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready、性能和可靠性仍不成立。
+本轮停止在M9，不进入M10。
 
 ## M1 完成记录
 

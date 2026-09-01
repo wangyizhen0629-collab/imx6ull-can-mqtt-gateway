@@ -44,13 +44,13 @@ seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UB
 损坏恢复均有证据，M7门禁为`MET`。M8随后确认目标libmosquitto external-loop API并
 实现epoll/eventfd/timerfd reactor；离线/ARM和真实Broker等价恢复均通过，M8为`MET`。
 M9已实现BusyBox inittab/前台supervisor、受控restart、异常重拉和风暴冷却，主机全量
-CTest/ASan+UBSan及ARM构建通过。最终Windows板端续跑在真实i.MX6ULL重新计算指定ARM
-binary和libmosquitto SHA256，完成备份、`/opt`私有运行集及四个授权`/etc`文件安装；
-PID 1 HUP后一个supervisor和一个真实gatewayd稳定运行，受控restart更换子PID，一次
-核验后SIGKILL由同一supervisor拉起新PID，目标BusyBox 1.31.1 ash隔离fake测试也证明
-3次快速失败后cooldown和恢复。唯一一次reboot命令已发送，但随后48次SSH探测均未取得
-新boot ID；开机自动启动、最终1/1、post-boot外部状态和回滚无法核验。因此M9总门禁
-仍为`NOT MET`，M10尚未开始。
+CTest/ASan+UBSan及ARM构建通过。真实i.MX6ULL基础run完成binary/库SHA硬门禁、备份安装、
+HUP 1/1、restart换PID、一次SIGKILL恢复和BusyBox 1.31.1 ash隔离cooldown。手动post-boot
+补充run又取得唯一reboot后的新boot ID，并证明PID 1在无人为start/restart/HUP时自动拉起
+唯一supervisor；操作者经新增授权恢复重启后DOWN的既有CAN基线，再受控start，最终
+supervisor/child为1/1且child PID超过60秒不变。因此M9进程监督门禁为`MET`，M10尚未
+开始。板端时钟仍为1970，CAN持久自动配置、Broker交付、性能和无人值守完整产品ready
+不属于该结论。
 
 ## Ubuntu 主机构建
 

@@ -1,0 +1,6 @@
+source=tmp/evidence.txt
+source_sha256=31fcd09dd50de4f4fc12064dbbd1a7c1c5af777cb1a9a9deeaa1ee8c3e940bb2
+source_bytes=22327
+source_line_count=522
+captured_at=2026-09-01T23:06:07.7388192+08:00
+provenance=operator terminal copy plus explicitly marked conversation-paste addendum requested by operator

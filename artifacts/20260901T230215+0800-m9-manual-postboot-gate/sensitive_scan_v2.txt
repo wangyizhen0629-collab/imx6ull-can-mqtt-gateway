@@ -1,0 +1,6 @@
+scanned_file_count=34
+raw_identity_available=YES
+raw_private_ipv4_value_count=0
+public_sensitive_match_count=0
+tracked_private_raw_count=0
+result=PASS

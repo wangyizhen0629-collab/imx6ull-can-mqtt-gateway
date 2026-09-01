@@ -1,0 +1,3 @@
+scanned_file_count=28
+trailing_whitespace_line_count=0
+result=PASS
