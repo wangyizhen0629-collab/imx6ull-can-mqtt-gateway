@@ -1,0 +1,9 @@
+file=README.md run_refs=0 m9_not_met_matches=1 m10_not_started_matches=1 status=FAIL
+file=docs/DECISION_LOG.md run_refs=1 m9_not_met_matches=3 m10_not_started_matches=3 status=PASS
+file=docs/OPEN_QUESTIONS.md run_refs=0 m9_not_met_matches=1 m10_not_started_matches=0 status=FAIL
+file=docs/PLANS.md run_refs=2 m9_not_met_matches=2 m10_not_started_matches=2 status=PASS
+file=docs/PROJECT_SPEC.md run_refs=0 m9_not_met_matches=1 m10_not_started_matches=1 status=FAIL
+file=docs/RESUME_TRACEABILITY.md run_refs=1 m9_not_met_matches=1 m10_not_started_matches=1 status=PASS
+file=docs/TEST_PLAN.md run_refs=1 m9_not_met_matches=1 m10_not_started_matches=0 status=FAIL
+file=docs/milestones/M9.md run_refs=1 m9_not_met_matches=4 m10_not_started_matches=4 status=PASS
+total_failures=4

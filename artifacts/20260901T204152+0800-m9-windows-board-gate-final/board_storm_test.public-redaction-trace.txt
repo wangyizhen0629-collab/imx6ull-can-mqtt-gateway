@@ -1,0 +1,7 @@
+quarantined_original_sha256=16fcbc8aaa82a40f8a53aeb90f408f6882bb23504af4f522fa44d9bf28fdb98e
+public_sha256=6d76d9188e5054b17518651d76b9e73d788a5e65d9fb96c6283082151f38cb4c
+redaction_method=private login username;exact endpoint;all 2-to-4-component dotted numeric sequences
+login_username_leak_count=0
+exact_endpoint_leak_count=0
+dotted_numeric_leak_count=0
+status=PASS

@@ -184,7 +184,7 @@ tail/internal/state损坏恢复；去重后35644条unique seq无缺失，门禁�
 目标libmosquitto 2.0.11具备所需external-loop API，并实现epoll/eventfd/timerfd reactor；
 Ubuntu/ARM和真实Windows Broker+i.MX6ULL恢复门禁通过，去重后27434条seq连续，M8为
 `MET`。M9已实现BusyBox inittab/前台supervisor并通过主机、sanitizer和ARM构建验证；
-Windows续跑已从真实目标只读确认PID 1链接`libbusybox.so.1.31.1`，但指定M9 binary
-无法从Ubuntu认证转交且不在Windows/目标板上，故未重新计算部署输入SHA，也未执行
-staging、`/etc`安装、开机和异常拉起；这些仍为`NOT RUN`，M9总门禁为`NOT MET`。
-M10尚未开始。
+最终板端续跑又完成指定binary/库实算SHA、`/opt`与四个授权`/etc`文件安装、PID 1 HUP
+启动、唯一supervisor/child、受控restart、一次子进程SIGKILL恢复及目标BusyBox 1.31.1
+ash隔离storm cooldown。唯一一次reboot命令发出后目标SSH持续不可用，未取得新boot ID，
+所以真实开机自动启动和最终1/1仍为`NOT RUN`，M9总门禁继续`NOT MET`。M10尚未开始。

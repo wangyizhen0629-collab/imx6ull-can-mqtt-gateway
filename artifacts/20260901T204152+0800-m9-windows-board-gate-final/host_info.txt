@@ -1,0 +1,8 @@
+captured_at=2026-09-01T21:32:10.8908300+08:00
+timezone=China Standard Time
+powershell=5.1.26100.9168
+windows=10.0.26200.9168
+git=2.51.0.windows.1
+openssh=OpenSSH_for_Windows_9.5p2 LibreSSL 3.8.2
+tested_source_head=17d698e16d5cfe8e86fa0b4fdc47ea9515df65ab
+branch=master

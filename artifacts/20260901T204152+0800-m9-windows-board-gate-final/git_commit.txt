@@ -1,0 +1,2 @@
+tested_source_commit=17d698e16d5cfe8e86fa0b4fdc47ea9515df65ab
+note=this is the source commit tested on board; final documentation/evidence commit is reported after commit/push

@@ -1,0 +1,18 @@
+command=git diff --check
+exit_code=0
+--- full output ---
+git.exe : warning: in the working copy of 'README.md', LF will be replaced by CRLF the next time Git touches it
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\fina
+lize_evidence.ps1:71 char:15
++ $DiffOutput = & git -C $RepoRoot diff --check 2>&1 | Out-String
++               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: in the... Git touches it:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+warning: in the working copy of 'docs/DECISION_LOG.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/OPEN_QUESTIONS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/PLANS.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/PROJECT_SPEC.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/RESUME_TRACEABILITY.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/TEST_PLAN.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'docs/milestones/M9.md', LF will be replaced by CRLF the next time Git touches it

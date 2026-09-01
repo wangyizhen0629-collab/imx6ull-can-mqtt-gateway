@@ -1,0 +1,11 @@
+created_at=2026-09-01T20:51:18.5853354+08:00
+normalization=repository working-tree CRLF converted to target LF; UTF-8 without BOM
+source=deploy/init.d/gatewayd source_sha256=17d449549a5d59f13e8f23df03d80230c288704922db13ab4309c962f84df99b target_payload=gatewayd target_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1 bytes=9837 cr=0 lf=351
+source=deploy/inittab/gatewayd.respawn source_sha256=c58a5e8d73974820b94fc7bd4d7ed7e3179c826aab12aae812cfdf483138189a target_payload=gatewayd.respawn target_sha256=7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb bytes=213 cr=0 lf=3
+source=deploy/tests/test_gatewayd_supervisor.sh source_sha256=5f44776fc92f41ece1aa1a0bc0c7a3cdf78b6db91f86510f5e7367743e8a1890 target_payload=test_gatewayd_supervisor.sh target_sha256=507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d bytes=5407 cr=0 lf=152
+source=deploy/tests/fixtures/fake_gatewayd.sh source_sha256=40c799407f0b84040befdf919038752d984e3e55cedb0e9987ffe5aaf028faf1 target_payload=fake_gatewayd.sh target_sha256=bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84 bytes=487 cr=0 lf=29
+private_config_source_sha256=c193106c9a219de43ac4ccaa97c4be0d9522323796e169c072e6bfc5d273627e
+private_config_target_sha256=76dfde0f0a553bc824aec474acdf5cef2d44bf5e25ea60a4ddaa3de94b16541f bytes=542
+private_config_schema=14 required keys exactly once; can_interface preserved as can0; broker host/port/username/password preserved byte-for-value from approved M8 source; device/topic/spool changed for unique M9 run
+gatewayd_env_sha256=ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061 bytes=277
+gatewayd_env=LD_LIBRARY_PATH exported; /opt binary/private library; /etc config; /var/run pid dir; production restart limit 5/stable 60/cooldown 60/stop timeout 15

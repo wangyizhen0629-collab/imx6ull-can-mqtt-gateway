@@ -1,0 +1,2 @@
+git_bash=NOT_AVAILABLE
+total_failures=1

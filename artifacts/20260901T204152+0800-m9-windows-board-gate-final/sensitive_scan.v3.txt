@@ -1,0 +1,9 @@
+scanned_file_count=105
+exact_endpoint_leak_count=0
+endpoint_suffix_leak_count=0
+login_username_at_leak_count=0
+private_ipv4_literal_count=0
+private_key_marker_count=0
+nonempty_credential_assignment_count=0
+tracked_private_raw_count=0
+status=PASS

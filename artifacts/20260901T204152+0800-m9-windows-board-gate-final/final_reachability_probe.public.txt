@@ -1,0 +1,13 @@
+started_at=2026-09-01T21:31:40.3920183+08:00
+mode=single final read-only reachability probe; NO reboot/network/rollback command
+command=ssh <REDACTED_USER>@<PRIVATE> cat boot_id,uptime,date,pid1_comm
+exit_code=255
+ended_at=2026-09-01T21:31:45.5384452+08:00
+--- full output ---
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\fina
+l_reachability_probe.ps1:15 char:11
++ $Output = & ssh.exe -o BatchMode=yes -o ConnectTimeout=10 "<REDACTED_USER>@$Boar ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError

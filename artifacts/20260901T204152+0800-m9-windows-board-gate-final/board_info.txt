@@ -1,0 +1,10 @@
+target=i.MX6ULL (endpoint redacted)
+kernel=Linux 4.9.88 (previously established; this run revalidated runtime identity where available)
+pid1=/sbin/init
+busybox=1.31.1 standalone applets linked through /lib/libbusybox.so.1.31.1
+shell=/bin/sh -> bash; /bin/ash -> BusyBox 1.31.1
+root_filesystem=/dev/root ext4
+wall_clock=1970; NOT valid UTC
+pre_reboot_can=UP,ERROR-ACTIVE,current berr tx/rx 0/0; cumulative historical counters retained; read-only
+pre_reboot_configured_broker_connection=SYN-SENT; broker not modified
+post_reboot_access=unavailable after 48 recovery probes and one final short probe

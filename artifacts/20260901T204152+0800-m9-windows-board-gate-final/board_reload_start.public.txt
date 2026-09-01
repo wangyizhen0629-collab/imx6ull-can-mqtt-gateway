@@ -1,0 +1,214 @@
+started_at=2026-09-01T20:57:54.6772318+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 <REDACTED_USER>@<PRIVATE> tail -c +4 pipe /bin/sh < board_reload_start.sh
+exit_code=1
+ended_at=2026-09-01T20:58:17.3585837+08:00
+--- stdout full output ---
+reload_started_at=1970-01-03T09:53:29,404135125+00:00
+--- PID1 behavior revalidation immediately before HUP ---
+pid1_comm=init
+pid1_cmdline=init
+pid1_exe=/sbin/init
+	linux-vdso.so.1 (0x7efb6000)
+	libbusybox.so.<REDACTED_DOTTED_NUMERIC> => /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC> (0x76eb5000)
+	libc.so.6 => /lib/libc.so.6 (0x76d74000)
+	libresolv.so.2 => /lib/libresolv.so.2 (0x76d51000)
+	libselinux.so.1 => /usr/lib/libselinux.so.1 (0x76d23000)
+	/lib/ld-linux-armhf.so.3 (0x76f8e000)
+	libpcre.so.1 => /usr/lib/libpcre.so.1 (0x76cd9000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76caf000)
+	libdl.so.2 => /lib/libdl.so.2 (0x76c9c000)
+BusyBox v<REDACTED_DOTTED_NUMERIC> (2024-07-21 02:57:02 EDT)
+syslogd started: BusyBox v<REDACTED_DOTTED_NUMERIC>
+respawn
+reloading /etc/inittab
+respawn_exact_line_count=1
+before_hup_supervisor_count=0
+before_hup_gatewayd_count=0
+pre_hup_gate=PASS
+command=kill -HUP 1 exit=0
+after_hup_probe supervisor_pid=11337 child_pid=11348
+after_hup_probe supervisor_comm=gatewayd supervisor_cmdline=/bin/sh /etc/init.d/gatewayd supervise  supervisor_exe=/bin/bash
+after_hup_probe child_comm=gatewayd child_cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt  child_exe=/opt/gatewayd/bin/gatewayd child_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958 child_ppid=11337
+after_hup_probe script_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1 config_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0
+LD_LIBRARY_PATH=/opt/gatewayd/lib
+76ebe000-76ecd000 r-xp 00000000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76ecd000-76edc000 ---p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edc000-76edd000 r--p 0000e000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edd000-76ede000 rw-p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+after_hup supervisor_pid=11337 child_pid=11348
+after_hup supervisor_comm=gatewayd supervisor_cmdline=/bin/sh /etc/init.d/gatewayd supervise  supervisor_exe=/bin/bash
+after_hup child_comm=gatewayd child_cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt  child_exe=/opt/gatewayd/bin/gatewayd child_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958 child_ppid=11337
+after_hup script_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1 config_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0
+LD_LIBRARY_PATH=/opt/gatewayd/lib
+76ebe000-76ecd000 r-xp 00000000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76ecd000-76edc000 ---p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edc000-76edd000 r--p 0000e000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edd000-76ede000 rw-p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+after_hup_supervisor_count=1
+after_hup_gatewayd_count=2
+1970-01-03T09:53:37Z gatewayd-supervisor[11845]: status=running supervisor_pid=11337 child_pid=11348
+status_exit=0
+--- 10 second stability/no-respawn observation ---
+after_stability supervisor_pid=11337 child_pid=11348
+after_stability supervisor_comm=gatewayd supervisor_cmdline=/bin/sh /etc/init.d/gatewayd supervise  supervisor_exe=/bin/bash
+after_stability child_comm=gatewayd child_cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt  child_exe=/opt/gatewayd/bin/gatewayd child_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958 child_ppid=11337
+after_stability script_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1 config_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0
+LD_LIBRARY_PATH=/opt/gatewayd/lib
+76ebe000-76ecd000 r-xp 00000000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76ecd000-76edc000 ---p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edc000-76edd000 r--p 0000e000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+76edd000-76ede000 rw-p 0000f000 b3:02 18342      /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+first_supervisor=11337 stable_supervisor=11337
+first_child=11348 stable_child=11348
+stable_supervisor_count=1
+stable_gatewayd_count=2
+--- installed service/spool and read-only external state ---
+total 8
+drwxr-xr-x 3 root root 100 Jan  3 09:53 .
+drwxr-xr-x 7 root root 320 Jan  3 09:53 ..
+-rw-r--r-- 1 root root   6 Jan  3 09:53 gatewayd.pid
+drwxr-xr-x 2 root root  40 Jan  3 09:53 supervisor.lock
+-rw-r--r-- 1 root root   6 Jan  3 09:53 supervisor.pid
+mode=640 uid=0 gid=0 size=0 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/spool.data
+mode=600 uid=0 gid=0 size=0 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/etc.default.gatewayd.absent
+mode=700 uid=0 gid=0 size=2498 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/rollback_m9.sh
+mode=600 uid=0 gid=0 size=0 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/etc.gatewayd.gateway.conf.absent
+mode=600 uid=0 gid=0 size=0 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/etc.init.d.gatewayd.absent
+mode=644 uid=0 gid=0 size=1240 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/inittab.before
+PID   USER     COMMAND
+    1 root     init
+    2 root     [kthreadd]
+    3 root     [ksoftirqd/0]
+    5 root     [kworker/0:0H]
+    7 root     [rcu_preempt]
+    8 root     [rcu_sched]
+    9 root     [rcu_bh]
+   10 root     [migration/0]
+   11 root     [lru-add-drain]
+   12 root     [cpuhp/0]
+   13 root     [kdevtmpfs]
+   14 root     [oom_reaper]
+   15 root     [writeback]
+   16 root     [kcompactd0]
+   17 root     [crypto]
+   18 root     [bioset]
+   19 root     [kblockd]
+   21 root     [ata_sff]
+   22 root     [cfg80211]
+   23 root     [watchdogd]
+   24 root     [rpciod]
+   25 root     [xprtiod]
+   26 root     [kswapd0]
+   27 root     [vmstat]
+   28 root     [nfsiod]
+   74 root     [bioset]
+   75 root     [bioset]
+   76 root     [bioset]
+   77 root     [bioset]
+   78 root     [bioset]
+   79 root     [bioset]
+   80 root     [bioset]
+   81 root     [bioset]
+   82 root     [bioset]
+   83 root     [bioset]
+   84 root     [bioset]
+   85 root     [bioset]
+   86 root     [bioset]
+   87 root     [bioset]
+   88 root     [bioset]
+   89 root     [bioset]
+   90 root     [bioset]
+   91 root     [bioset]
+   92 root     [bioset]
+   93 root     [bioset]
+   94 root     [bioset]
+   95 root     [bioset]
+   96 root     [bioset]
+   97 root     [bioset]
+   98 root     [spi32766]
+   99 root     [spi0]
+  100 root     [spi2]
+  104 root     [ci_otg]
+  105 root     [irq/84-gt9xx]
+  107 root     [cfinteractive]
+  108 root     [irq/64-mmc0]
+  109 root     [irq/98-2190000.]
+  110 root     [irq/65-mmc1]
+  111 root     [mxs_dcp_chan/sh]
+  112 root     [mxs_dcp_chan/ae]
+  117 root     [bioset]
+  118 root     [mmcqd/1]
+  119 root     [bioset]
+  120 root     [mmcqd/1boot0]
+  121 root     [bioset]
+  122 root     [mmcqd/1boot1]
+  123 root     [bioset]
+  124 root     [mmcqd/1rpmb]
+  126 root     [ipv6_addrconf]
+  127 root     [krfcommd]
+  128 root     [kworker/u3:0]
+  129 root     [hci0]
+  130 root     [hci0]
+  132 root     [kworker/u3:2]
+  133 root     [pxp_dispatch]
+  134 root     [irq/44-imx_ther]
+  135 root     [kworker/0:1H]
+  136 root     [jbd2/mmcblk1p2-]
+  137 root     [ext4-rsv-conver]
+  151 root     psplash -n
+  155 root     /sbin/syslogd -n
+  159 root     /sbin/klogd -n
+  177 root     /sbin/udevd -d
+  217 dbus     dbus-daemon --system
+  247 root     /usr/sbin/ModemManager
+  255 root     /usr/sbin/NetworkManager
+  261 root     /usr/sbin/ntpd -g
+  267 mosquitt /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  273 root     /usr/bin/pulseaudio --system --daemonize --disallow-module-loading --disallow-exit --exit-idle-time=-1 --use-pid-file --disable-shm
+  280 root     /usr/libexec/pulse/gsettings-helper
+  288 root     /usr/sbin/sshd
+  293 root     /usr/sbin/telnetd -F
+  304 root     /usr/bin/swupdate-progress -w -r
+  307 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  316 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  329 root     /usr/bin/adbd
+  782 root     -bash
+  842 root     [kworker/0:2]
+ 3458 root     [kworker/u2:0]
+ 7760 root     [kworker/u2:2]
+ 9118 root     [kworker/0:0]
+ 9896 root     [kworker/0:1]
+10897 root     sshd: <REDACTED_USER>@notty
+10899 root     bash -c tail -c +4 | /bin/sh
+10901 root     /bin/sh
+11337 root     {gatewayd} /bin/sh /etc/init.d/gatewayd supervise
+11348 root     /opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt
+12323 root     ps w
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+	  bitrate 500000 sample-point <REDACTED_DOTTED_NUMERIC>
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    72559384   9069923  0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+State      Recv-Q   Send-Q       Local Address:Port        Peer Address:Port    Process
+LISTEN     0        4                <REDACTED_IPV4>:5037             <REDACTED_IPV4>:*        users:(("adbd",pid=329,fd=5))
+LISTEN     0        128                <REDACTED_IPV4>:22               <REDACTED_IPV4>:*        users:(("sshd",pid=288,fd=3))
+LISTEN     0        100                <REDACTED_IPV4>:1883             <REDACTED_IPV4>:*        users:(("mosquitto",pid=267,fd=4))
+ESTAB      0        0             <REDACTED_BOARD_HOST>:22          <REDACTED_IPV4>:49274    users:(("sshd",pid=10897,fd=4))
+SYN-SENT   0        1             <REDACTED_BOARD_HOST>:52040       <REDACTED_IPV4>:18884    users:(("gatewayd",pid=11348,fd=11))
+LISTEN     0        128                   [::]:22                  [::]:*        users:(("sshd",pid=288,fd=4))
+LISTEN     0        1                        *:23                     *:*        users:(("telnetd",pid=293,fd=3))
+LISTEN     0        100                   [::]:1883                [::]:*        users:(("mosquitto",pid=267,fd=5))
+1970-01-03T09:53:51,473032128+00:00
+124114.94 120058.27
+reload_start_gate=FAIL
+reload_completed_at=1970-01-03T09:53:51,499391795+00:00
+--- stderr full output ---

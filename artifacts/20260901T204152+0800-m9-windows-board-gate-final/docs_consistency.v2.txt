@@ -1,0 +1,9 @@
+file=README.md required_count=3 missing_count=0 status=PASS
+file=docs/DECISION_LOG.md required_count=3 missing_count=0 status=PASS
+file=docs/OPEN_QUESTIONS.md required_count=3 missing_count=0 status=PASS
+file=docs/PLANS.md required_count=3 missing_count=0 status=PASS
+file=docs/PROJECT_SPEC.md required_count=3 missing_count=0 status=PASS
+file=docs/RESUME_TRACEABILITY.md required_count=3 missing_count=0 status=PASS
+file=docs/TEST_PLAN.md required_count=3 missing_count=0 status=PASS
+file=docs/milestones/M9.md required_count=3 missing_count=0 status=PASS
+total_failures=0

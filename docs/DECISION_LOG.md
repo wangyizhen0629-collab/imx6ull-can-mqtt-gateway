@@ -517,6 +517,26 @@
   `NOT RUN`。后续必须先安全取得并实算匹配的M9 binary，再以全新artifact重试；M10
   不得开始。
 
+## D-036：M9板端部分门禁通过，但reboot后不可达阻止关闭总门禁
+
+- 日期：2026-09-01
+- 状态：已接受；M9总门禁仍为`NOT MET`
+- 输入决定：最终run `artifacts/20260901T204152+0800-m9-windows-board-gate-final/`只在
+  板端重新计算104860-byte M9 binary为预期SHA256，并确认ARMv7 hard-float、动态解释器、
+  NEEDED及无RPATH后才进入目标写入；匹配的私有libmosquitto也按M8固定SHA复核。
+- 部署决定：保持系统库不变，把binary/lib放入`/opt/gatewayd`，在ext4本轮目录保存
+  inittab和原文件不存在标记，只修改四个授权`/etc`文件。PID 1 HUP后按cmdline标识
+  supervisor，并以exe+SHA+完整cmdline+PPID标识真实gatewayd；不能只按comm计数，因为
+  目标shell supervisor的comm同样是`gatewayd`。
+- 已通过事实：HUP启动后精确1/1稳定；一次核验子进程SIGKILL由同一supervisor拉起不同
+  PID；受控restart更换子PID；目标BusyBox 1.31.1 ash隔离fake测试证明3次快速失败后
+  cooldown、窗口内无第4次启动并恢复，且无遗留测试进程。
+- 未通过事实：reboot前持久化marker和boot ID已保存，唯一一次reboot命令已发出；随后
+  48次SSH探测均exit255，无法读取新boot ID。不得把命令发出或断线当成真实开机成功，
+  因而开机自动启动、最终1/1、post-boot CAN/Broker及回滚为`NOT RUN`。
+- 影响：目标登录恢复前不得修改网络或重复reboot；应先只读取得新boot ID和最终身份，
+  必要时按已保存回滚脚本恢复。本run不关闭M9，M10不得开始。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

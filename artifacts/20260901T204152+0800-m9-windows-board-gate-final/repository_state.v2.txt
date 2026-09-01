@@ -1,0 +1,14 @@
+captured_at=2026-09-01T21:46:47.6611683+08:00
+head=17d698e16d5cfe8e86fa0b4fdc47ea9515df65ab
+branch=master
+tracked_status_count=8
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M docs/milestones/M9.md
+untracked_total_count=1387
+unrelated_untracked_files=preserved; not enumerated here; complete start status is in private/public local_preflight evidence

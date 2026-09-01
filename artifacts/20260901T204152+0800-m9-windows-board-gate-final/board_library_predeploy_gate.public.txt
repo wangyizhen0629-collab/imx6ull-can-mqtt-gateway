@@ -1,0 +1,332 @@
+started_at=2026-09-01T20:49:08.0797063+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 <REDACTED_USER>@<PRIVATE> tail -c +4 pipe /bin/sh < board_library_predeploy_gate.sh
+exit_code=0
+ended_at=2026-09-01T20:49:15.7275672+08:00
+--- stdout full output ---
+remote_started_at=1970-01-03T09:44:42,747013729+00:00
+--- libmosquitto candidates and symlinks ---
+lrwxrwxrwx 1 root root 17 Jan  2 07:19 /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so -> libmosquitto.so.1
+mode=600 uid=0 gid=0 size=404688 inode=40252 path=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+lrwxrwxrwx 1 root root 22 Jan  2 07:19 /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.1 -> libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=600 uid=0 gid=0 size=404688 inode=40252 path=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+-rw------- 1 root root 404688 Jan  2 07:20 /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=600 uid=0 gid=0 size=404688 inode=40252 path=/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+lrwxrwxrwx 1 root root 22 Jan  2 23:00 /tmp/m7/lib/libmosquitto.so.1 -> libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=666 uid=0 gid=0 size=404688 inode=88570 path=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+-rw-rw-rw- 1 root root 404688 Aug 31  2026 /tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=666 uid=0 gid=0 size=404688 inode=88570 path=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+lrwxrwxrwx 1 root root 17 Jul 21  2024 /usr/lib/libmosquitto.so -> libmosquitto.so.1
+mode=755 uid=0 gid=0 size=75772 inode=2553 path=/usr/lib/libmosquitto.so.1
+ced9fba0a9560b8babc670db910e5216257fcf5aa0491688e269de617bd53199  /usr/lib/libmosquitto.so.1
+/usr/lib/libmosquitto.so.1: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, stripped
+-rwxr-xr-x 1 root root 75772 Jul 21  2024 /usr/lib/libmosquitto.so.1
+mode=755 uid=0 gid=0 size=75772 inode=2553 path=/usr/lib/libmosquitto.so.1
+ced9fba0a9560b8babc670db910e5216257fcf5aa0491688e269de617bd53199  /usr/lib/libmosquitto.so.1
+/usr/lib/libmosquitto.so.1: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, stripped
+expected_lib_sha256=b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636
+selected_lib=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+selected_lib_sha256=b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636
+mode=666 uid=0 gid=0 size=404688 inode=88570 path=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x44c0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          403328 (bytes into file)
+  Flags:                             0x5000400, Version5 EABI, hard-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         5
+  Size of section headers:           40 (bytes)
+  Number of section headers:         34
+  Section header string table index: 33
+
+Dynamic section at offset 0xeef8 contains 28 entries:
+  Tag        Type                         Name/Value
+ 0x00000001 (NEEDED)                     Shared library: [libpthread.so.0]
+ 0x00000001 (NEEDED)                     Shared library: [librt.so.1]
+ 0x00000001 (NEEDED)                     Shared library: [libc.so.6]
+ 0x0000000e (SONAME)                     Library soname: [libmosquitto.so.1]
+ 0x0000000c (INIT)                       0x3c18
+ 0x0000000d (FINI)                       0xdf50
+ 0x00000019 (INIT_ARRAY)                 0x1eef0
+ 0x0000001b (INIT_ARRAYSZ)               4 (bytes)
+ 0x0000001a (FINI_ARRAY)                 0x1eef4
+ 0x0000001c (FINI_ARRAYSZ)               4 (bytes)
+ 0x00000004 (HASH)                       0xd4
+ 0x6ffffef5 (GNU_HASH)                   0x7ec
+ 0x00000005 (STRTAB)                     0x1f30
+ 0x00000006 (SYMTAB)                     0xf40
+ 0x0000000a (STRSZ)                      5242 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000003 (PLTGOT)                     0x1f000
+ 0x00000002 (PLTRELSZ)                   1456 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x3668
+ 0x00000011 (REL)                        0x3628
+ 0x00000012 (RELSZ)                      64 (bytes)
+ 0x00000013 (RELENT)                     8 (bytes)
+ 0x6ffffffe (VERNEED)                    0x35a8
+ 0x6fffffff (VERNEEDNUM)                 2
+ 0x6ffffff0 (VERSYM)                     0x33aa
+ 0x6ffffffa (RELCOUNT)                   3
+ 0x00000000 (NULL)                       0x0
+--- binary dynamic resolution with selected private library ---
+	linux-vdso.so.1 (0x7ef36000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76f34000)
+	libmosquitto.so.1 => /tmp/m7/lib/libmosquitto.so.1 (0x76f14000)
+	libc.so.6 => /lib/libc.so.6 (0x76dd3000)
+	/lib/ld-linux-armhf.so.3 (0x76f5e000)
+	librt.so.1 => /lib/librt.so.1 (0x76dbc000)
+ldd_exit=0
+--- binary safe version execution ---
+gatewayd <REDACTED_DOTTED_NUMERIC>-m1
+version_exit=0
+--- PID 1 and BusyBox identity ---
+pid1_comm=init
+pid1_cmdline=init
+pid1_exe=/sbin/init
+mode=755 uid=0 gid=0 size=5408 inode=695 path=/sbin/init
+4049a7642d9e01a52f75399a810e4cda11f85156838844a17495db50e99c1632  /sbin/init
+	linux-vdso.so.1 (0x7efc3000)
+	libbusybox.so.<REDACTED_DOTTED_NUMERIC> => /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC> (0x76e3a000)
+	libc.so.6 => /lib/libc.so.6 (0x76cf9000)
+	libresolv.so.2 => /lib/libresolv.so.2 (0x76cd6000)
+	libselinux.so.1 => /usr/lib/libselinux.so.1 (0x76ca8000)
+	/lib/ld-linux-armhf.so.3 (0x76f13000)
+	libpcre.so.1 => /usr/lib/libpcre.so.1 (0x76c5e000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76c34000)
+	libdl.so.2 => /lib/libdl.so.2 (0x76c21000)
+385 -rw-r--r-- 1 root root 822464 Jul 21  2024 /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC>
+/lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, stripped
+19efcfbf1f5bbc410bda06b8502ab80f08098c5459859dfaca89903733f9411e  /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC>
+78 lrwxrwxrwx 1 root root 4 Jul 21  2024 /bin/sh -> bash
+/bin/sh: symbolic link to bash
+f26fe33db7a4b87af0beadea228bf945058c7f4ffcdfd9a0b53b2a1e1a366123  /bin/sh
+14 -rwxr-xr-x 1 root root 5408 Jul 21  2024 /bin/ash
+/bin/ash: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux <REDACTED_DOTTED_NUMERIC>, stripped
+25ddeaa873c1bf8e616bd6af754562047e471f9161f7a6193f736dc74cc14b79  /bin/ash
+BusyBox v<REDACTED_DOTTED_NUMERIC> (2024-07-21 02:57:02 EDT)
+syslogd started: BusyBox v<REDACTED_DOTTED_NUMERIC>
+respawn
+reloading /etc/inittab
+--- time and uptime (no UTC correctness claim) ---
+Sat Jan  3 09:44:45 UTC 1970
+1970-01-03T09:44:45,207539063+00:00
+123568.67 119543.48
+--- root filesystem and destination capacity ---
+Filesystem     Type 1K-blocks   Used Available Use% Mounted on
+/dev/root      ext4   1497056 741832    673020  53% /
+/dev/root      ext4   1497056 741832    673020  53% /
+/dev/root      ext4   1497056 741832    673020  53% /
+Filesystem     1K-blocks   Used Available Use% Mounted on
+/dev/root        1497056 741832    673020  53% /
+/dev/root        1497056 741832    673020  53% /
+/dev/root        1497056 741832    673020  53% /
+/dev/root on / type ext4 (rw,relatime,data=ordered)
+fs_type=ext2/ext3 path=/
+fs_type=ext2/ext3 path=/opt
+fs_type=ext2/ext3 path=/var/lib
+--- managed paths before deployment ---
+mode=644 uid=0 gid=0 size=1240 inode=194 path=/etc/inittab
+77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380  /etc/inittab
+MISSING /etc/init.d/gatewayd
+MISSING /etc/default/gatewayd
+MISSING /etc/gatewayd/gateway.conf
+MISSING /opt/gatewayd
+expected_inittab_sha256=77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380
+actual_inittab_sha256=77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380
+--- complete inittab before deployment ---
+# /etc/inittab
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+::sysinit:/bin/mount -t proc proc /proc
+::sysinit:/bin/mount -o remount,rw /
+::sysinit:/bin/mkdir -p /dev/pts /dev/shm
+::sysinit:/bin/mount -a
+::sysinit:/sbin/swapon -a
+null::sysinit:/bin/ln -sf /proc/self/fd /dev/fd
+null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
+null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
+null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
+::sysinit:/bin/hostname -F /etc/hostname
+# now run any rc scripts
+::sysinit:/etc/init.d/rcS
+
+# Put a getty on the serial port
+ttymxc0::respawn:/sbin/getty -L  ttymxc0 0 vt100 # GENERIC_SERIAL
+
+# Stuff to do for the 3-finger salute
+#::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+::shutdown:/etc/init.d/rcK
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+--- process tree and counts before deployment ---
+supervisor_count=0
+gatewayd_count=0
+PID   USER     COMMAND
+    1 root     init
+    2 root     [kthreadd]
+    3 root     [ksoftirqd/0]
+    5 root     [kworker/0:0H]
+    7 root     [rcu_preempt]
+    8 root     [rcu_sched]
+    9 root     [rcu_bh]
+   10 root     [migration/0]
+   11 root     [lru-add-drain]
+   12 root     [cpuhp/0]
+   13 root     [kdevtmpfs]
+   14 root     [oom_reaper]
+   15 root     [writeback]
+   16 root     [kcompactd0]
+   17 root     [crypto]
+   18 root     [bioset]
+   19 root     [kblockd]
+   21 root     [ata_sff]
+   22 root     [cfg80211]
+   23 root     [watchdogd]
+   24 root     [rpciod]
+   25 root     [xprtiod]
+   26 root     [kswapd0]
+   27 root     [vmstat]
+   28 root     [nfsiod]
+   74 root     [bioset]
+   75 root     [bioset]
+   76 root     [bioset]
+   77 root     [bioset]
+   78 root     [bioset]
+   79 root     [bioset]
+   80 root     [bioset]
+   81 root     [bioset]
+   82 root     [bioset]
+   83 root     [bioset]
+   84 root     [bioset]
+   85 root     [bioset]
+   86 root     [bioset]
+   87 root     [bioset]
+   88 root     [bioset]
+   89 root     [bioset]
+   90 root     [bioset]
+   91 root     [bioset]
+   92 root     [bioset]
+   93 root     [bioset]
+   94 root     [bioset]
+   95 root     [bioset]
+   96 root     [bioset]
+   97 root     [bioset]
+   98 root     [spi32766]
+   99 root     [spi0]
+  100 root     [spi2]
+  104 root     [ci_otg]
+  105 root     [irq/84-gt9xx]
+  107 root     [cfinteractive]
+  108 root     [irq/64-mmc0]
+  109 root     [irq/98-2190000.]
+  110 root     [irq/65-mmc1]
+  111 root     [mxs_dcp_chan/sh]
+  112 root     [mxs_dcp_chan/ae]
+  117 root     [bioset]
+  118 root     [mmcqd/1]
+  119 root     [bioset]
+  120 root     [mmcqd/1boot0]
+  121 root     [bioset]
+  122 root     [mmcqd/1boot1]
+  123 root     [bioset]
+  124 root     [mmcqd/1rpmb]
+  126 root     [ipv6_addrconf]
+  127 root     [krfcommd]
+  128 root     [kworker/u3:0]
+  129 root     [hci0]
+  130 root     [hci0]
+  132 root     [kworker/u3:2]
+  133 root     [pxp_dispatch]
+  134 root     [irq/44-imx_ther]
+  135 root     [kworker/0:1H]
+  136 root     [jbd2/mmcblk1p2-]
+  137 root     [ext4-rsv-conver]
+  151 root     psplash -n
+  155 root     /sbin/syslogd -n
+  159 root     /sbin/klogd -n
+  177 root     /sbin/udevd -d
+  217 dbus     dbus-daemon --system
+  247 root     /usr/sbin/ModemManager
+  255 root     /usr/sbin/NetworkManager
+  261 root     /usr/sbin/ntpd -g
+  267 mosquitt /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  273 root     /usr/bin/pulseaudio --system --daemonize --disallow-module-loading --disallow-exit --exit-idle-time=-1 --use-pid-file --disable-shm
+  280 root     /usr/libexec/pulse/gsettings-helper
+  288 root     /usr/sbin/sshd
+  293 root     /usr/sbin/telnetd -F
+  304 root     /usr/bin/swupdate-progress -w -r
+  307 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  316 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  329 root     /usr/bin/adbd
+  782 root     -bash
+  842 root     [kworker/0:2]
+ 3458 root     [kworker/u2:0]
+ 7760 root     [kworker/u2:2]
+ 9058 root     [kworker/0:1]
+ 9116 root     sshd: <REDACTED_USER>@notty
+ 9118 root     [kworker/0:0]
+ 9119 root     bash -c tail -c +4 | /bin/sh
+ 9121 root     /bin/sh
+ 9870 root     ps w
+--- CAN and socket state read-only ---
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
+	  bitrate 500000 sample-point <REDACTED_DOTTED_NUMERIC>
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+    RX: bytes  packets  errors  dropped overrun mcast
+    72078384   9009798  0       0       0       0
+    TX: bytes  packets  errors  dropped carrier collsns
+    0          0        0       0       0       0
+State     Recv-Q    Send-Q       Local Address:Port       Peer Address:Port     Process
+LISTEN    0         4                <REDACTED_IPV4>:5037            <REDACTED_IPV4>:*         users:(("adbd",pid=329,fd=5))
+LISTEN    0         128                <REDACTED_IPV4>:22              <REDACTED_IPV4>:*         users:(("sshd",pid=288,fd=3))
+LISTEN    0         100                <REDACTED_IPV4>:1883            <REDACTED_IPV4>:*         users:(("mosquitto",pid=267,fd=4))
+ESTAB     0         916           <REDACTED_BOARD_HOST>:22         <REDACTED_IPV4>:52993     users:(("sshd",pid=9116,fd=4))
+LISTEN    0         128                   [::]:22                 [::]:*         users:(("sshd",pid=288,fd=4))
+LISTEN    0         1                        *:23                    *:*         users:(("telnetd",pid=293,fd=3))
+LISTEN    0         100                   [::]:1883               [::]:*         users:(("mosquitto",pid=267,fd=5))
+library_predeploy_gate=PASS
+remote_completed_at=1970-01-03T09:44:49,832307397+00:00
+--- stderr full output ---

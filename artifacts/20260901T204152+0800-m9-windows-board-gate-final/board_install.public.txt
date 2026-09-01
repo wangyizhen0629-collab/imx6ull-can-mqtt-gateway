@@ -1,0 +1,153 @@
+started_at=2026-09-01T20:56:16.8518932+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 <REDACTED_USER>@<PRIVATE> tail -c +4 pipe /bin/sh < board_install.sh
+exit_code=0
+ended_at=2026-09-01T20:56:25.1700957+08:00
+--- stdout full output ---
+install_started_at=1970-01-03T09:51:51,556931447+00:00
+--- recheck immutable inputs immediately before target writes ---
+path=/tmp/m9-staging/gatewayd expected_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958 actual_sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958
+path=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC> expected_sha256=b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636 actual_sha256=b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd expected_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1 actual_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.respawn expected_sha256=7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb actual_sha256=7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/test_gatewayd_supervisor.sh expected_sha256=507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d actual_sha256=507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/fake_gatewayd.sh expected_sha256=bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84 actual_sha256=bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gateway.v2.conf expected_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0 actual_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.v2.env expected_sha256=ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061 actual_sha256=ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061
+path=/tmp/m9-board-gate-20260901T204152p0800/incoming/board_rollback.sh expected_sha256=11f02ac2110b6afc9b22337468d0c5f1ec02348007b644a9a643e036d90172c7 actual_sha256=11f02ac2110b6afc9b22337468d0c5f1ec02348007b644a9a643e036d90172c7
+path=/etc/inittab expected_sha256=77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380 actual_sha256=77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380
+preinstall_supervisor_count=0
+preinstall_gatewayd_count=0
+--- staging permissions, ELF and config ---
+mode=700 uid=0 gid=0 size=8307 inode=130250 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/board_install.sh
+mode=700 uid=0 gid=0 size=2498 inode=130291 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/board_rollback.sh
+mode=755 uid=0 gid=0 size=487 inode=130127 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/fake_gatewayd.sh
+mode=600 uid=0 gid=0 size=393 inode=130168 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gateway.v2.conf
+mode=755 uid=0 gid=0 size=9837 inode=130004 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd
+mode=644 uid=0 gid=0 size=213 inode=130045 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.respawn
+mode=644 uid=0 gid=0 size=277 inode=130209 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.v2.env
+mode=755 uid=0 gid=0 size=5407 inode=130086 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/test_gatewayd_supervisor.sh
+mode=777 uid=0 gid=0 size=104860 inode=127995 path=/tmp/m9-staging/gatewayd
+mode=666 uid=0 gid=0 size=404688 inode=88570 path=/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+/tmp/m9-staging/gatewayd:           ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux <REDACTED_DOTTED_NUMERIC>, with debug_info, not stripped
+/tmp/m7/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped
+	linux-vdso.so.1 (0x7eff8000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76f2f000)
+	libmosquitto.so.1 => /tmp/m7/lib/libmosquitto.so.1 (0x76f0f000)
+	libc.so.6 => /lib/libc.so.6 (0x76dce000)
+	/lib/ld-linux-armhf.so.3 (0x76f59000)
+	librt.so.1 => /lib/librt.so.1 (0x76db7000)
+--- staged private config (raw private/public redacted) ---
+device_id=imx6ull-m9-20260901T204152p0800
+can_interface=can0
+broker_host=<REDACTED>
+broker_port=18884
+broker_username=
+broker_password=
+mqtt_topic=m9/20260901T204152p0800/gateway
+queue_capacity=65536
+queue_push_timeout_ms=50
+batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
+mqtt_reconnect_interval_ms=20000
+spool_path=/var/lib/gatewayd/20260901T204152p0800-m9-board/spool.data
+log_level=info
+--- staged environment ---
+LD_LIBRARY_PATH=/opt/gatewayd/lib
+export LD_LIBRARY_PATH
+GATEWAYD_BIN=/opt/gatewayd/bin/gatewayd
+GATEWAYD_CONFIG=/etc/gatewayd/gateway.conf
+GATEWAYD_RUN_DIR=/var/run/gatewayd
+GATEWAYD_RESTART_LIMIT=5
+GATEWAYD_STABLE_SEC=60
+GATEWAYD_COOLDOWN_SEC=60
+GATEWAYD_STOP_TIMEOUT_SEC=15
+config_keys=14 unique_keys=14
+install_prewrite_gate=PASS
+--- create persistent per-run backup/spool root ---
+77676429d4b24e2a93b8d7f7c3a9a35a37785600ab359e1c75ec6c8da11d1380  /var/lib/gatewayd/20260901T204152p0800-m9-board/backup/inittab.before
+--- install binary, private library and four managed files ---
+--- installed permission/hash/dynamic audit ---
+-rw-r--r-- 1 root root 1286 Jan  3 09:51 /etc/inittab
+mode=644 uid=0 gid=0 size=1286 inode=18347 path=/etc/inittab
+fef0324868e70582fef1d76c8dd3bcd6025ae2159ba383a8585dc091d9dfad84  /etc/inittab
+-rwxr-xr-x 1 root root 9837 Jan  3 09:51 /etc/init.d/gatewayd
+mode=755 uid=0 gid=0 size=9837 inode=18344 path=/etc/init.d/gatewayd
+b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1  /etc/init.d/gatewayd
+-rw-r--r-- 1 root root 277 Jan  3 09:51 /etc/default/gatewayd
+mode=644 uid=0 gid=0 size=277 inode=18345 path=/etc/default/gatewayd
+ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061  /etc/default/gatewayd
+-rw------- 1 root root 393 Jan  3 09:51 /etc/gatewayd/gateway.conf
+mode=600 uid=0 gid=0 size=393 inode=18346 path=/etc/gatewayd/gateway.conf
+0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0  /etc/gatewayd/gateway.conf
+-rwxr-xr-x 1 root root 104860 Jan  3 09:51 /opt/gatewayd/bin/gatewayd
+mode=755 uid=0 gid=0 size=104860 inode=18341 path=/opt/gatewayd/bin/gatewayd
+6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958  /opt/gatewayd/bin/gatewayd
+-rw-r--r-- 1 root root 404688 Jan  3 09:51 /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=644 uid=0 gid=0 size=404688 inode=18342 path=/opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /opt/gatewayd/lib/libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+lrwxrwxrwx 1 root root 22 Jan  3 09:51 /opt/gatewayd/lib/libmosquitto.so.1 -> libmosquitto.so.<REDACTED_DOTTED_NUMERIC>
+mode=777 uid=0 gid=0 size=22 inode=18343 path=/opt/gatewayd/lib/libmosquitto.so.1
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /opt/gatewayd/lib/libmosquitto.so.1
+-rwx------ 1 root root 2498 Jan  3 09:51 /var/lib/gatewayd/20260901T204152p0800-m9-board/backup/rollback_m9.sh
+mode=700 uid=0 gid=0 size=2498 inode=18335 path=/var/lib/gatewayd/20260901T204152p0800-m9-board/backup/rollback_m9.sh
+11f02ac2110b6afc9b22337468d0c5f1ec02348007b644a9a643e036d90172c7  /var/lib/gatewayd/20260901T204152p0800-m9-board/backup/rollback_m9.sh
+	linux-vdso.so.1 (0x7efff000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76ed0000)
+	libmosquitto.so.1 => /opt/gatewayd/lib/libmosquitto.so.1 (0x76eb0000)
+	libc.so.6 => /lib/libc.so.6 (0x76d6f000)
+	/lib/ld-linux-armhf.so.3 (0x76efa000)
+	librt.so.1 => /lib/librt.so.1 (0x76d58000)
+gatewayd <REDACTED_DOTTED_NUMERIC>-m1
+installed_version_exit=0
+--- complete inittab after install, before reload ---
+# /etc/inittab
+#
+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use
+# sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Startup the system
+::sysinit:/bin/mount -t proc proc /proc
+::sysinit:/bin/mount -o remount,rw /
+::sysinit:/bin/mkdir -p /dev/pts /dev/shm
+::sysinit:/bin/mount -a
+::sysinit:/sbin/swapon -a
+null::sysinit:/bin/ln -sf /proc/self/fd /dev/fd
+null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
+null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
+null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
+::sysinit:/bin/hostname -F /etc/hostname
+# now run any rc scripts
+::sysinit:/etc/init.d/rcS
+
+# Put a getty on the serial port
+ttymxc0::respawn:/sbin/getty -L  ttymxc0 0 vt100 # GENERIC_SERIAL
+
+# Stuff to do for the 3-finger salute
+#::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+::shutdown:/etc/init.d/rcK
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+
+null::respawn:/etc/init.d/gatewayd supervise
+respawn_exact_line_count=1
+rcs_gatewayd_count=0
+--- process state remains stopped before explicit PID1 reload ---
+1970-01-03T09:51:56Z gatewayd-supervisor[10469]: status=stopped
+service_status_exit=1
+postinstall_prereload_supervisor_count=0
+postinstall_prereload_gatewayd_count=0
+install_gate=PASS
+install_completed_at=1970-01-03T09:51:59,307327448+00:00
+--- stderr full output ---

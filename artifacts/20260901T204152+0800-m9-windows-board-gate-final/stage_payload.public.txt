@@ -1,0 +1,47 @@
+started_at=2026-09-01T20:55:48.0584275+08:00
+command=ssh <REDACTED_USER>@<PRIVATE> test unique stage absent; mkdir/chmod target non-system stage
+exit_code=0
+
+command=scp gatewayd <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd local_sha256=b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1
+exit_code=0
+
+command=scp gatewayd.respawn <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.respawn local_sha256=7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb
+exit_code=0
+
+command=scp test_gatewayd_supervisor.sh <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/test_gatewayd_supervisor.sh local_sha256=507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d
+exit_code=0
+
+command=scp fake_gatewayd.sh <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/fake_gatewayd.sh local_sha256=bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84
+exit_code=0
+
+command=scp gateway.v2.conf <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/gateway.v2.conf local_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0
+exit_code=0
+
+command=scp gatewayd.v2.env <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.v2.env local_sha256=ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061
+exit_code=0
+
+command=scp board_install.sh <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/board_install.sh local_sha256=6858e5607e5c4f57d4cead9da2eebd895c003c984f0a9d219b7a986f39589241
+exit_code=0
+
+command=scp board_rollback.sh <REDACTED_USER>@<PRIVATE>:/tmp/m9-board-gate-20260901T204152p0800/incoming/board_rollback.sh local_sha256=11f02ac2110b6afc9b22337468d0c5f1ec02348007b644a9a643e036d90172c7
+exit_code=0
+
+command=ssh <REDACTED_USER>@<PRIVATE> set staging modes; stat and SHA256 all payload files
+exit_code=0
+mode=700 uid=0 gid=0 size=8307 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/board_install.sh
+mode=700 uid=0 gid=0 size=2498 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/board_rollback.sh
+mode=755 uid=0 gid=0 size=487 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/fake_gatewayd.sh
+mode=600 uid=0 gid=0 size=393 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gateway.v2.conf
+mode=755 uid=0 gid=0 size=9837 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd
+mode=644 uid=0 gid=0 size=213 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.respawn
+mode=644 uid=0 gid=0 size=277 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.v2.env
+mode=755 uid=0 gid=0 size=5407 path=/tmp/m9-board-gate-20260901T204152p0800/incoming/test_gatewayd_supervisor.sh
+6858e5607e5c4f57d4cead9da2eebd895c003c984f0a9d219b7a986f39589241  /tmp/m9-board-gate-20260901T204152p0800/incoming/board_install.sh
+11f02ac2110b6afc9b22337468d0c5f1ec02348007b644a9a643e036d90172c7  /tmp/m9-board-gate-20260901T204152p0800/incoming/board_rollback.sh
+bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84  /tmp/m9-board-gate-20260901T204152p0800/incoming/fake_gatewayd.sh
+0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0  /tmp/m9-board-gate-20260901T204152p0800/incoming/gateway.v2.conf
+b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1  /tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd
+7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb  /tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.respawn
+ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061  /tmp/m9-board-gate-20260901T204152p0800/incoming/gatewayd.v2.env
+507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d  /tmp/m9-board-gate-20260901T204152p0800/incoming/test_gatewayd_supervisor.sh
+ended_at=2026-09-01T20:55:53.2446475+08:00

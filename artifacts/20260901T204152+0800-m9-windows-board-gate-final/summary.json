@@ -1,0 +1,30 @@
+{
+  "run_id": "20260901T204152+0800-m9-windows-board-gate-final",
+  "milestone": "M9",
+  "overall_gate": "NOT_MET",
+  "tested_source_commit": "17d698e16d5cfe8e86fa0b4fdc47ea9515df65ab",
+  "binary_sha256": "6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958",
+  "libmosquitto_sha256": "b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636",
+  "results": {
+    "binary_hard_gate": "PASS",
+    "library_dynamic_gate": "PASS",
+    "backup_and_install": "PASS",
+    "pid1_hup_start": "PASS",
+    "unique_supervisor_and_child_before_reboot": "PASS",
+    "controlled_restart": "PASS",
+    "sigkill_recovery": "PASS",
+    "busybox_ash_storm_cooldown": "PASS",
+    "real_boot_autostart": "NOT_RUN",
+    "final_service_state": "NOT_RUN",
+    "post_boot_external_state": "NOT_RUN",
+    "rollback": "NOT_RUN"
+  },
+  "reboot": {
+    "command_issued_count": 1,
+    "pre_reboot_boot_id_saved": true,
+    "post_reboot_boot_id_obtained": false,
+    "recovery_ssh_probe_count": 48,
+    "final_ssh_exit": 255
+  },
+  "m10_started": false
+}

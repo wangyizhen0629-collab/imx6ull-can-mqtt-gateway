@@ -1,0 +1,9 @@
+created_at=2026-09-01T20:52:31.6224583+08:00
+attempt=2 status=PASS
+source_config_sha256=c193106c9a219de43ac4ccaa97c4be0d9522323796e169c072e6bfc5d273627e
+target_config_sha256=0437a6ea950931da958988c47041c6392ee3a9c14b2d19f888491eb06b1fccb0 bytes=393 cr=0 lf=14
+target_env_sha256=ddd71394b0cbaaec01168d9fc394d14fe919d004267b5f4b7bbb57b65b0c6061 bytes=277 cr=0 lf=9
+target_config_key_count=14; each required key exactly once
+preserved_exactly=can_interface,broker_host,broker_port,broker_username,broker_password,queue and timeout settings,log_level
+changed_only=device_id,mqtt_topic,spool_path for unique M9 run
+private_values=NOT PRINTED

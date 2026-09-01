@@ -1,0 +1,390 @@
+started_at=2026-09-01T21:14:58.5898030+08:00
+mode=recovery poll only; NO reboot command present or executed
+boot_id_before=d9f9b72d-c59c-4cc8-9201-1e9ac3da0e39
+probe=1 local_time=2026-09-01T21:14:58.5958862+08:00 exit_code=255
+ssh.exe : ssh: connect to host <REDACTED_BOARD_HOST> port 22: Connection timed out
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ssh: connect to...ction timed out:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=2 local_time=2026-09-01T21:15:08.7652068+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=3 local_time=2026-09-01T21:15:18.8400562+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=4 local_time=2026-09-01T21:15:28.9240600+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=5 local_time=2026-09-01T21:15:38.9886056+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=6 local_time=2026-09-01T21:15:49.0471637+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=7 local_time=2026-09-01T21:15:59.1054059+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=8 local_time=2026-09-01T21:16:09.1546304+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=9 local_time=2026-09-01T21:16:19.2192016+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=10 local_time=2026-09-01T21:16:29.2743137+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=11 local_time=2026-09-01T21:16:39.3326334+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=12 local_time=2026-09-01T21:16:49.3937863+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=13 local_time=2026-09-01T21:16:59.4466041+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=14 local_time=2026-09-01T21:17:09.5056664+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=15 local_time=2026-09-01T21:17:19.5592677+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=16 local_time=2026-09-01T21:17:29.6107559+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=17 local_time=2026-09-01T21:17:39.6730702+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=18 local_time=2026-09-01T21:17:49.7227335+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=19 local_time=2026-09-01T21:17:59.7676749+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=20 local_time=2026-09-01T21:18:09.8145572+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=21 local_time=2026-09-01T21:18:19.8762851+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=22 local_time=2026-09-01T21:18:29.9330785+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=23 local_time=2026-09-01T21:18:39.9825203+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=24 local_time=2026-09-01T21:18:50.0336169+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=25 local_time=2026-09-01T21:19:00.0931851+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=26 local_time=2026-09-01T21:19:10.1530007+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=27 local_time=2026-09-01T21:19:20.2048199+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=28 local_time=2026-09-01T21:19:30.2519753+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=29 local_time=2026-09-01T21:19:40.3035742+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=30 local_time=2026-09-01T21:19:50.3566651+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=31 local_time=2026-09-01T21:20:00.4134147+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=32 local_time=2026-09-01T21:20:10.4700504+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=33 local_time=2026-09-01T21:20:20.5200710+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=34 local_time=2026-09-01T21:20:30.5780317+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=35 local_time=2026-09-01T21:20:40.6342451+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=36 local_time=2026-09-01T21:20:50.6886838+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=37 local_time=2026-09-01T21:21:00.7376908+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=38 local_time=2026-09-01T21:21:10.7907116+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=39 local_time=2026-09-01T21:21:20.8497042+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=40 local_time=2026-09-01T21:21:30.9159622+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=41 local_time=2026-09-01T21:21:40.9644214+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=42 local_time=2026-09-01T21:21:51.0148217+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=43 local_time=2026-09-01T21:22:01.0629464+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=44 local_time=2026-09-01T21:22:11.1219401+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=45 local_time=2026-09-01T21:22:21.1701775+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=46 local_time=2026-09-01T21:22:31.2412062+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=47 local_time=2026-09-01T21:22:41.2909713+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+probe=48 local_time=2026-09-01T21:22:51.3486298+08:00 exit_code=255
+ssh.exe : Connection closed by <REDACTED_BOARD_HOST> port 22
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T204152+0800-m9-windows-board-gate-final\rebo
+ot_recovery_poll.ps1:27 char:20
++ ... obeOutput = & ssh.exe -o BatchMode=yes -o ConnectTimeout=5 "<REDACTED_USER>@$Boa ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection clos...<REDACTED_DOTTED_NUMERIC> port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+boot_id_after=
+boot_id_changed=false
+ended_at=2026-09-01T21:23:01.4118029+08:00

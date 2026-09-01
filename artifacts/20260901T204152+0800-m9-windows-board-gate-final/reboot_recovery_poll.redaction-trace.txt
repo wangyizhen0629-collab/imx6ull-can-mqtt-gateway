@@ -1,0 +1,3 @@
+raw_sha256=b01b571fbf44f70bd8e10538bebb27a3b76108868cae6f96443cd0c01d28add0
+redacted_sha256=b626e5b85fdb63d15ba364ff5cce543123c2324156bb50301408d9ae490c7122
+redaction_method=exact target endpoint replacement;all IPv4 literals replaced

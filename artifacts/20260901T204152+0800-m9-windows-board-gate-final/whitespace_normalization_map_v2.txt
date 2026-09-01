@@ -1,0 +1,4 @@
+normalized_file_count=1
+file=git_diff_cached_check.v3.txt old_sha256=751c3de3b3317cd81b0591477214295bbd44a2ea4e1328059168b55e5636c618 new_sha256=b33a6684312532c2a0b6376583b6a2f8372e40a8f48edbf818acd4d88f1225cc preimage=private_raw/pre_whitespace_normalization_v3/git_diff_cached_check.v3.txt
+operation=collapse trailing blank lines; preserve content and one final newline
+preimage=Git-ignored private_raw; no preimage deleted or overwritten

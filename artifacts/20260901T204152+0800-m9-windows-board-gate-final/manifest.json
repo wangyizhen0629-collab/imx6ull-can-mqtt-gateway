@@ -1,0 +1,10 @@
+{
+  "run_id": "20260901T204152+0800-m9-windows-board-gate-final",
+  "host": "Windows clone",
+  "target": "redacted i.MX6ULL",
+  "timezone": "Asia/Shanghai (+08:00)",
+  "board_clock_status": "1970; not valid UTC",
+  "artifact_policy": "public redacted evidence plus Git-ignored private_raw",
+  "scope": "M9 real-board gate only",
+  "result": "NOT_MET"
+}

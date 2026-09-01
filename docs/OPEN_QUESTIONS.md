@@ -17,10 +17,11 @@
 - 板端 Buildroot 修订 `g65177d4` 与 SDK 修订 `gee85cab` 不同；M2 已用 SHA256 固定的
   `gatewayd` 完成真实动态加载和 loopback，因此该差异对当前 M2 binary 的运行兼容性
   已由实测关闭，不能外推到未来新增依赖或其他 binary。
-- 当前已通过Windows既有SSH/MobaXterm路径访问目标，板端有`scp`/`tar`。M9 Windows
-  续跑暴露的新阻塞是：Ubuntu SSH端口可达，但Windows侧没有可提供的公钥，无法认证
-  读取指定构建产物。需明确建立哪一种已授权的Ubuntu→Windows安全转交方式；不得猜测
-  密码、提取凭据或以旧M8 binary替代。
+- Windows既有SSH/MobaXterm路径和安全binary转交已在最终M9续跑中实际可用，指定M9
+  binary已在板端重新计算为预期SHA，因此早期转交阻塞已关闭。新的阻塞是唯一一次
+  reboot后目标SSH持续不可用：48次只读探测均exit255，未取得新boot ID。恢复目标登录
+  是否需要项目所有者物理检查/供电介入，以及如何在不修改网络的前提下取回post-boot
+  证据，仍待确认；禁止重复reboot或猜测新地址。
 - M2 可使用 `/tmp` tmpfs 做临时部署（审计时可用 245 MiB）；该结论不适用于 M7 spool
   持久化目录。
 - M6历史依赖审计确认Buildroot SDK原始sysroot不含libmosquitto开发文件；后续M6/M7已用
@@ -118,9 +119,9 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   reboot、压力测试和 24 小时测试由谁在执行前授权？
 - 长时间运行 artifact 的备份和保留策略是什么？
 - 已选择：M9使用BusyBox `inittab` respawn启动仓库内前台supervisor，不依赖未知的镜像
-  supervisor，也不使用systemd。真实目标已确认PID 1是链接`libbusybox.so.1.31.1`的
-  standalone init，当前inittab没有gatewayd项；但binary转交尚未解决，故reload/reboot
-  和服务行为仍未执行。
+  supervisor，也不使用systemd。真实目标安装、PID 1 HUP、唯一进程、restart、SIGKILL
+  恢复和ash隔离cooldown已经通过；唯一一次reboot后目标SSH不可达，所以开机自启、最终
+  状态和可能需要的回滚仍待目标登录恢复后只读核验。
 
 ## M1～M7 后续验证边界
 
@@ -198,10 +199,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
 - 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
   和长期可靠性仍未运行。不得用M8短时功能门禁回答这些问题。
-- M9已获本轮授权并完成仓库实现、主机/ASan+UBSan和ARM交叉验证；Windows续跑又完成
-  真实目标BusyBox 1.31.1 PID 1只读身份检查。指定M9 binary未能从Ubuntu认证转交，因而
-  `/etc`安装、开机、restart、异常拉起和风暴冷却仍为`NOT RUN`。下一次需先提供已授权
-  的构建产物转交认证/路径并新建唯一artifact；未执行前M9总门禁保持`NOT MET`。
+- M9仓库实现、主机/ASan+UBSan、ARM、板端安装/reload/restart/SIGKILL恢复和BusyBox ash
+  cooldown已有真实证据。未解决的是reboot后目标SSH不可达，导致新boot ID、开机自启、
+  最终1/1、post-boot CAN/Broker及回滚无法核验。下一步只能在目标登录恢复后新建唯一
+  artifact做只读post-boot审计；未补齐前M9总门禁保持`NOT MET`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

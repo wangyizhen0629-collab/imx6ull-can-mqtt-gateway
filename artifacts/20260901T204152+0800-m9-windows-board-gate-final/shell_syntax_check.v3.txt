@@ -1,0 +1,14 @@
+file=board_binary_hard_gate.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_controlled_restart.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_install.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_library_predeploy_gate.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_post_reboot.sh shebang=True nul_byte=False execution=NOT_RUN
+file=board_pre_reboot.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_reload_classification_v2.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_reload_start.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_rollback.sh shebang=True nul_byte=False execution=NOT_RUN
+file=board_sigkill_recovery.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+file=board_storm_test.sh shebang=True nul_byte=False execution=target_busybox_ash_evidence_present
+syntax_parser=NOT_RUN; Git Bash, WSL distro and shellcheck are not installed on this Windows host
+scope_note=parser absence is not converted to PASS; target-executed scripts are identified individually
+structural_failures=0

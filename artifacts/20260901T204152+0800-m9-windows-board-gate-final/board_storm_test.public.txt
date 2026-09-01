@@ -1,0 +1,401 @@
+started_at=2026-09-01T21:10:15.2588245+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 <REDACTED_USER>@<PRIVATE> tail -c +4 pipe /bin/ash < board_storm_test.sh
+exit_code=0
+ended_at=2026-09-01T21:10:29.3094564+08:00
+--- stdout full output ---
+storm_started_at=1970-01-03T10:05:50,155891214+00:00
+--- target BusyBox ash identity ---
+outer_shell_pid=15810 comm=ash
+outer_shell_cmdline=/bin/ash
+ash_exe=/bin/ash
+25ddeaa873c1bf8e616bd6af754562047e471f9161f7a6193f736dc74cc14b79  /bin/ash
+19efcfbf1f5bbc410bda06b8502ab80f08098c5459859dfaca89903733f9411e  /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC>
+	linux-vdso.so.1 (0x7efda000)
+	libbusybox.so.<REDACTED_DOTTED_NUMERIC> => /lib/libbusybox.so.<REDACTED_DOTTED_NUMERIC> (0x76e24000)
+	libc.so.6 => /lib/libc.so.6 (0x76ce3000)
+	libresolv.so.2 => /lib/libresolv.so.2 (0x76cc0000)
+	libselinux.so.1 => /usr/lib/libselinux.so.1 (0x76c92000)
+	/lib/ld-linux-armhf.so.3 (0x76efd000)
+	libpcre.so.1 => /usr/lib/libpcre.so.1 (0x76c48000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76c1e000)
+	libdl.so.2 => /lib/libdl.so.2 (0x76c0b000)
+BusyBox v<REDACTED_DOTTED_NUMERIC> (2024-07-21 02:57:02 EDT)
+syslogd started: BusyBox v<REDACTED_DOTTED_NUMERIC>
+before_storm production_supervisor=11337 cmdline=/bin/sh /etc/init.d/gatewayd supervise
+before_storm production_child=15095 cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt  exe=/opt/gatewayd/bin/gatewayd sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958
+--- exact repository-input hashes before ash-only shebang adaptation ---
+b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1  /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd
+7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb  /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/inittab/gatewayd.respawn
+507f143f5e2ca5063a45395f1fc0821291017ab8c2132744404794ec3b3ff57d  /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/test_gatewayd_supervisor.sh
+bc703ffce7d72dc96ee8492adcb3e1c64f12d81248c3d6c49b6393ea4921ec84  /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh
+supervisor_body_sha_before=d1ffe24b5a3e85e8295f368ed424f84e36c89ff742060e347ecaf712dc6d8ee4 after=d1ffe24b5a3e85e8295f368ed424f84e36c89ff742060e347ecaf712dc6d8ee4
+fake_body_sha_before=7a9b538be620037513cab44367bf4019e6f2ceb53e0e7427585c4258e57b53b5 after=7a9b538be620037513cab44367bf4019e6f2ceb53e0e7427585c4258e57b53b5
+==> /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd <==
+#!/bin/ash
+
+==> /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh <==
+#!/bin/ash
+--- complete BusyBox ash -x supervisor/fake storm trace ---
++ set -u
++ dirname -- /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/test_gatewayd_supervisor.sh
++ CDPATH= cd -- /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests
++ pwd
++ SCRIPT_DIR=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests
++ CDPATH= cd -- /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/../..
++ pwd
++ REPO_ROOT=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo
++ SUPERVISOR=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd
++ FAKE_GATEWAY=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh
++ INITTAB_FRAGMENT=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/inittab/gatewayd.respawn
++ mktemp -d /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.XXXXXX
++ TEST_ROOT=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN
++ supervisor_pid=
++ trap cleanup EXIT INT TERM
++ '[' -x /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd ]
++ '[' -x /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh ]
++ grep -F -x 'null::respawn:/etc/init.d/gatewayd supervise' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/inittab/gatewayd.respawn
++ grep -r -n -i 'systemd\|systemctl' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/inittab
++ case1=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1
++ mkdir -p /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run
++ printf '%s\n' crash_once
++ :
++ :
++ write_environment /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/mode /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/once /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.conf
++ run_dir=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run
++ environment_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env
++ mode_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/mode
++ gateway_log=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ once_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/once
++ config_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.conf
++ printf 'GATEWAYD_BIN=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh
++ printf 'GATEWAYD_CONFIG=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.conf
++ printf 'GATEWAYD_RUN_DIR=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run
++ printf 'GATEWAYD_RESTART_LIMIT=3\n'
++ printf 'GATEWAYD_STABLE_SEC=10\n'
++ printf 'GATEWAYD_COOLDOWN_SEC=2\n'
++ printf 'GATEWAYD_STOP_TIMEOUT_SEC=5\n'
++ printf 'FAKE_GATEWAY_MODE=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/mode
++ printf 'FAKE_GATEWAY_LOG=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ printf 'FAKE_GATEWAY_ONCE=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/once
++ printf 'export FAKE_GATEWAY_MODE FAKE_GATEWAY_LOG FAKE_GATEWAY_ONCE\n'
++ supervisor_pid=15879
++ wait_for_count '^start ' 2 /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ pattern='^start '
++ expected=2
++ file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ GATEWAYD_ENV_FILE=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd supervise
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ true
++ actual=0
++ '[' 0 -ge 2 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ actual=1
++ '[' 1 -ge 2 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=98
++ '[' 98 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ actual=2
++ '[' 2 -ge 2 ]
++ return 0
++ grep -F 'status=42' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/supervisor.log
++ sed -n 1p /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run/gatewayd.pid
++ old_pid=15900
++ run_service /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env restart
++ env_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env
++ action=restart
++ GATEWAYD_ENV_FILE=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd restart
++ sed -n 1p /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run/gatewayd.pid
++ new_pid=15924
++ '[' 15924 '!=' 15900 ]
++ run_service /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env stop
++ env_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env
++ action=stop
++ GATEWAYD_ENV_FILE=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd stop
++ '[' -f /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/run/disabled ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ starts_after_stop=3
++ sleep 1
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ '[' 3 -eq 3 ]
++ run_service /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env start
++ env_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env
++ action=start
++ GATEWAYD_ENV_FILE=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd start
++ wait_for_count '^start ' 4 /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ pattern='^start '
++ expected=4
++ file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case1/gateway.log
++ actual=4
++ '[' 4 -ge 4 ]
++ return 0
++ kill -TERM 15879
++ wait 15879
++ supervisor_pid=
++ case2=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2
++ mkdir -p /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run
++ printf '%s\n' crash
++ :
++ :
++ write_environment /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/mode /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/once /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.conf
++ run_dir=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run
++ environment_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/env
++ mode_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/mode
++ gateway_log=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ once_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/once
++ config_file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.conf
++ printf 'GATEWAYD_BIN=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/tests/fixtures/fake_gatewayd.sh
++ printf 'GATEWAYD_CONFIG=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.conf
++ printf 'GATEWAYD_RUN_DIR=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run
++ printf 'GATEWAYD_RESTART_LIMIT=3\n'
++ printf 'GATEWAYD_STABLE_SEC=10\n'
++ printf 'GATEWAYD_COOLDOWN_SEC=2\n'
++ printf 'GATEWAYD_STOP_TIMEOUT_SEC=5\n'
++ printf 'FAKE_GATEWAY_MODE=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/mode
++ printf 'FAKE_GATEWAY_LOG=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ printf 'FAKE_GATEWAY_ONCE=%s\n' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/once
++ printf 'export FAKE_GATEWAY_MODE FAKE_GATEWAY_LOG FAKE_GATEWAY_ONCE\n'
++ supervisor_pid=15982
++ wait_for_count '^start ' 3 /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ pattern='^start '
++ expected=3
++ file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ GATEWAYD_ENV_FILE=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/env /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/repo/deploy/init.d/gatewayd supervise+
+grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ true
++ actual=0
++ '[' 0 -ge 3 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=1
++ '[' 1 -ge 3 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=98
++ '[' 98 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=2
++ '[' 2 -ge 3 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=97
++ '[' 97 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 3 ]
++ return 0
++ wait_for_count 'event=restart_storm' 1 /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/supervisor.log
++ pattern='event=restart_storm'
++ expected=1
++ file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/supervisor.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c 'event=restart_storm' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/supervisor.log
++ true
++ actual=0
++ '[' 0 -ge 1 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c 'event=restart_storm' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/supervisor.log
++ actual=1
++ '[' 1 -ge 1 ]
++ return 0
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ starts_at_cooldown=3
++ sleep 1
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ '[' 3 -eq 3 ]
++ printf '%s\n' hold
++ wait_for_count '^start ' 4 /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ pattern='^start '
++ expected=4
++ file=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=98
++ '[' 98 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=97
++ '[' 97 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=96
++ '[' 96 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=95
++ '[' 95 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep <REDACTED_DOTTED_NUMERIC>
++ attempts=94
++ '[' 94 -gt 0 ]
++ grep -c '^start ' /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/gateway.log
++ actual=4
++ '[' 4 -ge 4 ]
++ return 0
++ wait_for_file /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run/gatewayd.pid
++ target=/tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run/gatewayd.pid
++ attempts=100
++ '[' 100 -gt 0 ]
++ '[' -s /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN/case2/run/gatewayd.pid ]
++ return 0
++ kill -TERM 15982
++ wait 15982
++ supervisor_pid=
++ printf '%s\n' 'M9_BUSYBOX_SUPERVISOR_TEST PASS'
+M9_BUSYBOX_SUPERVISOR_TEST PASS
++ cleanup
++ '[' -n  ]
++ rm -rf /tmp/m9-board-gate-20260901T204152p0800/storm-busybox-ash/tmp/gatewayd-m9-test.oE1TRN
+command=TMPDIR=<isolated> /bin/ash -x deploy/tests/test_gatewayd_supervisor.sh exit=0
+--- cleanup and production isolation audit ---
+remaining_test_tmp_entries=0
+remaining_test_process_count=0
+after_storm production_supervisor=11337 cmdline=/bin/sh /etc/init.d/gatewayd supervise
+after_storm production_child=15095 cmdline=/opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt  exe=/opt/gatewayd/bin/gatewayd sha256=6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958
+production_supervisor_before=11337 after=11337
+production_child_before=15095 after=15095
+1970-01-03T10:06:03Z gatewayd-supervisor[16191]: status=running supervisor_pid=11337 child_pid=15095
+production_status_exit=0
+PID   USER     COMMAND
+    1 root     init
+    2 root     [kthreadd]
+    3 root     [ksoftirqd/0]
+    5 root     [kworker/0:0H]
+    7 root     [rcu_preempt]
+    8 root     [rcu_sched]
+    9 root     [rcu_bh]
+   10 root     [migration/0]
+   11 root     [lru-add-drain]
+   12 root     [cpuhp/0]
+   13 root     [kdevtmpfs]
+   14 root     [oom_reaper]
+   15 root     [writeback]
+   16 root     [kcompactd0]
+   17 root     [crypto]
+   18 root     [bioset]
+   19 root     [kblockd]
+   21 root     [ata_sff]
+   22 root     [cfg80211]
+   23 root     [watchdogd]
+   24 root     [rpciod]
+   25 root     [xprtiod]
+   26 root     [kswapd0]
+   27 root     [vmstat]
+   28 root     [nfsiod]
+   74 root     [bioset]
+   75 root     [bioset]
+   76 root     [bioset]
+   77 root     [bioset]
+   78 root     [bioset]
+   79 root     [bioset]
+   80 root     [bioset]
+   81 root     [bioset]
+   82 root     [bioset]
+   83 root     [bioset]
+   84 root     [bioset]
+   85 root     [bioset]
+   86 root     [bioset]
+   87 root     [bioset]
+   88 root     [bioset]
+   89 root     [bioset]
+   90 root     [bioset]
+   91 root     [bioset]
+   92 root     [bioset]
+   93 root     [bioset]
+   94 root     [bioset]
+   95 root     [bioset]
+   96 root     [bioset]
+   97 root     [bioset]
+   98 root     [spi32766]
+   99 root     [spi0]
+  100 root     [spi2]
+  104 root     [ci_otg]
+  105 root     [irq/84-gt9xx]
+  107 root     [cfinteractive]
+  108 root     [irq/64-mmc0]
+  109 root     [irq/98-2190000.]
+  110 root     [irq/65-mmc1]
+  111 root     [mxs_dcp_chan/sh]
+  112 root     [mxs_dcp_chan/ae]
+  117 root     [bioset]
+  118 root     [mmcqd/1]
+  119 root     [bioset]
+  120 root     [mmcqd/1boot0]
+  121 root     [bioset]
+  122 root     [mmcqd/1boot1]
+  123 root     [bioset]
+  124 root     [mmcqd/1rpmb]
+  126 root     [ipv6_addrconf]
+  127 root     [krfcommd]
+  128 root     [kworker/u3:0]
+  129 root     [hci0]
+  130 root     [hci0]
+  132 root     [kworker/u3:2]
+  133 root     [pxp_dispatch]
+  134 root     [irq/44-imx_ther]
+  135 root     [kworker/0:1H]
+  136 root     [jbd2/mmcblk1p2-]
+  137 root     [ext4-rsv-conver]
+  151 root     psplash -n
+  155 root     /sbin/syslogd -n
+  159 root     /sbin/klogd -n
+  177 root     /sbin/udevd -d
+  217 dbus     dbus-daemon --system
+  247 root     /usr/sbin/ModemManager
+  255 root     /usr/sbin/NetworkManager
+  261 root     /usr/sbin/ntpd -g
+  267 mosquitt /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf
+  273 root     /usr/bin/pulseaudio --system --daemonize --disallow-module-loading --disallow-exit --exit-idle-time=-1 --use-pid-file --disable-shm
+  280 root     /usr/libexec/pulse/gsettings-helper
+  288 root     /usr/sbin/sshd
+  293 root     /usr/sbin/telnetd -F
+  304 root     /usr/bin/swupdate-progress -w -r
+  307 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  316 root     /usr/bin/swupdate -f /etc/swupdate/swupdate.cfg -L -e rootfs,rootfs-1 -u -c 1 -i BrImx6ullpro_01-8e7d69800
+  329 root     /usr/bin/adbd
+  782 root     -bash
+  842 root     [kworker/0:2]
+ 3458 root     [kworker/u2:0]
+ 7760 root     [kworker/u2:2]
+11337 root     {gatewayd} /bin/sh /etc/init.d/gatewayd supervise
+14293 root     [kworker/0:0]
+15043 root     [kworker/0:1]
+15095 root     /opt/gatewayd/bin/gatewayd --config /etc/gatewayd/gateway.conf --run-mqtt
+15806 root     sshd: <REDACTED_USER>@notty
+15808 root     bash -c tail -c +4 | /bin/ash
+15810 root     /bin/ash
+16198 root     ps w
+busybox_storm_gate=PASS
+storm_completed_at=1970-01-03T10:06:03,468287549+00:00
+--- stderr full output ---

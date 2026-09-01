@@ -1,0 +1,13 @@
+file=capture_local_preflight.ps1 parse_error_count=0
+file=controlled_reboot.ps1 parse_error_count=0
+file=final_reachability_probe.ps1 parse_error_count=0
+file=finalize_evidence.ps1 parse_error_count=0
+file=finalize_evidence_v2.ps1 parse_error_count=0
+file=invoke_remote.ps1 parse_error_count=0
+file=prepare_private_payload.ps1 parse_error_count=0
+file=prepare_private_payload_v2.ps1 parse_error_count=0
+file=reboot_recovery_poll.ps1 parse_error_count=0
+file=redact_reboot_recovery_v2.ps1 parse_error_count=0
+file=redact_username_outputs.ps1 parse_error_count=0
+file=stage_payload.ps1 parse_error_count=0
+total_parse_errors=0

@@ -1,0 +1,3 @@
+file=summary.json status=PASS
+file=manifest.json status=PASS
+total_failures=0
