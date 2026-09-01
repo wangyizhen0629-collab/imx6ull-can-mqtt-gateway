@@ -179,8 +179,8 @@ M6 使用libmosquitto MQTT QoS 1 sink，按单调时钟和固定上限组成JSON
 gateway与Broker对账1033次publish/PUBACK一致。独立manifest和原始证据复核已通过，
 M6于2026-09-01达到门禁。正确UTC、性能、时延和长期可靠性仍未验证。
 
-M7当前实现append-only固定格式spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
-seq恢复、断线重连、单写者锁、独立stats和QoS 1去重validator。Ubuntu普通与
-ASan+UBSan全量16/16以及ARMv7 warning-clean交叉构建均通过。实际Windows Broker断线/
-恢复、subscriber原始重复、`kill -9`后同一spool重启和目标持久介质均为`NOT RUN`，故
-M7总门禁仍为`NOT MET`。M8 external-loop/epoll、部署和后续功能尚未开始。
+M7已用真实Windows Broker、i.MX6ULL ext4 spool和一次受控`kill -9`完成断线补传及
+tail/internal/state损坏恢复；去重后35644条unique seq无缺失，门禁为`MET`。M8已确认
+目标libmosquitto 2.0.11具备所需external-loop API，并实现epoll/eventfd/timerfd reactor；
+Ubuntu离线专项和ARMv7 warning-clean构建通过。真实Broker下与M7等价的reactor恢复测试
+及目标板运行仍为`NOT RUN`，所以M8门禁当前为`NOT MET`。M9及后续尚未开始。

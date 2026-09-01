@@ -1,0 +1,24 @@
+Script started on 2026-09-01 12:59:51+08:00 [<not executed on terminal>]
+[ 31%] Built target gateway_core
+[35m[1mConsolidate compiler generated dependencies of target gatewayd[0m
+[ 36%] Built target gatewayd
+[ 40%] Built target test_config
+[ 45%] Built target test_error_record
+[ 50%] Built target test_lifecycle
+[ 54%] Built target test_vehicle_decoder
+[ 59%] Built target test_log
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_integration[0m
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_timing[0m
+[ 68%] Built target test_can_receiver
+[ 68%] Built target test_ring_buffer
+[ 72%] Built target test_mqtt_sink
+[ 77%] Built target test_pipeline
+[ 81%] Built target test_mqtt_reactor
+[ 86%] Built target test_spool
+[ 90%] Built target test_mqtt_timing
+[ 95%] Built target test_mqtt_integration
+[ 97%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o[0m
+[100%] [32m[1mLinking C executable test_mqtt_recovery_driver[0m
+[100%] Built target test_mqtt_recovery_driver
+
+Script done on 2026-09-01 12:59:51+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,6 +1,7 @@
 #include "gateway/mqtt_sink.h"
 
 #include "gateway/config.h"
+#include "gateway/mqtt_reactor.h"
 #include "gateway/spool.h"
 
 #include <inttypes.h>
@@ -17,6 +18,7 @@
 enum {
     MQTT_KEEPALIVE_SECONDS = 60,
     MQTT_LOOP_SLICE_MS = 50,
+    MQTT_MISC_INTERVAL_MS = 1000,
     MQTT_CLIENT_ID_SIZE = 128
 };
 
@@ -41,6 +43,7 @@ struct gateway_mqtt_sink {
     gateway_stats *stats;
     gateway_logger *logger;
     struct mosquitto *mosq;
+    gateway_mqtt_reactor *reactor;
     gateway_spool *spool;
     telemetry_record *records;
     char *payload;
@@ -298,6 +301,42 @@ static void sync_spool_snapshot(gateway_mqtt_sink *sink)
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
 }
 
+static void sync_reactor_snapshot(gateway_mqtt_sink *sink)
+{
+    gateway_mqtt_reactor_snapshot reactor_snapshot;
+
+    if (sink->reactor == NULL) {
+        return;
+    }
+    gateway_mqtt_reactor_read(sink->reactor, &reactor_snapshot);
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    sink->snapshot.reactor_enabled = reactor_snapshot.enabled;
+    sink->snapshot.reactor_network_fd = reactor_snapshot.network_fd;
+    sink->snapshot.reactor_epoll_waits = reactor_snapshot.epoll_waits;
+    sink->snapshot.reactor_wake_events = reactor_snapshot.wake_events;
+    sink->snapshot.reactor_timer_expirations =
+        reactor_snapshot.timer_expirations;
+    sink->snapshot.reactor_socket_events = reactor_snapshot.socket_events;
+    sink->snapshot.reactor_loop_read_calls =
+        reactor_snapshot.loop_read_calls;
+    sink->snapshot.reactor_loop_write_calls =
+        reactor_snapshot.loop_write_calls;
+    sink->snapshot.reactor_loop_misc_calls =
+        reactor_snapshot.loop_misc_calls;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+}
+
+static gateway_error_code reactor_step(gateway_mqtt_sink *sink,
+                                       int timeout_ms,
+                                       int *mosquitto_code)
+{
+    gateway_error_code code = gateway_mqtt_reactor_step(
+        sink->reactor, timeout_ms, mosquitto_code);
+
+    sync_reactor_snapshot(sink);
+    return code;
+}
+
 static gateway_error_code spool_failure(gateway_mqtt_sink *sink,
                                         gateway_error_code code,
                                         const char *operation)
@@ -390,6 +429,12 @@ static gateway_error_code create_mosquitto_client(gateway_mqtt_sink *sink)
 
 static gateway_error_code reset_mosquitto_client(gateway_mqtt_sink *sink)
 {
+    gateway_error_code code;
+
+    code = gateway_mqtt_reactor_bind(sink->reactor, NULL);
+    if (code != GATEWAY_OK) {
+        return code;
+    }
     if (sink->mosq != NULL) {
         mosquitto_destroy(sink->mosq);
         sink->mosq = NULL;
@@ -397,7 +442,11 @@ static gateway_error_code reset_mosquitto_client(gateway_mqtt_sink *sink)
     sink->transport_lost = false;
     sink->connect_callback_seen = false;
     sink->explicit_disconnect = false;
-    return create_mosquitto_client(sink);
+    code = create_mosquitto_client(sink);
+    if (code != GATEWAY_OK) {
+        return code;
+    }
+    return gateway_mqtt_reactor_bind(sink->reactor, sink->mosq);
 }
 
 static gateway_error_code durable_transport_offline(
@@ -536,6 +585,7 @@ gateway_error_code gateway_mqtt_sink_create(
     created->logger = config->logger;
     created->snapshot.next_batch_seq = 1;
     created->snapshot.in_flight_mid = -1;
+    created->snapshot.reactor_network_fd = -1;
 
     if (config->spool_path != NULL && config->spool_path[0] != '\0') {
         created->durable = true;
@@ -567,6 +617,12 @@ gateway_error_code gateway_mqtt_sink_create(
         gateway_mqtt_sink_destroy(created);
         return GATEWAY_ERROR_SYSTEM;
     }
+    if (gateway_mqtt_reactor_create(&created->reactor, created->mosq,
+                                    MQTT_MISC_INTERVAL_MS) != GATEWAY_OK) {
+        gateway_mqtt_sink_destroy(created);
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    sync_reactor_snapshot(created);
     *sink = created;
     return GATEWAY_OK;
 }
@@ -575,6 +631,10 @@ void gateway_mqtt_sink_destroy(gateway_mqtt_sink *sink)
 {
     if (sink == NULL) {
         return;
+    }
+    if (sink->reactor != NULL) {
+        (void)gateway_mqtt_reactor_bind(sink->reactor, NULL);
+        gateway_mqtt_reactor_destroy(sink->reactor);
     }
     if (sink->mosq != NULL) {
         mosquitto_destroy(sink->mosq);
@@ -595,6 +655,7 @@ void gateway_mqtt_sink_destroy(gateway_mqtt_sink *sink)
 gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
 {
     struct timespec deadline;
+    gateway_error_code reactor_code;
     int code;
 
     if (sink == NULL || sink->mosq == NULL) {
@@ -610,6 +671,10 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
             return durable_transport_offline(sink, code, "connect");
         }
         return mqtt_failure(sink, GATEWAY_ERROR_IO, code, "connect");
+    }
+    if (gateway_mqtt_reactor_notify(sink->reactor) != GATEWAY_OK) {
+        return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
+                            "reactor connect notification");
     }
     if (!deadline_after_milliseconds(sink->ack_timeout_ms, &deadline)) {
         return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
@@ -629,14 +694,14 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
         }
         slice = remaining < MQTT_LOOP_SLICE_MS ? remaining
                                                : MQTT_LOOP_SLICE_MS;
-        code = mosquitto_loop(sink->mosq, slice, 1);
-        if (code != MOSQ_ERR_SUCCESS) {
+        reactor_code = reactor_step(sink, slice, &code);
+        if (reactor_code != GATEWAY_OK) {
             if (sink->durable) {
                 return durable_transport_offline(sink, code,
-                                                 "CONNACK network loop");
+                                                 "CONNACK external loop");
             }
-            return mqtt_failure(sink, GATEWAY_ERROR_IO, code,
-                                "CONNACK network loop");
+            return mqtt_failure(sink, reactor_code, code,
+                                "CONNACK external loop");
         }
     }
     if (sink->connect_result != 0) {
@@ -720,6 +785,10 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
     gateway_stats_increment(sink->stats,
                             GATEWAY_STAT_MQTT_PUBLISH_ACCEPTED);
+    if (gateway_mqtt_reactor_notify(sink->reactor) != GATEWAY_OK) {
+        return durable_transport_offline(sink, MOSQ_ERR_SUCCESS,
+                                         "reactor publish notification");
+    }
 
     if (!deadline_after_milliseconds(sink->ack_timeout_ms, &deadline)) {
         return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
@@ -743,10 +812,10 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
         }
         slice = remaining < MQTT_LOOP_SLICE_MS ? remaining
                                                : MQTT_LOOP_SLICE_MS;
-        code = mosquitto_loop(sink->mosq, slice, 1);
-        if (code != MOSQ_ERR_SUCCESS || sink->transport_lost) {
+        gateway_code = reactor_step(sink, slice, &code);
+        if (gateway_code != GATEWAY_OK || sink->transport_lost) {
             return durable_transport_offline(sink, code,
-                                             "PUBACK network loop");
+                                             "PUBACK external loop");
         }
     }
 
@@ -776,6 +845,7 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
 gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink)
 {
     struct timespec deadline;
+    gateway_error_code reactor_code;
     size_t payload_size;
     size_t acknowledged_records;
     uint64_t acknowledged_last_seq;
@@ -825,6 +895,10 @@ gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink)
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
     gateway_stats_increment(sink->stats,
                             GATEWAY_STAT_MQTT_PUBLISH_ACCEPTED);
+    if (gateway_mqtt_reactor_notify(sink->reactor) != GATEWAY_OK) {
+        return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
+                            "reactor publish notification");
+    }
 
     if (!deadline_after_milliseconds(sink->ack_timeout_ms, &deadline)) {
         return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
@@ -848,10 +922,10 @@ gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink)
         }
         slice = remaining < MQTT_LOOP_SLICE_MS ? remaining
                                                : MQTT_LOOP_SLICE_MS;
-        code = mosquitto_loop(sink->mosq, slice, 1);
-        if (code != MOSQ_ERR_SUCCESS) {
-            return mqtt_failure(sink, GATEWAY_ERROR_IO, code,
-                                "PUBACK network loop");
+        reactor_code = reactor_step(sink, slice, &code);
+        if (reactor_code != GATEWAY_OK) {
+            return mqtt_failure(sink, reactor_code, code,
+                                "PUBACK external loop");
         }
     }
 
@@ -957,6 +1031,7 @@ gateway_error_code gateway_mqtt_sink_consume(
 gateway_error_code gateway_mqtt_sink_poll(void *context)
 {
     gateway_mqtt_sink *sink = context;
+    gateway_error_code reactor_code;
     int code;
 
     if (sink == NULL) {
@@ -976,9 +1051,10 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
             }
             return GATEWAY_OK;
         }
-        code = mosquitto_loop(sink->mosq, 0, 1);
-        if (code != MOSQ_ERR_SUCCESS || sink->transport_lost) {
-            return durable_transport_offline(sink, code, "network poll");
+        reactor_code = reactor_step(sink, 0, &code);
+        if (reactor_code != GATEWAY_OK || sink->transport_lost) {
+            return durable_transport_offline(sink, code,
+                                             "external-loop poll");
         }
         gateway_spool_read(sink->spool, &spool_snapshot);
         if (spool_snapshot.pending_records != 0 &&
@@ -990,9 +1066,10 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
         }
         return GATEWAY_OK;
     }
-    code = mosquitto_loop(sink->mosq, 0, 1);
-    if (code != MOSQ_ERR_SUCCESS) {
-        return mqtt_failure(sink, GATEWAY_ERROR_IO, code, "network poll");
+    reactor_code = reactor_step(sink, 0, &code);
+    if (reactor_code != GATEWAY_OK) {
+        return mqtt_failure(sink, reactor_code, code,
+                            "external-loop poll");
     }
     if (sink->record_count > 0 && sink->batch_deadline_set &&
         timespec_reached(&sink->batch_deadline)) {
@@ -1003,6 +1080,7 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
 
 gateway_error_code gateway_mqtt_sink_disconnect(gateway_mqtt_sink *sink)
 {
+    gateway_error_code reactor_code;
     int code;
 
     if (sink == NULL || sink->mosq == NULL) {
@@ -1016,10 +1094,14 @@ gateway_error_code gateway_mqtt_sink_disconnect(gateway_mqtt_sink *sink)
     if (code != MOSQ_ERR_SUCCESS) {
         return mqtt_failure(sink, GATEWAY_ERROR_IO, code, "disconnect");
     }
-    code = mosquitto_loop(sink->mosq, MQTT_LOOP_SLICE_MS, 1);
-    if (code != MOSQ_ERR_SUCCESS && code != MOSQ_ERR_NO_CONN) {
-        return mqtt_failure(sink, GATEWAY_ERROR_IO, code,
-                            "disconnect network loop");
+    if (gateway_mqtt_reactor_notify(sink->reactor) != GATEWAY_OK) {
+        return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
+                            "reactor disconnect notification");
+    }
+    reactor_code = reactor_step(sink, MQTT_LOOP_SLICE_MS, &code);
+    if (reactor_code != GATEWAY_OK && code != MOSQ_ERR_NO_CONN) {
+        return mqtt_failure(sink, reactor_code, code,
+                            "disconnect external loop");
     }
     return GATEWAY_OK;
 }
@@ -1031,6 +1113,7 @@ void gateway_mqtt_sink_read(gateway_mqtt_sink *sink,
         return;
     }
     sync_spool_snapshot(sink);
+    sync_reactor_snapshot(sink);
     (void)pthread_mutex_lock(&sink->snapshot_mutex);
     *snapshot = sink->snapshot;
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);

@@ -1,0 +1,11 @@
+requested_at=2026-09-01T12:59:59+08:00
+requested_action=在127.0.0.1:21885临时启停隔离Mosquitto/subscriber，并对专用M7恢复驱动执行一次SIGKILL
+purpose=验证M8 external-loop reactor保持M7断线重连、spool补传、SIGKILL和state安全重放行为
+approval_result=REJECTED
+reason=仓库规则要求项目所有者在知情后明确批准Broker/进程/SIGKILL操作；当前尚未收到该明确批准
+execution_result=NOT RUN
+broker_started=false
+subscriber_started=false
+driver_started=false
+sigkill_executed=false
+port_modified=false

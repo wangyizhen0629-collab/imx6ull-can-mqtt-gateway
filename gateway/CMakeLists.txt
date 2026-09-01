@@ -43,6 +43,7 @@ add_library(gateway_core STATIC
     src/lifecycle.c
     src/log.c
     src/mock_sink.c
+    src/mqtt_reactor.c
     src/mqtt_sink.c
     src/pipeline.c
     src/ring_buffer.c
@@ -125,6 +126,8 @@ if(BUILD_TESTING)
     add_gateway_unit_test(test_pipeline M5)
     set_tests_properties(test_pipeline PROPERTIES LABELS "M5;M7;unit")
     add_gateway_unit_test(test_mqtt_sink M6)
+    set_tests_properties(test_mqtt_sink PROPERTIES LABELS "M6;M7;M8;unit")
+    add_gateway_unit_test(test_mqtt_reactor M8)
     add_gateway_unit_test(test_spool M7)
     add_test(
         NAME test_mqtt_validator

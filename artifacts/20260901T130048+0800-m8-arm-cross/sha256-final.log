@@ -1,0 +1,6 @@
+Script started on 2026-09-01 13:01:40+08:00 [<not executed on terminal>]
+2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b  build/m8-arm-cross/gateway/gatewayd
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+b977523c8e51cd5a0833b6f9601f74a952a909796170dd856057d92b7cc30d8b  build/m6-arm-private/stage/usr/include/mosquitto.h
+
+Script done on 2026-09-01 13:01:40+08:00 [COMMAND_EXIT_CODE="0"]

@@ -1,0 +1,27 @@
+Target development set:
+  header: build/m6-arm-private/stage/usr/include/mosquitto.h
+  library: build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+  architecture: ELF 32-bit LSB shared object, ARM, EABI5
+  target runtime library identity: libmosquitto 2.0.11
+
+SHA256:
+b977523c8e51cd5a0833b6f9601f74a952a909796170dd856057d92b7cc30d8b  mosquitto.h
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  libmosquitto.so.2.0.11
+
+Header declarations:
+1343:libmosq_EXPORT int mosquitto_loop_read(struct mosquitto *mosq, int max_packets);
+1373:libmosq_EXPORT int mosquitto_loop_write(struct mosquitto *mosq, int max_packets);
+1397:libmosq_EXPORT int mosquitto_loop_misc(struct mosquitto *mosq);
+1417:libmosq_EXPORT int mosquitto_socket(struct mosquitto *mosq);
+1430:libmosq_EXPORT bool mosquitto_want_write(struct mosquitto *mosq);
+
+ARM dynamic symbol audit:
+PASS mosquitto_socket
+PASS mosquitto_loop_read
+PASS mosquitto_loop_write
+PASS mosquitto_loop_misc
+PASS mosquitto_want_write
+
+判定：PROJECT_SPEC 要求的四个 external-loop API 在与 M7 板端运行库 SHA256 相同的
+ARMv7 libmosquitto 2.0.11 中均有真实头文件声明和动态导出符号；额外确认
+mosquitto_want_write 可用。满足进入条件式 epoll 实现的 API 前置条件。

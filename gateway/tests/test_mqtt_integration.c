@@ -128,7 +128,27 @@ int main(int argc, char **argv)
            sink_snapshot.last_acked_batch_seq,
            sink_snapshot.last_acked_gateway_seq,
            sink_snapshot.failed ? 1 : 0);
+    printf("M8_REACTOR_SUMMARY enabled=%d network_fd=%d epoll_waits=%" PRIu64
+           " wake_events=%" PRIu64 " timer_expirations=%" PRIu64
+           " socket_events=%" PRIu64 " loop_read=%" PRIu64
+           " loop_write=%" PRIu64 " loop_misc=%" PRIu64 "\n",
+           sink_snapshot.reactor_enabled ? 1 : 0,
+           sink_snapshot.reactor_network_fd,
+           sink_snapshot.reactor_epoll_waits,
+           sink_snapshot.reactor_wake_events,
+           sink_snapshot.reactor_timer_expirations,
+           sink_snapshot.reactor_socket_events,
+           sink_snapshot.reactor_loop_read_calls,
+           sink_snapshot.reactor_loop_write_calls,
+           sink_snapshot.reactor_loop_misc_calls);
     if (!sink_snapshot.failed &&
+        sink_snapshot.reactor_enabled &&
+        sink_snapshot.reactor_network_fd >= 0 &&
+        sink_snapshot.reactor_epoll_waits > 0 &&
+        sink_snapshot.reactor_wake_events >= (uint64_t)batch_count + 1U &&
+        sink_snapshot.reactor_socket_events > 0 &&
+        sink_snapshot.reactor_loop_read_calls > 0 &&
+        sink_snapshot.reactor_loop_write_calls > 0 &&
         sink_snapshot.batches_acked == (uint64_t)batch_count &&
         sink_snapshot.records_acked == (uint64_t)batch_count &&
         sink_snapshot.puback_matched == (uint64_t)batch_count &&

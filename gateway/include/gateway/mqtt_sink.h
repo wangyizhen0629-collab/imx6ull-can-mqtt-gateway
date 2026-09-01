@@ -53,6 +53,15 @@ typedef struct {
     uint64_t spool_tail_recoveries;
     uint64_t spool_state_recoveries;
     uint64_t spool_corruptions;
+    bool reactor_enabled;
+    int reactor_network_fd;
+    uint64_t reactor_epoll_waits;
+    uint64_t reactor_wake_events;
+    uint64_t reactor_timer_expirations;
+    uint64_t reactor_socket_events;
+    uint64_t reactor_loop_read_calls;
+    uint64_t reactor_loop_write_calls;
+    uint64_t reactor_loop_misc_calls;
 } gateway_mqtt_sink_snapshot;
 
 typedef struct gateway_mqtt_sink gateway_mqtt_sink;

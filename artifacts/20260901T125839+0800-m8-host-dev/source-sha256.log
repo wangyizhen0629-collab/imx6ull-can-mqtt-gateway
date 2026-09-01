@@ -1,0 +1,10 @@
+Script started on 2026-09-01 13:05:53+08:00 [<not executed on terminal>]
+0b65705e4f548bba5a8120a2413bd0d182d3f7c65c668c60c57c3a979a142c85  gateway/src/mqtt_reactor.c
+f6d1024c96ee292e5d432acf25e100f57b0a7899d1b5c932c57f8e7548c1d71a  gateway/include/gateway/mqtt_reactor.h
+1fdef9008afd23e3a059f01f3b930b1164d18ee6f70cf8a71a485e196115e8dc  gateway/src/mqtt_sink.c
+4af24a43f293085fadfab2c5c346eec48b9cb694213d6355e488f69a547b03f8  gateway/src/main.c
+f07c56133d77578705c6939bd1fd5a7c361ee433f81d74adaa1b1839ae082f7d  gateway/tests/test_mqtt_reactor.c
+7573e97b392139d9dc79be0da93fc58973acebd9dc49c1bbc0c420ca042febb1  gateway/tests/test_mqtt_integration.c
+d60a63772e6f678e6cca9620d465e5062b624a8912bc8d0f7ab6242953f841b5  gateway/tests/test_mqtt_recovery_driver.c
+
+Script done on 2026-09-01 13:05:53+08:00 [COMMAND_EXIT_CODE="0"]

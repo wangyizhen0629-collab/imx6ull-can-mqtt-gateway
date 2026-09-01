@@ -50,6 +50,12 @@
   raw duplicate、35644条unique seq，missing=0、effective duplicate=0；Broker三段原始
   日志与gateway/subscriber对账均为281次PUBLISH/PUBACK。正确UTC、掉电、性能和长期
   可靠性仍为`NOT RUN`；M8及后续未开始，也未获授权。
+- M8已由项目所有者于2026-09-01单独授权并开始。目标ARMv7 libmosquitto 2.0.11的
+  `mosquitto_socket/loop_read/loop_write/loop_misc/want_write`头文件声明和动态导出符号
+  5/5确认；epoll/eventfd/timerfd reactor已实现，Ubuntu warning-clean专项2/2和
+  ASan+UBSan专项2/2通过，ARMv7 warning-clean交叉构建及external-loop动态引用5/5通过。
+  真实Broker external-loop通信、M7等价重连/SIGKILL恢复和i.MX6ULL运行仍为`NOT RUN`，
+  因此M8总门禁当前为`NOT MET`；M9及后续未开始。
 
 ## Milestone 总表
 
@@ -67,7 +73,7 @@
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
-| M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
+| M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 进行中；目标API与离线/ARM构建PASS，真实Broker等价恢复NOT RUN，总门禁NOT MET |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
 
@@ -401,6 +407,42 @@ M6要求的实际库、ARMv7目标运行、真实物理CAN到局域网Broker、�
 实际断线/恢复和一次`kill -9`已经证明积压按序恢复，最终`missing=0`且
 `effective duplicate=0`，因此M7总门禁为 **MET**。本结论只关闭M7；M8 external-loop/
 epoll以及M9/M10均未实现、未测试、未批准。
+
+## M8 当前记录
+
+1. 项目所有者在M7关闭后单独授权只执行M8。开始前证据
+   `artifacts/20260901T125544+0800-m8-preflight/`确认HEAD与`origin/master`均为
+   `06dce43fc537365e11f2752aba7eea60098cb259`，M7门禁为`MET`，M9及后续未开始。
+2. 同一preflight对与M7板端运行库SHA256相同的ARMv7 libmosquitto 2.0.11进行头文件和
+   动态符号审计；四个规范要求的external-loop API以及`mosquitto_want_write`均为5/5
+   PASS，因此D-004的条件成立，M8选择实现epoll而不是删除该设计。
+3. 新增独立`gateway_mqtt_reactor`：`epoll`监控libmosquitto socket，`eventfd`承载本地
+   connect/publish/disconnect唤醒，周期`timerfd`驱动`mosquitto_loop_misc`。socket兴趣集
+   按`mosquitto_want_write`动态维护，网络读写只调用external-loop API；生产源码不再调用
+   `mosquitto_loop()`。
+4. M7单in-flight MID/PUBACK、spool append/ACK cursor、断线重建client、重连deadline和
+   seq恢复仍由既有状态机负责；reactor只替换网络推进方式。snapshot和summary新增
+   epoll wait、wake/timer/socket事件及read/write/misc调用计数，便于真实run核验。
+5. 开发证据`artifacts/20260901T125839+0800-m8-host-dev/`为warning-clean构建PASS、M8
+   专项2/2 PASS。受限沙箱全量CTest为16/17，唯一失败是既有`test_can_receiver`无法创建
+   `PF_CAN` socket；沙箱外全量复测因缺少知情后的明确批准为`NOT RUN`。
+6. ASan+UBSan证据`artifacts/20260901T130155+0800-m8-asan-ubsan/`的M8专项2/2 PASS；
+   受限沙箱全量同为16/17且只有PF_CAN环境失败。LeakSanitizer为`NOT RUN`。
+7. ARM证据`artifacts/20260901T130048+0800-m8-arm-cross/`保留两次前置失败：首次交叉
+   查找未定位开发集，第二次binary带构建机RPATH。最终显式匹配目标头文件/库并禁止
+   RPATH后warning-clean构建PASS；ELF为ARMv7 EABI5 hard-float，依赖`libmosquitto.so.1`、
+   无RPATH/RUNPATH，SHA256为
+   `2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b`。
+8. 本机loopback Broker/M7恢复等价测试的审批记录在
+   `artifacts/20260901T125959+0800-m8-reactor-recovery-not-run/`。审批因尚缺项目所有者
+   知情后的明确授权而拒绝；Broker/subscriber/driver均未启动，SIGKILL未执行，状态为
+   `NOT RUN`。
+9. i.MX6ULL部署与运行、Windows Broker、物理CAN、硬件状态、正确UTC、性能和长期测试
+   均为`NOT RUN`。当前Ubuntu会话没有目标板交互通道，且相关进程/Broker操作需要另行
+   批准；不能用ARM构建或历史M7结果替代M8 reactor实测。
+
+目标API条件和源码/离线构建已经满足，但退出条件还要求证明reactor保持M7行为；该真实
+Broker等价恢复测试尚未执行。因此M8总门禁当前为 **NOT MET**，不得进入M9。
 
 ## M1 完成记录
 

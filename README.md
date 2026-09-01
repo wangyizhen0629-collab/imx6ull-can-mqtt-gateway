@@ -40,8 +40,10 @@ PUBACK门禁。真实i.MX6ULL使用物理CAN输入连接Windows Broker；正式s
 
 M7 已实现固定格式append-only spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
 seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UBSan全量16/16及ARMv7
-交叉构建通过；Windows Broker实际断线/恢复、subscriber原始证据、`kill -9`恢复和目标
-持久介质均为`NOT RUN`，所以M7总门禁仍为`NOT MET`。M8及后续尚未开始。
+交叉构建通过；真实i.MX6ULL ext4 spool、Windows Broker断线、一次`kill -9`、补传及
+损坏恢复均有证据，M7门禁为`MET`。M8随后确认目标libmosquitto external-loop API并
+实现epoll/eventfd/timerfd reactor；离线专项和ARMv7构建通过，但真实Broker等价恢复及
+目标板运行仍为`NOT RUN`，所以M8门禁当前为`NOT MET`。M9及后续尚未开始。
 
 ## Ubuntu 主机构建
 
@@ -70,7 +72,7 @@ cmake -S . -B build -DGATEWAY_MOSQUITTO_ROOT=/path/to/mosquitto/root
 `can0`，但会打开配置的 CAN 接口并启动工作线程；在目标板部署/运行、修改接口状态或
 发送进程信号前仍必须取得明确批准。
 
-`--run-mqtt` 是当前M7实时链路入口，它同样不会自行配置`can0`或启动Broker，但会打开
+`--run-mqtt` 是当前M8实时链路入口，它同样不会自行配置`can0`或启动Broker，但会打开
 CAN接口、创建/锁定`spool_path`、连接配置的Broker并启动工作线程。目标板部署/运行、
 Broker状态改动、进程kill或网络/CAN状态改动仍受仓库批准规则约束。
 
@@ -82,5 +84,6 @@ Broker状态改动、进程kill或网络/CAN状态改动仍受仓库批准规则
 [docs/milestones/M3.md](docs/milestones/M3.md)和
 [docs/milestones/M4.md](docs/milestones/M4.md)、
 [docs/milestones/M5.md](docs/milestones/M5.md)，M6 执行记录在
-[docs/milestones/M6.md](docs/milestones/M6.md)，M7交接与未执行门禁在
-[docs/milestones/M7.md](docs/milestones/M7.md)。
+[docs/milestones/M6.md](docs/milestones/M6.md)，M7完成记录和M8当前记录分别在
+[docs/milestones/M7.md](docs/milestones/M7.md)、
+[docs/milestones/M8.md](docs/milestones/M8.md)。

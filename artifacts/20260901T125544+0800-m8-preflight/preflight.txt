@@ -1,0 +1,20 @@
+run_id=20260901T125544+0800-m8-preflight
+started_at=2026-09-01T12:55:44+08:00
+requested_milestone=M8
+head=06dce43fc537365e11f2752aba7eea60098cb259
+origin_master=06dce43fc537365e11f2752aba7eea60098cb259
+pull_mode=git pull --ff-only origin master
+pull_result=PASS
+m7_gate=MET
+m7_gate_sources=docs/PLANS.md,docs/milestones/M7.md,artifacts/20260901T105414+0800-m7-lan-recovery-gate2/
+m7_gate_commit=06dce43fc537365e11f2752aba7eea60098cb259
+m7_gate_ancestor_check=PASS (exit 0)
+scope=M8 conditional external-loop/epoll reactor only
+m9_and_later=NOT STARTED
+host=Linux wangyizhen-virtual-machine 6.8.0-138-generic x86_64
+compiler=Ubuntu GCC 11.4.0
+cmake=3.22.1
+
+开始前工作区存在四组未跟踪历史证据目录，均由项目所有者保留；本轮不覆盖、不截断、
+不删除。根目录 AGENTS.md、docs/PROJECT_SPEC.md、docs/PLANS.md 和
+docs/milestones/M7.md 已完整阅读。

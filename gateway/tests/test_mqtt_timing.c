@@ -102,7 +102,11 @@ int main(int argc, char **argv)
                 snapshot.records_acked == 1 &&
                 snapshot.puback_matched == 1 &&
                 snapshot.puback_unexpected == 0 &&
-                snapshot.buffered_records == 0 && !snapshot.failed) {
+                snapshot.buffered_records == 0 && !snapshot.failed &&
+                snapshot.reactor_enabled &&
+                snapshot.reactor_socket_events > 0 &&
+                snapshot.reactor_loop_read_calls > 0 &&
+                snapshot.reactor_loop_write_calls > 0) {
                 result = 0;
             }
             break;

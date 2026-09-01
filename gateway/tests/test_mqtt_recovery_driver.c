@@ -107,9 +107,27 @@ int main(int argc, char **argv)
         if (strcmp(argv[6], "drain") == 0 &&
             snapshot.spool_pending_records == 0 && !snapshot.in_flight) {
             printf("DRIVER_DRAINED last_acked_seq=%" PRIu64
-                   " batches_acked=%" PRIu64 "\n",
-                   snapshot.last_acked_gateway_seq, snapshot.batches_acked);
-            result = 0;
+                   " batches_acked=%" PRIu64
+                   " reactor_enabled=%d epoll_waits=%" PRIu64
+                   " wake_events=%" PRIu64 " socket_events=%" PRIu64
+                   " loop_read=%" PRIu64 " loop_write=%" PRIu64
+                   " loop_misc=%" PRIu64 "\n",
+                   snapshot.last_acked_gateway_seq, snapshot.batches_acked,
+                   snapshot.reactor_enabled ? 1 : 0,
+                   snapshot.reactor_epoll_waits,
+                   snapshot.reactor_wake_events,
+                   snapshot.reactor_socket_events,
+                   snapshot.reactor_loop_read_calls,
+                   snapshot.reactor_loop_write_calls,
+                   snapshot.reactor_loop_misc_calls);
+            if (snapshot.reactor_enabled &&
+                snapshot.reactor_epoll_waits > 0 &&
+                snapshot.reactor_wake_events > 0 &&
+                snapshot.reactor_socket_events > 0 &&
+                snapshot.reactor_loop_read_calls > 0 &&
+                snapshot.reactor_loop_write_calls > 0) {
+                result = 0;
+            }
             break;
         }
         if (strcmp(argv[6], "drain") == 0 && ++loops >= 2000U) {

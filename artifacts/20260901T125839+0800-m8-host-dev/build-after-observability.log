@@ -1,0 +1,41 @@
+Script started on 2026-09-01 12:59:23+08:00 [<not executed on terminal>]
+[35m[1mConsolidate compiler generated dependencies of target gateway_core[0m
+[ 31%] Built target gateway_core
+[35m[1mConsolidate compiler generated dependencies of target test_config[0m
+[35m[1mConsolidate compiler generated dependencies of target test_log[0m
+[35m[1mConsolidate compiler generated dependencies of target test_lifecycle[0m
+[35m[1mConsolidate compiler generated dependencies of target test_can_receiver[0m
+[35m[1mConsolidate compiler generated dependencies of target gatewayd[0m
+[35m[1mConsolidate compiler generated dependencies of target test_vehicle_decoder[0m
+[35m[1mConsolidate compiler generated dependencies of target test_error_record[0m
+[35m[1mConsolidate compiler generated dependencies of target test_ring_buffer[0m
+[35m[1mConsolidate compiler generated dependencies of target test_pipeline[0m
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_timing[0m
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_reactor[0m
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_sink[0m
+[ 36%] Built target test_config
+[ 38%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+[35m[1mConsolidate compiler generated dependencies of target test_spool[0m
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_integration[0m
+[ 45%] Built target test_log
+[ 50%] Built target test_lifecycle
+[ 54%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o[0m
+[ 54%] Built target test_ring_buffer
+[ 59%] Built target test_can_receiver
+[ 63%] Built target test_vehicle_decoder
+[ 68%] Built target test_error_record
+[35m[1mConsolidate compiler generated dependencies of target test_mqtt_recovery_driver[0m
+[ 72%] Built target test_pipeline
+[ 77%] Built target test_mqtt_reactor
+[ 79%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o[0m
+[ 84%] Built target test_spool
+[ 88%] Built target test_mqtt_sink
+[ 93%] Built target test_mqtt_recovery_driver
+[ 95%] [32m[1mLinking C executable gatewayd[0m
+[ 97%] [32m[1mLinking C executable test_mqtt_timing[0m
+[100%] [32m[1mLinking C executable test_mqtt_integration[0m
+[100%] Built target test_mqtt_timing
+[100%] Built target test_mqtt_integration
+[100%] Built target gatewayd
+
+Script done on 2026-09-01 12:59:24+08:00 [COMMAND_EXIT_CODE="0"]

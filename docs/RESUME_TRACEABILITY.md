@@ -9,7 +9,9 @@ DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 
 真实i.MX6ULL上用物理CAN输入连接Windows Broker，完成1000批连续subscriber数据及
 Broker/gateway PUBACK对账，门禁已为`MET`。M7随后在真实i.MX6ULL ext4 spool和Windows
 Broker上完成断线、一次`kill -9`、同spool重启补传及损坏恢复，门禁也已为`MET`。这些
-仍是单次受控功能验证，不支持“完整网关”、掉电、性能或可靠性结论。只允许使用下表
+仍是单次受控功能验证，不支持“完整网关”、掉电、性能或可靠性结论。M8现已有条件式
+reactor源码、离线专项和ARMv7构建证据，但真实Broker等价恢复及目标运行尚未执行，门禁
+为`NOT MET`。只允许使用下表
 明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
@@ -22,7 +24,7 @@ Broker上完成断线、一次`kill -9`、同spool重启补传及损坏恢复，
 | Ubuntu x86_64 loopback 上的 libmosquitto QoS 1 单 in-flight batch | M6 `mqtt_sink`、配置、validator | 实际Broker、1000 batch、匹配PUBACK和subscriber seq | M6 host/ASan及loopback集成run | libmosquitto 2.0.11；1000/1000匹配PUBACK；seq 1～1000无缺失/重复 | 是，必须注明host loopback，不能写板端/完整链路 |
 | i.MX6ULL物理CAN到Windows LAN Broker的QoS 1基线 | M6 ARM构建、私有目标库、配置和validator | 真实板端、物理CAN、1000 batch、PUBACK及原始证据复核 | M6 LAN run及2026-09-01独立gate review | subscriber 1000批/115335条连续记录；gateway/Broker 1033次publish/PUBACK一致 | 是，必须注明单次功能门禁，不写性能、时延或可靠性 |
 | 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
-| epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor 和 API 兼容性记录 | 与 M7 等价的 reactor/重连/退出测试 | M8 目标 run | 未测量 | 否 |
+| epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 preflight/离线/ARM已有；真实Broker与目标run NOT RUN | API 5/5、离线专项2/2、ARM构建PASS；真实行为未测量 | 否 |
 | BusyBox 开机启动和异常退出恢复 | M9 init/supervisor/config | 启动和受控 crash/restart | M9 板端 run | 未测量 | 否 |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 工具和精确配置 | 经批准的压力/断网/稳定性流程 | M10 报告 | 未测量 | 否 |
 
@@ -146,3 +148,17 @@ M7总门禁为`MET`。
 queue summary，正常退出phase的queue drop为0；CAN最终为ERROR-WARNING、berr rx102；
 正确UTC、真实掉电、性能、介质寿命、容量/compaction和长期可靠性均未验证。M8及后续
 没有开始，也未获批准。
+
+M8开始前证据为`artifacts/20260901T125544+0800-m8-preflight/`：M7门禁为`MET`，并以
+实际ARMv7 libmosquitto 2.0.11头文件/动态库确认external-loop API 5/5。开发证据
+`artifacts/20260901T125839+0800-m8-host-dev/`和ASan+UBSan证据
+`artifacts/20260901T130155+0800-m8-asan-ubsan/`的M8专项均2/2 PASS；受限沙箱全量均
+16/17，唯一失败是PF_CAN环境限制。ARM证据
+`artifacts/20260901T130048+0800-m8-arm-cross/`最终warning-clean构建PASS、无RPATH/
+RUNPATH并引用external-loop符号5/5；binary SHA256为
+`2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b`。
+
+本机Broker/M7等价恢复审批记录为
+`artifacts/20260901T125959+0800-m8-reactor-recovery-not-run/`，实际状态`NOT RUN`；
+i.MX6ULL部署/运行也为`NOT RUN`。因此不能写“epoll reactor已保持M7行为”或任何板端、
+性能、时延、可靠性结论，表中M8候选描述继续为“否”。M9及后续没有开始。

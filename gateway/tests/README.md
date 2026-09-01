@@ -76,5 +76,10 @@ M7新增`test_spool`和`test_mqtt_recovery_validator`并注册到默认CTest：
 
 `test_mqtt_recovery_driver`只构建、不注册到默认CTest；
 `tools/mqtt/run_m7_recovery_integration.py`会实际启停loopback Broker/subscriber并发送
-`SIGKILL`，只有获得明确批准后才能显式运行。本项目实际Broker位于Windows，所以当前
-这些跨进程测试为`NOT RUN`，不能用离线单测替代。M8 epoll不属于这些测试。
+`SIGKILL`，只有获得明确批准后才能显式运行。M7最终门禁使用真实Windows Broker/板端
+证据而不是该脚本；M8将该驱动扩展为reactor计数断言，以验证external-loop保持M7行为。
+当前M8本机跨进程回归因批准未取得为`NOT RUN`，不能用离线单测替代。
+
+M8新增`test_mqtt_reactor`，离线覆盖epoll/eventfd/timerfd创建、wake、timer和client
+rebind；`test_mqtt_integration`、timing和恢复驱动新增实际socket read/write计数门禁。
+真正的MQTT socket路径仍必须显式启动Broker后验证。

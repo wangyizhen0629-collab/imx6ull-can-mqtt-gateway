@@ -25,9 +25,10 @@
 ## D-004：epoll 保持条件式设计
 
 - 日期：2026-08-28
-- 状态：推迟到 M8
+- 状态：M8 API条件已满足并选择实现；退出门禁待真实等价测试
 - 原因：目标 libmosquitto 版本和 external loop API 尚未确认。
-- 影响：先建立 M6/M7 基线；如果目标集成无法合理验证，就从实现和简历中删除 epoll。
+- 影响：M6/M7基线已建立。M8已确认目标库API并实现reactor；只有真实等价测试通过后
+  才能关闭M8或写入简历，否则必须回退并删除epoll表述。
 
 ## D-005：证据先于项目和简历结论
 
@@ -447,6 +448,25 @@
   性能、介质寿命、容量/compaction及长期可靠性保持`NOT RUN`。
 - 影响：M7改为`MET`，只允许声称一次受控的板端断线/进程崩溃/损坏恢复功能门禁通过。
   本决定不批准、不实现也不测试M8 external-loop/epoll或M9/M10。
+
+## D-032：目标libmosquitto API满足条件，M8采用epoll external reactor
+
+- 日期：2026-09-01
+- 状态：设计与离线实现已接受；M8总门禁`NOT MET`
+- API依据：`artifacts/20260901T125544+0800-m8-preflight/`对与M7板端运行库SHA256
+  相同的ARMv7 libmosquitto 2.0.11核对头文件和动态符号，`mosquitto_socket`、
+  `mosquitto_loop_read`、`mosquitto_loop_write`、`mosquitto_loop_misc`以及
+  `mosquitto_want_write`均5/5存在。
+- 决定：新增独立reactor，由epoll统一监控MQTT socket、eventfd和timerfd；eventfd承载
+  本地操作唤醒，timerfd周期调用`loop_misc`，socket按`want_write`动态订阅EPOLLOUT。
+  M7的单in-flight、匹配PUBACK后推进cursor、断线重建client和spool恢复语义不改。
+- 离线证据：Ubuntu warning-clean与ASan+UBSan的M8专项均2/2 PASS；ARMv7 warning-clean
+  最终binary无RPATH/RUNPATH，并真实引用五个external-loop符号。早期ARM查找失败和
+  RPATH失败产物均保留，不能改写成PASS。
+- 未满足项：本机临时Broker/M7等价恢复测试因尚无知情后的明确批准为`NOT RUN`；目标板
+  部署/运行也为`NOT RUN`。在真实socket、重连、SIGKILL恢复和退出行为完成前，不能仅凭
+  API符号/交叉构建认定保持M7行为。
+- 影响：M8保持`NOT MET`，M9不得开始；不产生性能、时延、可靠性或板端reactor结论。
 
 ## 本次规范冲突修正清单
 

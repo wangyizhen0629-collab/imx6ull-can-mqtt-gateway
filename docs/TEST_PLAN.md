@@ -224,7 +224,9 @@ warning-clean全量CTest16/16、ASan+UBSan全量16/16、M7标签3/3及ARMv7 warn
 M7门禁为`MET`。SIGKILL阶段按设计没有最终queue summary，不能把该计数直接填成0；正常
 退出的phase2/phase3为0且gateway seq无缺失。CAN最终为ERROR-WARNING、berr rx102，
 内核RX errors/dropped为0/0，不能写成干净物理层结果。正确UTC、真实掉电、性能、寿命、
-compaction和长期可靠性仍为`NOT RUN`。M8 external-loop/epoll等价测试未执行，也未获批准。
+compaction和长期可靠性仍为`NOT RUN`。项目所有者随后已授权M8；目标API、离线专项和
+ARMv7构建已通过，但本机真实Broker/M7等价恢复测试因缺少知情后的明确操作批准为
+`NOT RUN`，目标板reactor运行也为`NOT RUN`。两项不能由API符号或历史M7结果替代。
 
 ## 统一指标定义
 

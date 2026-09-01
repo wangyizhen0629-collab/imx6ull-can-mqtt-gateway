@@ -1,0 +1,12 @@
+Script started on 2026-09-01 13:01:05+08:00 [<not executed on terminal>]
+-- Configuring done
+-- Generating done
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_TOOLCHAIN_FILE
+
+
+-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-arm-cross
+
+Script done on 2026-09-01 13:01:05+08:00 [COMMAND_EXIT_CODE="0"]

@@ -15,4 +15,6 @@ M6 使用 libmosquitto，不手写 MQTT 协议。`mosquitto-m6-local.conf` 只�
 `test_validate_m6_batches.py` 是不访问网络、不启动 Broker 的 M6 回归测试，覆盖跨 batch
 多记录连续性、gap/duplicate 拒绝，以及布尔值不能充当整数的边界。
 
-该工具不测试断线、重连、spool、去重恢复或 epoll；这些仍属于 M7/M8。
+该M6 validator不测试断线、重连、spool、去重恢复或epoll。M7恢复validator和显式
+恢复驱动负责恢复语义；M8在同一驱动上增加external-loop reactor计数断言。所有会启停
+Broker或发送进程信号的测试仍须先取得明确批准。
