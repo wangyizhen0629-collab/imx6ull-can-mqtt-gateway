@@ -1,0 +1,1 @@
+cmake -S . -B build/m9-host-final -DCMAKE_BUILD_TYPE=Debug

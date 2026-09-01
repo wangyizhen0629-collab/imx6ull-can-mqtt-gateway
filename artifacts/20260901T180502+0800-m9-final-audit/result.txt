@@ -1,0 +1,6 @@
+git_diff_check_exit=0
+ash_syntax_exit=0
+inittab_entry_exit=0
+systemd_forbidden_scan_exit=0
+sensitive_scan_exit=0
+manifest_recheck_exit=0

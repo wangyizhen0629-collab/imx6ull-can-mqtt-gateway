@@ -115,7 +115,9 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 每次 `can0` 状态修改、STM32 烧录、Broker 启停、进程 kill、`/etc`/inittab 修改、
   reboot、压力测试和 24 小时测试由谁在执行前授权？
 - 长时间运行 artifact 的备份和保留策略是什么？
-- M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
+- 已选择：M9使用BusyBox `inittab` respawn启动仓库内前台supervisor，不依赖未知的镜像
+  supervisor，也不使用systemd。待真实目标板确认inittab现状、是否存在重复服务项以及
+  PID 1 reload/reboot的准确流程。
 
 ## M1～M7 后续验证边界
 
@@ -193,7 +195,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
 - 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
   和长期可靠性仍未运行。不得用M8短时功能门禁回答这些问题。
-- M9的BusyBox init/respawn方案仍待项目所有者另行授权；M8关闭不自动开始M9。
+- M9已获本轮授权并完成仓库实现、主机/ASan+UBSan和ARM交叉验证；真实i.MX6ULL `/etc`
+  安装、BusyBox 1.31.1开机、restart、异常拉起和风暴冷却仍为`NOT RUN`。当前Ubuntu没有
+  目标端点/凭据/已验证传输路径；需在可访问目标板的环境中再次确认具体`/etc`、init、
+  reboot和进程控制范围后执行，未执行前M9总门禁保持`NOT MET`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

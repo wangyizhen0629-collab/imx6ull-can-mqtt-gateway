@@ -182,5 +182,7 @@ M6于2026-09-01达到门禁。正确UTC、性能、时延和长期可靠性仍�
 M7已用真实Windows Broker、i.MX6ULL ext4 spool和一次受控`kill -9`完成断线补传及
 tail/internal/state损坏恢复；去重后35644条unique seq无缺失，门禁为`MET`。M8已确认
 目标libmosquitto 2.0.11具备所需external-loop API，并实现epoll/eventfd/timerfd reactor；
-Ubuntu离线专项和ARMv7 warning-clean构建通过。真实Broker下与M7等价的reactor恢复测试
-及目标板运行仍为`NOT RUN`，所以M8门禁当前为`NOT MET`。M9及后续尚未开始。
+Ubuntu/ARM和真实Windows Broker+i.MX6ULL恢复门禁通过，去重后27434条seq连续，M8为
+`MET`。M9已实现BusyBox inittab/前台supervisor并通过主机、sanitizer和ARM构建验证；
+真实目标板`/etc`安装、开机和异常拉起仍为`NOT RUN`，所以M9总门禁为`NOT MET`。M10
+尚未开始。

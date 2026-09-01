@@ -1,0 +1,9 @@
+README.md
+deploy/README.md
+docs/DECISION_LOG.md
+docs/OPEN_QUESTIONS.md
+docs/PLANS.md
+docs/PROJECT_SPEC.md
+docs/RESUME_TRACEABILITY.md
+docs/TEST_PLAN.md
+gateway/CMakeLists.txt

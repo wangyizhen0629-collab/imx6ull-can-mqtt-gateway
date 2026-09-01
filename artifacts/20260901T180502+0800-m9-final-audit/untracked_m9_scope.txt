@@ -1,0 +1,12 @@
+deploy/config/gatewayd.env.example
+deploy/init.d/gatewayd
+deploy/inittab/gatewayd.respawn
+deploy/tests/fixtures/fake_gatewayd.sh
+deploy/tests/test_gatewayd_supervisor.sh
+docs/milestones/M9.md
+artifacts/20260901T175107+0800-m9-preflight
+artifacts/20260901T175412+0800-m9-host-final
+artifacts/20260901T175610+0800-m9-asan-ubsan
+artifacts/20260901T175700+0800-m9-arm-cross
+artifacts/20260901T175900+0800-m9-busybox-supervisor-final
+artifacts/20260901T180003+0800-m9-board-not-run

@@ -57,6 +57,12 @@
   51523条raw record、24089条raw duplicate、27434条unique seq，missing=0、effective
   duplicate=0；Broker/gateway/subscriber均为323次PUBLISH/PUBACK。正确UTC、真实掉电、
   性能和长期可靠性仍为`NOT RUN`；M9及后续未开始。
+- M9已完成BusyBox部署源码和可在主机执行的验证，但总门禁仍为`NOT MET`。仓库选择
+  `inittab` respawn前台supervisor，具备受控restart、stop/start、异常拉起和连续快速
+  失败冷却；Ubuntu warning-clean及ASan+UBSan全量CTest均18/18，M9专项1/1，ARMv7
+  warning-clean构建和无RPATH/RUNPATH审计通过。真实i.MX6ULL的`/etc`安装、BusyBox
+  1.31.1、开机启动、restart、异常退出恢复和风暴防护均为`NOT RUN`，因此不能关闭M9。
+  M10及后续未开始。
 
 ## Milestone 总表
 
@@ -75,7 +81,7 @@
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 2026-09-01 已通过；Ubuntu/ARM构建与真实i.MX6ULL/Windows Broker重连、SIGKILL/state恢复、reactor计数及validator PASS |
-| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
+| M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 源码/主机/ARM PASS；真实目标板启动与恢复 NOT RUN；总门禁 NOT MET |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
 
 ## M2 完成记录
@@ -460,6 +466,36 @@ epoll以及M9/M10均未实现、未测试、未批准。
 11. 正确UTC、真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、
     compaction和长期可靠性仍为`NOT RUN`。M9及后续未开始，进入M9仍需项目所有者另行
     授权。
+
+## M9 当前记录
+
+1. 用户在M8关闭后单独授权只执行M9。前置run
+   `artifacts/20260901T175107+0800-m9-preflight/`确认HEAD与origin一致，M8最终validator
+   和201项manifest均PASS，M8门禁为`MET`，M10未开始。
+2. M9选择BusyBox `inittab`的respawn动作运行前台supervisor，不使用systemd，也不把
+   脚本命名成rcS自动扫描的`S??gatewayd`。supervisor只启动一个`gatewayd --run-mqtt`，
+   处理TERM/HUP、PID/lock、stop/start和受控restart。
+3. 快速失败达到可配置阈值后进入固定cooldown，稳定运行达到阈值后重置计数；该设计
+   避免无间隔respawn风暴，但真实目标BusyBox行为仍须上板验证。
+4. 主机证据`artifacts/20260901T175412+0800-m9-host-final/`为warning-clean构建和沙箱外
+   全量CTest18/18、M9专项1/1。首次缺少显式libmosquitto路径的配置exit1，以及沙箱内
+   PF_CAN/TCP权限导致的16/18均原样保留。
+5. `artifacts/20260901T175610+0800-m9-asan-ubsan/`为ASan+UBSan全量18/18；LSan因ptrace
+   环境为`NOT RUN`。`artifacts/20260901T175900+0800-m9-busybox-supervisor-final/`保存
+   BusyBox ash完整trace：异常退出42后重拉、restart更换PID、stop/start和3次快速失败
+   后2秒cooldown均通过。
+6. ARM run `artifacts/20260901T175700+0800-m9-arm-cross/`保留相对SDK路径配置失败和首次
+   成功构建却含构建机RPATH的审计失败；最终以`CMAKE_SKIP_RPATH=TRUE`重建，warning-clean、
+   ARMv7 hard-float、目标解释器/依赖和无RPATH/RUNPATH均PASS。binary SHA256为
+   `6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958`。
+7. `artifacts/20260901T180003+0800-m9-board-not-run/`明确记录真实目标板门禁为`NOT RUN`：
+   当前Ubuntu会话没有目标板端点/凭据/已验证传输路径，未修改`/etc`、init、进程或执行
+   reboot。所需条件是目标访问路径、指定操作批准及脱敏原始板端证据。
+8. 正式artifact前两次直接BusyBox开发测试没有进入唯一run，明确不作为门禁证据；所有
+   结论只引用后续正式run。M10压力、性能、`/proc`和24小时测试均未实现或执行。
+
+因此M9源码/主机/ARM验证为PASS，但“开机启动和异常拉起”退出条件没有目标板真实证据，
+M9总门禁为 **NOT MET**。本轮停止在M9，不进入M10。
 
 ## M1 完成记录
 

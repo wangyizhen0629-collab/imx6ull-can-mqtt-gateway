@@ -1,0 +1,7 @@
+configure_attempt1_exit=1
+configure_attempt2_exit=0
+build_exit=0
+ctest_sandbox_exit=8
+ctest_outside_sandbox_exit=0
+warning_clean=YES
+final_result=PASS

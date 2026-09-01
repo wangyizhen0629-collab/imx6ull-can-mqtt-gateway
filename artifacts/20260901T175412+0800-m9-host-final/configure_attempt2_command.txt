@@ -1,0 +1,1 @@
+cmake -S . -B build/m9-host-final -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_MOSQUITTO_ROOT=/tmp/imx6ull-m6-mosquitto-root/usr

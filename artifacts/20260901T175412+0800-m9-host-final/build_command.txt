@@ -1,0 +1,1 @@
+cmake --build build/m9-host-final --parallel 2

@@ -1,0 +1,16 @@
+build.exit.txt: 成功
+build.stderr.txt: 成功
+build.stdout.txt: 成功
+build_command.txt: 成功
+configure.exit.txt: 成功
+configure.stderr.txt: 成功
+configure.stdout.txt: 成功
+configure_command.txt: 成功
+ctest.exit.txt: 成功
+ctest.stderr.txt: 成功
+ctest.stdout.txt: 成功
+ctest_command.txt: 成功
+environment.txt: 成功
+input_sha256.txt: 成功
+result.txt: 成功
+test_report.md: 成功

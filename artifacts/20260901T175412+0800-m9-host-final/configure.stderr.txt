@@ -1,0 +1,5 @@
+CMake Error at gateway/CMakeLists.txt:22 (message):
+  M6 requires libmosquitto development files.  Install them or set
+  GATEWAY_MOSQUITTO_ROOT to a matching target root.
+
+

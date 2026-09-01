@@ -143,6 +143,18 @@ if(BUILD_TESTING)
     set_tests_properties(test_mqtt_recovery_validator PROPERTIES
                          LABELS "M7;unit")
 
+    find_program(GATEWAY_BUSYBOX_EXECUTABLE NAMES busybox)
+    if(NOT GATEWAY_BUSYBOX_EXECUTABLE)
+        message(FATAL_ERROR "M9 deployment tests require BusyBox")
+    endif()
+    add_test(
+        NAME test_busybox_gatewayd_supervisor
+        COMMAND ${GATEWAY_BUSYBOX_EXECUTABLE} ash
+                ${PROJECT_SOURCE_DIR}/deploy/tests/test_gatewayd_supervisor.sh
+    )
+    set_tests_properties(test_busybox_gatewayd_supervisor PROPERTIES
+                         LABELS "M9;deploy")
+
     # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
     # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。
     add_executable(test_mqtt_integration tests/test_mqtt_integration.c)

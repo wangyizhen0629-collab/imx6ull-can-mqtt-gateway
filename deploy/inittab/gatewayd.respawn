@@ -1,0 +1,3 @@
+# BusyBox init 在 sysinit/wait 动作完成后进入 respawn 阶段。
+# 将下一行合并到目标板 /etc/inittab；不要把本文件路径直接当成 include。
+null::respawn:/etc/init.d/gatewayd supervise

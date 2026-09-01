@@ -1,0 +1,4 @@
+result=PASS
+m8_gate=MET
+m9_authorized_by_user=YES
+m10_started=NO

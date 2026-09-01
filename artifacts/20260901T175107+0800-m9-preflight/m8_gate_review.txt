@@ -1,0 +1,39 @@
+M8 gate source: docs/milestones/M8.md
+# M8：条件式 epoll MQTT network reactor
+
+## 当前状态
+
+- 前置M7门禁：**MET**
+- 目标libmosquitto external-loop API：**PASS**
+- epoll/eventfd/timerfd reactor源码与离线专项：**PASS**
+- Ubuntu warning-clean / M8专项 / 全量CTest：**PASS（2/2；17/17）**
+- ASan+UBSan M8专项：**PASS（2/2）**
+- ARMv7 warning-clean交叉构建/API/RPATH：**PASS**
+- 真实Windows Broker + i.MX6ULL + 物理CAN：**PASS**
+- M7等价断线/SIGKILL/state恢复与严格validator：**PASS**
+- M8总退出门禁：**MET**
+- M9及后续：**未开始**
+
+M8只替换MQTT网络推进方式，不增加M9的init、respawn、supervisor或systemd功能。
+本阶段结论只表示一次受控功能门禁通过，不表示正确UTC、真实掉电、性能、时延或长期
+可靠性已经验证。
+Final validator:
+﻿result=PASS
+selftest_exit=0
+validator_exit=0
+raw_batches=323
+raw_records=51523
+raw_duplicate_records=24089
+unique_batch_seq=189
+unique_gateway_seq=27434
+first_gateway_seq=1
+last_gateway_seq=27434
+missing_gateway_seq=0
+effective_duplicate_records=0
+input_sha256=76be0e3567f8b12fc22f40f8e2695ae332b0f1d065f50268079ed7ae9c6ea3a7
+Final manifest check:
+﻿checked_at=2026-09-01T17:28:34.7468918+08:00
+manifest_entries=201
+mismatches=0
+manifest_sha256=e22fb9773caf41558859de79cfe650a432a128fb1a44fd7a8793b68e0a6f7a02
+result=PASS

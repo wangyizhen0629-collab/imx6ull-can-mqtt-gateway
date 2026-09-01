@@ -1,0 +1,38 @@
+arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2020.02-gee85cab) 7.5.0
+build/m9-arm-cross/gateway/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped
+150cee2aa4f9ec3ca9c4d1f6f4f3db67e35936a37e4fa410aa091ef6ca4ffc6b  build/m9-arm-cross/gateway/gatewayd
+b75f599efe4582f4ff57437f391269b1d9ac73ab67ad1681e70232c0277c65a1  deploy/init.d/gatewayd
+7ce294625dcb80a59fb720960c1a2993453ccc6d027ca7021e7ce631573949bb  deploy/inittab/gatewayd.respawn
+928a19f8b50ca7dfe144cc38c9ee8705aeea3863a15d35763fe35f46624e35d9  deploy/config/gatewayd.env.example
+      [Requesting program interpreter: /lib/ld-linux-armhf.so.3]
+
+Dynamic section at offset 0x11ef8 contains 28 entries:
+  标记        类型                         名称/值
+ 0x00000001 (NEEDED)                     共享库：[libpthread.so.0]
+ 0x00000001 (NEEDED)                     共享库：[libmosquitto.so.1]
+ 0x00000001 (NEEDED)                     共享库：[libc.so.6]
+ 0x0000000f (RPATH)                      Library rpath: [/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib]
+ 0x0000000c (INIT)                       0x11964
+ 0x0000000d (FINI)                       0x20408
+ 0x00000019 (INIT_ARRAY)                 0x31ef0
+ 0x0000001b (INIT_ARRAYSZ)               4 (bytes)
+ 0x0000001a (FINI_ARRAY)                 0x31ef4
+ 0x0000001c (FINI_ARRAYSZ)               4 (bytes)
+ 0x00000004 (HASH)                       0x10190
+ 0x6ffffef5 (GNU_HASH)                   0x104bc
+ 0x00000005 (STRTAB)                     0x10ee0
+ 0x00000006 (SYMTAB)                     0x10860
+ 0x0000000a (STRSZ)                      1521 (bytes)
+ 0x0000000b (SYMENT)                     16 (bytes)
+ 0x00000015 (DEBUG)                      0x0
+ 0x00000003 (PLTGOT)                     0x32000
+ 0x00000002 (PLTRELSZ)                   800 (bytes)
+ 0x00000014 (PLTREL)                     REL
+ 0x00000017 (JMPREL)                     0x11644
+ 0x00000011 (REL)                        0x11634
+ 0x00000012 (RELSZ)                      16 (bytes)
+ 0x00000013 (RELENT)                     8 (bytes)
+ 0x6ffffffe (VERNEED)                    0x115a4
+ 0x6fffffff (VERNEEDNUM)                 2
+ 0x6ffffff0 (VERSYM)                     0x114d2
+ 0x00000000 (NULL)                       0x0

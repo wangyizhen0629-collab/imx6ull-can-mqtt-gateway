@@ -483,6 +483,23 @@
 - 影响：第三个run保持FAIL；只有全新spool、完整重跑且validator exit0的第四个run用于
   M8 `MET`结论。
 
+## D-034：M9采用BusyBox inittab respawn与前台节流supervisor
+
+- 日期：2026-09-01
+- 状态：已接受实现；M9总门禁`NOT MET`
+- 前提：目标系统已确认使用BusyBox 1.31.1且无systemd；M8门禁已由
+  `artifacts/20260901T175107+0800-m9-preflight/`复核为`MET`。
+- 决定：把`null::respawn:/etc/init.d/gatewayd supervise`合并进目标inittab，由BusyBox
+  init在sysinit/wait之后运行唯一前台supervisor。supervisor管理唯一gatewayd子进程，
+  提供HUP受控restart、临时disabled stop/start、TERM转发、PID核验及快速失败阈值后的
+  cooldown。不使用systemd，也不同时注册rcS `S??gatewayd`入口。
+- 主机依据：warning-clean和ASan+UBSan全量CTest均18/18，M9专项1/1；独立BusyBox ash
+  trace实际覆盖异常退出42重拉、PID替换、stop/start和3次快速失败后2秒cooldown。
+- 目标依据：ARMv7 warning-clean构建、ELF/解释器/依赖和无RPATH/RUNPATH审计PASS；但
+  真实i.MX6ULL部署、`/etc`、BusyBox 1.31.1 init、开机/restart/异常恢复均`NOT RUN`。
+- 影响：部署方案和可执行测试骨架已经冻结，但没有目标板开机与异常拉起证据前，M9不得
+  标为`MET`，对应简历表述仍不可用。M10不得开始。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

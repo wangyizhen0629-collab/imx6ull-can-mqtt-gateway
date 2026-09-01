@@ -1,0 +1,6 @@
+command.txt: 成功
+environment_and_inputs.txt: 成功
+test.exit.txt: 成功
+test.stdout.txt: 成功
+test.trace.txt: 成功
+test_report.md: 成功

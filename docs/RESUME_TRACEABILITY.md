@@ -25,7 +25,7 @@ ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成
 | i.MX6ULL物理CAN到Windows LAN Broker的QoS 1基线 | M6 ARM构建、私有目标库、配置和validator | 真实板端、物理CAN、1000 batch、PUBACK及原始证据复核 | M6 LAN run及2026-09-01独立gate review | subscriber 1000批/115335条连续记录；gateway/Broker 1033次publish/PUBACK一致 | 是，必须注明单次功能门禁，不写性能、时延或可靠性 |
 | 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 Ubuntu/ARM证据及最终Windows/i.MX6ULL gate | API兼容、全量17/17、M8/ASan/UBSan 2/2；真实323 batch、unique seq 1～27434、missing/effective duplicate 0，reactor必需计数非零 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写性能、时延或长期可靠性 |
-| BusyBox 开机启动和异常退出恢复 | M9 init/supervisor/config | 启动和受控 crash/restart | M9 板端 run | 未测量 | 否 |
+| BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM PASS；板端run NOT RUN | 主机18/18、专项1/1；真实板端未测量 | 否，必须等目标开机/恢复门禁 |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 工具和精确配置 | 经批准的压力/断网/稳定性流程 | M10 报告 | 未测量 | 否 |
 
 一行满足条件后，只能用已有不可变 run 计算出的数值替换“未测量”，并补充精确源码、
@@ -173,4 +173,18 @@ validator对51523条raw record得到24089条raw duplicate、27434条unique seq�
 effective duplicate0。M8为`MET`，表中受限epoll表述可用。
 
 正确UTC、真实掉电、性能/时延/吞吐、CPU/RSS、介质寿命、容量/compaction和长期可靠性
-仍为`NOT RUN`。M9及后续没有开始。
+仍为`NOT RUN`。该段只描述M8；后续M9状态见下节。
+
+M9前置复核`artifacts/20260901T175107+0800-m9-preflight/`确认M8为`MET`。M9新增BusyBox
+inittab respawn前台supervisor、受控restart、stop/start、异常重拉和快速失败cooldown。
+主机run`artifacts/20260901T175412+0800-m9-host-final/`warning-clean且沙箱外全量18/18，
+ASan+UBSan run`artifacts/20260901T175610+0800-m9-asan-ubsan/`也是18/18；M9标签均1/1。
+专项trace`artifacts/20260901T175900+0800-m9-busybox-supervisor-final/`实际覆盖异常退出42、
+restart PID替换、stop/start和3次快速失败后2秒冷却。
+
+ARM run`artifacts/20260901T175700+0800-m9-arm-cross/`最终warning-clean、ARMv7 hard-float、
+解释器/依赖正确且无RPATH/RUNPATH，binary SHA256为
+`6e8729417b3dc40c10a413459de5eca9be43ce58dfcc8a3b12e91f5c8d7ef958`。真实i.MX6ULL
+部署、`/etc`、BusyBox 1.31.1 init、开机、restart和异常拉起全部记录在
+`artifacts/20260901T180003+0800-m9-board-not-run/`为`NOT RUN`，所以表中M9简历表述仍
+不可用，总门禁`NOT MET`。M10没有开始。

@@ -42,8 +42,10 @@ M7 已实现固定格式append-only spool、CRC、原子PUBACK cursor、尾部/s
 seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UBSan全量16/16及ARMv7
 交叉构建通过；真实i.MX6ULL ext4 spool、Windows Broker断线、一次`kill -9`、补传及
 损坏恢复均有证据，M7门禁为`MET`。M8随后确认目标libmosquitto external-loop API并
-实现epoll/eventfd/timerfd reactor；离线专项和ARMv7构建通过，但真实Broker等价恢复及
-目标板运行仍为`NOT RUN`，所以M8门禁当前为`NOT MET`。M9及后续尚未开始。
+实现epoll/eventfd/timerfd reactor；离线/ARM和真实Broker等价恢复均通过，M8为`MET`。
+M9已实现BusyBox inittab/前台supervisor、受控restart、异常重拉和风暴冷却，主机全量
+CTest/ASan+UBSan及ARM构建通过；真实目标板`/etc`、开机和异常恢复仍为`NOT RUN`，所以
+M9总门禁为`NOT MET`。M10尚未开始。
 
 ## Ubuntu 主机构建
 
@@ -86,4 +88,5 @@ Broker状态改动、进程kill或网络/CAN状态改动仍受仓库批准规则
 [docs/milestones/M5.md](docs/milestones/M5.md)，M6 执行记录在
 [docs/milestones/M6.md](docs/milestones/M6.md)，M7完成记录和M8当前记录分别在
 [docs/milestones/M7.md](docs/milestones/M7.md)、
-[docs/milestones/M8.md](docs/milestones/M8.md)。
+[docs/milestones/M8.md](docs/milestones/M8.md)，M9当前记录在
+[docs/milestones/M9.md](docs/milestones/M9.md)。

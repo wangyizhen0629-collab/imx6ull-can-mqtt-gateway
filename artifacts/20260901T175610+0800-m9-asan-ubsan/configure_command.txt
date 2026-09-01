@@ -1,0 +1,1 @@
+cmake -S . -B build/m9-asan-ubsan -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_ENABLE_SANITIZERS=ON -DGATEWAY_MOSQUITTO_ROOT=/tmp/imx6ull-m6-mosquitto-root/usr

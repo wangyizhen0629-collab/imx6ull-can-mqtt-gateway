@@ -1,0 +1,4 @@
+-- The C compiler identification is unknown
+-- Configuring incomplete, errors occurred!
+See also "/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m9-arm-cross/CMakeFiles/CMakeOutput.log".
+See also "/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m9-arm-cross/CMakeFiles/CMakeError.log".

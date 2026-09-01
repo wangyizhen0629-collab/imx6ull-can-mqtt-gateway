@@ -1,0 +1,16 @@
+ash_syntax.exit.txt: 成功
+ash_syntax.txt: 成功
+file_modes.txt: 成功
+git_diff_check.exit.txt: 成功
+git_diff_check.txt: 成功
+inittab_entry.txt: 成功
+manifest_recheck.exit.txt: 成功
+manifest_recheck.txt: 成功
+result.txt: 成功
+sensitive_matches.txt: 成功
+sensitive_scan.exit.txt: 成功
+systemd_forbidden_matches.txt: 成功
+systemd_forbidden_scan.exit.txt: 成功
+test_report.md: 成功
+tracked_scope.txt: 成功
+untracked_m9_scope.txt: 成功

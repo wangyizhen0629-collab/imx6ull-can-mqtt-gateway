@@ -1,0 +1,351 @@
+#!/bin/sh
+
+# BusyBox init 以 respawn 方式运行 supervise；脚本自身负责子进程重启节流。
+# 配置文件只允许由 root 管理，避免 source 任意用户可写的内容。
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+export PATH
+
+ENV_FILE=${GATEWAYD_ENV_FILE:-/etc/default/gatewayd}
+if [ -f "$ENV_FILE" ]; then
+    # shellcheck disable=SC1090
+    . "$ENV_FILE"
+fi
+
+GATEWAYD_BIN=${GATEWAYD_BIN:-/usr/bin/gatewayd}
+GATEWAYD_CONFIG=${GATEWAYD_CONFIG:-/etc/gatewayd/gateway.conf}
+GATEWAYD_RUN_DIR=${GATEWAYD_RUN_DIR:-/var/run/gatewayd}
+GATEWAYD_RESTART_LIMIT=${GATEWAYD_RESTART_LIMIT:-5}
+GATEWAYD_STABLE_SEC=${GATEWAYD_STABLE_SEC:-60}
+GATEWAYD_COOLDOWN_SEC=${GATEWAYD_COOLDOWN_SEC:-60}
+GATEWAYD_STOP_TIMEOUT_SEC=${GATEWAYD_STOP_TIMEOUT_SEC:-15}
+
+SUPERVISOR_PID_FILE=$GATEWAYD_RUN_DIR/supervisor.pid
+CHILD_PID_FILE=$GATEWAYD_RUN_DIR/gatewayd.pid
+DISABLED_FILE=$GATEWAYD_RUN_DIR/disabled
+LOCK_DIR=$GATEWAYD_RUN_DIR/supervisor.lock
+SCRIPT_PATH=$0
+
+log_message()
+{
+    timestamp=$(date -u '+%Y-%m-%dT%H:%M:%SZ' 2>/dev/null || printf '%s' unknown)
+    printf '%s gatewayd-supervisor[%s]: %s\n' "$timestamp" "$$" "$*"
+}
+
+fail()
+{
+    log_message "error=$*"
+    return 1
+}
+
+is_uint()
+{
+    case $1 in
+        ''|*[!0-9]*) return 1 ;;
+        *) return 0 ;;
+    esac
+}
+
+is_positive_uint()
+{
+    is_uint "$1" && [ "$1" -gt 0 ]
+}
+
+validate_settings()
+{
+    case $GATEWAYD_BIN in
+        /*) ;;
+        *) fail "GATEWAYD_BIN must be absolute"; return 1 ;;
+    esac
+    case $GATEWAYD_CONFIG in
+        /*) ;;
+        *) fail "GATEWAYD_CONFIG must be absolute"; return 1 ;;
+    esac
+    case $GATEWAYD_RUN_DIR in
+        /*) ;;
+        *) fail "GATEWAYD_RUN_DIR must be absolute"; return 1 ;;
+    esac
+    is_positive_uint "$GATEWAYD_RESTART_LIMIT" || {
+        fail "GATEWAYD_RESTART_LIMIT must be a positive integer"
+        return 1
+    }
+    is_uint "$GATEWAYD_STABLE_SEC" || {
+        fail "GATEWAYD_STABLE_SEC must be a non-negative integer"
+        return 1
+    }
+    is_positive_uint "$GATEWAYD_COOLDOWN_SEC" || {
+        fail "GATEWAYD_COOLDOWN_SEC must be a positive integer"
+        return 1
+    }
+    is_positive_uint "$GATEWAYD_STOP_TIMEOUT_SEC" || {
+        fail "GATEWAYD_STOP_TIMEOUT_SEC must be a positive integer"
+        return 1
+    }
+}
+
+read_pid()
+{
+    pid_file=$1
+    [ -r "$pid_file" ] || return 1
+    IFS= read -r candidate < "$pid_file" || return 1
+    is_positive_uint "$candidate" || return 1
+    printf '%s\n' "$candidate"
+}
+
+pid_is_running()
+{
+    kill -0 "$1" 2>/dev/null
+}
+
+supervisor_pid_is_safe()
+{
+    supervisor_pid=$1
+    pid_is_running "$supervisor_pid" || return 1
+    [ -r "/proc/$supervisor_pid/cmdline" ] || return 1
+    tr '\000' '\n' < "/proc/$supervisor_pid/cmdline" |
+        grep -F -x "$SCRIPT_PATH" >/dev/null 2>&1
+}
+
+wait_for_child_change()
+{
+    old_pid=$1
+    wanted_state=$2
+    remaining=$GATEWAYD_STOP_TIMEOUT_SEC
+
+    while [ "$remaining" -gt 0 ]; do
+        current_pid=$(read_pid "$CHILD_PID_FILE" 2>/dev/null || true)
+        case $wanted_state in
+            stopped)
+                if [ -z "$current_pid" ] || ! pid_is_running "$current_pid"; then
+                    return 0
+                fi
+                ;;
+            restarted)
+                if [ -n "$current_pid" ] && [ "$current_pid" != "$old_pid" ] &&
+                   pid_is_running "$current_pid"; then
+                    return 0
+                fi
+                ;;
+        esac
+        sleep 1
+        remaining=$((remaining - 1))
+    done
+    return 1
+}
+
+send_supervisor_hup()
+{
+    supervisor_pid=$(read_pid "$SUPERVISOR_PID_FILE" 2>/dev/null || true)
+    [ -n "$supervisor_pid" ] || {
+        fail "supervisor pid is unavailable"
+        return 1
+    }
+    supervisor_pid_is_safe "$supervisor_pid" || {
+        fail "refusing to signal unverified supervisor pid=$supervisor_pid"
+        return 1
+    }
+    kill -HUP "$supervisor_pid"
+}
+
+do_start()
+{
+    mkdir -p "$GATEWAYD_RUN_DIR" || return 1
+    rm -f "$DISABLED_FILE"
+    send_supervisor_hup || return 1
+    if wait_for_child_change "" restarted; then
+        log_message "action=start result=started"
+        return 0
+    fi
+    fail "start timed out"
+}
+
+do_stop()
+{
+    mkdir -p "$GATEWAYD_RUN_DIR" || return 1
+    : > "$DISABLED_FILE" || return 1
+    old_pid=$(read_pid "$CHILD_PID_FILE" 2>/dev/null || true)
+    send_supervisor_hup || return 1
+    if wait_for_child_change "$old_pid" stopped; then
+        log_message "action=stop result=stopped"
+        return 0
+    fi
+    fail "stop timed out"
+}
+
+do_restart()
+{
+    old_pid=$(read_pid "$CHILD_PID_FILE" 2>/dev/null || true)
+    [ -n "$old_pid" ] && pid_is_running "$old_pid" || {
+        fail "gatewayd is not running"
+        return 1
+    }
+    rm -f "$DISABLED_FILE"
+    send_supervisor_hup || return 1
+    if wait_for_child_change "$old_pid" restarted; then
+        new_pid=$(read_pid "$CHILD_PID_FILE")
+        log_message "action=restart old_pid=$old_pid new_pid=$new_pid result=restarted"
+        return 0
+    fi
+    fail "restart timed out old_pid=$old_pid"
+}
+
+do_status()
+{
+    supervisor_pid=$(read_pid "$SUPERVISOR_PID_FILE" 2>/dev/null || true)
+    child_pid=$(read_pid "$CHILD_PID_FILE" 2>/dev/null || true)
+    if [ -n "$supervisor_pid" ] && supervisor_pid_is_safe "$supervisor_pid"; then
+        if [ -n "$child_pid" ] && pid_is_running "$child_pid"; then
+            log_message "status=running supervisor_pid=$supervisor_pid child_pid=$child_pid"
+            return 0
+        fi
+        if [ -f "$DISABLED_FILE" ]; then
+            log_message "status=disabled supervisor_pid=$supervisor_pid"
+            return 3
+        fi
+        log_message "status=starting supervisor_pid=$supervisor_pid"
+        return 3
+    fi
+    log_message "status=stopped"
+    return 1
+}
+
+child_pid=
+stop_requested=0
+reload_requested=0
+
+forward_stop()
+{
+    stop_requested=1
+    if [ -n "$child_pid" ] && pid_is_running "$child_pid"; then
+        kill -TERM "$child_pid" 2>/dev/null || true
+    fi
+}
+
+forward_reload()
+{
+    reload_requested=1
+    if [ -n "$child_pid" ] && pid_is_running "$child_pid"; then
+        kill -TERM "$child_pid" 2>/dev/null || true
+    fi
+}
+
+cleanup_supervisor()
+{
+    rm -f "$CHILD_PID_FILE" "$SUPERVISOR_PID_FILE"
+    rmdir "$LOCK_DIR" 2>/dev/null || true
+}
+
+sleep_interruptibly()
+{
+    remaining=$1
+    while [ "$remaining" -gt 0 ] && [ "$stop_requested" -eq 0 ] &&
+          [ "$reload_requested" -eq 0 ]; do
+        sleep 1
+        remaining=$((remaining - 1))
+    done
+}
+
+wait_while_disabled()
+{
+    while [ -f "$DISABLED_FILE" ] && [ "$stop_requested" -eq 0 ]; do
+        reload_requested=0
+        sleep 1
+    done
+}
+
+do_supervise()
+{
+    validate_settings || return 1
+    [ -x "$GATEWAYD_BIN" ] || {
+        fail "gateway binary is not executable path=$GATEWAYD_BIN"
+        return 1
+    }
+    [ -r "$GATEWAYD_CONFIG" ] || {
+        fail "gateway config is not readable path=$GATEWAYD_CONFIG"
+        return 1
+    }
+    mkdir -p "$GATEWAYD_RUN_DIR" || return 1
+    if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+        existing_pid=$(read_pid "$SUPERVISOR_PID_FILE" 2>/dev/null || true)
+        if [ -n "$existing_pid" ] && supervisor_pid_is_safe "$existing_pid"; then
+            fail "another supervisor is running pid=$existing_pid"
+            return 1
+        fi
+        rmdir "$LOCK_DIR" 2>/dev/null || {
+            fail "stale supervisor lock is not empty path=$LOCK_DIR"
+            return 1
+        }
+        mkdir "$LOCK_DIR" || return 1
+    fi
+
+    printf '%s\n' "$$" > "$SUPERVISOR_PID_FILE" || {
+        rmdir "$LOCK_DIR" 2>/dev/null || true
+        return 1
+    }
+    trap 'forward_stop' TERM INT QUIT
+    trap 'forward_reload' HUP
+    trap 'cleanup_supervisor' EXIT
+
+    rapid_exit_count=0
+    log_message "event=supervisor_started restart_limit=$GATEWAYD_RESTART_LIMIT stable_sec=$GATEWAYD_STABLE_SEC cooldown_sec=$GATEWAYD_COOLDOWN_SEC"
+
+    while [ "$stop_requested" -eq 0 ]; do
+        wait_while_disabled
+        [ "$stop_requested" -eq 0 ] || break
+        reload_requested=0
+        start_epoch=$(date +%s)
+        "$GATEWAYD_BIN" --config "$GATEWAYD_CONFIG" --run-mqtt &
+        child_pid=$!
+        printf '%s\n' "$child_pid" > "$CHILD_PID_FILE"
+        log_message "event=child_started child_pid=$child_pid"
+
+        while :; do
+            wait "$child_pid"
+            child_status=$?
+            pid_is_running "$child_pid" || break
+        done
+        end_epoch=$(date +%s)
+        runtime_sec=$((end_epoch - start_epoch))
+        rm -f "$CHILD_PID_FILE"
+        log_message "event=child_exited child_pid=$child_pid status=$child_status runtime_sec=$runtime_sec"
+        child_pid=
+
+        [ "$stop_requested" -eq 0 ] || break
+        if [ -f "$DISABLED_FILE" ]; then
+            rapid_exit_count=0
+            continue
+        fi
+        if [ "$reload_requested" -ne 0 ]; then
+            reload_requested=0
+            rapid_exit_count=0
+            log_message "event=controlled_restart"
+            continue
+        fi
+        if [ "$runtime_sec" -ge "$GATEWAYD_STABLE_SEC" ]; then
+            rapid_exit_count=0
+        else
+            rapid_exit_count=$((rapid_exit_count + 1))
+        fi
+        if [ "$rapid_exit_count" -ge "$GATEWAYD_RESTART_LIMIT" ]; then
+            log_message "event=restart_storm rapid_exits=$rapid_exit_count action=cooldown cooldown_sec=$GATEWAYD_COOLDOWN_SEC"
+            rapid_exit_count=0
+            sleep_interruptibly "$GATEWAYD_COOLDOWN_SEC"
+            reload_requested=0
+        fi
+    done
+
+    log_message "event=supervisor_stopped"
+    return 0
+}
+
+case ${1:-} in
+    supervise) do_supervise ;;
+    start) validate_settings && do_start ;;
+    stop) validate_settings && do_stop ;;
+    restart) validate_settings && do_restart ;;
+    status) validate_settings && do_status ;;
+    *)
+        printf 'Usage: %s {supervise|start|stop|restart|status}\n' "$0" >&2
+        exit 2
+        ;;
+esac

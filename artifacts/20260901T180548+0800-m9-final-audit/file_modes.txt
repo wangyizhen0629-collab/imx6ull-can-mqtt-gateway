@@ -1,0 +1,5 @@
+755 wangyizhen:wangyizhen deploy/init.d/gatewayd
+755 wangyizhen:wangyizhen deploy/tests/test_gatewayd_supervisor.sh
+755 wangyizhen:wangyizhen deploy/tests/fixtures/fake_gatewayd.sh
+644 wangyizhen:wangyizhen deploy/inittab/gatewayd.respawn
+644 wangyizhen:wangyizhen deploy/config/gatewayd.env.example

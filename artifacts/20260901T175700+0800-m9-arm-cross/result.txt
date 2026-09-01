@@ -1,0 +1,12 @@
+configure_attempt1_exit=1
+configure_attempt2_exit=0
+build_attempt1_exit=0
+rpath_attempt1_exit=1
+configure_attempt3_exit=0
+build_attempt2_exit=0
+binary_audit_final_exit=0
+rpath_final_exit=0
+warning_scan_final_exit=0
+board_deploy=NOT RUN
+board_execution=NOT RUN
+final_result=PASS_WITH_BOARD_NOT_RUN

@@ -1,0 +1,1 @@
+busybox ash -x deploy/tests/test_gatewayd_supervisor.sh

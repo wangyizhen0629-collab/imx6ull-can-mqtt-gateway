@@ -1,0 +1,239 @@
++ set -u
++ dirname -- deploy/tests/test_gatewayd_supervisor.sh
++ CDPATH= cd -- deploy/tests
++ pwd
++ SCRIPT_DIR=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests
++ CDPATH= cd -- /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests/../..
++ pwd
++ REPO_ROOT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway
++ SUPERVISOR=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd
++ FAKE_GATEWAY=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests/fixtures/fake_gatewayd.sh
++ INITTAB_FRAGMENT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/inittab/gatewayd.respawn
++ mktemp -d /tmp/gatewayd-m9-test.XXXXXX
++ TEST_ROOT=/tmp/gatewayd-m9-test.pO7kfY
++ supervisor_pid=
++ trap cleanup EXIT INT TERM
++ '[' -x /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd ]
++ '[' -x /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests/fixtures/fake_gatewayd.sh ]
++ grep -F -x 'null::respawn:/etc/init.d/gatewayd supervise' /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/inittab/gatewayd.respawn
++ grep -r -n -i 'systemd\|systemctl' /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/inittab
++ case1=/tmp/gatewayd-m9-test.pO7kfY/case1
++ mkdir -p /tmp/gatewayd-m9-test.pO7kfY/case1/run
++ printf '%s\n' crash_once
++ :
++ :
++ write_environment /tmp/gatewayd-m9-test.pO7kfY/case1/run /tmp/gatewayd-m9-test.pO7kfY/case1/env /tmp/gatewayd-m9-test.pO7kfY/case1/mode /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log /tmp/gatewayd-m9-test.pO7kfY/case1/once /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.conf
++ run_dir=/tmp/gatewayd-m9-test.pO7kfY/case1/run
++ environment_file=/tmp/gatewayd-m9-test.pO7kfY/case1/env
++ mode_file=/tmp/gatewayd-m9-test.pO7kfY/case1/mode
++ gateway_log=/tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ once_file=/tmp/gatewayd-m9-test.pO7kfY/case1/once
++ config_file=/tmp/gatewayd-m9-test.pO7kfY/case1/gateway.conf
++ printf 'GATEWAYD_BIN=%s\n' /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests/fixtures/fake_gatewayd.sh
++ printf 'GATEWAYD_CONFIG=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.conf
++ printf 'GATEWAYD_RUN_DIR=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case1/run
++ printf 'GATEWAYD_RESTART_LIMIT=3\n'
++ printf 'GATEWAYD_STABLE_SEC=10\n'
++ printf 'GATEWAYD_COOLDOWN_SEC=2\n'
++ printf 'GATEWAYD_STOP_TIMEOUT_SEC=5\n'
++ printf 'FAKE_GATEWAY_MODE=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case1/mode
++ printf 'FAKE_GATEWAY_LOG=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ printf 'FAKE_GATEWAY_ONCE=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case1/once
++ printf 'export FAKE_GATEWAY_MODE FAKE_GATEWAY_LOG FAKE_GATEWAY_ONCE\n'
++ supervisor_pid=16
++ wait_for_count '^start ' 2 /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ pattern='^start '
++ expected=2
++ file=/tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ + GATEWAYD_ENV_FILE=/tmp/gatewayd-m9-test.pO7kfY/case1/envattempts=100
+ /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd+  supervise
+'[' 100 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ true
++ actual=0
++ '[' 0 -ge 2 ]
++ sleep 0.1
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ actual=2
++ '[' 2 -ge 2 ]
++ return 0
++ grep -F 'status=42' /tmp/gatewayd-m9-test.pO7kfY/case1/supervisor.log
++ sed -n 1p /tmp/gatewayd-m9-test.pO7kfY/case1/run/gatewayd.pid
++ old_pid=34
++ run_service /tmp/gatewayd-m9-test.pO7kfY/case1/env restart
++ env_file=/tmp/gatewayd-m9-test.pO7kfY/case1/env
++ action=restart
++ GATEWAYD_ENV_FILE=/tmp/gatewayd-m9-test.pO7kfY/case1/env /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd restart
++ sed -n 1p /tmp/gatewayd-m9-test.pO7kfY/case1/run/gatewayd.pid
++ new_pid=58
++ '[' 58 '!=' 34 ]
++ run_service /tmp/gatewayd-m9-test.pO7kfY/case1/env stop
++ env_file=/tmp/gatewayd-m9-test.pO7kfY/case1/env
++ action=stop
++ GATEWAYD_ENV_FILE=/tmp/gatewayd-m9-test.pO7kfY/case1/env /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd stop
++ '[' -f /tmp/gatewayd-m9-test.pO7kfY/case1/run/disabled ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ starts_after_stop=3
++ sleep 1
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ '[' 3 -eq 3 ]
++ run_service /tmp/gatewayd-m9-test.pO7kfY/case1/env start
++ env_file=/tmp/gatewayd-m9-test.pO7kfY/case1/env
++ action=start
++ GATEWAYD_ENV_FILE=/tmp/gatewayd-m9-test.pO7kfY/case1/env /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd start
++ wait_for_count '^start ' 4 /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ pattern='^start '
++ expected=4
++ file=/tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case1/gateway.log
++ actual=4
++ '[' 4 -ge 4 ]
++ return 0
++ kill -TERM 16
++ wait 16
++ supervisor_pid=
++ case2=/tmp/gatewayd-m9-test.pO7kfY/case2
++ mkdir -p /tmp/gatewayd-m9-test.pO7kfY/case2/run
++ printf '%s\n' crash
++ :
++ :
++ write_environment /tmp/gatewayd-m9-test.pO7kfY/case2/run /tmp/gatewayd-m9-test.pO7kfY/case2/env /tmp/gatewayd-m9-test.pO7kfY/case2/mode /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log /tmp/gatewayd-m9-test.pO7kfY/case2/once /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.conf
++ run_dir=/tmp/gatewayd-m9-test.pO7kfY/case2/run
++ environment_file=/tmp/gatewayd-m9-test.pO7kfY/case2/env
++ mode_file=/tmp/gatewayd-m9-test.pO7kfY/case2/mode
++ gateway_log=/tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ once_file=/tmp/gatewayd-m9-test.pO7kfY/case2/once
++ config_file=/tmp/gatewayd-m9-test.pO7kfY/case2/gateway.conf
++ printf 'GATEWAYD_BIN=%s\n' /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/tests/fixtures/fake_gatewayd.sh
++ printf 'GATEWAYD_CONFIG=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.conf
++ printf 'GATEWAYD_RUN_DIR=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case2/run
++ printf 'GATEWAYD_RESTART_LIMIT=3\n'
++ printf 'GATEWAYD_STABLE_SEC=10\n'
++ printf 'GATEWAYD_COOLDOWN_SEC=2\n'
++ printf 'GATEWAYD_STOP_TIMEOUT_SEC=5\n'
++ printf 'FAKE_GATEWAY_MODE=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case2/mode
++ printf 'FAKE_GATEWAY_LOG=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ printf 'FAKE_GATEWAY_ONCE=%s\n' /tmp/gatewayd-m9-test.pO7kfY/case2/once
++ printf 'export FAKE_GATEWAY_MODE FAKE_GATEWAY_LOG FAKE_GATEWAY_ONCE\n'
++ supervisor_pid=116
++ wait_for_count '^start ' 3 /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ pattern='^start '
++ expected=3
++ file=/tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ GATEWAYD_ENV_FILE=/tmp/gatewayd-m9-test.pO7kfY/case2/env /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/deploy/init.d/gatewayd supervise
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ true
++ actual=0
++ '[' 0 -ge 3 ]
++ sleep 0.1
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 3 ]
++ return 0
++ wait_for_count 'event=restart_storm' 1 /tmp/gatewayd-m9-test.pO7kfY/case2/supervisor.log
++ pattern='event=restart_storm'
++ expected=1
++ file=/tmp/gatewayd-m9-test.pO7kfY/case2/supervisor.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c 'event=restart_storm' /tmp/gatewayd-m9-test.pO7kfY/case2/supervisor.log
++ actual=1
++ '[' 1 -ge 1 ]
++ return 0
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ starts_at_cooldown=3
++ sleep 1
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ '[' 3 -eq 3 ]
++ printf '%s\n' hold
++ wait_for_count '^start ' 4 /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ pattern='^start '
++ expected=4
++ file=/tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ attempts=100
++ '[' 100 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=99
++ '[' 99 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=98
++ '[' 98 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=97
++ '[' 97 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=96
++ '[' 96 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=95
++ '[' 95 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=94
++ '[' 94 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=93
++ '[' 93 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=92
++ '[' 92 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=91
++ '[' 91 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=3
++ '[' 3 -ge 4 ]
++ sleep 0.1
++ attempts=90
++ '[' 90 -gt 0 ]
++ grep -c '^start ' /tmp/gatewayd-m9-test.pO7kfY/case2/gateway.log
++ actual=4
++ '[' 4 -ge 4 ]
++ return 0
++ wait_for_file /tmp/gatewayd-m9-test.pO7kfY/case2/run/gatewayd.pid
++ target=/tmp/gatewayd-m9-test.pO7kfY/case2/run/gatewayd.pid
++ attempts=100
++ '[' 100 -gt 0 ]
++ '[' -s /tmp/gatewayd-m9-test.pO7kfY/case2/run/gatewayd.pid ]
++ return 0
++ kill -TERM 116
++ wait 116
++ supervisor_pid=
++ printf '%s\n' 'M9_BUSYBOX_SUPERVISOR_TEST PASS'
++ cleanup
++ '[' -n  ]
++ rm -rf /tmp/gatewayd-m9-test.pO7kfY

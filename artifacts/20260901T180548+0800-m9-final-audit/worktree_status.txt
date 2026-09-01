@@ -1,0 +1,26 @@
+ M README.md
+ M deploy/README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M gateway/CMakeLists.txt
+?? 20260831T220718p0800-m6-lan-1000-board/
+?? artifacts/20260831T181335+0800-m6-arm-private/
+?? artifacts/20260831T235934+0800-m7-preflight/
+?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+?? artifacts/20260901T175107+0800-m9-preflight/
+?? artifacts/20260901T175412+0800-m9-host-final/
+?? artifacts/20260901T175610+0800-m9-asan-ubsan/
+?? artifacts/20260901T175700+0800-m9-arm-cross/
+?? artifacts/20260901T175900+0800-m9-busybox-supervisor-final/
+?? artifacts/20260901T180003+0800-m9-board-not-run/
+?? artifacts/20260901T180502+0800-m9-final-audit/
+?? artifacts/20260901T180548+0800-m9-final-audit/
+?? deploy/config/gatewayd.env.example
+?? deploy/init.d/gatewayd
+?? deploy/inittab/gatewayd.respawn
+?? deploy/tests/
+?? docs/milestones/M9.md

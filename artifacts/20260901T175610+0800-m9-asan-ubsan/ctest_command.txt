@@ -1,0 +1,1 @@
+ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m9-asan-ubsan --output-on-failure

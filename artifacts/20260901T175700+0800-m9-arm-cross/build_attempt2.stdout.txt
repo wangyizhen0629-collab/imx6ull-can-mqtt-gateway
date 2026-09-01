@@ -1,0 +1,5 @@
+Consolidate compiler generated dependencies of target gateway_core
+[ 87%] Built target gateway_core
+Consolidate compiler generated dependencies of target gatewayd
+[ 93%] Linking C executable gatewayd
+[100%] Built target gatewayd

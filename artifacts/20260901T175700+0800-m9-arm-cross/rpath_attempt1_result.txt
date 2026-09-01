@@ -1,0 +1,2 @@
+result=FAIL
+reason=build host RPATH/RUNPATH present
