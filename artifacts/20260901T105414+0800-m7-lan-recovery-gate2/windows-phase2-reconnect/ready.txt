@@ -1,0 +1,6 @@
+﻿broker_command=mosquitto.exe -c <PRIVATE_CONFIG>
+subscriber_start_command=NOT RUN; retained existing PID 35988
+broker_pid=32812
+subscriber_pid=35988
+subscriber_reconnected=true
+ready_at=2026-09-01T11:28:23.9599872+08:00

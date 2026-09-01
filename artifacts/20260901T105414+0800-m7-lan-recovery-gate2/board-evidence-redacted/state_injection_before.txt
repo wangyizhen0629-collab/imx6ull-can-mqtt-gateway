@@ -1,0 +1,7 @@
+injection=replace first state magic byte
+offset=0
+before_byte_hex=47
+after_byte_hex=00
+before_size=40
+before_state_sha256=86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c
+3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data

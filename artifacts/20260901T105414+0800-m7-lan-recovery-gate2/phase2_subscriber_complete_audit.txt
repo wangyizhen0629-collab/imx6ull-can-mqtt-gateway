@@ -1,0 +1,9 @@
+result=PASS
+raw_batches=122
+raw_records=30780
+first_batch_seq=20
+last_batch_seq=141
+first_gateway_seq=4865
+last_gateway_seq=35644
+missing=0
+duplicates=0

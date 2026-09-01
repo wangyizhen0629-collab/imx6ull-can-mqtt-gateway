@@ -1,0 +1,11 @@
+[1970-01-03T00:09:41.404Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T00:11:55.100Z] WARN mqtt: connect: offline, durable records retained: Connection timed out
+[1970-01-03T00:11:55.104Z] INFO mqtt: M7 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=10000 qos=1 max_inflight=1 spool_path=/var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+[1970-01-03T00:16:50.831Z] WARN mqtt: connect: offline, durable records retained: Connection timed out
+[1970-01-03T00:17:00.844Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m7/20260901T105414/recovery qos=1 max_inflight=1
+[1970-01-03T00:20:10.425Z] WARN mqtt: network poll: offline, durable records retained: The connection was lost.
+[1970-01-03T00:22:29.980Z] WARN mqtt: connect: offline, durable records retained: Connection timed out
+[1970-01-03T00:24:53.340Z] WARN mqtt: connect: offline, durable records retained: Connection timed out
+[1970-01-03T00:25:03.349Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m7/20260901T105414/recovery qos=1 max_inflight=1
+[1970-01-03T00:32:52.985Z] INFO mqtt: stop requested by signal 15
+[1970-01-03T00:32:53.051Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=1335 decode_success=1335 queue_success=1335 queue_drop=0 queue_pop=1335 queue_count=0 mqtt_connect_success=2 publish_attempts=122 publish_accepted=122 puback_matched=122 puback_unexpected=0 batches_acked=122 records_acked=30780 last_batch_seq=141 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=5 reconnects=1 spool_appended=1335 spool_replayed=30780 spool_acked=30780 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=0 spool_corruptions=0 spool_errors=0

@@ -97,14 +97,16 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   `127.0.0.1:18884`、匿名、禁用持久化，并在测试后停止。该配置只服务M6主机功能证据，
   不是未来局域网/部署配置。
 - M6局域网实例已确认为Windows Mosquitto 2.1.2，且已与板端私有libmosquitto 2.0.11
-  完成真实1000-batch门禁；M6兼容性问题已关闭。M7仍需为新的断线/恢复run确定脱敏的
-  `device_id`、topic、端口和受控启停步骤；真实局域网地址和凭据不得提交。
-- 目标板哪个目录/存储介质适合 spool durability 测试？容量和写入寿命限制是什么？
+  完成真实1000-batch门禁；M6兼容性问题已关闭。M7也已使用独立device ID、topic、端口
+  和受控启停完成跨主机门禁；真实局域网地址和凭据只保存在Git忽略的私密原始证据中。
+- M7功能门禁已确认`/dev/root` ext4下的专用`/var/lib`目录适合本次进程崩溃恢复测试，
+  `/tmp` tmpfs不作为耐久证据。生产容量、写入寿命、真实掉电语义和介质选型仍未知。
 - M7原型已决定每条记录append后`fdatasync`，state按temp-sync-rename-directory-sync
   推进；不做静默drop。当前ENOSPC/sync失败采用fail-stop。真实介质是否承受该写放大、
   spool容量阈值和已确认前缀的安全回收/compaction策略仍待目标测试后决定。
-- Windows Broker断开/恢复时由谁精确控制Broker进程，i.MX6ULL侧由谁记录`kill -9`
-  返回状态、spool文件hash和重启日志？必须先明确授权和角色，不能只保存一侧结论。
+- M7本次授权和角色已解决：Windows侧控制专用Broker/subscriber，板端记录一次核实PID的
+  `kill -9`、wait、spool hash和重启日志，双方原始证据已对账。后续任何新run仍需重新
+  取得相应外部状态修改授权。
 - 目标板使用什么时间源，wall clock 是否可能跳变？
 
 ## 测试和部署授权
@@ -135,10 +137,11 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   subscriber 1000批/115335条连续记录，gateway/Broker 1033次publish/PUBACK对账一致。
   `artifacts/20260901T090837+0800-m6-lan-gate-review/`完成manifest 131/131和原始证据
   独立复核，M6门禁现为`MET`。正确UTC、性能、可靠性及停止边界1帧原因仍未解决。
-- M7源码、主机普通/ASan+UBSan全量16/16和ARMv7交叉构建已通过，证据为
-  `artifacts/20260901T093654+0800-m7-offline-final/`。Windows Broker断线/恢复、实际
-  `kill -9`、subscriber合并验证及目标持久介质均为`NOT RUN`，所以M7仍为`NOT MET`。
-  接续条件见`docs/milestones/M7.md`，不得提前实现M8。
+- M7源码、主机普通/ASan+UBSan全量16/16和ARMv7交叉构建证据为
+  `artifacts/20260901T093654+0800-m7-offline-final/`；跨主机退出证据为
+  `artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`。实际断线、一次`kill -9`、
+  subscriber合并验证、ext4 spool及三类损坏恢复均通过，missing0、effective duplicate0，
+  M7现为`MET`。M8仍未获批准，不能提前实现或测试。
 
 ## 本次已解决项
 
@@ -176,9 +179,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   loopback功能验证，不能写成i.MX6ULL或完整CAN--MQTT链路。
 - M6目标门禁：真实i.MX6ULL物理CAN到Windows Broker的1000批及独立manifest/原始证据
   复核已通过，M6状态为`MET`。
-- M7离线实现：固定格式spool、CRC、原子ACK cursor、尾部/state恢复、seq恢复、重连、
-  单写者锁、独立stats和去重validator均已实现并通过主机/ARM构建；尚未解决的跨主机
-  断线和崩溃恢复保持在上文待办中。
+- M7：固定格式spool、CRC、原子ACK cursor、尾部/state恢复、seq恢复、重连、单写者锁、
+  独立stats和去重validator已通过主机/ARM与真实跨主机门禁；M7已关闭。保留问题是正确
+  UTC、真实掉电、CAN物理错误原因、介质寿命、容量/compaction和长期可靠性，不属于本次
+  功能门禁的已验证结论。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

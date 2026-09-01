@@ -1,0 +1,56 @@
+sh <<'M7_GATE2_EXPORT_ATTEMPT2'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MANIFEST=$EVIDENCE/board_manifest.sha256
+ATTEMPT1_CHECK=$EVIDENCE/board_manifest_check.txt
+ARCHIVE=/var/lib/gatewayd-m7-test-20260901T105414-export-attempt2.tar
+ARCHIVE_HASH=/var/lib/gatewayd-m7-test-20260901T105414-export-attempt2.tar.sha256
+ARCHIVE_LIST=/var/lib/gatewayd-m7-test-20260901T105414-export-attempt2.tar.list.txt
+RECHECK=/var/lib/gatewayd-m7-test-20260901T105414-export-attempt2.manifest-check.txt
+
+fail() { echo "M7_GATE2_EXPORT_ATTEMPT2_FAIL: $*" >&2; exit 1; }
+
+test -d "$RUN_ROOT" || fail 'run root is absent'
+test -s "$MANIFEST" || fail 'attempt-1 board manifest is absent'
+test -s "$ATTEMPT1_CHECK" || fail 'attempt-1 manifest check is absent'
+test ! -e "$ARCHIVE" || fail 'refusing to overwrite attempt-2 archive'
+test ! -e "$ARCHIVE_HASH" || fail 'refusing to overwrite attempt-2 archive hash'
+test ! -e "$ARCHIVE_LIST" || fail 'refusing to overwrite attempt-2 archive listing'
+test ! -e "$RECHECK" || fail 'refusing to overwrite attempt-2 manifest recheck'
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'gatewayd is running before evidence export'
+done
+
+{
+    echo 'attempt1_archive_status:'
+    ls -l /var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz \
+        /var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz.sha256 \
+        /var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz.list.txt 2>&1
+    echo 'attempt1_manifest_check_tail:'
+    tail -n 5 "$ATTEMPT1_CHECK" 2>&1
+} > /var/lib/gatewayd-m7-test-20260901T105414-export-attempt1-status.txt
+
+sha256sum -c "$MANIFEST" > "$RECHECK" 2>&1
+RECHECK_EXIT=$?
+echo "manifest_recheck_exit=$RECHECK_EXIT" >> "$RECHECK"
+test "$RECHECK_EXIT" -eq 0 || fail 'existing board manifest recheck failed'
+
+tar -cf "$ARCHIVE" -C /var/lib "$(basename "$RUN_ROOT")" || fail 'cannot create uncompressed board export archive'
+sha256sum "$ARCHIVE" > "$ARCHIVE_HASH" || fail 'cannot hash attempt-2 archive'
+tar -tf "$ARCHIVE" > "$ARCHIVE_LIST" 2>&1
+LIST_EXIT=$?
+echo "tar_list_exit=$LIST_EXIT" >> "$ARCHIVE_LIST"
+test "$LIST_EXIT" -eq 0 || fail 'cannot list attempt-2 archive'
+sync
+
+echo '--- manifest recheck tail ---'
+tail -n 20 "$RECHECK" 2>&1
+echo '--- attempt-2 archive ---'
+ls -l "$ARCHIVE" "$ARCHIVE_HASH" "$ARCHIVE_LIST" "$RECHECK" 2>&1
+cat "$ARCHIVE_HASH" 2>&1
+tail -n 5 "$ARCHIVE_LIST" 2>&1
+echo 'M7_GATE2_EXPORT_ATTEMPT2_PASS'
+M7_GATE2_EXPORT_ATTEMPT2

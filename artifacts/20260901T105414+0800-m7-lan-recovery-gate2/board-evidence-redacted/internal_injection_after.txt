@@ -1,0 +1,5 @@
+offset=80000
+actual_byte_hex=00
+after_size=2851520
+after_sha256=82a655e9f1118d761f9d98157ee04ce561a37b48c837ee92c5f6975875a76861
+86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c  /var/lib/gatewayd-m7-test-20260901T105414/corruption/internal/spool.state

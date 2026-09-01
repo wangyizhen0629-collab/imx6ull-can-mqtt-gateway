@@ -1,0 +1,9 @@
+result=FAIL_BEFORE_TEST_EXECUTION
+exit=2
+cause=run_final_validators.ps1 resolved the repository root one directory too high, so Python could not open tools/mqtt/test_validate_m7_recovery.py
+combined_jsonl_created=true
+combined_jsonl_preserved=true
+combined_bytes=15103739
+combined_sha256=572cc25085bdb75a77acb56761090e302c192e6ca1e0e251fc9219a05bad0c38
+test_result=NOT RUN
+captured_data_validator=NOT RUN

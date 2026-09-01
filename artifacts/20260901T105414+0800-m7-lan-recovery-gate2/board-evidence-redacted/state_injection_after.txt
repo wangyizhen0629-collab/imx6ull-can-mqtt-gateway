@@ -1,0 +1,5 @@
+offset=0
+actual_byte_hex=00
+after_size=40
+after_state_sha256=6efc4f9f452114ae2f525d57b69a4c28dcd2edb6b94d9a50d709546ad8773220
+3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data

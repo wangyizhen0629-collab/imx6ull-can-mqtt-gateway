@@ -1,0 +1,2 @@
+broker_command=mosquitto.exe -c <PRIVATE_CONFIG>
+subscriber_command=mosquitto_sub.exe -h <REDACTED_LAN_ADDRESS> -p 18884 -q 1 -t test/m7/20260901T105414/recovery -i m7-win-sub-phase1-20260901T105414 -F %p

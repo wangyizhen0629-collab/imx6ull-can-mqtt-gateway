@@ -1,0 +1,15 @@
+{
+  "bom_hex": "7b227363",
+  "bytes": 1026059,
+  "duplicates": 0,
+  "first_batch_seq": 1,
+  "first_gateway_seq": 1,
+  "last_batch_seq": 19,
+  "last_gateway_seq": 4864,
+  "last_record_count": 256,
+  "missing": 0,
+  "nonincreasing": 0,
+  "raw_batches": 19,
+  "raw_records": 4864,
+  "sha256": "6ddac4c4bd132ac976963892b8854f0273cb20dc65857bdfdbe9bb553e3122b3"
+}

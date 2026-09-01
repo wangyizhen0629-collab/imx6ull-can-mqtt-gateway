@@ -1,0 +1,17 @@
+monitor_started=1970-01-03T00:16:50,826817334+00:00
+gateway_pid=1926
+expected_spool_size=2744720
+expected_entries=34309
+expected_rx_packets=7047547
+sample=0 time=1970-01-03T00:16:52,070820668+00:00 connected=no ack_offset=389120 ack_seq=4864 next_batch=20 state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+sample=1 time=1970-01-03T00:16:54,312886668+00:00 connected=no ack_offset=389120 ack_seq=4864 next_batch=20 state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+sample=2 time=1970-01-03T00:16:56,531848002+00:00 connected=no ack_offset=389120 ack_seq=4864 next_batch=20 state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+sample=3 time=1970-01-03T00:16:58,745002335+00:00 connected=no ack_offset=389120 ack_seq=4864 next_batch=20 state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+sample=4 time=1970-01-03T00:17:01,011508335+00:00 connected=yes ack_offset=389120 ack_seq=4864 next_batch=20 state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+sample=5 time=1970-01-03T00:17:03,242538336+00:00 connected=yes ack_offset=737280 ack_seq=9216 next_batch=37 state_sha256=7713f21c55a9d9073828fc15c51ac101a54621b907b05ffbe12e0d6ffced6aee
+sample=6 time=1970-01-03T00:17:05,480092336+00:00 connected=yes ack_offset=1085440 ack_seq=13568 next_batch=54 state_sha256=ad1c406e42a828dd2dc0de207445e05b4a3644027b2cd9f91a0295a0a1c490cd
+sample=7 time=1970-01-03T00:17:07,740774003+00:00 connected=yes ack_offset=1433600 ack_seq=17920 next_batch=72 state_sha256=4bc65183bf8c80bcb674a58dd6731b2131dcd019d98e87c8949780627bfc6807
+sample=8 time=1970-01-03T00:17:09,979117337+00:00 connected=yes ack_offset=1781760 ack_seq=22272 next_batch=88 state_sha256=a6d4aeb6b869007c69204576ad2844e7d5497178a802106c626b3e8fc276a049
+sample=9 time=1970-01-03T00:17:12,277017003+00:00 connected=yes ack_offset=2129920 ack_seq=26880 next_batch=106 state_sha256=b401a2ed90c3fc3a65711386d341e2aecb6d982ac342d711044b940cc2f7d6e1
+sample=10 time=1970-01-03T00:17:14,503895004+00:00 connected=yes ack_offset=2498560 ack_seq=31232 next_batch=123 state_sha256=baa0aad5c5f0cb620d5c3777973b1867119f4b692610cbaf878f2a7f24d8033c
+sample=11 time=1970-01-03T00:17:16,734141671+00:00 connected=yes ack_offset=2744720 ack_seq=34309 next_batch=136 state_sha256=2e6050aeb7fc527025cadec0d3258a4a4c61c9714d702a4b94ac94dcb58e6799

@@ -1,0 +1,107 @@
+1788231497: mosquitto version 2.1.2 starting
+1788231497: Config loaded from E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T105414+0800-m7-lan-recovery-gate2\private_raw\windows-phase1-attempt2\mosquitto.conf.
+1788231497: Bridge support available.
+1788231497: Persistence support available.
+1788231497: TLS support available.
+1788231497: TLS-PSK support available.
+1788231497: Websockets support available.
+1788231497: Opening ipv4 listen socket on port 18884.
+1788231497: mosquitto version 2.1.2 running
+1788231498: New connection from <REDACTED_LAN_ADDRESS>:63394 on port 18884.
+1788231498: New client connected from <REDACTED_LAN_ADDRESS>:63394 as m7-win-sub-phase1-20260901T105414 (p4, c1, k60).
+1788231498: No will message specified.
+1788231498: Sending CONNACK to m7-win-sub-phase1-20260901T105414 (0, 0)
+1788231498: Received SUBSCRIBE from m7-win-sub-phase1-20260901T105414
+1788231498: 	test/m7/20260901T105414/recovery (QoS 1)
+1788231498: m7-win-sub-phase1-20260901T105414 1 test/m7/20260901T105414/recovery
+1788231498: Sending SUBACK to m7-win-sub-phase1-20260901T105414
+1788231558: Received PINGREQ from m7-win-sub-phase1-20260901T105414
+1788231558: Sending PINGRESP to m7-win-sub-phase1-20260901T105414
+1788231618: Received PINGREQ from m7-win-sub-phase1-20260901T105414
+1788231618: Sending PINGRESP to m7-win-sub-phase1-20260901T105414
+1788231678: Received PINGREQ from m7-win-sub-phase1-20260901T105414
+1788231678: Sending PINGRESP to m7-win-sub-phase1-20260901T105414
+1788231738: Received PINGREQ from m7-win-sub-phase1-20260901T105414
+1788231738: Sending PINGRESP to m7-win-sub-phase1-20260901T105414
+1788231745: New connection from <REDACTED_TARGET_ADDRESS>:51970 on port 18884.
+1788231745: New client connected from <REDACTED_TARGET_ADDRESS>:51970 as gatewayd-m7-gateway-20260901-105414-1706 (p4, c1, k60).
+1788231745: No will message specified.
+1788231745: Sending CONNACK to gatewayd-m7-gateway-20260901-105414-1706 (0, 0)
+1788231748: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m1, 'test/m7/20260901T105414/recovery', ... (53699 bytes))
+1788231748: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m1, 'test/m7/20260901T105414/recovery', ... (53699 bytes))
+1788231748: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m1, rc0)
+1788231748: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 1, RC:0)
+1788231751: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m2, 'test/m7/20260901T105414/recovery', ... (53800 bytes))
+1788231751: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m2, 'test/m7/20260901T105414/recovery', ... (53800 bytes))
+1788231751: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m2, rc0)
+1788231751: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 2, RC:0)
+1788231754: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m3, 'test/m7/20260901T105414/recovery', ... (53800 bytes))
+1788231754: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m3, 'test/m7/20260901T105414/recovery', ... (53800 bytes))
+1788231754: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m3, rc0)
+1788231754: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 3, RC:0)
+1788231757: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m4, 'test/m7/20260901T105414/recovery', ... (53826 bytes))
+1788231757: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m4, 'test/m7/20260901T105414/recovery', ... (53826 bytes))
+1788231757: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m4, rc0)
+1788231757: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 4, RC:0)
+1788231760: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m5, 'test/m7/20260901T105414/recovery', ... (54058 bytes))
+1788231760: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m5, 'test/m7/20260901T105414/recovery', ... (54058 bytes))
+1788231760: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m5, rc0)
+1788231760: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 5, RC:0)
+1788231763: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m6, 'test/m7/20260901T105414/recovery', ... (54058 bytes))
+1788231763: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m6, 'test/m7/20260901T105414/recovery', ... (54058 bytes))
+1788231763: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m6, rc0)
+1788231763: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 6, RC:0)
+1788231766: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m7, 'test/m7/20260901T105414/recovery', ... (54065 bytes))
+1788231766: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m7, 'test/m7/20260901T105414/recovery', ... (54065 bytes))
+1788231766: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m7, rc0)
+1788231766: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 7, RC:0)
+1788231769: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m8, 'test/m7/20260901T105414/recovery', ... (54060 bytes))
+1788231769: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m8, 'test/m7/20260901T105414/recovery', ... (54060 bytes))
+1788231769: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m8, rc0)
+1788231769: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 8, RC:0)
+1788231772: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m9, 'test/m7/20260901T105414/recovery', ... (54061 bytes))
+1788231772: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m9, 'test/m7/20260901T105414/recovery', ... (54061 bytes))
+1788231772: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m9, rc0)
+1788231772: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 9, RC:0)
+1788231775: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m10, 'test/m7/20260901T105414/recovery', ... (54061 bytes))
+1788231775: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m10, 'test/m7/20260901T105414/recovery', ... (54061 bytes))
+1788231775: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m10, rc0)
+1788231775: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 10, RC:0)
+1788231778: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m11, 'test/m7/20260901T105414/recovery', ... (54063 bytes))
+1788231778: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m11, 'test/m7/20260901T105414/recovery', ... (54063 bytes))
+1788231778: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m11, rc0)
+1788231778: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 11, RC:0)
+1788231781: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m12, 'test/m7/20260901T105414/recovery', ... (54041 bytes))
+1788231781: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m12, 'test/m7/20260901T105414/recovery', ... (54041 bytes))
+1788231781: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m12, rc0)
+1788231781: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 12, RC:0)
+1788231784: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m13, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231784: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m13, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231784: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m13, rc0)
+1788231784: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 13, RC:0)
+1788231787: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m14, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231787: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m14, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231787: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m14, rc0)
+1788231787: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 14, RC:0)
+1788231790: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m15, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231790: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m15, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231790: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m15, rc0)
+1788231790: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 15, RC:0)
+1788231793: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m16, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231793: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m16, 'test/m7/20260901T105414/recovery', ... (54059 bytes))
+1788231793: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m16, rc0)
+1788231793: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 16, RC:0)
+1788231796: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m17, 'test/m7/20260901T105414/recovery', ... (54064 bytes))
+1788231796: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m17, 'test/m7/20260901T105414/recovery', ... (54064 bytes))
+1788231796: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m17, rc0)
+1788231796: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 17, RC:0)
+1788231799: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m18, 'test/m7/20260901T105414/recovery', ... (54085 bytes))
+1788231799: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m18, 'test/m7/20260901T105414/recovery', ... (54085 bytes))
+1788231799: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m18, rc0)
+1788231799: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 18, RC:0)
+1788231801: Received PUBLISH from gatewayd-m7-gateway-20260901-105414-1706 (d0, q1, r0, m19, 'test/m7/20260901T105414/recovery', ... (54063 bytes))
+1788231801: Sending PUBLISH to m7-win-sub-phase1-20260901T105414 (d0, q1, r0, m19, 'test/m7/20260901T105414/recovery', ... (54063 bytes))
+1788231801: Sending PUBACK to gatewayd-m7-gateway-20260901-105414-1706 (m19, rc0)
+1788231801: Received PUBACK from m7-win-sub-phase1-20260901T105414 (Mid: 19, RC:0)
+1788231803: Client m7-win-sub-phase1-20260901T105414 [<REDACTED_LAN_ADDRESS>:63394] disconnected: connection closed by client.
+1788231803: mosquitto version 2.1.2 terminating

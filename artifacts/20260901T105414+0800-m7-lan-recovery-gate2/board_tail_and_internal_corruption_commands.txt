@@ -1,0 +1,202 @@
+sh <<'M7_GATE2_TAIL_INTERNAL'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MAIN=$RUN_ROOT/main
+CORR=$RUN_ROOT/corruption
+TAIL=$CORR/tail
+INTERNAL=$CORR/internal
+GATEWAY=/tmp/m7/bin/gatewayd
+LIB_DIR=/tmp/m7/lib
+MAIN_CONFIG=$MAIN/gateway.conf
+MAIN_DATA=$MAIN/spool.data
+MAIN_STATE=$MAIN/spool.state
+EXPECTED_SIZE=2851520
+EXPECTED_DATA_HASH=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+EXPECTED_STATE_HASH=86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c
+EXPECTED_RX=7048885
+INTERNAL_OFFSET=80000
+
+fail() { echo "M7_GATE2_TAIL_INTERNAL_FAIL: $*" >&2; exit 1; }
+
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'gatewayd is still running before corruption-copy tests'
+done
+test ! -e "$TAIL" || fail 'refusing to overwrite tail test directory'
+test ! -e "$INTERNAL" || fail 'refusing to overwrite internal test directory'
+test "$(wc -c < "$MAIN_DATA")" -eq "$EXPECTED_SIZE" || fail 'main spool size mismatch'
+test "$(sha256sum "$MAIN_DATA" | awk '{print $1}')" = "$EXPECTED_DATA_HASH" || fail 'main spool hash mismatch'
+test "$(sha256sum "$MAIN_STATE" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'main state hash mismatch'
+test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+mkdir -p "$TAIL" "$INTERNAL" || fail 'cannot create corruption-copy directories'
+chmod 700 "$TAIL" "$INTERNAL" || fail 'cannot chmod corruption-copy directories'
+
+cp -p "$MAIN_DATA" "$TAIL/spool.data" || fail 'cannot copy tail spool.data'
+cp -p "$MAIN_STATE" "$TAIL/spool.state" || fail 'cannot copy tail spool.state'
+sed -e 's/^device_id=.*/device_id=m7-tail-copy-20260901-105414/' \
+    -e 's|^mqtt_topic=.*|mqtt_topic=test/m7/20260901T105414/tail-copy|' \
+    -e "s|^spool_path=.*|spool_path=$TAIL/spool.data|" \
+    "$MAIN_CONFIG" > "$TAIL/gateway.conf" || fail 'cannot create tail config'
+chmod 600 "$TAIL/gateway.conf" "$TAIL/spool.data" "$TAIL/spool.state"
+
+TAIL_BEFORE_SIZE=$(wc -c < "$TAIL/spool.data")
+TAIL_BEFORE_HASH=$(sha256sum "$TAIL/spool.data" | awk '{print $1}')
+TAIL_STATE_BEFORE_HASH=$(sha256sum "$TAIL/spool.state" | awk '{print $1}')
+{
+    echo "injection=append invalid partial tail"
+    echo "offset=$TAIL_BEFORE_SIZE"
+    echo 'bytes_hex=de ad be ef'
+    echo "before_size=$TAIL_BEFORE_SIZE"
+    echo "before_sha256=$TAIL_BEFORE_HASH"
+    echo "state_before_sha256=$TAIL_STATE_BEFORE_HASH"
+} > "$EVIDENCE/tail_injection_before.txt"
+printf '\336\255\276\357' >> "$TAIL/spool.data" || fail 'tail injection write failed'
+sync
+TAIL_INJECTED_SIZE=$(wc -c < "$TAIL/spool.data")
+TAIL_INJECTED_HASH=$(sha256sum "$TAIL/spool.data" | awk '{print $1}')
+TAIL_BYTES=$(dd if="$TAIL/spool.data" bs=1 skip="$TAIL_BEFORE_SIZE" count=4 2>/dev/null | od -An -v -tx1 | tr -s ' ' | sed 's/^ //')
+{
+    echo "offset=$TAIL_BEFORE_SIZE"
+    echo "actual_bytes_hex=$TAIL_BYTES"
+    echo "after_size=$TAIL_INJECTED_SIZE"
+    echo "after_sha256=$TAIL_INJECTED_HASH"
+    sha256sum "$TAIL/spool.state"
+} > "$EVIDENCE/tail_injection_after.txt"
+test "$TAIL_BEFORE_SIZE" -eq "$EXPECTED_SIZE" || fail 'tail copy baseline size mismatch'
+test "$TAIL_BEFORE_HASH" = "$EXPECTED_DATA_HASH" || fail 'tail copy baseline hash mismatch'
+test "$TAIL_STATE_BEFORE_HASH" = "$EXPECTED_STATE_HASH" || fail 'tail copy state baseline hash mismatch'
+test "$TAIL_INJECTED_SIZE" -eq $((EXPECTED_SIZE + 4)) || fail 'tail injected size mismatch'
+test "$TAIL_BYTES" = 'de ad be ef' || fail 'tail injected bytes mismatch'
+test "$TAIL_INJECTED_HASH" != "$EXPECTED_DATA_HASH" || fail 'tail injection did not change hash'
+
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$TAIL/gateway.conf" --print-config > "$EVIDENCE/tail_config_check.stdout.log" 2> "$EVIDENCE/tail_config_check.stderr.log"
+TAIL_CONFIG_EXIT=$?
+echo "config_check_exit=$TAIL_CONFIG_EXIT" > "$EVIDENCE/tail_config_check_exit.txt"
+test "$TAIL_CONFIG_EXIT" -eq 0 || fail 'tail config check failed'
+sh "$RUN_ROOT/run_gateway_phase.sh" tailcopy "$TAIL/gateway.conf" > "$EVIDENCE/tailcopy_wrapper.stdout.log" 2> "$EVIDENCE/tailcopy_wrapper.stderr.log" &
+TAIL_WRAPPER_PID=$!
+echo "$TAIL_WRAPPER_PID" > "$EVIDENCE/tailcopy_wrapper.pid"
+COUNT=0
+while [ ! -s "$EVIDENCE/tailcopy_gateway.pid" ] && [ "$COUNT" -lt 20 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+test -s "$EVIDENCE/tailcopy_gateway.pid" || fail 'tail gateway PID not recorded'
+TAIL_PID=$(cat "$EVIDENCE/tailcopy_gateway.pid")
+test -r "/proc/$TAIL_PID/comm" || fail 'tail gateway exited during startup'
+grep -qx gatewayd "/proc/$TAIL_PID/comm" || fail 'tail PID is not gatewayd'
+sleep 3
+test -r "/proc/$TAIL_PID/comm" || fail 'tail gateway exited during readiness window'
+echo "command=kill -TERM $TAIL_PID" > "$EVIDENCE/tailcopy_stop_command.txt"
+kill -TERM "$TAIL_PID"
+TAIL_TERM_EXIT=$?
+echo "kill_term_exit=$TAIL_TERM_EXIT" > "$EVIDENCE/tailcopy_stop_signal_exit.txt"
+test "$TAIL_TERM_EXIT" -eq 0 || fail 'tail gateway SIGTERM failed'
+COUNT=0
+while [ -e "/proc/$TAIL_PID" ] && [ "$COUNT" -lt 30 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+test ! -e "/proc/$TAIL_PID" || fail 'tail gateway did not exit'
+COUNT=0
+while [ ! -s "$EVIDENCE/tailcopy_wait_exit.txt" ] && [ "$COUNT" -lt 10 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+grep -q '^wait_exit=0$' "$EVIDENCE/tailcopy_wait_exit.txt" || fail 'tail gateway wait exit is not zero'
+TAIL_SUMMARY=$(grep 'M7_MQTT_SUMMARY' "$EVIDENCE/tailcopy_gateway_stderr.log" | tail -n 1)
+echo "$TAIL_SUMMARY" | grep -q 'spool_tail_recoveries=1' || fail 'tail recovery count is not one'
+echo "$TAIL_SUMMARY" | grep -q 'spool_state_recoveries=0' || fail 'tail test unexpectedly recovered state'
+echo "$TAIL_SUMMARY" | grep -q 'spool_corruptions=0' || fail 'tail test classified corruption as internal'
+echo "$TAIL_SUMMARY" | grep -q 'spool_errors=0' || fail 'tail test reports spool errors'
+TAIL_RECOVERED_SIZE=$(wc -c < "$TAIL/spool.data")
+TAIL_RECOVERED_HASH=$(sha256sum "$TAIL/spool.data" | awk '{print $1}')
+test "$TAIL_RECOVERED_SIZE" -eq "$EXPECTED_SIZE" || fail 'tail recovery size is not the valid prefix size'
+test "$TAIL_RECOVERED_HASH" = "$EXPECTED_DATA_HASH" || fail 'tail recovery did not preserve exact valid prefix'
+test "$(sha256sum "$TAIL/spool.state" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'tail recovery changed valid state'
+{
+    date -Ins
+    echo "$TAIL_SUMMARY"
+    cat "$EVIDENCE/tailcopy_stop_signal_exit.txt"
+    cat "$EVIDENCE/tailcopy_wait_exit.txt"
+    echo "recovered_size=$TAIL_RECOVERED_SIZE"
+    echo "recovered_sha256=$TAIL_RECOVERED_HASH"
+    sha256sum "$TAIL/spool.state"
+} > "$EVIDENCE/tail_recovery_result.txt" 2>&1
+
+cp -p "$MAIN_DATA" "$INTERNAL/spool.data" || fail 'cannot copy internal spool.data'
+cp -p "$MAIN_STATE" "$INTERNAL/spool.state" || fail 'cannot copy internal spool.state'
+sed -e 's/^device_id=.*/device_id=m7-internal-copy-20260901-105414/' \
+    -e 's|^mqtt_topic=.*|mqtt_topic=test/m7/20260901T105414/internal-copy|' \
+    -e "s|^spool_path=.*|spool_path=$INTERNAL/spool.data|" \
+    "$MAIN_CONFIG" > "$INTERNAL/gateway.conf" || fail 'cannot create internal config'
+chmod 600 "$INTERNAL/gateway.conf" "$INTERNAL/spool.data" "$INTERNAL/spool.state"
+
+INTERNAL_BEFORE_SIZE=$(wc -c < "$INTERNAL/spool.data")
+INTERNAL_BEFORE_HASH=$(sha256sum "$INTERNAL/spool.data" | awk '{print $1}')
+INTERNAL_STATE_BEFORE_HASH=$(sha256sum "$INTERNAL/spool.state" | awk '{print $1}')
+INTERNAL_BEFORE_BYTE=$(dd if="$INTERNAL/spool.data" bs=1 skip="$INTERNAL_OFFSET" count=1 2>/dev/null | od -An -v -tx1 | tr -d ' ')
+{
+    echo 'injection=replace first magic byte of zero-based entry 1000'
+    echo "offset=$INTERNAL_OFFSET"
+    echo "before_byte_hex=$INTERNAL_BEFORE_BYTE"
+    echo 'after_byte_hex=00'
+    echo "before_size=$INTERNAL_BEFORE_SIZE"
+    echo "before_sha256=$INTERNAL_BEFORE_HASH"
+    echo "state_before_sha256=$INTERNAL_STATE_BEFORE_HASH"
+} > "$EVIDENCE/internal_injection_before.txt"
+test "$INTERNAL_BEFORE_BYTE" = '47' || fail 'internal target byte is not G magic'
+printf '\000' | dd of="$INTERNAL/spool.data" bs=1 seek="$INTERNAL_OFFSET" count=1 conv=notrunc 2> "$EVIDENCE/internal_injection_dd.stderr.log"
+INTERNAL_DD_EXIT=$?
+echo "dd_exit=$INTERNAL_DD_EXIT" > "$EVIDENCE/internal_injection_dd_exit.txt"
+test "$INTERNAL_DD_EXIT" -eq 0 || fail 'internal injection write failed'
+sync
+INTERNAL_AFTER_SIZE=$(wc -c < "$INTERNAL/spool.data")
+INTERNAL_AFTER_HASH=$(sha256sum "$INTERNAL/spool.data" | awk '{print $1}')
+INTERNAL_AFTER_BYTE=$(dd if="$INTERNAL/spool.data" bs=1 skip="$INTERNAL_OFFSET" count=1 2>/dev/null | od -An -v -tx1 | tr -d ' ')
+{
+    echo "offset=$INTERNAL_OFFSET"
+    echo "actual_byte_hex=$INTERNAL_AFTER_BYTE"
+    echo "after_size=$INTERNAL_AFTER_SIZE"
+    echo "after_sha256=$INTERNAL_AFTER_HASH"
+    sha256sum "$INTERNAL/spool.state"
+} > "$EVIDENCE/internal_injection_after.txt"
+test "$INTERNAL_BEFORE_SIZE" -eq "$EXPECTED_SIZE" || fail 'internal copy baseline size mismatch'
+test "$INTERNAL_BEFORE_HASH" = "$EXPECTED_DATA_HASH" || fail 'internal copy baseline hash mismatch'
+test "$INTERNAL_STATE_BEFORE_HASH" = "$EXPECTED_STATE_HASH" || fail 'internal copy state baseline hash mismatch'
+test "$INTERNAL_AFTER_SIZE" -eq "$EXPECTED_SIZE" || fail 'internal injection changed file size'
+test "$INTERNAL_AFTER_BYTE" = '00' || fail 'internal injected byte mismatch'
+test "$INTERNAL_AFTER_HASH" != "$EXPECTED_DATA_HASH" || fail 'internal injection did not change hash'
+
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$INTERNAL/gateway.conf" --print-config > "$EVIDENCE/internal_config_check.stdout.log" 2> "$EVIDENCE/internal_config_check.stderr.log"
+INTERNAL_CONFIG_EXIT=$?
+echo "config_check_exit=$INTERNAL_CONFIG_EXIT" > "$EVIDENCE/internal_config_check_exit.txt"
+test "$INTERNAL_CONFIG_EXIT" -eq 0 || fail 'internal config check failed'
+LD_LIBRARY_PATH="$LIB_DIR" timeout 30 "$GATEWAY" --config "$INTERNAL/gateway.conf" --run-mqtt > "$EVIDENCE/internal_gateway_stdout.log" 2> "$EVIDENCE/internal_gateway_stderr.log"
+INTERNAL_EXIT=$?
+echo "gateway_exit=$INTERNAL_EXIT" > "$EVIDENCE/internal_gateway_exit.txt"
+test "$INTERNAL_EXIT" -ne 0 || fail 'internally corrupt spool was accepted'
+test "$INTERNAL_EXIT" -ne 124 || fail 'internally corrupt spool startup timed out instead of rejecting'
+grep -q 'MQTT sink startup failed' "$EVIDENCE/internal_gateway_stderr.log" || fail 'internal corruption rejection log is absent'
+test "$(wc -c < "$INTERNAL/spool.data")" -eq "$INTERNAL_AFTER_SIZE" || fail 'internal rejection changed spool size'
+test "$(sha256sum "$INTERNAL/spool.data" | awk '{print $1}')" = "$INTERNAL_AFTER_HASH" || fail 'internal rejection modified corrupt spool'
+test "$(sha256sum "$INTERNAL/spool.state" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'internal rejection modified state'
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'gatewayd remains after internal corruption rejection'
+done
+test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source resumed during corruption tests'
+{
+    date -Ins
+    cat "$EVIDENCE/internal_gateway_exit.txt"
+    cat "$EVIDENCE/internal_gateway_stderr.log"
+    echo "retained_size=$(wc -c < "$INTERNAL/spool.data")"
+    sha256sum "$INTERNAL/spool.data" "$INTERNAL/spool.state"
+    echo "corrupt_offset=$INTERNAL_OFFSET"
+    echo "corrupt_byte_hex=$INTERNAL_AFTER_BYTE"
+} > "$EVIDENCE/internal_rejection_result.txt" 2>&1
+sync
+
+echo '--- tail injection ---'
+cat "$EVIDENCE/tail_injection_before.txt" "$EVIDENCE/tail_injection_after.txt" 2>&1
+echo '--- tail recovery ---'
+cat "$EVIDENCE/tail_recovery_result.txt" 2>&1
+echo '--- internal injection ---'
+cat "$EVIDENCE/internal_injection_before.txt" "$EVIDENCE/internal_injection_after.txt" 2>&1
+echo '--- internal rejection ---'
+cat "$EVIDENCE/internal_rejection_result.txt" 2>&1
+echo 'M7_GATE2_TAIL_INTERNAL_PASS'
+M7_GATE2_TAIL_INTERNAL

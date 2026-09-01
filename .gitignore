@@ -34,3 +34,4 @@
 gateway/config/gateway.conf
 
 # Keep evidence directories explicit. Do not blanket-ignore artifacts/.
+/artifacts/**/private_raw/

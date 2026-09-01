@@ -1,0 +1,9 @@
+result=PASS
+pre_pull_policy=git status --short inspected; all existing uncommitted content preserved
+pull_command=git pull --ff-only origin master
+pull_result=Already up to date at continuation start
+continuation_head=fefd07558f944f7cc1b2527730bae75ddd891be5
+origin_master_before_m7_close=fefd07558f944f7cc1b2527730bae75ddd891be5
+required_commit=fefd07558f944f7cc1b2527730bae75ddd891be5
+required_commit_is_ancestor_exit=0
+note=unrelated untracked STM32 and historical artifact files were neither modified nor staged by the M7 close

@@ -1,0 +1,106 @@
+sh <<'M7_GATE2_PHASE2_RESUME_DRAIN'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+CONFIG=$RUN_ROOT/main/gateway.conf
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+MONITOR=$EVIDENCE/phase2_replay_monitor.txt
+EXPECTED_SIZE=2744720
+EXPECTED_ENTRIES=34309
+EXPECTED_SPOOL_HASH=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+EXPECTED_STATE_HASH=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+EXPECTED_RX=7047547
+PID=$(cat "$EVIDENCE/phase2_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_PHASE2_RESUME_DRAIN_FAIL: $*" >&2; exit 1; }
+
+read_state_u64()
+{
+    OFFSET=$1
+    set -- $(dd if="$STATE" bs=1 skip="$OFFSET" count=8 2>/dev/null | od -An -v -tu1)
+    test "$#" -eq 8 || return 1
+    echo $(( $1 + $2 * 256 + $3 * 65536 + $4 * 16777216 + $5 * 4294967296 + $6 * 1099511627776 + $7 * 281474976710656 + $8 * 72057594037927936 ))
+}
+
+test -n "$PID" || fail 'missing phase2 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase2 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase2 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" | grep -Fq "$CONFIG" || fail 'phase2 PID does not reference this run config'
+grep -Eq '^State:[[:space:]]+T' "/proc/$PID/status" || fail 'phase2 is not stopped before Broker-ready resume'
+test ! -e "$MONITOR" || fail 'refusing to overwrite replay monitor'
+test "$(wc -c < "$SPOOL")" -eq "$EXPECTED_SIZE" || fail 'spool size changed before resume'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed before resume'
+test "$(sha256sum "$STATE" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'state hash changed before resume'
+test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+
+{
+    echo "monitor_started=$(date -Ins)"
+    echo "gateway_pid=$PID"
+    echo "expected_spool_size=$EXPECTED_SIZE"
+    echo "expected_entries=$EXPECTED_ENTRIES"
+    echo "expected_rx_packets=$EXPECTED_RX"
+} > "$MONITOR"
+echo "command=kill -CONT $PID" > "$EVIDENCE/phase2_resume_command.txt"
+kill -CONT "$PID"
+CONT_EXIT=$?
+echo "sigcont_exit=$CONT_EXIT" > "$EVIDENCE/phase2_resume_exit.txt"
+test "$CONT_EXIT" -eq 0 || fail 'phase2 SIGCONT failed'
+sleep 1
+test -r "/proc/$PID/comm" || fail 'phase2 exited immediately after SIGCONT'
+if grep -Eq '^State:[[:space:]]+T' "/proc/$PID/status"; then fail 'phase2 remained stopped after SIGCONT'; fi
+
+COUNT=0
+ACK_OFFSET=-1
+ACK_SEQ=-1
+NEXT_BATCH=-1
+while [ "$COUNT" -lt 180 ]; do
+    test -r "/proc/$PID/comm" || fail 'phase2 exited during replay'
+    SIZE=$(wc -c < "$SPOOL")
+    RX=$(cat /sys/class/net/can0/statistics/rx_packets)
+    test "$SIZE" -eq "$EXPECTED_SIZE" || fail 'spool changed while external CAN source is paused'
+    test "$RX" -eq "$EXPECTED_RX" || fail 'external CAN source resumed before replay completed'
+    ACK_OFFSET=$(read_state_u64 16) || fail 'cannot decode state ack_offset'
+    ACK_SEQ=$(read_state_u64 24) || fail 'cannot decode state ack_seq'
+    NEXT_BATCH=$(read_state_u64 32) || fail 'cannot decode state next_batch'
+    STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+    CONNECTED=no
+    grep -q 'connected broker=' "$EVIDENCE/phase2_gateway_stderr.log" && CONNECTED=yes
+    echo "sample=$COUNT time=$(date -Ins) connected=$CONNECTED ack_offset=$ACK_OFFSET ack_seq=$ACK_SEQ next_batch=$NEXT_BATCH state_sha256=$STATE_HASH" >> "$MONITOR"
+    if [ "$ACK_OFFSET" -eq "$EXPECTED_SIZE" ]; then
+        break
+    fi
+    sleep 2
+    COUNT=$((COUNT + 1))
+done
+
+test "$ACK_OFFSET" -eq "$EXPECTED_SIZE" || fail 'replay did not advance ACK cursor to spool end within 360 seconds'
+test "$ACK_SEQ" -eq "$EXPECTED_ENTRIES" || fail 'final ACK sequence does not equal entry count; sequence gaps exist'
+grep -q 'connected broker=' "$EVIDENCE/phase2_gateway_stderr.log" || fail 'phase2 never logged Broker connection'
+test "$NEXT_BATCH" -eq 136 || fail 'unexpected next_batch after replay; expected 136'
+sync
+
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    cat "$EVIDENCE/phase2_resume_command.txt"
+    cat "$EVIDENCE/phase2_resume_exit.txt"
+    grep '^State:' "/proc/$PID/status"
+    echo "spool_size=$(wc -c < "$SPOOL")"
+    echo "spool_entries=$EXPECTED_ENTRIES"
+    echo "ack_offset=$ACK_OFFSET"
+    echo "ack_seq=$ACK_SEQ"
+    echo "next_batch=$NEXT_BATCH"
+    echo "rx_packets=$(cat /sys/class/net/can0/statistics/rx_packets)"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+    tail -n 40 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_replay_complete.txt" 2>&1
+
+echo '--- replay monitor tail ---'
+tail -n 30 "$MONITOR" 2>&1
+echo '--- replay complete ---'
+cat "$EVIDENCE/phase2_replay_complete.txt" 2>&1
+echo "M7_GATE2_PHASE2_REPLAY_PASS gateway_pid=$PID ack_seq=$ACK_SEQ next_batch=$NEXT_BATCH"
+M7_GATE2_PHASE2_RESUME_DRAIN

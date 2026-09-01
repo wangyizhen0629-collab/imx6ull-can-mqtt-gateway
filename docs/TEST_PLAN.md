@@ -192,7 +192,7 @@ spool、`kill -9`、去重和epoll属于M7/M8，M6没有执行。
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。
 
-## M7 当前测试状态与接续要求
+## M7 完成测试与保留边界
 
 离线实现证据`artifacts/20260901T093654+0800-m7-offline-final/`已经执行：Ubuntu
 warning-clean全量CTest16/16、ASan+UBSan全量16/16、M7标签3/3及ARMv7 warning-clean
@@ -200,21 +200,31 @@ warning-clean全量CTest16/16、ASan+UBSan全量16/16、M7标签3/3及ARMv7 warn
 重开、部分/损坏尾部、cursor损坏安全回退、内部损坏拒绝和单写者锁；恢复validator
 回归5/5覆盖raw duplicate与去重完整性。
 
-以下退出测试仍为`NOT RUN`，必须由Windows Broker与i.MX6ULL侧协同建立新的唯一run：
+跨主机退出证据`artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`已执行并通过：
 
-- 在线基线后实际停止Windows Broker，确认gateway进程继续运行、spool pending增长；
-- 恢复Broker，确认积压按seq补传且只有匹配PUBACK推进cursor；
-- Broker断开、spool已有未确认记录时实际`kill -9` gateway，保存返回状态并从同一spool
-  重启，确认gateway seq不复用、unique记录完整；
-- 在专用测试副本注入尾部和state/cursor损坏，保存注入前后hash、精确offset/bytes和
-  恢复日志；
-- 合并subscriber JSON并运行`validate_m7_recovery.py`，报告raw duplicate、unique、
-  missing和effective duplicate；同时对账Broker/gateway publish/PUBACK/reconnect与
-  spool append/replay/ACK/pending；
-- 保存Broker配置/版本、gateway/binary/library SHA256、CAN前后状态、spool文件系统信息、
-  原始日志和验证通过的`manifest.sha256`。
+- Windows Mosquitto 2.1.2专用Broker和subscriber完成受控启停；真实地址只保存在Git忽略
+  的`private_raw/`，提交的是完整脱敏日志及原始文件SHA256。
+- 目标板使用`/dev/root` ext4下的专用`/var/lib`目录；记录了挂载参数、空间、权限、
+  gateway/libmosquitto实算SHA256、ELF/readelf和动态加载结果。
+- 在线基线确认seq1～4864后实际停止Broker；gateway保持运行，spool增长到34309条，
+  cursor未推进，形成29445条pending。
+- 对核实PID 1706执行一次`kill -9`，返回0、wait137，前后spool大小和data/state hash一致；
+  使用同一binary、配置、spool启动PID1926后补传seq4865～34309，无缺失或seq复用。
+- 同一PID1926又经历运行中Broker停止/恢复并记录一次reconnect；物理CAN恢复窗口新增1335
+  条，最终cursor到seq35644，phase2 summary的queue drop和pending均为0。
+- 尾部offset2851520追加4个无效字节后只截断无效尾部；内部offset80000损坏后在MQTT
+  connect前exit1；state offset0损坏后安全回退并从头重放35644条。
+- 恢复validator自测5/5；实际`combined.jsonl`用期望seq1～35644和
+  `--require-raw-duplicates`验证：raw batch/record 281/71288、raw duplicate35644、
+  unique35644、missing0、effective duplicate0。
+- Broker三段原始日志的gateway PUBLISH/PUBACK为19/19、116/116、146/146，总计281/281；
+  Broker到subscriber也为281/281，与validator raw batch一致。板端manifest本地复核
+  115/115，run级`manifest.sha256`另行实测通过。
 
-完成前M7保持`NOT MET`。M8 external-loop/epoll等价测试不得提前执行。
+M7门禁为`MET`。SIGKILL阶段按设计没有最终queue summary，不能把该计数直接填成0；正常
+退出的phase2/phase3为0且gateway seq无缺失。CAN最终为ERROR-WARNING、berr rx102，
+内核RX errors/dropped为0/0，不能写成干净物理层结果。正确UTC、真实掉电、性能、寿命、
+compaction和长期可靠性仍为`NOT RUN`。M8 external-loop/epoll等价测试未执行，也未获批准。
 
 ## 统一指标定义
 

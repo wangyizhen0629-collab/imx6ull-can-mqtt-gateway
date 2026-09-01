@@ -1,0 +1,2 @@
+1788232768: Configuration file is OK.
+1788232768: mosquitto version 2.1.2 terminating

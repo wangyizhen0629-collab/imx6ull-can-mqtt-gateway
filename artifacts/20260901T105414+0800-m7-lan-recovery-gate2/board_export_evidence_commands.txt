@@ -1,0 +1,61 @@
+sh <<'M7_GATE2_EXPORT'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MANIFEST=$EVIDENCE/board_manifest.sha256
+CHECK=$EVIDENCE/board_manifest_check.txt
+ARCHIVE=/var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz
+ARCHIVE_HASH=/var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz.sha256
+ARCHIVE_LIST=/var/lib/gatewayd-m7-test-20260901T105414-export.tar.gz.list.txt
+
+fail() { echo "M7_GATE2_EXPORT_FAIL: $*" >&2; exit 1; }
+
+test -d "$RUN_ROOT" || fail 'run root is absent'
+test ! -e "$MANIFEST" || fail 'refusing to overwrite board manifest'
+test ! -e "$CHECK" || fail 'refusing to overwrite board manifest check'
+test ! -e "$ARCHIVE" || fail 'refusing to overwrite board export archive'
+test ! -e "$ARCHIVE_HASH" || fail 'refusing to overwrite board archive hash'
+test ! -e "$ARCHIVE_LIST" || fail 'refusing to overwrite board archive listing'
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'gatewayd is still running before evidence export'
+done
+
+{
+    date -Ins
+    echo 'gatewayd_processes=0'
+    ps
+} > "$EVIDENCE/process_final.txt" 2>&1
+ip -details -statistics link show can0 > "$EVIDENCE/can_final.txt" 2>&1 || fail 'cannot capture final can0 state'
+{
+    date -Ins
+    cat /proc/mounts
+    df -h "$RUN_ROOT"
+    ls -ld "$RUN_ROOT" "$EVIDENCE" "$RUN_ROOT/main" "$RUN_ROOT/corruption" "$RUN_ROOT/corruption/tail" "$RUN_ROOT/corruption/internal" "$RUN_ROOT/corruption/state"
+} > "$EVIDENCE/storage_final.txt" 2>&1
+
+find "$RUN_ROOT" -type f ! -path "$MANIFEST" ! -path "$CHECK" | sort | while IFS= read -r FILE; do
+    sha256sum "$FILE"
+done > "$MANIFEST" || fail 'cannot create board manifest'
+sha256sum -c "$MANIFEST" > "$CHECK" 2>&1
+CHECK_EXIT=$?
+echo "manifest_check_exit=$CHECK_EXIT" >> "$CHECK"
+test "$CHECK_EXIT" -eq 0 || fail 'board manifest verification failed'
+
+tar -czf "$ARCHIVE" -C /var/lib "$(basename "$RUN_ROOT")" || fail 'cannot create board export archive'
+sha256sum "$ARCHIVE" > "$ARCHIVE_HASH" || fail 'cannot hash board export archive'
+tar -tzf "$ARCHIVE" > "$ARCHIVE_LIST" 2>&1
+LIST_EXIT=$?
+echo "tar_list_exit=$LIST_EXIT" >> "$ARCHIVE_LIST"
+test "$LIST_EXIT" -eq 0 || fail 'cannot list board export archive'
+sync
+
+echo '--- board manifest check tail ---'
+tail -n 20 "$CHECK" 2>&1
+echo '--- export archive ---'
+ls -l "$ARCHIVE" "$ARCHIVE_HASH" "$ARCHIVE_LIST" 2>&1
+cat "$ARCHIVE_HASH" 2>&1
+tail -n 5 "$ARCHIVE_LIST" 2>&1
+echo 'M7_GATE2_EXPORT_PASS'
+M7_GATE2_EXPORT

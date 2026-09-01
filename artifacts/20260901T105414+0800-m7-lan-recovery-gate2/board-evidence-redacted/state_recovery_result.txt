@@ -1,0 +1,27 @@
+1970-01-03T01:05:39,683561350+00:00
+[1970-01-03T01:05:39.259Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=0 decode_success=0 queue_success=0 queue_drop=0 queue_pop=0 queue_count=0 mqtt_connect_success=1 publish_attempts=140 publish_accepted=140 puback_matched=140 puback_unexpected=0 batches_acked=140 records_acked=35644 last_batch_seq=140 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=0 reconnects=0 spool_appended=0 spool_replayed=35644 spool_acked=35644 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=1 spool_corruptions=0 spool_errors=0
+kill_term_exit=0
+wait_exit=0
+ack_offset=2851520
+ack_seq=35644
+next_batch=141
+spool_size=2851520
+spool_entries=35644
+spool_sha256=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+injected_state_sha256=6efc4f9f452114ae2f525d57b69a4c28dcd2edb6b94d9a50d709546ad8773220
+recovered_state_sha256=c3ef29a763c53d780d56edae13024cf2d337a3eb72ab05a64bdb4f4961c547fd
+rx_packets=7048885
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-WARNING (berr-counter tx 0 rx 102) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          223        3          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    56391080   7048885  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       

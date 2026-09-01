@@ -1,0 +1,15 @@
+result=PASS
+archive=gatewayd-m7-test-20260901T105414-export-attempt2.tar
+archive_size=11585024
+archive_sha256=51bd1b5c4197c2703ebd10478bd9b39b2ac9b38b991046e95ce5e0dd2f30ae4b
+recorded_tar_list_exit=0
+local_archive_entries=124
+local_extracted_files=117
+local_extracted_bytes=11485273
+path_traversal_check=PASS
+recorded_list_comparison=PASS
+board_manifest_entries=115
+local_board_manifest_ok=115
+local_board_manifest_failures=0
+local_board_manifest_recheck=PASS
+private_raw_policy=archive and extracted originals are ignored by Git; selected committed copies are redacted

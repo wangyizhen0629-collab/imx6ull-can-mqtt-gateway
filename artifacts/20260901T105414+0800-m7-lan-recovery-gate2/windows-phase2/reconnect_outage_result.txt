@@ -1,0 +1,10 @@
+﻿stopped_at=2026-09-01T11:24:41.2934686+08:00
+broker_signal_exit=0
+broker_gone=true
+listeners_after=0
+subscriber_alive_after=true
+subscriber_pid=35988
+tcp_entries_after=3
+  TCP    <REDACTED_LAN_ADDRESS>:18884     <REDACTED_LAN_ADDRESS>:51365     TIME_WAIT       0
+  TCP    <REDACTED_LAN_ADDRESS>:18884     <REDACTED_TARGET_ADDRESS>:51982     TIME_WAIT       0
+  TCP    <REDACTED_LAN_ADDRESS>:64893     <REDACTED_LAN_ADDRESS>:18884     SYN_SENT        35988

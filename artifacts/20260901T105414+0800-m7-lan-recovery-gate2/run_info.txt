@@ -1,0 +1,14 @@
+run_id=20260901T105414+0800-m7-lan-recovery-gate2
+scope=M7 Windows Broker and i.MX6ULL durable recovery gate retry
+starting_git_commit=fefd07558f944f7cc1b2527730bae75ddd891be5
+deployed_gateway_path=/tmp/m7/bin/gatewayd
+deployed_libmosquitto_link=/tmp/m7/lib/libmosquitto.so.1
+target_run_root=/var/lib/gatewayd-m7-test-20260901T105414
+broker_host=<REDACTED_LAN_ADDRESS>
+broker_port=18884
+device_id=m7-gateway-20260901-105414
+mqtt_topic=test/m7/20260901T105414/recovery
+qos=1
+queue_capacity=65536
+queue_capacity_reason=maximum accepted bounded capacity selected from the measured 72-drop predecessor; it provides functional-gate operator margin and is not a throughput or production-sizing claim
+sensitive_raw_policy=raw files containing real LAN addresses remain local and uncommitted; committed evidence uses redacted copies plus hashes of raw originals

@@ -1,0 +1,27 @@
+ready_at=1970-01-03T00:04:47,239781915+00:00
+gateway_pid=1706
+spool_size=2744720
+spool_entries=34309
+rx_packets=7047547
+0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state
+-rw------- 1 <REDACTED_USER> <REDACTED_USER> 2744720 Jan  3 00:04 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+-rw------- 1 <REDACTED_USER> <REDACTED_USER>      40 Jan  2 23:58 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 46) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          221        3          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    56380376   7047547  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       
+[1970-01-02T23:57:59.048Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-02T23:57:59.058Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m7/20260901T105414/recovery qos=1 max_inflight=1
+[1970-01-02T23:57:59.059Z] INFO mqtt: M7 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=10000 qos=1 max_inflight=1 spool_path=/var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+[1970-01-02T23:58:58.313Z] WARN mqtt: PUBACK network loop: offline, durable records retained: The connection was lost.

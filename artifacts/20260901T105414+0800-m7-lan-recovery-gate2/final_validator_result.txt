@@ -1,0 +1,15 @@
+result=PASS
+self_tests=5
+self_test_failures=0
+self_test_exit=0
+captured_validator_exit=0
+raw_batches=281
+raw_records=71288
+raw_duplicate_records=35644
+unique_batch_seq=141
+unique_gateway_seq=35644
+first_gateway_seq=1
+last_gateway_seq=35644
+missing_gateway_seq=0
+effective_duplicate_records=0
+combined_sha256=572cc25085bdb75a77acb56761090e302c192e6ca1e0e251fc9219a05bad0c38

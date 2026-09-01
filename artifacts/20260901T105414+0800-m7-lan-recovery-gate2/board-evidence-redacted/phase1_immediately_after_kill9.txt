@@ -1,0 +1,10 @@
+1970-01-03T00:09:41,207542283+00:00
+gateway_process_gone=true
+kill9_exit=0
+wait_exit=137
+spool_size=2744720
+spool_entries=34309
+-rw------- 1 <REDACTED_USER> <REDACTED_USER> 2744720 Jan  3 00:04 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+-rw------- 1 <REDACTED_USER> <REDACTED_USER>      40 Jan  2 23:58 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state
+0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state

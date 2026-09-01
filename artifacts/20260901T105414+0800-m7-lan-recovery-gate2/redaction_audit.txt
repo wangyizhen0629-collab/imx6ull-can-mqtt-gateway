@@ -1,0 +1,10 @@
+result=PASS
+scope=all files under this run except Git-ignored private_raw
+ipv4_literals_total=3
+allowed_ipv4_literals=0.0.0.0 wildcard listener only
+unexpected_ipv4_literals=0
+known_real_lan_literal_matches=0
+user_identity_path_or_uid_matches=0
+nonempty_username_or_password_matches=0
+private_raw_git_ignore_check=PASS
+note=the three allowed wildcard matches occur in redacted Windows listener snapshots

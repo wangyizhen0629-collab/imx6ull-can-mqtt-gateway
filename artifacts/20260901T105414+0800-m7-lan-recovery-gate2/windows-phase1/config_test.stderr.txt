@@ -1,0 +1,2 @@
+Error: Unknown option '-t'.
+1788231407: mosquitto version 2.1.2 terminating

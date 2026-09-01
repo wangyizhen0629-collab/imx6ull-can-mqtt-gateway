@@ -19,3 +19,6 @@
 
 # M6 i.MX6ULL 到 Windows Broker 的局域网1000批原始证据逐字节保留。
 /artifacts/20260831T220718p0800-m6-lan-1000/** -text
+
+# M7 跨主机恢复门禁证据逐字节保留，确保subscriber JSON和manifest跨clone可复核。
+/artifacts/20260901T105414+0800-m7-lan-recovery-gate2/** -text

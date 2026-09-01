@@ -1,0 +1,5 @@
+concatenation_order=1 subscriber-phase1.jsonl
+concatenation_order=2 subscriber-phase2.jsonl
+phase1_bytes=1026059
+phase2_bytes=14077680
+combined_bytes=15103739

@@ -1,0 +1,52 @@
+sh <<'M7_GATE2_RUNTIME_OUTAGE_STATUS'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+CONFIG=$RUN_ROOT/main/gateway.conf
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+EXPECTED_SIZE=2744720
+EXPECTED_SPOOL_HASH=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+EXPECTED_STATE_HASH=2e6050aeb7fc527025cadec0d3258a4a4c61c9714d702a4b94ac94dcb58e6799
+EXPECTED_RX=7047547
+PID=$(cat "$EVIDENCE/phase2_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_RUNTIME_OUTAGE_STATUS_FAIL: $*" >&2; exit 1; }
+
+test -n "$PID" || fail 'missing phase2 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase2 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase2 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" | grep -Fq "$CONFIG" || fail 'phase2 PID does not reference this run config'
+
+COUNT=0
+while ! grep -q 'network poll: offline, durable records retained' "$EVIDENCE/phase2_gateway_stderr.log" 2>/dev/null && [ "$COUNT" -lt 30 ]; do
+    test -r "/proc/$PID/comm" || fail 'phase2 exited while waiting for runtime outage detection'
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+grep -q 'network poll: offline, durable records retained' "$EVIDENCE/phase2_gateway_stderr.log" || fail 'runtime Broker outage was not detected within 30 seconds'
+
+SIZE=$(wc -c < "$SPOOL")
+SPOOL_HASH=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+RX=$(cat /sys/class/net/can0/statistics/rx_packets)
+test "$SIZE" -eq "$EXPECTED_SIZE" || fail 'spool size changed while CAN source is paused'
+test "$SPOOL_HASH" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed during zero-pending outage'
+test "$STATE_HASH" = "$EXPECTED_STATE_HASH" || fail 'state changed during zero-pending outage'
+test "$RX" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    grep '^State:' "/proc/$PID/status"
+    echo "spool_size=$SIZE"
+    echo "spool_entries=$((SIZE / 80))"
+    echo "rx_packets=$RX"
+    sha256sum "$SPOOL" "$STATE"
+    tail -n 40 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_runtime_outage_detected.txt" 2>&1
+sync
+
+cat "$EVIDENCE/phase2_runtime_outage_detected.txt" 2>&1
+echo "M7_GATE2_RUNTIME_OUTAGE_STATUS_PASS gateway_pid=$PID"
+M7_GATE2_RUNTIME_OUTAGE_STATUS

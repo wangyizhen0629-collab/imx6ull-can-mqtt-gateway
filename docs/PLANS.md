@@ -43,11 +43,13 @@
   对账为1033次publish与1033次匹配PUBACK，unexpected和MQTT error均为0。Ubuntu独立
   复核确认manifest 131/131、严格validator 8/8及原始Broker/gateway/CAN计数通过。
   正确UTC、时延、吞吐和长期可靠性仍未验证。
-- M7 已获单独授权并完成源码、Ubuntu离线回归和ARMv7交叉构建。append-only
-  `spool.data`、原子`spool.state`、CRC/尾部恢复、PUBACK游标、seq恢复、重连及去重
-  validator已实现；全量普通/ASan+UBSan均16/16 PASS，ARMv7 warning-clean构建PASS。
-  Windows Broker断线/恢复、subscriber原始证据、实际`kill -9`及目标板持久介质测试均为
-  `NOT RUN`，故M7仍为`NOT MET`。M8及后续未开始。
+- M7 已于2026-09-01通过。除既有Ubuntu普通/ASan+UBSan全量16/16和ARMv7
+  warning-clean构建外，真实i.MX6ULL在`/dev/root` ext4专用目录完成Windows Broker
+  断线积压、一次核实PID的`kill -9`、同spool重启补传、同进程再次断线重连及tail/
+  internal/state损坏恢复。最终subscriber为281个raw batch、71288条raw record、35644条
+  raw duplicate、35644条unique seq，missing=0、effective duplicate=0；Broker三段原始
+  日志与gateway/subscriber对账均为281次PUBLISH/PUBACK。正确UTC、掉电、性能和长期
+  可靠性仍为`NOT RUN`；M8及后续未开始，也未获授权。
 
 ## Milestone 总表
 
@@ -64,7 +66,7 @@
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
-| M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 进行中；源码/主机/ARM构建PASS，Windows Broker与`kill -9` NOT RUN，总门禁NOT MET |
+| M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
@@ -348,10 +350,10 @@ signal 15 graceful shutdown；不产生持续运行、CAN error增量、吞吐�
 M6要求的实际库、ARMv7目标运行、真实物理CAN到局域网Broker、至少1000个QoS 1 batch、
 连续unique seq及匹配PUBACK均已有真实证据，退出门禁为 **2026-09-01 MET**。该判定只
 证明M6 QoS 1基线功能链路；板端wall clock仍为1970，正确UTC、端到端时延、吞吐、长期
-可靠性、Broker精确退出码和停止边界1帧原因均未验证。spool、断线重连、补传、去重、
-`kill -9`及epoll仍为`NOT RUN`，属于M7/M8。M7及后续尚未开始。
+可靠性、Broker精确退出码和停止边界1帧原因均未验证。在M6关闭当时，spool、断线重连、
+补传、去重、`kill -9`及epoll仍为`NOT RUN`，属于M7/M8；后续M7结果见下一节。
 
-## M7 当前记录
+## M7 完成记录
 
 1. 开始前以`artifacts/20260901T093205+0800-m7-host-pre-broker/`复核M6为`MET`，并记录
    项目所有者在M6关闭后单独批准只执行M7。起始HEAD为
@@ -372,14 +374,33 @@ M6要求的实际库、ARMv7目标运行、真实物理CAN到局域网Broker、�
    LeakSanitizer为`NOT RUN`。恢复validator回归5/5 PASS。
 7. 同一源码用Buildroot GCC 7.5.0完成ARMv7 warning-clean交叉构建；binary SHA256为
    `9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25`，hard-float、
-   依赖目标`libmosquitto.so.1`、无RPATH/RUNPATH。部署和板端执行均为`NOT RUN`。
-8. 项目所有者确认实际Broker位于Windows，并要求提交/push后由Windows Codex继续。
-   Windows Broker断线/恢复、subscriber原始证据、目标板spool及实际`kill -9`未执行，
-   禁止根据单元测试推测结果；接续清单见`docs/milestones/M7.md`。
+   依赖目标`libmosquitto.so.1`、无RPATH/RUNPATH。本次板端重新计算部署文件而非沿用
+   历史推测值：gateway SHA256与上述值一致；实际libmosquitto 2.0.11 SHA256为
+   `b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636`。
+8. 跨主机门禁证据为`artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`。spool位于
+   `/dev/root` ext4上的专用`/var/lib`目录，不使用`/tmp` tmpfs。Broker断线后cursor停在
+   seq4864，spool增长到34309条，即29445条pending；data/state在一次`kill -9`前后hash
+   不变。同binary、配置和spool重启后依次补传seq4865～34309，未复用seq。
+9. 同一重启进程又经历一次实际Broker停止/恢复并记录`reconnects=1`；后续物理CAN窗口
+   新增1335条，正常退出summary为publish/PUBACK 122/122、unexpected 0、queue drop 0、
+   spool append/replay/ACK/pending 1335/30780/30780/0。state损坏后又安全重放35644条，
+   summary为140/140匹配PUBACK、state recovery 1、pending/corruption/error均0。
+10. 尾部副本在offset2851520追加`de ad be ef`后只截断4字节并恢复原hash；内部副本在
+    offset80000破坏magic后gateway exit1且在MQTT connect前拒绝；state offset0损坏后
+    从头重放，允许原始重复且没有跳过数据。
+11. 最终合并subscriber严格验证为raw batch/record 281/71288、raw duplicate 35644、
+    unique gateway seq35644、范围1～35644、missing0、effective duplicate0。Broker三段
+    gateway PUBLISH/PUBACK为19/19、116/116、146/146，总计281/281，与subscriber一致。
+    板端归档SHA256为`51bd1b5c4197c2703ebd10478bd9b39b2ac9b38b991046e95ce5e0dd2f30ae4b`，
+    本地复核board manifest 115/115。
+12. 限制如实保留：SIGKILL phase1没有最终queue summary；后续正常phase的queue drop为0，
+    gateway seq验证无缺失。`can0`从ERROR-ACTIVE变为ERROR-WARNING，最终berr tx/rx为
+    0/102而内核RX errors/dropped为0/0。目标wall clock仍为1970；正确UTC、掉电、时延、
+    吞吐、介质寿命、compaction和长期可靠性为`NOT RUN`。
 
-M7退出条件要求实际断线/恢复和`kill -9`证明顺序恢复及去重后完整。当前只有实现、离线
-测试和ARM构建证据，所以M7总门禁保持 **NOT MET**。接续工作只允许完成M7，不得提前
-实现M8或后续功能。
+实际断线/恢复和一次`kill -9`已经证明积压按序恢复，最终`missing=0`且
+`effective duplicate=0`，因此M7总门禁为 **MET**。本结论只关闭M7；M8 external-loop/
+epoll以及M9/M10均未实现、未测试、未批准。
 
 ## M1 完成记录
 

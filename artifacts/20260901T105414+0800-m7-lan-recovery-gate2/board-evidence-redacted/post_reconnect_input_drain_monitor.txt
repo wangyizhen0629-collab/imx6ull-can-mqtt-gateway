@@ -1,0 +1,10 @@
+monitor_started=1970-01-03T00:30:52,172529768+00:00
+gateway_pid=1926
+base_spool_size=2744720
+base_entries=34309
+base_rx_packets=7047547
+initial_rx_packets=7048885
+initial_rx_delta=1338
+sample=0 time=1970-01-03T00:30:52,294854435+00:00 spool_size=2851520 rx_packets=7048885 ack_offset=2851520 ack_seq=35644 next_batch=142 stable=0
+sample=1 time=1970-01-03T00:30:54,506575435+00:00 spool_size=2851520 rx_packets=7048885 ack_offset=2851520 ack_seq=35644 next_batch=142 stable=0
+sample=2 time=1970-01-03T00:30:56,679654435+00:00 spool_size=2851520 rx_packets=7048885 ack_offset=2851520 ack_seq=35644 next_batch=142 stable=1

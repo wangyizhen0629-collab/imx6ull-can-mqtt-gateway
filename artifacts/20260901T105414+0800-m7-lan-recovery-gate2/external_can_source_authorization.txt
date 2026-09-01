@@ -1,0 +1,5 @@
+authorization=APPROVED
+authorized_action=temporarily pause and later resume the external STM32 CAN traffic source
+constraints=stop frame transmission only; do not modify can0, target network, or firmware
+purpose=allow the gateway in-memory queue to drain durably before the single verified-PID SIGKILL, preventing artificial gateway_seq gaps
+source=project owner statement in the same Codex session

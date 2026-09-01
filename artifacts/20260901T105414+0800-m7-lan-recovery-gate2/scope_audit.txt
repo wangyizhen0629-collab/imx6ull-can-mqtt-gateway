@@ -1,0 +1,12 @@
+result=PASS
+source_commit=fefd07558f944f7cc1b2527730bae75ddd891be5
+production_source_changes_for_gate=NONE
+m8_external_loop_epoll_implementation=NOT RUN
+m8_external_loop_epoll_tests=NOT RUN
+m9=NOT RUN
+m10=NOT RUN
+can0_modification=NOT RUN
+target_network_modification=NOT RUN
+firmware_modification=NOT RUN
+target_etc_or_service_modification=NOT RUN
+authorized_external_actions=dedicated Broker/subscriber control; dedicated persistent test directory; gateway lifecycle; one verified SIGKILL; dedicated spool corruption; temporary external STM32 frame pause/resume

@@ -1,0 +1,11 @@
+result=PASS
+gateway_pid=1706
+spool_size=2744720
+spool_entries=34309
+spool_sha256=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+state_sha256=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+rx_packets=7047547
+stable_windows=2
+broker_offline_log=present
+can0=UP,ERROR-ACTIVE,500000bit/s
+clock_note=target wall clock is unset (1970); ordering uses raw command/log order and host timestamps where applicable

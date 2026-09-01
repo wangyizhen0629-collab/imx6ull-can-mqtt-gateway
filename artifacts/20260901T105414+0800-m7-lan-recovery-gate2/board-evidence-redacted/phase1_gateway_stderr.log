@@ -1,0 +1,6 @@
+[1970-01-02T23:57:59.048Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-02T23:57:59.058Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m7/20260901T105414/recovery qos=1 max_inflight=1
+[1970-01-02T23:57:59.059Z] INFO mqtt: M7 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=10000 qos=1 max_inflight=1 spool_path=/var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+[1970-01-02T23:58:58.313Z] WARN mqtt: PUBACK network loop: offline, durable records retained: The connection was lost.
+[1970-01-03T00:06:42.780Z] WARN mqtt: connect: offline, durable records retained: Connection timed out
+[1970-01-03T00:09:06.141Z] WARN mqtt: connect: offline, durable records retained: Connection timed out

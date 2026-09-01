@@ -1,0 +1,6 @@
+run_id=20260901T105414+0800-m7-lan-recovery-gate2
+authorization_source=project owner approval in the same Codex session
+authorized_scope=dedicated Windows Broker/subscriber start/stop; dedicated target ext4 test directory and deployment; gatewayd start/stop; one verified-PID kill -9 while Broker is offline and spool has pending records; corruption of only this run's dedicated spool or copies
+explicitly_forbidden=modify can0; modify target network; modify firmware; modify /etc; modify system services; M8 external-loop/epoll; M9; M10
+predecessor_run=artifacts/20260901T103725+0800-m7-lan-recovery-gate
+retry_reason=predecessor was closed normally after queue_drop=72 proved queue_capacity=8192 insufficient for the operator-controlled window; no kill -9 or corruption was performed

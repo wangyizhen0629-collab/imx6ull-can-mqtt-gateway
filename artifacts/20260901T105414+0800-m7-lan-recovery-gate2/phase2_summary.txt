@@ -1,0 +1,12 @@
+[1970-01-03T00:32:53.051Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=1335 decode_success=1335 queue_success=1335 queue_drop=0 queue_pop=1335 queue_count=0 mqtt_connect_success=2 publish_attempts=122 publish_accepted=122 puback_matched=122 puback_unexpected=0 batches_acked=122 records_acked=30780 last_batch_seq=141 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=5 reconnects=1 spool_appended=1335 spool_replayed=30780 spool_acked=30780 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=0 spool_corruptions=0 spool_errors=0
+kill_term_exit=0
+wait_exit=0
+spool_size=2851520
+spool_entries=35644
+spool_sha256=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+state_sha256=86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c
+can0_state=ERROR-WARNING
+can0_berr_counter_tx=0
+can0_berr_counter_rx=102
+can0_rx_errors=0
+can0_rx_dropped=0

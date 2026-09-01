@@ -1,0 +1,77 @@
+sh <<'M7_GATE2_OFFLINE_DRAIN'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+MONITOR=$EVIDENCE/offline_queue_drain_monitor.txt
+READY=$EVIDENCE/offline_queue_drain_ready.txt
+PID=$(cat "$EVIDENCE/phase1_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_OFFLINE_DRAIN_FAIL: $*" >&2; exit 1; }
+
+test -n "$PID" || fail 'missing recorded gateway PID'
+test -r "/proc/$PID/comm" || fail 'gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'recorded PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" | grep -Fq "$RUN_ROOT/main/gateway.conf" || fail 'PID does not reference this run config'
+test ! -e "$MONITOR" || fail 'refusing to overwrite existing drain monitor'
+test ! -e "$READY" || fail 'refusing to overwrite existing drain result'
+test -f "$SPOOL" || fail 'spool.data is absent'
+test -f "$STATE" || fail 'spool.state is absent'
+grep -q 'offline, durable records retained' "$EVIDENCE/phase1_gateway_stderr.log" || fail 'gateway offline log is absent'
+
+STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+PREV_SIZE=-1
+PREV_RX=-1
+STABLE=0
+COUNT=0
+{
+    echo "monitor_started=$(date -Ins)"
+    echo "recorded_pid=$PID"
+    echo "initial_state_sha256=$STATE_HASH"
+    echo 'This command sends no signal and changes neither can0 nor the external CAN source.'
+} > "$MONITOR"
+
+while [ "$COUNT" -lt 120 ]; do
+    test -r "/proc/$PID/comm" || fail 'gateway exited during drain observation'
+    SIZE=$(wc -c < "$SPOOL")
+    RX=$(cat /sys/class/net/can0/statistics/rx_packets 2>/dev/null)
+    CURRENT_STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+    echo "sample=$COUNT time=$(date -Ins) spool_size=$SIZE rx_packets=$RX state_sha256=$CURRENT_STATE_HASH stable=$STABLE" >> "$MONITOR"
+    test "$CURRENT_STATE_HASH" = "$STATE_HASH" || fail 'PUBACK state changed while Broker should be offline'
+    if [ "$SIZE" = "$PREV_SIZE" ] && [ "$RX" = "$PREV_RX" ]; then
+        STABLE=$((STABLE + 1))
+    else
+        STABLE=0
+    fi
+    if [ "$STABLE" -ge 2 ]; then
+        break
+    fi
+    PREV_SIZE=$SIZE
+    PREV_RX=$RX
+    sleep 5
+    COUNT=$((COUNT + 1))
+done
+
+test "$STABLE" -ge 2 || fail 'spool and CAN RX did not remain stable for two consecutive windows'
+test $((SIZE % 80)) -eq 0 || fail 'spool size is not entry aligned'
+sync
+{
+    echo "ready_at=$(date -Ins)"
+    echo "gateway_pid=$PID"
+    echo "spool_size=$SIZE"
+    echo "spool_entries=$((SIZE / 80))"
+    echo "rx_packets=$RX"
+    sha256sum "$SPOOL" "$STATE"
+    ls -l "$SPOOL" "$STATE"
+    ip -details -statistics link show can0
+    tail -n 30 "$EVIDENCE/phase1_gateway_stderr.log"
+} > "$READY" 2>&1
+
+echo '--- offline queue drain monitor tail ---'
+tail -n 20 "$MONITOR" 2>&1
+echo '--- stable durable snapshot ---'
+cat "$READY" 2>&1
+echo "M7_GATE2_OFFLINE_DRAIN_PASS gateway_pid=$PID spool_entries=$((SIZE / 80))"
+M7_GATE2_OFFLINE_DRAIN

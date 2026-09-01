@@ -1,0 +1,2 @@
+Stop-Process -Force -Id 35988
+E:\mosquitto\mosquitto_signal.exe -p 32812 shutdown

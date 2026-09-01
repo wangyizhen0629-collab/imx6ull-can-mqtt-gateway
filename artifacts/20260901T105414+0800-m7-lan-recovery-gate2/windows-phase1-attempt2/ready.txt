@@ -1,0 +1,5 @@
+﻿broker_listener=READY
+subscriber_process=READY
+broker_pid=38468
+subscriber_pid=23684
+ready_at=2026-09-01T10:58:18.7670779+08:00

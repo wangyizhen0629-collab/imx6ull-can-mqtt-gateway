@@ -1,0 +1,25 @@
+1970-01-03T00:32:54,391725782+00:00
+gateway_process_gone=true
+kill_term_exit=0
+wait_exit=0
+[1970-01-03T00:32:53.051Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=1335 decode_success=1335 queue_success=1335 queue_drop=0 queue_pop=1335 queue_count=0 mqtt_connect_success=2 publish_attempts=122 publish_accepted=122 puback_matched=122 puback_unexpected=0 batches_acked=122 records_acked=30780 last_batch_seq=141 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=5 reconnects=1 spool_appended=1335 spool_replayed=30780 spool_acked=30780 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=0 spool_corruptions=0 spool_errors=0
+spool_size=2851520
+spool_entries=35644
+-rw------- 1 <REDACTED_USER> <REDACTED_USER> 2851520 Jan  3 00:30 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+-rw------- 1 <REDACTED_USER> <REDACTED_USER>      40 Jan  3 00:30 /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state
+3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c  /var/lib/gatewayd-m7-test-20260901T105414/main/spool.state
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-WARNING (berr-counter tx 0 rx 102) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          223        3          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    56391080   7048885  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       

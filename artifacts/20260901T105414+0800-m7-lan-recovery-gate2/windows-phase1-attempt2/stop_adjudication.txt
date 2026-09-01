@@ -1,0 +1,7 @@
+result=OPERATIONS_COMPLETED_WITH_LATE_SUBSCRIBER_EXIT
+immediate_check=subscriber_gone=false
+later_read_only_check=subscriber PID 23684 absent; Broker PID 38468 absent; port 18884 has no listener or TCP entry
+subscriber_wrapper_exit=-1
+broker_wrapper_exit=0
+broker_signal_exit=0
+note=The stop script returned 1 because the subscriber had not disappeared at its immediate check. No repeated stop was issued; the process exited before the follow-up read-only inspection.

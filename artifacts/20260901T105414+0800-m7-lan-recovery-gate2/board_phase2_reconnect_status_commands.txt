@@ -1,0 +1,69 @@
+sh <<'M7_GATE2_RECONNECT_STATUS'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+CONFIG=$RUN_ROOT/main/gateway.conf
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+MONITOR=$EVIDENCE/phase2_reconnect_monitor.txt
+EXPECTED_SIZE=2744720
+EXPECTED_SPOOL_HASH=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+EXPECTED_STATE_HASH=2e6050aeb7fc527025cadec0d3258a4a4c61c9714d702a4b94ac94dcb58e6799
+EXPECTED_RX=7047547
+PID=$(cat "$EVIDENCE/phase2_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_RECONNECT_STATUS_FAIL: $*" >&2; exit 1; }
+
+test -n "$PID" || fail 'missing phase2 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase2 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase2 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" | grep -Fq "$CONFIG" || fail 'phase2 PID does not reference this run config'
+test ! -e "$MONITOR" || fail 'refusing to overwrite reconnect monitor'
+
+COUNT=0
+CONNECTED_COUNT=0
+{
+    echo "monitor_started=$(date -Ins)"
+    echo "gateway_pid=$PID"
+} > "$MONITOR"
+while [ "$COUNT" -lt 180 ]; do
+    test -r "/proc/$PID/comm" || fail 'phase2 exited while waiting for reconnect'
+    CONNECTED_COUNT=$(grep -c 'connected broker=' "$EVIDENCE/phase2_gateway_stderr.log" 2>/dev/null)
+    echo "sample=$COUNT time=$(date -Ins) connected_log_count=$CONNECTED_COUNT" >> "$MONITOR"
+    if [ "$CONNECTED_COUNT" -ge 2 ]; then
+        break
+    fi
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test "$CONNECTED_COUNT" -ge 2 || fail 'same-process Broker reconnect was not observed within 180 seconds'
+grep -q 'network poll: offline, durable records retained' "$EVIDENCE/phase2_gateway_stderr.log" || fail 'runtime outage log is absent'
+
+SIZE=$(wc -c < "$SPOOL")
+SPOOL_HASH=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+RX=$(cat /sys/class/net/can0/statistics/rx_packets)
+test "$SIZE" -eq "$EXPECTED_SIZE" || fail 'spool size changed before CAN source resume'
+test "$SPOOL_HASH" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed before CAN source resume'
+test "$STATE_HASH" = "$EXPECTED_STATE_HASH" || fail 'state changed before CAN source resume'
+test "$RX" -eq "$EXPECTED_RX" || fail 'external CAN source resumed too early'
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    echo "connected_log_count=$CONNECTED_COUNT"
+    grep '^State:' "/proc/$PID/status"
+    echo "spool_size=$SIZE"
+    echo "spool_entries=$((SIZE / 80))"
+    echo "rx_packets=$RX"
+    sha256sum "$SPOOL" "$STATE"
+    tail -n 50 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_reconnect_complete.txt" 2>&1
+sync
+
+echo '--- reconnect monitor tail ---'
+tail -n 30 "$MONITOR" 2>&1
+echo '--- reconnect complete ---'
+cat "$EVIDENCE/phase2_reconnect_complete.txt" 2>&1
+echo "M7_GATE2_RECONNECT_STATUS_PASS gateway_pid=$PID connected_log_count=$CONNECTED_COUNT"
+M7_GATE2_RECONNECT_STATUS

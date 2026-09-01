@@ -1,0 +1,1 @@
+{"effective_duplicate_records": 0, "first_gateway_seq": 1, "last_gateway_seq": 35644, "missing_gateway_seq": 0, "raw_batches": 281, "raw_duplicate_records": 35644, "raw_records": 71288, "status": "PASS", "unique_batch_seq": 141, "unique_gateway_seq": 35644}

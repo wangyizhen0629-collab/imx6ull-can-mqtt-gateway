@@ -1,0 +1,149 @@
+sh <<'M7_GATE2_KILL9_RESTART'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MAIN=$RUN_ROOT/main
+CONFIG=$MAIN/gateway.conf
+SPOOL=$MAIN/spool.data
+STATE=$MAIN/spool.state
+MARKER=$EVIDENCE/kill9_once.marker
+EXPECTED_SIZE=2744720
+EXPECTED_SPOOL_HASH=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+EXPECTED_STATE_HASH=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+EXPECTED_RX=7047547
+PID=$(cat "$EVIDENCE/phase1_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_KILL9_RESTART_FAIL: $*" >&2; exit 1; }
+
+test -n "$PID" || fail 'missing phase1 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase1 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase1 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" > "$EVIDENCE/phase1_process_before_kill9.txt"
+echo >> "$EVIDENCE/phase1_process_before_kill9.txt"
+grep -Fq "$CONFIG" "$EVIDENCE/phase1_process_before_kill9.txt" || fail 'phase1 PID does not reference this run config'
+test ! -e "$MARKER" || fail 'kill9 marker already exists; refusing a second SIGKILL'
+test -s "$EVIDENCE/offline_queue_drain_ready.txt" || fail 'offline drain evidence is absent'
+
+SIZE1=$(wc -c < "$SPOOL")
+SPOOL_HASH1=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH1=$(sha256sum "$STATE" | awk '{print $1}')
+RX1=$(cat /sys/class/net/can0/statistics/rx_packets)
+sleep 2
+SIZE2=$(wc -c < "$SPOOL")
+SPOOL_HASH2=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH2=$(sha256sum "$STATE" | awk '{print $1}')
+RX2=$(cat /sys/class/net/can0/statistics/rx_packets)
+test "$SIZE1" -eq "$EXPECTED_SIZE" || fail 'spool size no longer matches drained snapshot'
+test "$SIZE2" -eq "$EXPECTED_SIZE" || fail 'spool changed during final stability window'
+test "$SPOOL_HASH1" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash no longer matches drained snapshot'
+test "$SPOOL_HASH2" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed during final stability window'
+test "$STATE_HASH1" = "$EXPECTED_STATE_HASH" || fail 'state hash no longer matches drained snapshot'
+test "$STATE_HASH2" = "$EXPECTED_STATE_HASH" || fail 'state hash changed during final stability window'
+test "$RX1" -eq "$EXPECTED_RX" || fail 'CAN RX changed after drain approval'
+test "$RX2" -eq "$EXPECTED_RX" || fail 'external CAN source is not still paused'
+grep -q 'offline, durable records retained' "$EVIDENCE/phase1_gateway_stderr.log" || fail 'offline retention log is absent'
+
+sync
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    echo "spool_size=$SIZE2"
+    echo "spool_entries=$((SIZE2 / 80))"
+    echo "rx_packets=$RX2"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+    grep '^State:' "/proc/$PID/status"
+    tail -n 30 "$EVIDENCE/phase1_gateway_stderr.log"
+} > "$EVIDENCE/phase1_immediately_before_kill9.txt" 2>&1
+
+( set -C; : > "$MARKER" ) 2>/dev/null || fail 'cannot atomically create one-shot kill9 marker'
+{
+    echo "authorized_pid=$PID"
+    echo "command=kill -9 $PID"
+    echo "issued_at=$(date -Ins)"
+} > "$EVIDENCE/phase1_kill9_command.txt"
+kill -9 "$PID"
+KILL_EXIT=$?
+echo "kill9_exit=$KILL_EXIT" > "$EVIDENCE/phase1_kill9_exit.txt"
+test "$KILL_EXIT" -eq 0 || fail 'the single authorized SIGKILL command failed; do not retry'
+
+COUNT=0
+while [ -e "/proc/$PID" ] && [ "$COUNT" -lt 30 ]; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test ! -e "/proc/$PID" || fail 'SIGKILL target did not disappear'
+COUNT=0
+while [ ! -s "$EVIDENCE/phase1_wait_exit.txt" ] && [ "$COUNT" -lt 10 ]; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test -s "$EVIDENCE/phase1_wait_exit.txt" || fail 'phase1 wrapper wait status was not recorded'
+
+POST_SIZE=$(wc -c < "$SPOOL")
+POST_SPOOL_HASH=$(sha256sum "$SPOOL" | awk '{print $1}')
+POST_STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+{
+    date -Ins
+    echo 'gateway_process_gone=true'
+    cat "$EVIDENCE/phase1_kill9_exit.txt"
+    cat "$EVIDENCE/phase1_wait_exit.txt"
+    echo "spool_size=$POST_SIZE"
+    echo "spool_entries=$((POST_SIZE / 80))"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+} > "$EVIDENCE/phase1_immediately_after_kill9.txt" 2>&1
+test "$POST_SIZE" -eq "$EXPECTED_SIZE" || fail 'spool size changed across SIGKILL'
+test "$POST_SPOOL_HASH" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed across SIGKILL'
+test "$POST_STATE_HASH" = "$EXPECTED_STATE_HASH" || fail 'state hash changed across SIGKILL'
+
+sh "$RUN_ROOT/run_gateway_phase.sh" phase2 "$CONFIG" > "$EVIDENCE/phase2_wrapper.stdout.log" 2> "$EVIDENCE/phase2_wrapper.stderr.log" &
+WRAPPER_PID=$!
+echo "$WRAPPER_PID" > "$EVIDENCE/phase2_wrapper.pid"
+COUNT=0
+while [ ! -s "$EVIDENCE/phase2_gateway.pid" ] && [ "$COUNT" -lt 20 ]; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test -s "$EVIDENCE/phase2_gateway.pid" || fail 'phase2 gateway PID was not recorded'
+PID2=$(cat "$EVIDENCE/phase2_gateway.pid")
+test -r "/proc/$PID2/comm" || fail 'phase2 gateway exited during restart'
+grep -qx gatewayd "/proc/$PID2/comm" || fail 'phase2 PID is not gatewayd'
+sleep 3
+test -r "/proc/$PID2/comm" || fail 'phase2 gateway exited during offline readiness window'
+grep -q 'offline, durable records retained' "$EVIDENCE/phase2_gateway_stderr.log" || fail 'phase2 did not record offline startup'
+test "$(wc -c < "$SPOOL")" -eq "$EXPECTED_SIZE" || fail 'spool changed while CAN source and Broker were offline'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed during phase2 offline restart'
+test "$(sha256sum "$STATE" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'state changed during phase2 offline restart'
+
+echo "command=kill -STOP $PID2" > "$EVIDENCE/phase2_pause_command.txt"
+kill -STOP "$PID2"
+PAUSE_EXIT=$?
+echo "sigstop_exit=$PAUSE_EXIT" > "$EVIDENCE/phase2_pause_exit.txt"
+test "$PAUSE_EXIT" -eq 0 || fail 'phase2 SIGSTOP failed'
+sleep 1
+grep -Eq '^State:[[:space:]]+T' "/proc/$PID2/status" || fail 'phase2 is not stopped'
+{
+    date -Ins
+    echo "wrapper_pid=$WRAPPER_PID"
+    echo "gateway_pid=$PID2"
+    tr '\000' ' ' < "/proc/$PID2/cmdline"
+    echo
+    grep '^State:' "/proc/$PID2/status"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+    cat "$EVIDENCE/phase2_pause_exit.txt"
+    tail -n 30 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_paused_offline.txt" 2>&1
+sync
+
+echo '--- single SIGKILL result ---'
+cat "$EVIDENCE/phase1_kill9_command.txt" 2>&1
+cat "$EVIDENCE/phase1_kill9_exit.txt" 2>&1
+cat "$EVIDENCE/phase1_wait_exit.txt" 2>&1
+cat "$EVIDENCE/phase1_immediately_after_kill9.txt" 2>&1
+echo '--- phase2 restarted and paused ---'
+cat "$EVIDENCE/phase2_paused_offline.txt" 2>&1
+echo "M7_GATE2_KILL9_RESTART_PASS old_pid=$PID new_pid=$PID2 spool_entries=$((POST_SIZE / 80))"
+M7_GATE2_KILL9_RESTART

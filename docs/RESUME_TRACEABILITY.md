@@ -7,9 +7,10 @@ DLC 拒绝和内核时间戳提取；M4 又完成自定义 DBC、静态 C 解码
 模拟信号和实物 CAN 输入一致性闭环。M5 又在真实 i.MX6ULL 上完成物理 CAN → 实时
 DBC 解码 → 有界队列 → mock sink 的基准、故意过载和 signal 15 退出验证。M6随后在
 真实i.MX6ULL上用物理CAN输入连接Windows Broker，完成1000批连续subscriber数据及
-Broker/gateway PUBACK对账，门禁已为`MET`。M7的持久化spool、恢复和重连源码已通过
-主机/ARM构建，但实际断线和`kill -9`仍为`NOT RUN`。只允许使用下表明确标为“是”的
-窄范围表述。
+Broker/gateway PUBACK对账，门禁已为`MET`。M7随后在真实i.MX6ULL ext4 spool和Windows
+Broker上完成断线、一次`kill -9`、同spool重启补传及损坏恢复，门禁也已为`MET`。这些
+仍是单次受控功能验证，不支持“完整网关”、掉电、性能或可靠性结论。只允许使用下表
+明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
@@ -20,7 +21,7 @@ Broker/gateway PUBACK对账，门禁已为`MET`。M7的持久化spool、恢复�
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M5 主机/ASan全量12/12、ARM构建及板端基准/过载通过 | 板端基准3694条queue drop 0；容量4慢consumer按策略drop 3561；均为单次功能值 | 是，不得写成吞吐、时延或可靠性指标 |
 | Ubuntu x86_64 loopback 上的 libmosquitto QoS 1 单 in-flight batch | M6 `mqtt_sink`、配置、validator | 实际Broker、1000 batch、匹配PUBACK和subscriber seq | M6 host/ASan及loopback集成run | libmosquitto 2.0.11；1000/1000匹配PUBACK；seq 1～1000无缺失/重复 | 是，必须注明host loopback，不能写板端/完整链路 |
 | i.MX6ULL物理CAN到Windows LAN Broker的QoS 1基线 | M6 ARM构建、私有目标库、配置和validator | 真实板端、物理CAN、1000 batch、PUBACK及原始证据复核 | M6 LAN run及2026-09-01独立gate review | subscriber 1000批/115335条连续记录；gateway/Broker 1033次publish/PUBACK一致 | 是，必须注明单次功能门禁，不写性能、时延或可靠性 |
-| 持久化spool、断线重连补传与崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/cursor损坏、`kill -9` | M7离线run及待补集成run | 主机/ASan全量16/16、ARM构建PASS；Windows断线与`kill -9` NOT RUN | 否，M7总门禁NOT MET |
+| 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor 和 API 兼容性记录 | 与 M7 等价的 reactor/重连/退出测试 | M8 目标 run | 未测量 | 否 |
 | BusyBox 开机启动和异常退出恢复 | M9 init/supervisor/config | 启动和受控 crash/restart | M9 板端 run | 未测量 | 否 |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 工具和精确配置 | 经批准的压力/断网/稳定性流程 | M10 报告 | 未测量 | 否 |
@@ -130,9 +131,18 @@ CAN到Windows Broker门禁：正式subscriber 1000批/115335条连续记录；ga
 `MET`，只支持表中受限的单次功能描述，不支持正确UTC、性能、时延或可靠性。
 
 M7前置复核为`artifacts/20260901T093205+0800-m7-host-pre-broker/`；最终离线证据为
-`artifacts/20260901T093654+0800-m7-offline-final/`。当前实现包括固定格式append-only
-spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway seq恢复、重连、单写者锁、
-独立stats和去重validator。Ubuntu普通及ASan+UBSan全量均16/16，ARMv7 warning-clean
-交叉构建PASS。Windows Broker实际断线/恢复、subscriber raw duplicate、`kill -9`恢复
-和目标持久介质均为`NOT RUN`，所以“持久化断线/崩溃恢复已在板端通过”仍不可写，M7
-总门禁保持`NOT MET`。M8及后续没有开始。
+`artifacts/20260901T093654+0800-m7-offline-final/`。实现包括固定格式append-only spool、
+CRC、原子PUBACK cursor、尾部/state恢复、gateway seq恢复、重连、单写者锁、独立stats
+和去重validator。Ubuntu普通及ASan+UBSan全量均16/16，ARMv7 warning-clean交叉构建PASS。
+
+真实跨主机证据`artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`在i.MX6ULL的
+`/dev/root` ext4专用目录和Windows Mosquitto 2.1.2上完成断线积压、一次核实PID的
+`kill -9`、同binary/config/spool重启、同进程再次重连、tail/internal/state损坏恢复。
+最终subscriber为281个raw batch、71288条raw record、35644条raw duplicate、35644条
+unique gateway seq，missing0、effective duplicate0；Broker PUBLISH/PUBACK为281/281。
+M7总门禁为`MET`。
+
+可写表述必须保留“真实i.MX6ULL上的单次受控功能门禁”限定。phase1因SIGKILL没有最终
+queue summary，正常退出phase的queue drop为0；CAN最终为ERROR-WARNING、berr rx102；
+正确UTC、真实掉电、性能、介质寿命、容量/compaction和长期可靠性均未验证。M8及后续
+没有开始，也未获批准。

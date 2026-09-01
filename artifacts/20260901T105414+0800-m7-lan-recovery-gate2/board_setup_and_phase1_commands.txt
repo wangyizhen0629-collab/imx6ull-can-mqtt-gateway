@@ -1,0 +1,124 @@
+sh <<'M7_GATE2_SETUP'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MAIN=$RUN_ROOT/main
+GATEWAY=/tmp/m7/bin/gatewayd
+LIB_DIR=/tmp/m7/lib
+LIB_LINK=$LIB_DIR/libmosquitto.so.1
+CONFIG=$MAIN/gateway.conf
+SPOOL=$MAIN/spool.data
+DEVICE_ID=m7-gateway-20260901-105414
+TOPIC=test/m7/20260901T105414/recovery
+
+fail() { echo "M7_GATE2_SETUP_FAIL: $*" >&2; exit 1; }
+
+test -n "${M7_BROKER_HOST:-}" || fail 'M7_BROKER_HOST is not set'
+test -x "$GATEWAY" || fail 'gatewayd is missing or not executable'
+test -e "$LIB_LINK" || fail 'libmosquitto.so.1 is missing'
+test ! -e "$RUN_ROOT" || fail "refusing to overwrite $RUN_ROOT"
+mkdir -p "$EVIDENCE" "$MAIN" "$RUN_ROOT/corruption" || fail 'mkdir failed'
+chmod 700 "$RUN_ROOT" "$EVIDENCE" "$MAIN" "$RUN_ROOT/corruption" || fail 'chmod failed'
+
+{
+    date -Ins
+    uname -a
+    id
+    cat /proc/mounts
+    df -h "$RUN_ROOT"
+    ls -ld "$RUN_ROOT" "$EVIDENCE" "$MAIN" "$RUN_ROOT/corruption"
+} > "$EVIDENCE/board_and_storage.txt" 2>&1
+grep -q '^/dev/root / ext4 rw,' "$EVIDENCE/board_and_storage.txt" || fail 'target run root is not proven writable ext4'
+
+LIB_REAL=$(readlink -f "$LIB_LINK" 2>/dev/null)
+test -n "$LIB_REAL" || fail 'cannot resolve libmosquitto'
+sha256sum "$GATEWAY" "$LIB_REAL" > "$EVIDENCE/deployed_sha256.txt" 2>&1 || fail 'sha256 failed'
+file "$GATEWAY" "$LIB_REAL" > "$EVIDENCE/deployed_file.txt" 2>&1
+readelf -h "$GATEWAY" > "$EVIDENCE/gateway_readelf_header.txt" 2>&1
+readelf -l "$GATEWAY" > "$EVIDENCE/gateway_readelf_program.txt" 2>&1
+readelf -d "$GATEWAY" > "$EVIDENCE/gateway_readelf_dynamic.txt" 2>&1
+LD_LIBRARY_PATH="$LIB_DIR" ldd "$GATEWAY" > "$EVIDENCE/gateway_ldd.txt" 2>&1 || fail 'ldd failed'
+grep -q 'not found' "$EVIDENCE/gateway_ldd.txt" && fail 'ldd reports missing library'
+grep -Fq '/tmp/m7/lib/libmosquitto.so.1' "$EVIDENCE/gateway_ldd.txt" || fail 'wrong libmosquitto resolution'
+
+ip -details -statistics link show can0 > "$EVIDENCE/can_before.txt" 2>&1 || fail 'can0 query failed'
+grep -Eq '<[^>]*UP' "$EVIDENCE/can_before.txt" || fail 'can0 is not UP'
+grep -q 'can state ERROR-ACTIVE' "$EVIDENCE/can_before.txt" || fail 'can0 is not ERROR-ACTIVE'
+grep -q 'bitrate 500000' "$EVIDENCE/can_before.txt" || fail 'can0 bitrate mismatch'
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'an existing gatewayd process was found'
+done
+
+cat > "$CONFIG" <<EOF
+device_id=$DEVICE_ID
+can_interface=can0
+broker_host=$M7_BROKER_HOST
+broker_port=18884
+broker_username=
+broker_password=
+mqtt_topic=$TOPIC
+queue_capacity=65536
+queue_push_timeout_ms=50
+batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
+mqtt_reconnect_interval_ms=10000
+spool_path=$SPOOL
+log_level=info
+EOF
+chmod 600 "$CONFIG" || fail 'config chmod failed'
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$CONFIG" --print-config > "$EVIDENCE/config_check.stdout.log" 2> "$EVIDENCE/config_check.stderr.log"
+CONFIG_EXIT=$?
+echo "config_check_exit=$CONFIG_EXIT" > "$EVIDENCE/config_check_exit.txt"
+test "$CONFIG_EXIT" -eq 0 || fail 'config check failed'
+
+cat > "$RUN_ROOT/run_gateway_phase.sh" <<'M7_GATE2_WRAPPER'
+#!/bin/sh
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+GATEWAY=/tmp/m7/bin/gatewayd
+LIB_DIR=/tmp/m7/lib
+PHASE=$1
+CONFIG=$2
+echo "phase=$PHASE" > "$EVIDENCE/${PHASE}_lifecycle.txt"
+echo "wrapper_pid=$$" >> "$EVIDENCE/${PHASE}_lifecycle.txt"
+date -Ins >> "$EVIDENCE/${PHASE}_lifecycle.txt" 2>&1
+LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$CONFIG" --run-mqtt > "$EVIDENCE/${PHASE}_gateway_stdout.log" 2> "$EVIDENCE/${PHASE}_gateway_stderr.log" &
+PID=$!
+echo "$PID" > "$EVIDENCE/${PHASE}_gateway.pid"
+echo "gateway_pid=$PID" >> "$EVIDENCE/${PHASE}_lifecycle.txt"
+wait "$PID"
+WAIT_EXIT=$?
+echo "wait_exit=$WAIT_EXIT" > "$EVIDENCE/${PHASE}_wait_exit.txt"
+date -Ins >> "$EVIDENCE/${PHASE}_lifecycle.txt" 2>&1
+exit 0
+M7_GATE2_WRAPPER
+chmod 700 "$RUN_ROOT/run_gateway_phase.sh" || fail 'wrapper chmod failed'
+
+sh "$RUN_ROOT/run_gateway_phase.sh" phase1 "$CONFIG" > "$EVIDENCE/phase1_wrapper.stdout.log" 2> "$EVIDENCE/phase1_wrapper.stderr.log" &
+WRAPPER_PID=$!
+echo "$WRAPPER_PID" > "$EVIDENCE/phase1_wrapper.pid"
+COUNT=0
+while [ ! -s "$EVIDENCE/phase1_gateway.pid" ] && [ "$COUNT" -lt 20 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+test -s "$EVIDENCE/phase1_gateway.pid" || fail 'gateway PID not recorded'
+PID=$(cat "$EVIDENCE/phase1_gateway.pid")
+test -r "/proc/$PID/comm" || fail 'gateway exited during startup'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'recorded PID is not gatewayd'
+sleep 3
+test -r "/proc/$PID/comm" || fail 'gateway exited during readiness window'
+{
+    echo "wrapper_pid=$WRAPPER_PID"
+    echo "gateway_pid=$PID"
+    tr '\000' ' ' < "/proc/$PID/cmdline"
+    echo
+    ls -l "$SPOOL" "$MAIN/spool.state"
+    sha256sum "$SPOOL" "$MAIN/spool.state"
+    ip -details -statistics link show can0
+    date -Ins
+} > "$EVIDENCE/phase1_start_snapshot.txt" 2>&1
+sync
+echo "M7_GATE2_SETUP_PASS run_root=$RUN_ROOT gateway_pid=$PID"
+M7_GATE2_SETUP

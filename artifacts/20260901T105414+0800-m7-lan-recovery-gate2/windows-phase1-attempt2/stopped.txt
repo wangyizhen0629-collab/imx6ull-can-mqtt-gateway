@@ -1,0 +1,7 @@
+﻿stopped_at=2026-09-01T11:03:26.2165409+08:00
+subscriber_stop_exit=0
+subscriber_gone=false
+broker_signal_exit=0
+broker_gone=true
+listeners_after=0
+tcp_entries_after=0

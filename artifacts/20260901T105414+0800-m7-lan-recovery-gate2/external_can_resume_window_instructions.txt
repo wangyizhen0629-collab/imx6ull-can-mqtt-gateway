@@ -1,0 +1,4 @@
+1. Resume only the external STM32 CAN frame source. Do not modify can0, target networking, firmware, /etc, or services.
+2. Allow frames for approximately 10 seconds.
+3. Pause the external STM32 CAN frame source again.
+4. Run board_post_reconnect_input_drain_commands.txt while the source remains paused.

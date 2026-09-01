@@ -1,0 +1,169 @@
+sh <<'M7_GATE2_STATE_REPLAY'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+MAIN=$RUN_ROOT/main
+STATE_DIR=$RUN_ROOT/corruption/state
+CONFIG=$MAIN/gateway.conf
+SPOOL=$MAIN/spool.data
+STATE=$MAIN/spool.state
+EXPECTED_SIZE=2851520
+EXPECTED_ENTRIES=35644
+EXPECTED_DATA_HASH=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+EXPECTED_STATE_HASH=86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c
+EXPECTED_RX=7048885
+MONITOR=$EVIDENCE/state_recovery_replay_monitor.txt
+
+fail() { echo "M7_GATE2_STATE_REPLAY_FAIL: $*" >&2; exit 1; }
+
+read_state_u64()
+{
+    OFFSET=$1
+    set -- $(dd if="$STATE" bs=1 skip="$OFFSET" count=8 2>/dev/null | od -An -v -tu1)
+    test "$#" -eq 8 || return 1
+    echo $(( $1 + $2 * 256 + $3 * 65536 + $4 * 16777216 + $5 * 4294967296 + $6 * 1099511627776 + $7 * 281474976710656 + $8 * 72057594037927936 ))
+}
+
+for comm in /proc/[0-9]*/comm; do
+    [ -r "$comm" ] || continue
+    grep -qx gatewayd "$comm" 2>/dev/null && fail 'gatewayd is still running before state corruption'
+done
+test ! -e "$STATE_DIR" || fail 'refusing to overwrite state corruption directory'
+test ! -e "$MONITOR" || fail 'refusing to overwrite state replay monitor'
+test "$(wc -c < "$SPOOL")" -eq "$EXPECTED_SIZE" || fail 'main spool size mismatch before state corruption'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_DATA_HASH" || fail 'main spool hash mismatch before state corruption'
+test "$(sha256sum "$STATE" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'main state hash mismatch before state corruption'
+test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+mkdir -p "$STATE_DIR" || fail 'cannot create state corruption directory'
+chmod 700 "$STATE_DIR" || fail 'cannot chmod state corruption directory'
+cp -p "$SPOOL" "$STATE_DIR/spool.data.before" || fail 'cannot back up spool.data'
+cp -p "$STATE" "$STATE_DIR/spool.state.before" || fail 'cannot back up spool.state'
+cp -p "$CONFIG" "$STATE_DIR/gateway.conf.before" || fail 'cannot back up gateway config'
+chmod 600 "$STATE_DIR"/*
+
+STATE_BEFORE_SIZE=$(wc -c < "$STATE")
+STATE_BEFORE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+STATE_BEFORE_BYTE=$(dd if="$STATE" bs=1 skip=0 count=1 2>/dev/null | od -An -v -tx1 | tr -d ' ')
+{
+    echo 'injection=replace first state magic byte'
+    echo 'offset=0'
+    echo "before_byte_hex=$STATE_BEFORE_BYTE"
+    echo 'after_byte_hex=00'
+    echo "before_size=$STATE_BEFORE_SIZE"
+    echo "before_state_sha256=$STATE_BEFORE_HASH"
+    sha256sum "$SPOOL"
+} > "$EVIDENCE/state_injection_before.txt"
+test "$STATE_BEFORE_SIZE" -eq 40 || fail 'state size is not 40 before corruption'
+test "$STATE_BEFORE_BYTE" = '47' || fail 'state target byte is not G magic'
+printf '\000' | dd of="$STATE" bs=1 seek=0 count=1 conv=notrunc 2> "$EVIDENCE/state_injection_dd.stderr.log"
+STATE_DD_EXIT=$?
+echo "dd_exit=$STATE_DD_EXIT" > "$EVIDENCE/state_injection_dd_exit.txt"
+test "$STATE_DD_EXIT" -eq 0 || fail 'state injection write failed'
+sync
+STATE_AFTER_SIZE=$(wc -c < "$STATE")
+STATE_AFTER_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+STATE_AFTER_BYTE=$(dd if="$STATE" bs=1 skip=0 count=1 2>/dev/null | od -An -v -tx1 | tr -d ' ')
+{
+    echo 'offset=0'
+    echo "actual_byte_hex=$STATE_AFTER_BYTE"
+    echo "after_size=$STATE_AFTER_SIZE"
+    echo "after_state_sha256=$STATE_AFTER_HASH"
+    sha256sum "$SPOOL"
+} > "$EVIDENCE/state_injection_after.txt"
+test "$STATE_AFTER_SIZE" -eq 40 || fail 'state injection changed state size'
+test "$STATE_AFTER_BYTE" = '00' || fail 'state injected byte mismatch'
+test "$STATE_AFTER_HASH" != "$EXPECTED_STATE_HASH" || fail 'state injection did not change hash'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_DATA_HASH" || fail 'state injection changed spool.data'
+
+sh "$RUN_ROOT/run_gateway_phase.sh" phase3 "$CONFIG" > "$EVIDENCE/phase3_wrapper.stdout.log" 2> "$EVIDENCE/phase3_wrapper.stderr.log" &
+WRAPPER_PID=$!
+echo "$WRAPPER_PID" > "$EVIDENCE/phase3_wrapper.pid"
+COUNT=0
+while [ ! -s "$EVIDENCE/phase3_gateway.pid" ] && [ "$COUNT" -lt 20 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+test -s "$EVIDENCE/phase3_gateway.pid" || fail 'phase3 gateway PID not recorded'
+PID=$(cat "$EVIDENCE/phase3_gateway.pid")
+test -r "/proc/$PID/comm" || fail 'phase3 gateway exited during startup'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase3 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" | grep -Fq "$CONFIG" || fail 'phase3 PID does not reference main config'
+
+COUNT=0
+ACK_OFFSET=-1
+ACK_SEQ=-1
+NEXT_BATCH=-1
+{
+    echo "monitor_started=$(date -Ins)"
+    echo "gateway_pid=$PID"
+    echo "expected_spool_size=$EXPECTED_SIZE"
+    echo "expected_entries=$EXPECTED_ENTRIES"
+} > "$MONITOR"
+while [ "$COUNT" -lt 180 ]; do
+    test -r "/proc/$PID/comm" || fail 'phase3 exited during state fallback replay'
+    test "$(wc -c < "$SPOOL")" -eq "$EXPECTED_SIZE" || fail 'spool size changed during state fallback replay'
+    test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_DATA_HASH" || fail 'spool.data changed during state fallback replay'
+    test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source resumed during state fallback replay'
+    ACK_OFFSET=$(read_state_u64 16) || fail 'cannot decode recovered state ack_offset'
+    ACK_SEQ=$(read_state_u64 24) || fail 'cannot decode recovered state ack_seq'
+    NEXT_BATCH=$(read_state_u64 32) || fail 'cannot decode recovered state next_batch'
+    STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+    echo "sample=$COUNT time=$(date -Ins) ack_offset=$ACK_OFFSET ack_seq=$ACK_SEQ next_batch=$NEXT_BATCH state_sha256=$STATE_HASH" >> "$MONITOR"
+    if [ "$ACK_OFFSET" -eq "$EXPECTED_SIZE" ] && [ "$NEXT_BATCH" -eq 141 ] && [ "$STATE_HASH" != "$STATE_AFTER_HASH" ]; then
+        break
+    fi
+    sleep 2
+    COUNT=$((COUNT + 1))
+done
+test "$ACK_OFFSET" -eq "$EXPECTED_SIZE" || fail 'state fallback replay did not reach spool end within 360 seconds'
+test "$ACK_SEQ" -eq "$EXPECTED_ENTRIES" || fail 'state fallback replay skipped or exceeded the final sequence'
+test "$NEXT_BATCH" -eq 141 || fail 'state fallback did not restart batch sequence from one'
+grep -q 'connected broker=' "$EVIDENCE/phase3_gateway_stderr.log" || fail 'phase3 Broker connection log is absent'
+
+echo "command=kill -TERM $PID" > "$EVIDENCE/phase3_stop_command.txt"
+kill -TERM "$PID"
+TERM_EXIT=$?
+echo "kill_term_exit=$TERM_EXIT" > "$EVIDENCE/phase3_stop_signal_exit.txt"
+test "$TERM_EXIT" -eq 0 || fail 'phase3 SIGTERM failed'
+COUNT=0
+while [ -e "/proc/$PID" ] && [ "$COUNT" -lt 30 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+test ! -e "/proc/$PID" || fail 'phase3 did not exit within 30 seconds'
+COUNT=0
+while [ ! -s "$EVIDENCE/phase3_wait_exit.txt" ] && [ "$COUNT" -lt 10 ]; do sleep 1; COUNT=$((COUNT + 1)); done
+grep -q '^wait_exit=0$' "$EVIDENCE/phase3_wait_exit.txt" || fail 'phase3 wrapper wait exit is not zero'
+SUMMARY=$(grep 'M7_MQTT_SUMMARY' "$EVIDENCE/phase3_gateway_stderr.log" | tail -n 1)
+test -n "$SUMMARY" || fail 'phase3 summary is absent'
+echo "$SUMMARY" | grep -q 'queue_drop=0' || fail 'phase3 summary reports queue drops'
+echo "$SUMMARY" | grep -q 'puback_unexpected=0' || fail 'phase3 summary reports unexpected PUBACK'
+echo "$SUMMARY" | grep -q 'spool_pending=0' || fail 'phase3 summary reports pending records'
+echo "$SUMMARY" | grep -q 'spool_state_recoveries=1' || fail 'phase3 did not report exactly one state recovery'
+echo "$SUMMARY" | grep -q 'spool_tail_recoveries=0' || fail 'phase3 unexpectedly reports tail recovery'
+echo "$SUMMARY" | grep -q 'spool_corruptions=0' || fail 'phase3 reports internal corruption'
+echo "$SUMMARY" | grep -q 'spool_errors=0' || fail 'phase3 reports spool errors'
+echo "$SUMMARY" | grep -q 'last_gateway_seq=35644' || fail 'phase3 final acknowledged sequence mismatch'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_DATA_HASH" || fail 'state fallback modified spool.data'
+FINAL_STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+sync
+{
+    date -Ins
+    echo "$SUMMARY"
+    cat "$EVIDENCE/phase3_stop_signal_exit.txt"
+    cat "$EVIDENCE/phase3_wait_exit.txt"
+    echo "ack_offset=$ACK_OFFSET"
+    echo "ack_seq=$ACK_SEQ"
+    echo "next_batch=$NEXT_BATCH"
+    echo "spool_size=$(wc -c < "$SPOOL")"
+    echo "spool_entries=$EXPECTED_ENTRIES"
+    echo "spool_sha256=$(sha256sum "$SPOOL" | awk '{print $1}')"
+    echo "injected_state_sha256=$STATE_AFTER_HASH"
+    echo "recovered_state_sha256=$FINAL_STATE_HASH"
+    echo "rx_packets=$(cat /sys/class/net/can0/statistics/rx_packets)"
+    ip -details -statistics link show can0
+} > "$EVIDENCE/state_recovery_result.txt" 2>&1
+
+echo '--- state injection ---'
+cat "$EVIDENCE/state_injection_before.txt" "$EVIDENCE/state_injection_after.txt" 2>&1
+echo '--- state replay monitor tail ---'
+tail -n 30 "$MONITOR" 2>&1
+echo '--- state recovery result ---'
+cat "$EVIDENCE/state_recovery_result.txt" 2>&1
+echo 'M7_GATE2_STATE_REPLAY_PASS'
+M7_GATE2_STATE_REPLAY

@@ -1,0 +1,5 @@
+[1970-01-03T01:05:18.192Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T01:05:18.996Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m7/20260901T105414/recovery qos=1 max_inflight=1
+[1970-01-03T01:05:18.997Z] INFO mqtt: M7 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=10000 qos=1 max_inflight=1 spool_path=/var/lib/gatewayd-m7-test-20260901T105414/main/spool.data
+[1970-01-03T01:05:39.257Z] INFO mqtt: stop requested by signal 15
+[1970-01-03T01:05:39.259Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=0 decode_success=0 queue_success=0 queue_drop=0 queue_pop=0 queue_count=0 mqtt_connect_success=1 publish_attempts=140 publish_accepted=140 puback_matched=140 puback_unexpected=0 batches_acked=140 records_acked=35644 last_batch_seq=140 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=0 reconnects=0 spool_appended=0 spool_replayed=35644 spool_acked=35644 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=1 spool_corruptions=0 spool_errors=0

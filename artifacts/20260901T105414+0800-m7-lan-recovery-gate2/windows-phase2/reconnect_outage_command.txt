@@ -1,0 +1,1 @@
+E:\mosquitto\mosquitto_signal.exe -p 37380 shutdown

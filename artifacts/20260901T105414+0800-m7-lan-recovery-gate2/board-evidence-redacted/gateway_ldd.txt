@@ -1,0 +1,6 @@
+	linux-vdso.so.1 (0x7efe2000)
+	libpthread.so.0 => /lib/libpthread.so.0 (0x76f35000)
+	libmosquitto.so.1 => /tmp/m7/lib/libmosquitto.so.1 (0x76f15000)
+	libc.so.6 => /lib/libc.so.6 (0x76dd4000)
+	/lib/ld-linux-armhf.so.3 (0x76f5f000)
+	librt.so.1 => /lib/librt.so.1 (0x76dbd000)

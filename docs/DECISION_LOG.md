@@ -404,7 +404,7 @@
 ## D-030：M7采用逐记录耐久spool、保守cursor恢复和QoS 1去重边界
 
 - 日期：2026-09-01
-- 状态：设计与离线实现已接受；M7总门禁NOT MET
+- 状态：设计与离线实现已接受；M7总门禁后续由D-031更新为MET
 - data格式：固定80字节entry，使用magic/version/length、CRC32和显式little-endian
   `telemetry_record`载荷；逐条append后`fdatasync`。文件为append-only并持有单写者
   `flock`，启用64-bit file offset。
@@ -419,9 +419,34 @@
 - 容量边界：当前不做compaction和静默drop；ENOSPC或sync失败采用fail-stop并单独计数。
   目标介质、容量阈值、寿命和后续回收策略必须由真实部署条件决定，不能在M7证据中
   推测。
-- 验证边界：Ubuntu普通/ASan+UBSan全量16/16及ARMv7 warning-clean构建已通过；Windows
-  Broker断线/恢复、subscriber原始抓取、实际`kill -9`及目标持久介质均为`NOT RUN`。
-  因此M7保持`NOT MET`，也不授权M8 external-loop/epoll实现。
+- 当时验证边界：Ubuntu普通/ASan+UBSan全量16/16及ARMv7 warning-clean构建已通过；
+  Windows Broker断线/恢复、subscriber原始抓取、实际`kill -9`及目标持久介质当时均为
+  `NOT RUN`。该历史判断已由D-031的跨主机证据更新；D-030本身不授权M8。
+
+## D-031：以真实Windows Broker、i.MX6ULL ext4 spool和一次SIGKILL关闭M7
+
+- 日期：2026-09-01
+- 状态：已接受；M7总门禁MET
+- 决定：采用`artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`作为M7跨主机退出
+  证据。目标使用`/dev/root` ext4下的专用`/var/lib`目录；`/tmp`只部署binary/library，
+  不作为持久化介质。部署的gateway和libmosquitto均在板端重新计算SHA256。
+- 崩溃边界：Broker离线且spool有29445条pending时，只对核实的PID 1706执行一次
+  `kill -9`。命令返回0、wait137，data/state大小和hash不变；同binary、配置和spool
+  重启后按seq4865～34309补传，gateway seq没有复用。
+- 重连边界：PID1926又经历一次运行中Broker停止/恢复并记录`reconnects=1`；新增物理CAN
+  记录最终ACK到seq35644。只有匹配PUBACK时cursor才推进，正常summary的unexpected
+  PUBACK、queue drop、spool pending/corruption/error均为0。
+- 损坏边界：部分尾部只截断无效4字节；内部magic损坏在MQTT connect前拒绝启动；state
+  magic损坏安全回退到offset0并重放35644条。该回退故意允许raw duplicate，禁止跳过
+  未确认数据。
+- 完整性：最终raw batch/record为281/71288，raw duplicate35644，unique gateway seq
+  35644，missing0、effective duplicate0。Broker gateway PUBLISH/PUBACK和subscriber
+  PUBLISH/PUBACK均为281/281；板端manifest本地复核115/115。
+- 限制：SIGKILL phase没有最终queue summary；正常退出phase为queue drop0且seq验证无
+  缺失。CAN最终为ERROR-WARNING、berr rx102，目标时钟仍为1970。正确UTC、真实掉电、
+  性能、介质寿命、容量/compaction及长期可靠性保持`NOT RUN`。
+- 影响：M7改为`MET`，只允许声称一次受控的板端断线/进程崩溃/损坏恢复功能门禁通过。
+  本决定不批准、不实现也不测试M8 external-loop/epoll或M9/M10。
 
 ## 本次规范冲突修正清单
 

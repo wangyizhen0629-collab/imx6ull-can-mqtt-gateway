@@ -1,0 +1,8 @@
+﻿stopped_at=2026-09-01T12:11:28.0803824+08:00
+subscriber_stop_exit=0
+subscriber_gone=true
+broker_signal_exit=0
+broker_gone=true
+listeners_after=0
+tcp_entries_after=1
+  TCP    <REDACTED_LAN_ADDRESS>:18884     <REDACTED_TARGET_ADDRESS>:51992     TIME_WAIT       0

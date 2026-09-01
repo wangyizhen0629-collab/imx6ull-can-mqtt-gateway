@@ -1,0 +1,93 @@
+sh <<'M7_GATE2_PHASE2_PAUSE_NO_LOG'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+CONFIG=$RUN_ROOT/main/gateway.conf
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+EXPECTED_SIZE=2744720
+EXPECTED_SPOOL_HASH=0465c82da8da6bcbdd4b7cba44361197279fe3519c8d1a37a8a897eba241bbbf
+EXPECTED_STATE_HASH=59d3246e7632a423ed3fbb9aa53d42fa0ddf2e7f63b8519927d7cc1e1f6a0d97
+EXPECTED_RX=7047547
+OLD_PID=$(cat "$EVIDENCE/phase1_gateway.pid" 2>/dev/null)
+PID=$(cat "$EVIDENCE/phase2_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_PHASE2_PAUSE_NO_LOG_FAIL: $*" >&2; exit 1; }
+
+test -e "$EVIDENCE/kill9_once.marker" || fail 'one-shot SIGKILL marker is absent'
+grep -q '^kill9_exit=0$' "$EVIDENCE/phase1_kill9_exit.txt" || fail 'recorded SIGKILL did not succeed'
+test ! -e "/proc/$OLD_PID" || fail 'old phase1 PID still exists'
+test -n "$PID" || fail 'missing phase2 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase2 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase2 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" > "$EVIDENCE/phase2_pause2_process_check.txt"
+echo >> "$EVIDENCE/phase2_pause2_process_check.txt"
+grep -Fq "$CONFIG" "$EVIDENCE/phase2_pause2_process_check.txt" || fail 'phase2 PID does not reference this run config'
+
+SIZE1=$(wc -c < "$SPOOL")
+SPOOL_HASH1=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH1=$(sha256sum "$STATE" | awk '{print $1}')
+RX1=$(cat /sys/class/net/can0/statistics/rx_packets)
+sleep 2
+SIZE2=$(wc -c < "$SPOOL")
+SPOOL_HASH2=$(sha256sum "$SPOOL" | awk '{print $1}')
+STATE_HASH2=$(sha256sum "$STATE" | awk '{print $1}')
+RX2=$(cat /sys/class/net/can0/statistics/rx_packets)
+test "$SIZE1" -eq "$EXPECTED_SIZE" && test "$SIZE2" -eq "$EXPECTED_SIZE" || fail 'spool size changed after phase2 restart'
+test "$SPOOL_HASH1" = "$EXPECTED_SPOOL_HASH" && test "$SPOOL_HASH2" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed after phase2 restart'
+test "$STATE_HASH1" = "$EXPECTED_STATE_HASH" && test "$STATE_HASH2" = "$EXPECTED_STATE_HASH" || fail 'state hash changed after phase2 restart'
+test "$RX1" -eq "$EXPECTED_RX" && test "$RX2" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+
+{
+    date -Ins
+    echo "old_pid=$OLD_PID"
+    echo "new_pid=$PID"
+    grep '^State:' "/proc/$PID/status"
+    echo -n 'wchan='
+    cat "/proc/$PID/wchan" 2>&1
+    echo "spool_size=$SIZE2"
+    echo "rx_packets=$RX2"
+    sha256sum "$SPOOL" "$STATE"
+    if grep -q 'offline, durable records retained' "$EVIDENCE/phase2_gateway_stderr.log"; then
+        echo 'offline_log=OBSERVED'
+    else
+        echo 'offline_log=NOT OBSERVED; phase2 remained alive with Broker listener absent and durable files unchanged'
+    fi
+    tail -n 30 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_pause2_before.txt" 2>&1
+
+CURRENT_STATE=$(awk '/^State:/ {print $2}' "/proc/$PID/status")
+if [ "$CURRENT_STATE" != T ]; then
+    echo "command=kill -STOP $PID" > "$EVIDENCE/phase2_pause2_command.txt"
+    kill -STOP "$PID"
+    PAUSE_EXIT=$?
+else
+    echo 'command=NOT RUN; phase2 was already stopped' > "$EVIDENCE/phase2_pause2_command.txt"
+    PAUSE_EXIT=0
+fi
+echo "sigstop_exit=$PAUSE_EXIT" > "$EVIDENCE/phase2_pause2_exit.txt"
+test "$PAUSE_EXIT" -eq 0 || fail 'phase2 SIGSTOP failed'
+sleep 1
+grep -Eq '^State:[[:space:]]+T' "/proc/$PID/status" || fail 'phase2 is not stopped'
+
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    cat "$EVIDENCE/phase2_pause2_command.txt"
+    cat "$EVIDENCE/phase2_pause2_exit.txt"
+    grep '^State:' "/proc/$PID/status"
+    echo "spool_size=$(wc -c < "$SPOOL")"
+    echo "spool_entries=$((EXPECTED_SIZE / 80))"
+    echo "rx_packets=$(cat /sys/class/net/can0/statistics/rx_packets)"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+} > "$EVIDENCE/phase2_pause2_result.txt" 2>&1
+sync
+
+echo '--- phase2 state before pause ---'
+cat "$EVIDENCE/phase2_pause2_before.txt" 2>&1
+echo '--- phase2 paused result ---'
+cat "$EVIDENCE/phase2_pause2_result.txt" 2>&1
+echo "M7_GATE2_PHASE2_PAUSE_NO_LOG_PASS old_pid=$OLD_PID new_pid=$PID"
+M7_GATE2_PHASE2_PAUSE_NO_LOG

@@ -1,0 +1,1 @@
+py -3 -B tools/mqtt/validate_m6_batches.py --input artifacts/20260901T105414+0800-m7-lan-recovery-gate2/subscriber-phase1.jsonl --device-id m7-gateway-20260901-105414 --expected-batches 19

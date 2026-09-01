@@ -1,0 +1,4 @@
+result=FAIL_BEFORE_BROKER_START
+cause=mosquitto 2.1.2 does not support the legacy -t option; it requires --test-config
+listener_created=false
+subscriber_started=false

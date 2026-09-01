@@ -1,0 +1,87 @@
+sh <<'M7_GATE2_STOP_PHASE2'
+set +e
+umask 077
+RUN_ROOT=/var/lib/gatewayd-m7-test-20260901T105414
+EVIDENCE=$RUN_ROOT/evidence
+CONFIG=$RUN_ROOT/main/gateway.conf
+SPOOL=$RUN_ROOT/main/spool.data
+STATE=$RUN_ROOT/main/spool.state
+EXPECTED_SIZE=2851520
+EXPECTED_SPOOL_HASH=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+EXPECTED_STATE_HASH=86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c
+EXPECTED_RX=7048885
+PID=$(cat "$EVIDENCE/phase2_gateway.pid" 2>/dev/null)
+
+fail() { echo "M7_GATE2_STOP_PHASE2_FAIL: $*" >&2; exit 1; }
+
+test -n "$PID" || fail 'missing phase2 gateway PID'
+test -r "/proc/$PID/comm" || fail 'phase2 gateway PID is not alive'
+grep -qx gatewayd "/proc/$PID/comm" || fail 'phase2 PID is not gatewayd'
+tr '\000' ' ' < "/proc/$PID/cmdline" > "$EVIDENCE/phase2_process_before_stop.txt"
+echo >> "$EVIDENCE/phase2_process_before_stop.txt"
+grep -Fq "$CONFIG" "$EVIDENCE/phase2_process_before_stop.txt" || fail 'phase2 PID does not reference this run config'
+test "$(wc -c < "$SPOOL")" -eq "$EXPECTED_SIZE" || fail 'spool size changed before stop'
+test "$(sha256sum "$SPOOL" | awk '{print $1}')" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed before stop'
+test "$(sha256sum "$STATE" | awk '{print $1}')" = "$EXPECTED_STATE_HASH" || fail 'state hash changed before stop'
+test "$(cat /sys/class/net/can0/statistics/rx_packets)" -eq "$EXPECTED_RX" || fail 'external CAN source is no longer paused'
+{
+    date -Ins
+    echo "gateway_pid=$PID"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+    ip -details -statistics link show can0
+    tail -n 60 "$EVIDENCE/phase2_gateway_stderr.log"
+} > "$EVIDENCE/phase2_immediately_before_stop.txt" 2>&1
+
+echo "command=kill -TERM $PID" > "$EVIDENCE/phase2_stop_command.txt"
+kill -TERM "$PID"
+TERM_EXIT=$?
+echo "kill_term_exit=$TERM_EXIT" > "$EVIDENCE/phase2_stop_signal_exit.txt"
+test "$TERM_EXIT" -eq 0 || fail 'phase2 SIGTERM failed'
+COUNT=0
+while [ -e "/proc/$PID" ] && [ "$COUNT" -lt 30 ]; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test ! -e "/proc/$PID" || fail 'phase2 did not exit within 30 seconds'
+COUNT=0
+while [ ! -s "$EVIDENCE/phase2_wait_exit.txt" ] && [ "$COUNT" -lt 10 ]; do
+    sleep 1
+    COUNT=$((COUNT + 1))
+done
+test -s "$EVIDENCE/phase2_wait_exit.txt" || fail 'phase2 wrapper wait status was not recorded'
+grep -q '^wait_exit=0$' "$EVIDENCE/phase2_wait_exit.txt" || fail 'phase2 wrapper wait status is not zero'
+
+SUMMARY=$(grep 'M7_MQTT_SUMMARY' "$EVIDENCE/phase2_gateway_stderr.log" | tail -n 1)
+test -n "$SUMMARY" || fail 'phase2 summary is absent'
+echo "$SUMMARY" | grep -q 'queue_drop=0' || fail 'phase2 summary reports queue drops'
+echo "$SUMMARY" | grep -q 'reconnects=1' || fail 'phase2 summary does not report exactly one reconnect'
+echo "$SUMMARY" | grep -q 'puback_unexpected=0' || fail 'phase2 summary reports unexpected PUBACK'
+echo "$SUMMARY" | grep -q 'spool_pending=0' || fail 'phase2 summary reports pending records'
+echo "$SUMMARY" | grep -q 'spool_corruptions=0' || fail 'phase2 main spool reports corruption'
+echo "$SUMMARY" | grep -q 'spool_errors=0' || fail 'phase2 main spool reports errors'
+echo "$SUMMARY" | grep -q 'last_gateway_seq=35644' || fail 'phase2 final acknowledged sequence mismatch'
+
+FINAL_SIZE=$(wc -c < "$SPOOL")
+FINAL_SPOOL_HASH=$(sha256sum "$SPOOL" | awk '{print $1}')
+FINAL_STATE_HASH=$(sha256sum "$STATE" | awk '{print $1}')
+test "$FINAL_SIZE" -eq "$EXPECTED_SIZE" || fail 'spool size changed across clean stop'
+test "$FINAL_SPOOL_HASH" = "$EXPECTED_SPOOL_HASH" || fail 'spool hash changed across clean stop'
+test "$FINAL_STATE_HASH" = "$EXPECTED_STATE_HASH" || fail 'state changed across clean stop'
+{
+    date -Ins
+    echo 'gateway_process_gone=true'
+    cat "$EVIDENCE/phase2_stop_signal_exit.txt"
+    cat "$EVIDENCE/phase2_wait_exit.txt"
+    echo "$SUMMARY"
+    echo "spool_size=$FINAL_SIZE"
+    echo "spool_entries=$((FINAL_SIZE / 80))"
+    ls -l "$SPOOL" "$STATE"
+    sha256sum "$SPOOL" "$STATE"
+    ip -details -statistics link show can0
+} > "$EVIDENCE/phase2_stop_result.txt" 2>&1
+sync
+
+cat "$EVIDENCE/phase2_stop_result.txt" 2>&1
+echo 'M7_GATE2_STOP_PHASE2_PASS'
+M7_GATE2_STOP_PHASE2

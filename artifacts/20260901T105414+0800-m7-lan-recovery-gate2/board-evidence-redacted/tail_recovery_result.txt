@@ -1,0 +1,7 @@
+1970-01-03T00:37:41,900072483+00:00
+[1970-01-03T00:37:40.555Z] INFO mqtt: M7_MQTT_SUMMARY can_accepted=0 decode_success=0 queue_success=0 queue_drop=0 queue_pop=0 queue_count=0 mqtt_connect_success=1 publish_attempts=0 publish_accepted=0 puback_matched=0 puback_unexpected=0 batches_acked=0 records_acked=0 last_batch_seq=0 last_gateway_seq=35644 buffered=0 in_flight=0 mqtt_errors=0 reconnects=0 spool_appended=0 spool_replayed=0 spool_acked=0 spool_pending=0 spool_tail_recoveries=1 spool_state_recoveries=0 spool_corruptions=0 spool_errors=0
+kill_term_exit=0
+wait_exit=0
+recovered_size=2851520
+recovered_sha256=3c5f8309816f4c2e52aa65b537171e931f32219a12b8f56ef9d1af17a0384bca
+86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c  /var/lib/gatewayd-m7-test-20260901T105414/corruption/tail/spool.state

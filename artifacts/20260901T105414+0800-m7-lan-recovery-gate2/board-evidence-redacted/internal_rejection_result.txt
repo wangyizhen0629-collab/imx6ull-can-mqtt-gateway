@@ -1,0 +1,9 @@
+1970-01-03T00:37:44,052577484+00:00
+gateway_exit=1
+[1970-01-03T00:37:42.834Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T00:37:42.858Z] ERROR mqtt: MQTT sink startup failed
+retained_size=2851520
+82a655e9f1118d761f9d98157ee04ce561a37b48c837ee92c5f6975875a76861  /var/lib/gatewayd-m7-test-20260901T105414/corruption/internal/spool.data
+86d8bc1c787a143665190605c70010cf8825e03fd4a8fa5c1d92361f07385f2c  /var/lib/gatewayd-m7-test-20260901T105414/corruption/internal/spool.state
+corrupt_offset=80000
+corrupt_byte_hex=00

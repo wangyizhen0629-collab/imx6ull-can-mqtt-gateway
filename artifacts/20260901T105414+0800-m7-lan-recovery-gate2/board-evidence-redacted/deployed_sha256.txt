@@ -1,0 +1,2 @@
+9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25  /tmp/m7/bin/gatewayd
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
