@@ -1,0 +1,3 @@
+﻿raw_sha256=a79f1d170f83b48e482e60c862540a4ab5a4d0d328396da26bd3a2da11705263
+redacted_sha256=abddf3c4a097da47e090272b82832b39921f73b7712ce6417e36cf54e66bcf4a
+redaction_method=将目标地址和 Broker 地址精确替换为占位符

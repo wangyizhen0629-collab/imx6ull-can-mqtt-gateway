@@ -1,0 +1,5 @@
+﻿wrapper_started_at=2026-09-01T17:12:12.9908357+08:00
+kind=broker
+phase=reconnect1
+process_started_at=2026-09-01T17:12:13.0296511+08:00
+process_ended_at=2026-09-01T17:13:50.6622847+08:00

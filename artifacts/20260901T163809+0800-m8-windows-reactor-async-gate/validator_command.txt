@@ -1,0 +1,2 @@
+﻿selftest=py -3 -B tools/mqtt/test_validate_m7_recovery.py
+validator=py -3 -B tools/mqtt/validate_m7_recovery.py --input artifacts/20260901T163809+0800-m8-windows-reactor-async-gate/subscriber.jsonl --device-id m8-gateway-20260901-143500 --expected-first-seq 1 --expected-last-seq 22604 --require-raw-duplicates

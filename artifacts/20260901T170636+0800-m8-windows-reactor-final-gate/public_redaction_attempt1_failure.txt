@@ -1,0 +1,7 @@
+detected_at=NOT CAPTURED (the scan command did not persist its start time)
+result=FAIL
+scope=board-evidence-redacted/ and broker-logs-redacted/
+reason=prepare_host_evidence.ps1 parsed the two-line broker_endpoint.txt as one value, so exact-string replacement did not match the Broker IPv4 address.
+detection=An explicit RFC1918 scan found the address in board config/gateway logs and Broker connection logs.
+preservation=The incorrect v1 directories and their trace remain unchanged as failed evidence and must not be staged.
+correction=Generate append-only board-evidence-redacted-v2/ and broker-logs-redacted-v2/ using RFC1918 replacement, then require a zero-match scan before staging.

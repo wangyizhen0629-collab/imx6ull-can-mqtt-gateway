@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m7_recovery.py", line 85, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m7_recovery.py", line 63, in main
+    require(first_seen == expected,
+  File "E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\tools\mqtt\validate_m7_recovery.py", line 14, in require
+    raise ValueError(message)
+ValueError: deduplicated gateway seq has missing/reordered values

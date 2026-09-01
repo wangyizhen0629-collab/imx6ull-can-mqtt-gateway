@@ -1,0 +1,8 @@
+﻿stopped_at=2026-09-01T17:17:34.8325737+08:00
+verified_pid=31684
+verified_path=E:\mosquitto\mosquitto_sub.exe
+connection_count_before=1
+command=Stop-Process -Id <VERIFIED_DEDICATED_PID>
+exit_code=
+status=PASS
+

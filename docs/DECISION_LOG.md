@@ -25,10 +25,10 @@
 ## D-004：epoll 保持条件式设计
 
 - 日期：2026-08-28
-- 状态：M8 API条件已满足并选择实现；退出门禁待真实等价测试
+- 状态：已接受并由真实等价门禁关闭M8
 - 原因：目标 libmosquitto 版本和 external loop API 尚未确认。
-- 影响：M6/M7基线已建立。M8已确认目标库API并实现reactor；只有真实等价测试通过后
-  才能关闭M8或写入简历，否则必须回退并删除epoll表述。
+- 影响：M6/M7基线已建立；M8已确认目标库API、实现reactor并通过真实i.MX6ULL/Windows
+  Broker等价门禁。只允许使用带“单次受控功能验证”限定的epoll表述。
 
 ## D-005：证据先于项目和简历结论
 
@@ -452,7 +452,7 @@
 ## D-032：目标libmosquitto API满足条件，M8采用epoll external reactor
 
 - 日期：2026-09-01
-- 状态：设计与离线实现已接受；M8总门禁`NOT MET`
+- 状态：已接受；M8总门禁`MET`
 - API依据：`artifacts/20260901T125544+0800-m8-preflight/`对与M7板端运行库SHA256
   相同的ARMv7 libmosquitto 2.0.11核对头文件和动态符号，`mosquitto_socket`、
   `mosquitto_loop_read`、`mosquitto_loop_write`、`mosquitto_loop_misc`以及
@@ -460,13 +460,28 @@
 - 决定：新增独立reactor，由epoll统一监控MQTT socket、eventfd和timerfd；eventfd承载
   本地操作唤醒，timerfd周期调用`loop_misc`，socket按`want_write`动态订阅EPOLLOUT。
   M7的单in-flight、匹配PUBACK后推进cursor、断线重建client和spool恢复语义不改。
-- 离线证据：Ubuntu warning-clean与ASan+UBSan的M8专项均2/2 PASS；ARMv7 warning-clean
-  最终binary无RPATH/RUNPATH，并真实引用五个external-loop符号。早期ARM查找失败和
-  RPATH失败产物均保留，不能改写成PASS。
-- 未满足项：本机临时Broker/M7等价恢复测试因尚无知情后的明确批准为`NOT RUN`；目标板
-  部署/运行也为`NOT RUN`。在真实socket、重连、SIGKILL恢复和退出行为完成前，不能仅凭
-  API符号/交叉构建认定保持M7行为。
-- 影响：M8保持`NOT MET`，M9不得开始；不产生性能、时延、可靠性或板端reactor结论。
+- 离线证据：最终Ubuntu run为warning 0、全量CTest 17/17、M8专项2/2、ASan/UBSan 2/2；
+  ARMv7 binary无RPATH/RUNPATH并引用含`mosquitto_connect_async`在内的6个API。早期ARM
+  查找/RPATH失败以及两次Windows实现失败均保留，不能改写成PASS。
+- 真实证据：`artifacts/20260901T170636+0800-m8-windows-reactor-final-gate/`在真实i.MX6ULL、
+  物理CAN、ext4 spool和Windows Broker上通过断线重连、一次SIGKILL、同spool恢复、state
+  安全重放、reactor计数、优雅退出和严格validator。323个raw batch、51523条raw record、
+  24089条raw duplicate去重后为1～27434连续序号，missing0、effective duplicate0。
+- 影响：M8关闭为`MET`；可保留受限epoll external-reactor表述。正确UTC、掉电、性能、
+  时延、CPU/RSS和长期可靠性不因此成立。M9不得自动开始。
+
+## D-033：重连门禁必须控制subscriber首次捕获顺序，且不得修饰失败validator
+
+- 日期：2026-09-01
+- 状态：已接受
+- 原因：第三个Windows run的gateway在无持久化Broker重启后先于clean-session subscriber
+  连接，4个batch已获Broker PUBACK但未被subscriber捕获；后来state重放虽补齐unique集合，
+  first-seen顺序仍使仓库validator失败。
+- 决定：失败JSONL保持原顺序，禁止排序或放宽validator。最终run使用合法的20秒测试重连
+  间隔，在一次async timeout后启动Broker，并用Broker日志证明subscriber连接/订阅早于
+  gateway下一次自动重连；生产默认值和源码不因测试对齐而改变。
+- 影响：第三个run保持FAIL；只有全新spool、完整重跑且validator exit0的第四个run用于
+  M8 `MET`结论。
 
 ## 本次规范冲突修正清单
 

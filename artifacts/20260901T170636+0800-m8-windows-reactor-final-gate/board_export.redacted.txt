@@ -1,0 +1,9 @@
+﻿started_at=2026-09-01T17:17:39.0140934+08:00
+command=ssh root@<REDACTED_BOARD_HOST> sh /tmp/m8-reactor-gate-20260901T170636/board_control.sh export
+exit_code=0
+ended_at=2026-09-01T17:17:40.8856859+08:00
+--- output ---
+-rw------- 1 root root 6139904 Jan  3 06:13 /tmp/m8-reactor-gate-20260901T170636/board-export.tar
+f48b28a83d63a0e964a1e443c0377d3537f1b304beac70eaa0298cc8b292df46  /tmp/m8-reactor-gate-20260901T170636/board-export.tar
+M8_BOARD_EXPORT_PASS
+

@@ -1,0 +1,7 @@
+injection=replace first state magic byte
+offset=0
+before_byte_hex=47
+after_byte_hex=00
+0cd565758e4904a0963a69fe5a1e79617ac17bb4df36d612513d25eee6501168  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.data
+095ace0a250f1705c3efe938c691f47458c02a4e9eaf8899fd16c877bc1fa9f9  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.state
+75d268940c5d920c0ac4e52d51110101ef82ca2ee3f1bd06f950f3125f2aea2f  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/gateway.conf

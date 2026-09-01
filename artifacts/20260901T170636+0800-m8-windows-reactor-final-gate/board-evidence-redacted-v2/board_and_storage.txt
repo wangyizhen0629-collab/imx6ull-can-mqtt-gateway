@@ -1,0 +1,22 @@
+setup_at=1970-01-03T06:04:56,219587824+00:00
+Linux 100ask 4.9.88 #1 SMP PREEMPT Thu Apr 2 14:58:18 EDT 2026 armv7l GNU/Linux
+uid=0(root) gid=0(root) groups=0(root),10(wheel)
+/dev/root / ext4 rw,relatime,data=ordered 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=86120k,nr_inodes=21530,mode=755 0 0
+sysfs /sys sysfs rw,relatime 0 0
+proc /proc proc rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620,ptmxmode=666 0 0
+tmpfs /dev/shm tmpfs rw,relatime,mode=777 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,relatime,mode=755 0 0
+debugfs /sys/kernel/debug debugfs rw,relatime 0 0
+none /sys/kernel/config configfs rw,relatime 0 0
+adb /dev/usb-ffs/adb functionfs rw,relatime 0 0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       1.5G  719M  664M  52% /
+tmpfs           245M  8.7M  236M   4% /tmp
+drwx------ 4 root root  100 Jan  3 06:04 /tmp/m8-reactor-gate-20260901T170636
+drwx------ 2 root root   60 Jan  3 06:04 /tmp/m8-reactor-gate-20260901T170636/bin
+drwx------ 5 root root 4096 Jan  3 06:04 /var/lib/gatewayd-m8-test-20260901T170636
+drwx------ 2 root root 4096 Jan  3 06:04 /var/lib/gatewayd-m8-test-20260901T170636/evidence
+drwx------ 2 root root 4096 Jan  3 06:04 /var/lib/gatewayd-m8-test-20260901T170636/main

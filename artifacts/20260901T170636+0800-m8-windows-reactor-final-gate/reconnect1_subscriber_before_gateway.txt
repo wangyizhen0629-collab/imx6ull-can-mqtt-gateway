@@ -1,0 +1,12 @@
+﻿captured_at=2026-09-01T17:13:20.4679211+08:00
+broker_phase=reconnect1
+subscriber_pid=31684
+subscriber_path=E:\mosquitto\mosquitto_sub.exe
+subscriber_established_connections=1
+broker_log_subscriber_connects=1
+broker_log_gateway_connects=1
+subscriber_first_line_index=10
+gateway_first_line_index=18
+gateway_publishes_before_subscriber=0
+broker_log_sha256_at_capture=NOT AVAILABLE (live Mosquitto log is exclusively locked; hash after Broker stop)
+alignment=PASS (subscriber subscribed before the next scheduled gateway reconnect)

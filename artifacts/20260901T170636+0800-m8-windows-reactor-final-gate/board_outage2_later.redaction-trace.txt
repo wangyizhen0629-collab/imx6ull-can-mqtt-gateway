@@ -1,0 +1,3 @@
+﻿raw_sha256=c3700a07e6a7dcae029a80a95602e4c9adb6ea49f47c31dc7cf1a191b1af7ca5
+redacted_sha256=edf9f4003cd44328153dd963f8343c7d35868efeedefb5678d7d5a8fcf1e6fd2
+redaction_method=将目标地址精确替换为 <REDACTED_BOARD_HOST>

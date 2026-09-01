@@ -1,0 +1,22 @@
+audited_at=1970-01-03T06:13:06,190756216+00:00
+gateway_process_count=0
+/var/lib/gatewayd-m8-test-20260901T170636/corruption/state:
+total 4044
+-rw------- 1 root root     412 Jan  3 06:11 gateway.conf
+-rw------- 1 root root     412 Jan  3 06:11 gateway.conf.before
+-rw------- 1 root root 2194720 Jan  3 06:12 spool.data
+-rw------- 1 root root 1927120 Jan  3 06:11 spool.data.before
+-rw------- 1 root root      40 Jan  3 06:12 spool.state
+-rw------- 1 root root      40 Jan  3 06:11 spool.state.before
+
+/var/lib/gatewayd-m8-test-20260901T170636/main:
+total 1896
+-rw------- 1 root root     401 Jan  3 06:04 gateway.conf
+-rw------- 1 root root 1927120 Jan  3 06:11 spool.data
+-rw------- 1 root root      40 Jan  3 06:11 spool.state
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T170636/bin/gatewayd
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
+0cd565758e4904a0963a69fe5a1e79617ac17bb4df36d612513d25eee6501168  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+095ace0a250f1705c3efe938c691f47458c02a4e9eaf8899fd16c877bc1fa9f9  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.state
+98698532354b26d4fb510e8c203471c4700577d3e665a42241821e8ff93c547a  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.data
+d9061eca590fe4b5725594d815ffd048d676c6054e3a7af630ce044fa723b3be  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.state

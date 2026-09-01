@@ -1,0 +1,6 @@
+captured_at=1970-01-03T06:09:38,547749858+00:00
+gateway_pid=7128
+spool_size=1638240
+e1700495aaaa2e7a756e20dfdd71ae52fadaebbb5e902b81ad58134772c9dd6d  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+e873bef47105fd736ba6b9f2bf06c73c9f6f64a32a7a919c500be8449d883a13  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.state
+/tmp/m8-reactor-gate-20260901T170636/bin/gatewayd --config /var/lib/gatewayd-m8-test-20260901T170636/main/gateway.conf --run-mqtt 

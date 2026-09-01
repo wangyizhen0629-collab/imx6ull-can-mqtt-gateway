@@ -1,0 +1,15 @@
+device_id=m8-gateway-20260901-170636
+can_interface=can0
+broker_host=<REDACTED_BROKER_ADDRESS>
+broker_port=18884
+broker_username=
+broker_password=
+mqtt_topic=test/m8/20260901T170636/reactor
+queue_capacity=65536
+queue_push_timeout_ms=50
+batch_interval_ms=1000
+mqtt_ack_timeout_ms=5000
+mqtt_reconnect_interval_ms=20000
+spool_path=/var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+log_level=info
+

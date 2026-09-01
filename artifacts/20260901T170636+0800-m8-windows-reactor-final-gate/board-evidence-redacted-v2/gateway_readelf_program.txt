@@ -1,0 +1,29 @@
+
+Elf file type is EXEC (Executable file)
+Entry point 0x11de0
+There are 9 program headers, starting at offset 52
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  EXIDX          0x011b64 0x00021b64 0x00021b64 0x00008 0x00008 R   0x4
+  PHDR           0x000034 0x00010034 0x00010034 0x00120 0x00120 R   0x4
+  INTERP         0x000154 0x00010154 0x00010154 0x00019 0x00019 R   0x1
+      [Requesting program interpreter: /lib/ld-linux-armhf.so.3]
+  LOAD           0x000000 0x00010000 0x00010000 0x11b70 0x11b70 R E 0x10000
+  LOAD           0x011ef8 0x00031ef8 0x00031ef8 0x002b4 0x002c0 RW  0x10000
+  DYNAMIC        0x011f00 0x00031f00 0x00031f00 0x00100 0x00100 RW  0x4
+  NOTE           0x000170 0x00010170 0x00010170 0x00020 0x00020 R   0x4
+  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
+  GNU_RELRO      0x011ef8 0x00031ef8 0x00031ef8 0x00108 0x00108 R   0x1
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .ARM.exidx 
+   01     
+   02     .interp 
+   03     .interp .note.ABI-tag .hash .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rel.dyn .rel.plt .init .plt .text .fini .rodata .ARM.exidx .eh_frame 
+   04     .init_array .fini_array .dynamic .got .data .bss 
+   05     .dynamic 
+   06     .note.ABI-tag 
+   07     
+   08     .init_array .fini_array .dynamic 

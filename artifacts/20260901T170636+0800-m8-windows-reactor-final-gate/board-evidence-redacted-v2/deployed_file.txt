@@ -1,0 +1,2 @@
+/tmp/m8-reactor-gate-20260901T170636/bin/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped
+/tmp/m7/lib/libmosquitto.so.2.0.11:                ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), statically linked, with debug_info, not stripped

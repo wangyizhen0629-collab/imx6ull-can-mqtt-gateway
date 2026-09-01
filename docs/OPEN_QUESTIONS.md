@@ -24,8 +24,8 @@
 - M6历史依赖审计确认Buildroot SDK原始sysroot不含libmosquitto开发文件；后续M6/M7已用
   私有ARMv7 libmosquitto 2.0.11在板端真实运行。M8 preflight又以相同库SHA256
   `b32c8ac4...f636`核对匹配头文件和动态符号，四个external-loop API及`want_write`
-  5/5存在，因此版本/API问题已关闭。仍待确认的是M8 binary在目标板运行时的reactor行为，
-  不能用符号审计代替。
+  5/5存在，因此版本/API问题已关闭；最终binary又加入`mosquitto_connect_async`并完成
+  6/6链接复核。M8板端reactor行为已由最终真实门禁关闭。
 - `can0` 已确认是 FlexCAN、clock 30 MHz；M2 controller loopback、timestamp 和错误
   DLC 路径已经批准并 PASS。测试后为 DOWN/STOPPED、loopback off，500000 bit timing
   仍在关闭状态保留。
@@ -142,8 +142,8 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   `artifacts/20260901T093654+0800-m7-offline-final/`；跨主机退出证据为
   `artifacts/20260901T105414+0800-m7-lan-recovery-gate2/`。实际断线、一次`kill -9`、
   subscriber合并验证、ext4 spool及三类损坏恢复均通过，missing0、effective duplicate0，
-  M7现为`MET`。项目所有者随后已单独授权M8；当前API审计、离线实现和ARMv7交叉构建
-  通过，但真实Broker等价恢复及目标板运行仍为`NOT RUN`，M8总门禁为`NOT MET`。
+  M7现为`MET`。项目所有者随后单独授权M8；最终Ubuntu/ARM和真实Windows Broker/
+  i.MX6ULL门禁均通过，M8总门禁为`MET`。
 
 ## 本次已解决项
 
@@ -185,16 +185,15 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   独立stats和去重validator已通过主机/ARM与真实跨主机门禁；M7已关闭。保留问题是正确
   UTC、真实掉电、CAN物理错误原因、介质寿命、容量/compaction和长期可靠性，不属于本次
   功能门禁的已验证结论。
-- M8 API兼容性：与M7板端运行库相同SHA256的libmosquitto 2.0.11已确认external-loop
-  五个所需符号和匹配头文件声明；ARMv7新binary也有5/5动态引用且无RPATH/RUNPATH。
+- M8：与M7相同SHA256的libmosquitto 2.0.11、最终ARMv7 binary、真实i.MX6ULL/Windows
+  Broker重连、SIGKILL/state恢复、reactor计数和严格validator均已通过；门禁已关闭。
 
-## M8 当前待确认
+## M8 关闭后仍未解决的边界
 
-- 是否明确批准仅在Ubuntu本机`127.0.0.1`临时启停隔离Mosquitto/subscriber，并对专用
-  恢复驱动执行一次`SIGKILL`？该测试用于证明M8 reactor保持M7重连、spool补传和state
-  安全重放行为，不触碰目标板、Windows Broker或M9。
-- i.MX6ULL目标板部署和真实Windows Broker reactor门禁何时具备交互通道与单独批准？
-  未执行前必须保持`NOT RUN`，ARM构建PASS不能替代板端运行。
+- 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
+- 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
+  和长期可靠性仍未运行。不得用M8短时功能门禁回答这些问题。
+- M9的BusyBox init/respawn方案仍待项目所有者另行授权；M8关闭不自动开始M9。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

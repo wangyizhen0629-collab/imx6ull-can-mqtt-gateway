@@ -1,0 +1,3 @@
+[1970-01-03T06:04:56.488Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T06:04:56.488Z] INFO config: device_id=m8-gateway-20260901-170636 can_interface=can0 broker_host=<REDACTED_LAN_ADDRESS> broker_port=18884 broker_username=<unset> broker_password=<redacted> mqtt_topic=test/m8/20260901T170636/reactor queue_capacity=65536 queue_push_timeout_ms=50 batch_interval_ms=1000 mqtt_ack_timeout_ms=5000 mqtt_reconnect_interval_ms=20000 spool_path=/var/lib/gatewayd-m8-test-20260901T170636/main/spool.data log_level=INFO
+[1970-01-03T06:04:56.489Z] INFO main: configuration check complete; SocketCAN receive is not started without --can-receive

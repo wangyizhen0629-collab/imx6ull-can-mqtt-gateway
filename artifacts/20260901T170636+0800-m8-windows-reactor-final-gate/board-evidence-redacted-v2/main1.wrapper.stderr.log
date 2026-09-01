@@ -1,0 +1,1 @@
+/var/lib/gatewayd-m8-test-20260901T170636/run_gateway_phase.sh: line 17:  7128 Killed                  LD_LIBRARY_PATH="$LIB_DIR" "$GATEWAY" --config "$CONFIG" --run-mqtt > "$EVIDENCE/$PHASE.gateway.stdout.log" 2> "$EVIDENCE/$PHASE.gateway.stderr.log"

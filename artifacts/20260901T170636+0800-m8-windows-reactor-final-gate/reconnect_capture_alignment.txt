@@ -1,0 +1,5 @@
+purpose=Prevent the prior run's clean-session subscriber race from invalidating first-seen sequence order.
+configuration=mqtt_reconnect_interval_ms=20000 (valid configured range: 100..60000 ms)
+procedure=After an offline async-connect timeout is observed, start the dedicated Broker and verify the subscriber has reconnected before the next scheduled gateway attempt.
+scope=Test-only private gateway configuration; source code, target network/CAN state, Broker persistence, and production defaults are unchanged.
+gate_semantics=The longer interval changes only test timing. The gateway must still reconnect automatically through the M8 external-loop reactor and replay the durable backlog.

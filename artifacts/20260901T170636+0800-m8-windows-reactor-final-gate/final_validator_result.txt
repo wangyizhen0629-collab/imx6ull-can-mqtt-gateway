@@ -1,0 +1,13 @@
+﻿result=PASS
+selftest_exit=0
+validator_exit=0
+raw_batches=323
+raw_records=51523
+raw_duplicate_records=24089
+unique_batch_seq=189
+unique_gateway_seq=27434
+first_gateway_seq=1
+last_gateway_seq=27434
+missing_gateway_seq=0
+effective_duplicate_records=0
+input_sha256=76be0e3567f8b12fc22f40f8e2695ae332b0f1d065f50268079ed7ae9c6ea3a7

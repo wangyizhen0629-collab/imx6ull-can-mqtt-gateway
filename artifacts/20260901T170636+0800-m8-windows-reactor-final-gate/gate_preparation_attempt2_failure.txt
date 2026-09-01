@@ -1,0 +1,7 @@
+attempted_at=NOT CAPTURED (the failed wrapper command did not record its start time)
+command=prepare_gate.ps1 with M8_BROKER_BIND parsed from the entire two-line endpoint file
+exit_code=1
+result=FAIL
+reason=The wrapper split the entire endpoint file at the first equals sign, so the bind value incorrectly included the broker_port line; prepare_gate rejected it as not configured.
+side_effects=No Broker/subscriber/board operation occurred and gate_preparation.txt was not created.
+correction=Parse only the broker_bind line, rerun the unchanged gate preparation, and preserve this failed attempt.

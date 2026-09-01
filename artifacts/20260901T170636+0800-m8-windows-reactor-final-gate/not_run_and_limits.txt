@@ -1,0 +1,9 @@
+LeakSanitizer=NOT RUN; Ubuntu sanitizer run used detect_leaks=0 under ptrace management.
+correct_UTC=NOT RUN; target wall clock remained in 1970, so board timestamps are ordering evidence only.
+real_power_loss=NOT RUN; only one verified process SIGKILL was executed.
+power_fail_storage_semantics=NOT RUN.
+performance_latency_throughput=NOT RUN; all counts are functional-test observations, not benchmarks.
+CPU_RSS=NOT RUN.
+long_duration_reliability_24h=NOT RUN.
+storage_lifetime_capacity_threshold_compaction=NOT RUN.
+M9_init_respawn_supervisor=NOT RUN; M9 was not started.

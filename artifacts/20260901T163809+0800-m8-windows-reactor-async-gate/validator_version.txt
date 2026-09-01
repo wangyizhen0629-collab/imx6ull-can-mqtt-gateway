@@ -1,0 +1,4 @@
+﻿python_version=Python 3.11.7
+python_version_exit=0
+validator_git_blob=8ec962a5742ab1cf7db860722230e76edb0a35e8
+validator_selftest_git_blob=64ee3a015ba52b002f2b22fe95a39c9a5d760e6f

@@ -1,0 +1,6 @@
+attempted_at=NOT CAPTURED (the failed wrapper command did not record its start time)
+command=& artifacts/20260901T163809+0800-m8-windows-reactor-async-gate/prepare_host_evidence.ps1
+result=FAIL
+reason=Windows PowerShell ExecutionPolicy blocked direct execution of the newly created script.
+side_effects=No target evidence files were created.
+correction=Rerun the same script with powershell -NoProfile -ExecutionPolicy Bypass -File; preserve this failed attempt.

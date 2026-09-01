@@ -1,0 +1,6 @@
+attempted_at=NOT CAPTURED (the script did not persist its start time before failure)
+command=capture_reconnect_alignment.ps1 -BrokerPhase reconnect1 -EvidenceName reconnect1_subscriber_before_gateway
+result=FAIL
+reason=The subscriber-before-gateway assertions completed, but Get-FileHash could not open the live Broker stderr log because Mosquitto held it exclusively.
+side_effects=The dedicated Broker and subscriber remain running; no alignment evidence file was created.
+correction=Use immutable line ordering in the live log and do not hash it until the Broker is stopped.

@@ -1,0 +1,14 @@
+﻿started_at=2026-09-01T17:17:41.4118787+08:00
+archive_source=root@<REDACTED_BOARD_HOST>:/tmp/m8-reactor-gate-20260901T170636/board-export.tar
+scp_archive_exit=0
+scp_hash_exit=0
+remote_sha256=f48b28a83d63a0e964a1e443c0377d3537f1b304beac70eaa0298cc8b292df46
+local_sha256=f48b28a83d63a0e964a1e443c0377d3537f1b304beac70eaa0298cc8b292df46
+archive_bytes=6139904
+tar_list_exit=0
+tar_entry_count=78
+path_safety=PASS (no absolute, drive-qualified, or parent traversal entries)
+extracted_file_count=73
+extraction=PASS (private_raw only)
+ended_at=2026-09-01T17:17:43.5762363+08:00
+status=PASS

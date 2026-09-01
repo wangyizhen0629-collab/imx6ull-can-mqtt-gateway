@@ -1,0 +1,3 @@
+﻿raw_sha256=ae30841c44855bb4f5fe9dd495a6b201f12d1bcc98148780518b30519bd5f6bd
+redacted_sha256=deb0cd73a12f2e3914e7cbd36ea2d01ae86b125a0b12cd5f8550d1b43de53f9c
+redaction_method=将真实 Broker 地址精确替换为 <REDACTED_BROKER_ADDRESS>

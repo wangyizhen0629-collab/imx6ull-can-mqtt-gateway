@@ -1,0 +1,7 @@
+attempted_at=NOT CAPTURED (the failed wrapper command did not record its start time)
+command=powershell.exe -NoProfile -ExecutionPolicy Bypass -File prepare_gate.ps1
+exit_code=1
+result=FAIL
+reason=Sandboxed Get-NetIPAddress returned access denied before the script created private configs or started any process.
+side_effects=No Broker/subscriber/board operation occurred and gate_preparation.txt was not created.
+correction=Rerun the same preparation with approved read access to Windows network state; preserve this failed attempt.

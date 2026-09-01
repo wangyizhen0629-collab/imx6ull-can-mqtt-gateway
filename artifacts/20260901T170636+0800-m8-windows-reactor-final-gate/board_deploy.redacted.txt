@@ -1,0 +1,20 @@
+﻿started_at=2026-09-01T17:09:17.5914006+08:00
+command=ssh root@<PRIVATE> create unique non-system stage
+exit_code=0
+
+command=scp gatewayd root@<PRIVATE>:/tmp/m8-reactor-gate-20260901T170636/incoming/gatewayd
+exit_code=0
+
+command=scp gateway.conf root@<PRIVATE>:/tmp/m8-reactor-gate-20260901T170636/incoming/gateway.conf
+exit_code=0
+
+command=scp board_control.sh root@<PRIVATE>:/tmp/m8-reactor-gate-20260901T170636/board_control.sh
+exit_code=0
+
+command=ssh root@<PRIVATE> target deployment hash and chmod
+exit_code=0
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T170636/incoming/gatewayd
+c193106c9a219de43ac4ccaa97c4be0d9522323796e169c072e6bfc5d273627e  /tmp/m8-reactor-gate-20260901T170636/incoming/gateway.conf
+624b66a16e15e52c474a23218506c5a168bc81540bee76e296d2c09a2d1959d3  /tmp/m8-reactor-gate-20260901T170636/board_control.sh
+ended_at=2026-09-01T17:09:20.1212549+08:00
+

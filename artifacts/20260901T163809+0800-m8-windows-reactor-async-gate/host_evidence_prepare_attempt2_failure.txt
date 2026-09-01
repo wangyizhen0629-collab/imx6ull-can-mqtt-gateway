@@ -1,0 +1,8 @@
+attempted_at=NOT CAPTURED (the failed wrapper command did not record its start time)
+command=powershell.exe -NoProfile -ExecutionPolicy Bypass -File prepare_host_evidence.ps1
+script_exit=1
+result=FAIL
+reason=The first accounting implementation incorrectly required every gateway PUBLISH to equal subscriber delivery in each ephemeral Broker phase.
+observed=reconnect1 accepted/PUBACKed 54 gateway batches but forwarded/PUBACKed 50 subscriber batches; the raw log proves the gateway connected and published four batches before the clean-session subscriber resubscribed.
+side_effects=subscriber.jsonl, its trace, redacted Broker logs, Broker trace, and the failed broker_accounting.txt were created and are preserved; board evidence and private manifest were not created.
+correction=Use an append-only attempt-2 script that verifies existing outputs, records the four-batch clean-session race explicitly, and creates only the remaining evidence under new names.

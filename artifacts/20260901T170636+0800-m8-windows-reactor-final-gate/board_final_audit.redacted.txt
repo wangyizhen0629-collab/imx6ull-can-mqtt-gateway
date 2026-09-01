@@ -1,0 +1,43 @@
+﻿started_at=2026-09-01T17:17:30.7871522+08:00
+command=ssh root@<REDACTED_BOARD_HOST> sh /tmp/m8-reactor-gate-20260901T170636/board_control.sh final-audit
+exit_code=0
+ended_at=2026-09-01T17:17:32.5656434+08:00
+--- output ---
+audited_at=1970-01-03T06:13:06,190756216+00:00
+gateway_process_count=0
+/var/lib/gatewayd-m8-test-20260901T170636/corruption/state:
+total 4044
+-rw------- 1 root root     412 Jan  3 06:11 gateway.conf
+-rw------- 1 root root     412 Jan  3 06:11 gateway.conf.before
+-rw------- 1 root root 2194720 Jan  3 06:12 spool.data
+-rw------- 1 root root 1927120 Jan  3 06:11 spool.data.before
+-rw------- 1 root root      40 Jan  3 06:12 spool.state
+-rw------- 1 root root      40 Jan  3 06:11 spool.state.before
+
+/var/lib/gatewayd-m8-test-20260901T170636/main:
+total 1896
+-rw------- 1 root root     401 Jan  3 06:04 gateway.conf
+-rw------- 1 root root 1927120 Jan  3 06:11 spool.data
+-rw------- 1 root root      40 Jan  3 06:11 spool.state
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T170636/bin/gatewayd
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
+0cd565758e4904a0963a69fe5a1e79617ac17bb4df36d612513d25eee6501168  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+095ace0a250f1705c3efe938c691f47458c02a4e9eaf8899fd16c877bc1fa9f9  /var/lib/gatewayd-m8-test-20260901T170636/main/spool.state
+98698532354b26d4fb510e8c203471c4700577d3e665a42241821e8ff93c547a  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.data
+d9061eca590fe4b5725594d815ffd048d676c6054e3a7af630ce044fa723b3be  /var/lib/gatewayd-m8-test-20260901T170636/corruption/state/spool.state
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    60797264   7599658  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       
+M8_BOARD_FINAL_AUDIT_PASS
+

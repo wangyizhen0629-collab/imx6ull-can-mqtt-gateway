@@ -1,0 +1,59 @@
+﻿started_at=2026-09-01T17:09:15.1314115+08:00
+command=ssh -o BatchMode=yes -o ConnectTimeout=10 root@<REDACTED_BOARD_HOST> sh
+exit_code=0
+ended_at=2026-09-01T17:09:17.0818380+08:00
+--- output ---
+ssh : sh: line 1: $'\357\273\277set': command not found
+At E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\artifacts\20260901T170636+0800-m8-windows-reactor-final-gate\bo
+ard_readonly_preflight.ps1:53 char:27
++ ... oteScript | ssh -o BatchMode=yes -o ConnectTimeout=10 "root@$BoardHos ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (sh: line 1: $'\...mmand not found:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+readonly_started_at=1970-01-03T06:04:49,508187157+00:00
+Linux 100ask 4.9.88 #1 SMP PREEMPT Thu Apr 2 14:58:18 EDT 2026 armv7l GNU/Linux
+uid=0(root) gid=0(root) groups=0(root),10(wheel)
+--- mounts ---
+/dev/root / ext4 rw,relatime,data=ordered 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=86120k,nr_inodes=21530,mode=755 0 0
+sysfs /sys sysfs rw,relatime 0 0
+proc /proc proc rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620,ptmxmode=666 0 0
+tmpfs /dev/shm tmpfs rw,relatime,mode=777 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+tmpfs /run tmpfs rw,nosuid,nodev,relatime,mode=755 0 0
+debugfs /sys/kernel/debug debugfs rw,relatime 0 0
+none /sys/kernel/config configfs rw,relatime 0 0
+adb /dev/usb-ffs/adb functionfs rw,relatime 0 0
+--- storage ---
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       1.5G  719M  664M  52% /
+tmpfs           245M  8.3M  237M   4% /tmp
+--- can0 ---
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    60356256   7544532  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       
+--- gateway processes ---
+--- gateway binary candidates ---
+7dc84bc0fa4cffc85abbb88e023e1cfa7e8796bc38c8e91cba9088f7a832c8df  /tmp/m6-arm-private-20260831T181335/bin/gatewayd
+9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25  /tmp/m7/bin/gatewayd
+2c3841e6a18ea80a470bf7d2bb8deaed314fdd1a495dc8c2b5c9a4021a8a9a6b  /tmp/m8-reactor-gate-20260901T143500/bin/gatewayd
+c27cae52c6e746035e058cc77e78cb0dc1003f58f3036312b000579e0af9e368  /tmp/m8-reactor-gate-20260901T155449/bin/gatewayd
+2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b  /tmp/m8-reactor-gate-20260901T163809/bin/gatewayd
+--- libmosquitto candidates ---
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m6-arm-private-20260831T181335/lib/libmosquitto.so.2.0.11
+b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  /tmp/m7/lib/libmosquitto.so.2.0.11
+readonly_completed_at=1970-01-03T06:04:50,923676823+00:00
+

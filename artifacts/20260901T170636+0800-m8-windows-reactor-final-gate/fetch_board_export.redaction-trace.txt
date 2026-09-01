@@ -1,0 +1,3 @@
+﻿raw_transcript_sha256=d02ea2c5535dfb1e4b678947a533d4a65e096dcc7e96f70ad48fa23d1dc32772
+redacted_report_sha256=780ab00b221802f379e1b540faedf2d92387e975b829b8b72ed2f1c8ccf03a84
+redaction_method=公开报告不复制 SCP 原始输出，并将目标地址替换为 <REDACTED_BOARD_HOST>；原始归档仅保存在 private_raw

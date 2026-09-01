@@ -1,0 +1,12 @@
+checked_at=2026-09-01T17:33:35.4560246+08:00
+full_command=git diff --cached --check
+full_exit=2
+full_diagnostic_lines=471
+affected_files=57
+scope=all 57 affected files are preserved final-gate test harnesses or captured/redacted machine evidence
+reason=trailing whitespace is part of the exact executed or captured evidence bytes; it was not rewritten after hashing
+maintained_files_command=git diff --cached --check -- docs/PLANS.md docs/DECISION_LOG.md docs/OPEN_QUESTIONS.md docs/RESUME_TRACEABILITY.md docs/milestones/M8.md artifacts/20260901T143500+0800-m8-windows-reactor-gate/failure_report.md artifacts/20260901T155449+0800-m8-windows-reactor-fixed-gate/failure_report.md artifacts/20260901T163809+0800-m8-windows-reactor-async-gate/failure_report.md artifacts/20260901T170636+0800-m8-windows-reactor-final-gate/test_report.md artifacts/20260901T170636+0800-m8-windows-reactor-final-gate/command_index.md
+maintained_files_exit=0
+maintained_files_diagnostic_lines=0
+result=FULL CHECK FAIL (preserved evidence whitespace); maintained documentation PASS
+manifest_note=this post-manifest repository audit file is intentionally not listed in artifact_manifest.sha256

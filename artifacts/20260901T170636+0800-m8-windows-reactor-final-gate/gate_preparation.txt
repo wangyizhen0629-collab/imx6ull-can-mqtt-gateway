@@ -1,0 +1,9 @@
+﻿prepared_at=2026-09-01T17:09:14.7070446+08:00
+status=PASS
+incoming_gatewayd_length=198576
+incoming_gatewayd_sha256=2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b
+broker_address_configured=true
+port_18884_listener_count=0
+broker_started=false
+subscriber_started=false
+board_modified=false

@@ -1,0 +1,20 @@
+﻿started_at=2026-09-01T17:11:54.6075656+08:00
+command=ssh root@<REDACTED_BOARD_HOST> <READ_ONLY_GATEWAY_LOG_COMMAND>
+exit_code=0
+ended_at=2026-09-01T17:11:55.4351766+08:00
+--- output ---
+phase=main1
+gateway_pid=7128
+---proc---
+ 7124 root     sh /var/lib/gatewayd-m8-test-20260901T170636/run_gateway_phase.sh main1 /var/lib/gatewayd-m8-test-20260901T170636/main/gateway.conf
+ 7128 root     /tmp/m8-reactor-gate-20260901T170636/bin/gatewayd --config /var/lib/gatewayd-m8-test-20260901T170636/main/gateway.conf --run-mqtt
+ 7256 root     bash -c echo phase=main1; echo gateway_pid=$(cat /var/lib/gatewayd-m8-test-20260901T170636/evidence/main1.gateway.pid); echo ---proc---; ps | grep '[g]atewayd'; echo ---stderr-tail---; tail -n 160 /var/lib/gatewayd-m8-test-20260901T170636/evidence/main1.gateway.stderr.log
+---stderr-tail---
+[1970-01-03T06:05:32.458Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T06:05:32.466Z] INFO mqtt: connected broker=<REDACTED_BROKER_ADDRESS> port=18884 topic=test/m8/20260901T170636/reactor qos=1 max_inflight=1
+[1970-01-03T06:05:32.468Z] INFO mqtt: M8 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=20000 qos=1 max_inflight=1 reactor=epoll spool_path=/var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+[1970-01-03T06:06:06.377Z] WARN mqtt: external-loop poll: offline, durable records retained: The connection was lost.
+[1970-01-03T06:06:31.381Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:06:56.403Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:07:21.411Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+

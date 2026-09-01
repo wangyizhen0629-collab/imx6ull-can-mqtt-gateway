@@ -1,0 +1,9 @@
+﻿started_at=2026-09-01T17:09:23.2012685+08:00
+command=scp board_snapshot_v2.sh root@<REDACTED_BOARD_HOST>:/tmp/m8-reactor-gate-20260901T170636/board_snapshot_v2.sh
+scp_exit=0
+
+command=ssh root@<REDACTED_BOARD_HOST> chmod+sha256
+audit_exit=0
+62657c41fbd11655443cd9e83ab8ba7ad48d319d04d1ce7171e76d8a0eef62c3  /tmp/m8-reactor-gate-20260901T170636/board_snapshot_v2.sh
+ended_at=2026-09-01T17:09:24.2220592+08:00
+

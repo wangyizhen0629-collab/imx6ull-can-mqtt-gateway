@@ -1,0 +1,1 @@
+/tmp/m8-reactor-gate-20260901T170636/bin/gatewayd --config /var/lib/gatewayd-m8-test-20260901T170636/main/gateway.conf --run-mqtt 

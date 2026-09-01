@@ -1,0 +1,5 @@
+﻿scanned_at=2026-09-01T17:28:33.9717423+08:00
+candidate_file_count=201
+excluded=private_raw/**; board-evidence-redacted/**; broker-logs-redacted/**; v1 board/broker trace files
+rfc1918_or_private_key_findings=0
+result=PASS

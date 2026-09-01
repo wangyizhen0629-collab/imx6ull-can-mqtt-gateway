@@ -1,0 +1,7 @@
+listener 18884 <REDACTED_BROKER_ADDRESS>
+allow_anonymous true
+persistence false
+connection_messages true
+log_timestamp true
+log_type all
+

@@ -1,0 +1,22 @@
+baseline_gateway_received_publish=68
+baseline_gateway_sent_puback=68
+baseline_subscriber_sent_publish=68
+baseline_subscriber_received_puback=68
+reconnect1_gateway_received_publish=54
+reconnect1_gateway_sent_puback=54
+reconnect1_subscriber_sent_publish=50
+reconnect1_subscriber_received_puback=50
+crash-recovery_gateway_received_publish=185
+crash-recovery_gateway_sent_puback=185
+crash-recovery_subscriber_sent_publish=185
+crash-recovery_subscriber_received_puback=185
+total_gateway_received_publish=307
+total_gateway_sent_puback=307
+total_subscriber_sent_publish=303
+total_subscriber_received_puback=303
+subscriber_json_lines=303
+gateway_vs_subscriber_difference=4
+reconnect1_gateway_publish_before_subscriber_reconnected=4
+gap_explanation=The dedicated Broker used persistence=false and the subscriber used a clean session; after Broker restart the gateway reconnected first and four batches were ACKed before the subscriber resubscribed.
+completeness_rule=This four-batch subscriber capture gap is not hidden; end-to-end completeness is decided only by the strict final validator after the later state-copy replay.
+result=PASS (all raw log counts reconcile, with an explicit four-batch clean-session capture gap)

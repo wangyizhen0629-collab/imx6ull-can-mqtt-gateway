@@ -1,0 +1,10 @@
+test_conflicting_duplicate_is_rejected (__main__.RecoveryValidatorTest.test_conflicting_duplicate_is_rejected) ... ok
+test_crash_replay_duplicate_is_deduplicated (__main__.RecoveryValidatorTest.test_crash_replay_duplicate_is_deduplicated) ... ok
+test_duplicate_requirement_is_enforced (__main__.RecoveryValidatorTest.test_duplicate_requirement_is_enforced) ... ok
+test_full_cursor_reset_replay_passes (__main__.RecoveryValidatorTest.test_full_cursor_reset_replay_passes) ... ok
+test_missing_sequence_is_rejected (__main__.RecoveryValidatorTest.test_missing_sequence_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.758s
+
+OK

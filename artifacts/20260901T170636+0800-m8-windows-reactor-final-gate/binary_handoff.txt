@@ -1,0 +1,5 @@
+source=Ubuntu ARMv7 build/20260901T160813-m8-silent-listener-arm/gateway/gatewayd
+private_local_names=private_raw/incoming/gatewayd; private_raw/incoming/gatewayd.async
+bytes=198576
+sha256=2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b
+git_policy=Binary remains untracked under private_raw and must not be committed.

@@ -1,0 +1,4 @@
+﻿raw_sha256=d117c6a0438dba2a8ccad3804bd7b6dcdb968ec28ee61114d885ee2bf5d26614
+public_sha256=76be0e3567f8b12fc22f40f8e2695ae332b0f1d065f50268079ed7ae9c6ea3a7
+raw_lines=323
+method=逐行 JSON 解析并以 UTF-8（无 BOM）重写；payload 本身不含 LAN 地址或凭据

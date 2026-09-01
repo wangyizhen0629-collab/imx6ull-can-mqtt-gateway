@@ -1,0 +1,37 @@
+﻿started_at=2026-09-01T17:13:25.9093986+08:00
+command=ssh root@<REDACTED_BOARD_HOST> sh /tmp/m8-reactor-gate-20260901T170636/board_snapshot_v2.sh main reconnect1
+exit_code=0
+ended_at=2026-09-01T17:13:27.1918077+08:00
+--- output ---
+snapshot=reconnect1
+captured_at=1970-01-03T06:09:00,682027853+00:00
+area=main
+gateway_pid=7128
+gateway_cmdline=/tmp/m8-reactor-gate-20260901T170636/bin/gatewayd --config /var/lib/gatewayd-m8-test-20260901T170636/main/gateway.conf --run-mqtt 
+gateway_exe_sha256=2e3976727d57f850223ec3b0b3713c930d96f75375897f7c1fe69dcfc2e1548b
+State:	S (sleeping)
+spool_size=1389680
+spool_entries=17371
+spool_sha256=99bbb1ba332bab27c780577f784a6b008ce9ef95a437424488f27a1be7c0368b
+state_sha256=2d91b30fc7467d09acef93c68c6b4675d9c0410eb9f2412fa07302abb84e6a9e
+ack_offset=1385760
+ack_seq=17322
+next_batch=121
+pending_records=49
+can_rx_packets=7572442
+2: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UNKNOWN mode DEFAULT group default qlen 10
+    link/can  promiscuity 0 
+    can state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0 
+	  bitrate 500000 sample-point 0.866 
+	  tq 133 prop-seg 6 phase-seg1 6 phase-seg2 2 sjw 1
+	  flexcan: tseg1 4..16 tseg2 2..8 sjw 1..4 brp 1..256 brp-inc 1
+	  flexcan: dtseg1 1..39 dtseg2 1..8 dsjw 1..8 dbrp 1..1024 dbrp-inc 1
+	  clock 30000000 
+	  re-started bus-errors arbit-lost error-warn error-pass bus-off
+	  0          0          0          347        4          0         numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 
+    RX: bytes  packets  errors  dropped overrun mcast   
+    60579560   7572445  0       0       0       0       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    0          0        0       0       0       0       
+M8_SNAPSHOT_V2_PASS label=reconnect1
+

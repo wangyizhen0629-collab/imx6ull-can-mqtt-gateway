@@ -1,0 +1,4 @@
+﻿input=subscriber.jsonl
+sha256=76be0e3567f8b12fc22f40f8e2695ae332b0f1d065f50268079ed7ae9c6ea3a7
+bytes=10928756
+lines=323

@@ -1,0 +1,12 @@
+﻿started_at=2026-09-01T17:15:43.1704665+08:00
+command=ssh root@<REDACTED_BOARD_HOST> sh /tmp/m8-reactor-gate-20260901T170636/board_control.sh stop-main2
+exit_code=0
+ended_at=2026-09-01T17:15:56.7334525+08:00
+--- output ---
+stopped_at=1970-01-03T06:11:30,559834871+00:00
+[1970-01-03T06:11:29.383Z] INFO mqtt: M8_MQTT_SUMMARY can_accepted=3602 decode_success=3602 queue_success=3601 queue_drop=0 queue_pop=3601 queue_count=0 mqtt_connect_success=1 publish_attempts=46 publish_accepted=46 puback_matched=46 puback_unexpected=0 batches_acked=46 records_acked=4764 last_batch_seq=189 last_gateway_seq=24089 buffered=0 in_flight=0 mqtt_errors=0 reconnects=0 spool_appended=3601 spool_replayed=4764 spool_acked=4764 spool_pending=0 spool_tail_recoveries=0 spool_state_recoveries=0 spool_corruptions=0 spool_errors=0 reactor_enabled=1 reactor_epoll_waits=3696 reactor_wake_events=47 reactor_timer_expirations=43 reactor_socket_events=48 reactor_loop_read=47 reactor_loop_write=1 reactor_loop_misc=43
+kill_term_exit=0
+wait_exit=0
+summary_assertions=PASS
+M8_BOARD_STOP_PASS phase=main2
+

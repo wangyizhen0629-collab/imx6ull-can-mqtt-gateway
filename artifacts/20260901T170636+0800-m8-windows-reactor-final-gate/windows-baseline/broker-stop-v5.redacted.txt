@@ -1,0 +1,12 @@
+﻿started_at=2026-09-01T17:10:32.4340388+08:00
+verified_pid=18156
+verified_path=E:\mosquitto\mosquitto.exe
+verified_listener_address=<REDACTED_BROKER_ADDRESS>
+verified_listener_port=18884
+command=Stop-Process -Id <VERIFIED_DEDICATED_PID>
+stop_process_result=PASS
+listener_count_after=0
+exit_code=
+ended_at=2026-09-01T17:10:33.6956646+08:00
+status=PASS
+

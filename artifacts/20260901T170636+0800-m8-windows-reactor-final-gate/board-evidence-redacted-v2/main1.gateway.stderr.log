@@ -1,0 +1,10 @@
+[1970-01-03T06:05:32.458Z] INFO main: gatewayd 0.1.0-m1 starting
+[1970-01-03T06:05:32.466Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m8/20260901T170636/reactor qos=1 max_inflight=1
+[1970-01-03T06:05:32.468Z] INFO mqtt: M8 pipeline started interface=can0 batch_interval_ms=1000 ack_timeout_ms=5000 reconnect_interval_ms=20000 qos=1 max_inflight=1 reactor=epoll spool_path=/var/lib/gatewayd-m8-test-20260901T170636/main/spool.data
+[1970-01-03T06:06:06.377Z] WARN mqtt: external-loop poll: offline, durable records retained: The connection was lost.
+[1970-01-03T06:06:31.381Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:06:56.403Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:07:21.411Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:07:46.430Z] WARN mqtt: async reconnect wait: offline, durable records retained: timeout
+[1970-01-03T06:08:06.460Z] INFO mqtt: connected broker=<REDACTED_LAN_ADDRESS> port=18884 topic=test/m8/20260901T170636/reactor qos=1 max_inflight=1
+[1970-01-03T06:09:24.525Z] WARN mqtt: external-loop poll: offline, durable records retained: The connection was lost.

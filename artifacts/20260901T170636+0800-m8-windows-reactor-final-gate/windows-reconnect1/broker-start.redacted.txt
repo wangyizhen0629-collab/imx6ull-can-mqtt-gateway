@@ -1,0 +1,9 @@
+﻿started_at=2026-09-01T17:12:14.3618683+08:00
+config_test_exit=0
+wrapper_pid=37084
+broker_pid=36336
+listener_address=<REDACTED_BROKER_ADDRESS>
+listener_port=18884
+listener_owner=36336
+status=PASS
+

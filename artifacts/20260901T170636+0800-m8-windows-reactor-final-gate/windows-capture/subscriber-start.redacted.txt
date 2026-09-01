@@ -1,0 +1,7 @@
+﻿started_at=2026-09-01T17:09:56.5170524+08:00
+wrapper_pid=35208
+subscriber_pid=31684
+remote_address=<REDACTED_BROKER_ADDRESS>
+remote_port=18884
+status=PASS
+
