@@ -1,0 +1,1578 @@
+Script started on 2026-09-01 15:48:47+08:00 [<not executed on terminal>]
++ git diff --cached --check
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:2: trailing whitespace.
+++ sha256sum build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:3: trailing whitespace.
++c27cae52c6e746035e058cc77e78cb0dc1003f58f3036312b000579e0af9e368  build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:4: trailing whitespace.
+++ stat -c '%n size=%s mtime=%y' build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:5: trailing whitespace.
++build/m8-continuous-reconnect-fix-arm/gateway/gatewayd size=198180 mtime=2026-09-01 15:44:44.271413336 +0800
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:6: trailing whitespace.
+++ realpath build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log:7: trailing whitespace.
++/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:2: trailing whitespace.
+++ env IMX6ULL_SDK_ROOT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot cmake --build build/m8-continuous-reconnect-fix-arm --parallel 4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:3: trailing whitespace.
++[  6%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:4: trailing whitespace.
++[ 12%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:5: trailing whitespace.
++[ 18%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:6: trailing whitespace.
++[ 25%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:7: trailing whitespace.
++[ 31%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:8: trailing whitespace.
++[ 37%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:9: trailing whitespace.
++[ 43%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:10: trailing whitespace.
++[ 50%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:11: trailing whitespace.
++[ 56%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:12: trailing whitespace.
++[ 62%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:13: trailing whitespace.
++[ 68%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:14: trailing whitespace.
++[ 75%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:15: trailing whitespace.
++[ 81%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:16: trailing whitespace.
++[ 87%] [32m[1mLinking C static library libgateway_core.a[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:17: trailing whitespace.
++[ 87%] Built target gateway_core
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:18: trailing whitespace.
++[ 93%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:19: trailing whitespace.
++[100%] [32m[1mLinking C executable gatewayd[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log:20: trailing whitespace.
++[100%] Built target gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:2: trailing whitespace.
+++ env IMX6ULL_SDK_ROOT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot cmake -S . -B build/m8-continuous-reconnect-fix-arm -DCMAKE_TOOLCHAIN_FILE=gateway/cmake/toolchains/imx6ull-buildroot.cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=OFF -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11 -DCMAKE_SKIP_RPATH=TRUE
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:3: trailing whitespace.
++-- The C compiler identification is GNU 7.5.0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:4: trailing whitespace.
++-- Detecting C compiler ABI info
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:5: trailing whitespace.
++-- Detecting C compiler ABI info - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:6: trailing whitespace.
++-- Check for working C compiler: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/arm-buildroot-linux-gnueabihf-gcc - skipped
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:7: trailing whitespace.
++-- Detecting C compile features
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:8: trailing whitespace.
++-- Detecting C compile features - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:9: trailing whitespace.
++-- Looking for pthread.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:10: trailing whitespace.
++-- Looking for pthread.h - found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:11: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:12: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:13: trailing whitespace.
++-- Looking for pthread_create in pthreads
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:14: trailing whitespace.
++-- Looking for pthread_create in pthreads - not found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:15: trailing whitespace.
++-- Looking for pthread_create in pthread
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:16: trailing whitespace.
++-- Looking for pthread_create in pthread - found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:17: trailing whitespace.
++-- Found Threads: TRUE  
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:18: trailing whitespace.
++-- Configuring done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:19: trailing whitespace.
++-- Generating done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log:20: trailing whitespace.
++-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-arm
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:2: trailing whitespace.
+++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:3: trailing whitespace.
+++ rg 'mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)'
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:4: trailing whitespace.
++00032018  00001416 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_read
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:5: trailing whitespace.
++00032088  00002f16 R_ARM_JUMP_SLOT        00000000   mosquitto_socket
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:6: trailing whitespace.
++000320c8  00001816 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:7: trailing whitespace.
++00032104  00005516 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_misc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log:8: trailing whitespace.
++00032144  00005b16 R_ARM_JUMP_SLOT        00000000   mosquitto_want_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:2: trailing whitespace.
+++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:3: trailing whitespace.
+++ awk '/mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }'
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:4: trailing whitespace.
++awk: 命令行:1: /mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:5: trailing whitespace.
++awk: 命令行:1:                                                                       ^ 反斜杠不是行的最后一个字符
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:6: trailing whitespace.
++awk: 命令行:1: /mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log:7: trailing whitespace.
++awk: 命令行:1:                                                                       ^ syntax error
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-count.log:2: trailing whitespace.
+++ grep -Ec '^mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-count.log:3: trailing whitespace.
++5
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:2: trailing whitespace.
+++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:3: trailing whitespace.
+++ grep -Eo 'mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)'
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:4: trailing whitespace.
+++ sort -u
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:5: trailing whitespace.
++mosquitto_loop_misc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:6: trailing whitespace.
++mosquitto_loop_read
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:7: trailing whitespace.
++mosquitto_loop_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:8: trailing whitespace.
++mosquitto_socket
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log:9: trailing whitespace.
++mosquitto_want_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-file.log:2: trailing whitespace.
+++ file build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-file.log:3: trailing whitespace.
++build/m8-continuous-reconnect-fix-arm/gateway/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:2: trailing whitespace.
+++ readelf -dW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:3: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:4: trailing whitespace.
++Dynamic section at offset 0x11f00 contains 27 entries:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:5: trailing whitespace.
++  标记        类型                         名称/值
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:6: trailing whitespace.
++ 0x00000001 (NEEDED)                     共享库：[libpthread.so.0]
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:7: trailing whitespace.
++ 0x00000001 (NEEDED)                     共享库：[libmosquitto.so.1]
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:8: trailing whitespace.
++ 0x00000001 (NEEDED)                     共享库：[libc.so.6]
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:9: trailing whitespace.
++ 0x0000000c (INIT)                       0x118d4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:10: trailing whitespace.
++ 0x0000000d (FINI)                       0x1ff4c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:11: trailing whitespace.
++ 0x00000019 (INIT_ARRAY)                 0x31ef8
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:12: trailing whitespace.
++ 0x0000001b (INIT_ARRAYSZ)               4 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:13: trailing whitespace.
++ 0x0000001a (FINI_ARRAY)                 0x31efc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:14: trailing whitespace.
++ 0x0000001c (FINI_ARRAYSZ)               4 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:15: trailing whitespace.
++ 0x00000004 (HASH)                       0x10190
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:16: trailing whitespace.
++ 0x6ffffef5 (GNU_HASH)                   0x104b8
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:17: trailing whitespace.
++ 0x00000005 (STRTAB)                     0x10ec8
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:18: trailing whitespace.
++ 0x00000006 (SYMTAB)                     0x10858
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:19: trailing whitespace.
++ 0x0000000a (STRSZ)                      1411 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:20: trailing whitespace.
++ 0x0000000b (SYMENT)                     16 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:21: trailing whitespace.
++ 0x00000015 (DEBUG)                      0x0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:22: trailing whitespace.
++ 0x00000003 (PLTGOT)                     0x32000
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:23: trailing whitespace.
++ 0x00000002 (PLTRELSZ)                   792 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:24: trailing whitespace.
++ 0x00000014 (PLTREL)                     REL
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:25: trailing whitespace.
++ 0x00000017 (JMPREL)                     0x115bc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:26: trailing whitespace.
++ 0x00000011 (REL)                        0x115ac
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:27: trailing whitespace.
++ 0x00000012 (RELSZ)                      16 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:28: trailing whitespace.
++ 0x00000013 (RELENT)                     8 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:29: trailing whitespace.
++ 0x6ffffffe (VERNEED)                    0x1151c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:30: trailing whitespace.
++ 0x6fffffff (VERNEEDNUM)                 2
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:31: trailing whitespace.
++ 0x6ffffff0 (VERSYM)                     0x1144c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log:32: trailing whitespace.
++ 0x00000000 (NULL)                       0x0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:2: trailing whitespace.
+++ readelf -hW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:3: trailing whitespace.
++ELF 头：
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:4: trailing whitespace.
++  Magic：   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:5: trailing whitespace.
++  类别:                              ELF32
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:6: trailing whitespace.
++  数据:                              2 补码，小端序 (little endian)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:7: trailing whitespace.
++  Version:                           1 (current)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:8: trailing whitespace.
++  OS/ABI:                            UNIX - System V
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:9: trailing whitespace.
++  ABI 版本:                          0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:10: trailing whitespace.
++  类型:                              EXEC (可执行文件)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:11: trailing whitespace.
++  系统架构:                          ARM
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:12: trailing whitespace.
++  版本:                              0x1
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:13: trailing whitespace.
++  入口点地址：               0x11d98
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:14: trailing whitespace.
++  程序头起点：          52 (bytes into file)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:15: trailing whitespace.
++  Start of section headers:          196700 (bytes into file)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:16: trailing whitespace.
++  标志：             0x5000400, Version5 EABI, hard-float ABI
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:17: trailing whitespace.
++  Size of this header:               52 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:18: trailing whitespace.
++  Size of program headers:           32 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:19: trailing whitespace.
++  Number of program headers:         9
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:20: trailing whitespace.
++  Size of section headers:           40 (bytes)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:21: trailing whitespace.
++  Number of section headers:         37
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log:22: trailing whitespace.
++  Section header string table index: 36
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:2: trailing whitespace.
+++ readelf -lW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:3: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:4: trailing whitespace.
++Elf 文件类型为 EXEC (可执行文件)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:5: trailing whitespace.
++Entry point 0x11d98
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:6: trailing whitespace.
++There are 9 program headers, starting at offset 52
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:7: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:8: trailing whitespace.
++程序头：
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:9: trailing whitespace.
++  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:10: trailing whitespace.
++  EXIDX          0x011660 0x00021660 0x00021660 0x00008 0x00008 R   0x4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:11: trailing whitespace.
++  PHDR           0x000034 0x00010034 0x00010034 0x00120 0x00120 R   0x4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:12: trailing whitespace.
++  INTERP         0x000154 0x00010154 0x00010154 0x00019 0x00019 R   0x1
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:13: trailing whitespace.
++      [Requesting program interpreter: /lib/ld-linux-armhf.so.3]
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:14: trailing whitespace.
++  LOAD           0x000000 0x00010000 0x00010000 0x1166c 0x1166c R E 0x10000
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:15: trailing whitespace.
++  LOAD           0x011ef8 0x00031ef8 0x00031ef8 0x002b0 0x002b8 RW  0x10000
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:16: trailing whitespace.
++  DYNAMIC        0x011f00 0x00031f00 0x00031f00 0x00100 0x00100 RW  0x4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:17: trailing whitespace.
++  NOTE           0x000170 0x00010170 0x00010170 0x00020 0x00020 R   0x4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:18: trailing whitespace.
++  GNU_STACK      0x000000 0x00000000 0x00000000 0x00000 0x00000 RW  0x10
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:19: trailing whitespace.
++  GNU_RELRO      0x011ef8 0x00031ef8 0x00031ef8 0x00108 0x00108 R   0x1
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:20: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:21: trailing whitespace.
++ Section to Segment mapping:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:22: trailing whitespace.
++  段节...
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:23: trailing whitespace.
++   00     .ARM.exidx 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:24: trailing whitespace.
++   01     
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:25: trailing whitespace.
++   02     .interp 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:26: trailing whitespace.
++   03     .interp .note.ABI-tag .hash .gnu.hash .dynsym .dynstr .gnu.version .gnu.version_r .rel.dyn .rel.plt .init .plt .text .fini .rodata .ARM.exidx .eh_frame 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:27: trailing whitespace.
++   04     .init_array .fini_array .dynamic .got .data .bss 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:28: trailing whitespace.
++   05     .dynamic 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:29: trailing whitespace.
++   06     .note.ABI-tag 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:30: trailing whitespace.
++   07     
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log:31: trailing whitespace.
++   08     .init_array .fini_array .dynamic 
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:2: trailing whitespace.
+++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:3: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:4: trailing whitespace.
++重定位节 '.rel.dyn' at offset 0x15ac contains 2 entries:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:5: trailing whitespace.
++ 偏移量     信息    类型                  符号值      符号名称
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:6: trailing whitespace.
++00032198  00000215 R_ARM_GLOB_DAT         00000000   __gmon_start__
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:7: trailing whitespace.
++000321a8  00003314 R_ARM_COPY             000321a8   stderr@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:8: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:9: trailing whitespace.
++重定位节 '.rel.plt' at offset 0x15bc contains 99 entries:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:10: trailing whitespace.
++ 偏移量     信息    类型                  符号值      符号名称
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:11: trailing whitespace.
++0003200c  00002716 R_ARM_JUMP_SLOT        00000000   pthread_mutex_unlock@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:12: trailing whitespace.
++00032010  00004c16 R_ARM_JUMP_SLOT        00000000   calloc@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:13: trailing whitespace.
++00032014  00003b16 R_ARM_JUMP_SLOT        00000000   raise@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:14: trailing whitespace.
++00032018  00001416 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_read
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:15: trailing whitespace.
++0003201c  00003f16 R_ARM_JUMP_SLOT        00000000   pthread_cond_broadcast@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:16: trailing whitespace.
++00032020  00004b16 R_ARM_JUMP_SLOT        00000000   gmtime_r@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:17: trailing whitespace.
++00032024  00001716 R_ARM_JUMP_SLOT        00000000   fsync@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:18: trailing whitespace.
++00032028  00000416 R_ARM_JUMP_SLOT        00000000   strcmp@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:19: trailing whitespace.
++0003202c  00003216 R_ARM_JUMP_SLOT        00000000   setsockopt@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:20: trailing whitespace.
++00032030  00002816 R_ARM_JUMP_SLOT        00000000   mosquitto_lib_cleanup
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:21: trailing whitespace.
++00032034  00003816 R_ARM_JUMP_SLOT        00000000   printf@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:22: trailing whitespace.
++00032038  00002a16 R_ARM_JUMP_SLOT        00000000   read@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:23: trailing whitespace.
++0003203c  00001516 R_ARM_JUMP_SLOT        00000000   pthread_mutex_destroy@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:24: trailing whitespace.
++00032040  00000916 R_ARM_JUMP_SLOT        00000000   fflush@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:25: trailing whitespace.
++00032044  00005716 R_ARM_JUMP_SLOT        00000000   free@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:26: trailing whitespace.
++00032048  00000b16 R_ARM_JUMP_SLOT        00000000   fgets@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:27: trailing whitespace.
++0003204c  00003e16 R_ARM_JUMP_SLOT        00000000   pthread_mutex_lock@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:28: trailing whitespace.
++00032050  00002d16 R_ARM_JUMP_SLOT        00000000   nanosleep@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:29: trailing whitespace.
++00032054  00004516 R_ARM_JUMP_SLOT        00000000   mosquitto_lib_version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:30: trailing whitespace.
++00032058  00000816 R_ARM_JUMP_SLOT        00000000   ferror@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:31: trailing whitespace.
++0003205c  00004216 R_ARM_JUMP_SLOT        00000000   mosquitto_publish
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:32: trailing whitespace.
++00032060  00003916 R_ARM_JUMP_SLOT        00000000   clock_gettime@GLIBC_2.17
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:33: trailing whitespace.
++00032064  00005a16 R_ARM_JUMP_SLOT        00000000   memcpy@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:34: trailing whitespace.
++00032068  00005016 R_ARM_JUMP_SLOT        00000000   mosquitto_destroy
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:35: trailing whitespace.
++0003206c  00006316 R_ARM_JUMP_SLOT        00000000   pthread_mutex_init@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:36: trailing whitespace.
++00032070  00002c16 R_ARM_JUMP_SLOT        00000000   mosquitto_strerror
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:37: trailing whitespace.
++00032074  00005116 R_ARM_JUMP_SLOT        00000000   ftruncate64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:38: trailing whitespace.
++00032078  00001916 R_ARM_JUMP_SLOT        00000000   mosquitto_disconnect
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:39: trailing whitespace.
++0003207c  00005316 R_ARM_JUMP_SLOT        00000000   memcmp@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:40: trailing whitespace.
++00032080  00006416 R_ARM_JUMP_SLOT        00000000   pthread_condattr_init@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:41: trailing whitespace.
++00032084  00001116 R_ARM_JUMP_SLOT        00000000   pthread_cond_init@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:42: trailing whitespace.
++00032088  00002f16 R_ARM_JUMP_SLOT        00000000   mosquitto_socket
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:43: trailing whitespace.
++0003208c  00000e16 R_ARM_JUMP_SLOT        00000000   unlink@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:44: trailing whitespace.
++00032090  00004616 R_ARM_JUMP_SLOT        00000000   pthread_condattr_setclock@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:45: trailing whitespace.
++00032094  00005416 R_ARM_JUMP_SLOT        00000000   mosquitto_lib_init
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:46: trailing whitespace.
++00032098  00005816 R_ARM_JUMP_SLOT        00000000   mosquitto_max_inflight_messages_set
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:47: trailing whitespace.
++0003209c  00000c16 R_ARM_JUMP_SLOT        00000000   pthread_cond_destroy@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:48: trailing whitespace.
++000320a0  00004716 R_ARM_JUMP_SLOT        00000000   mosquitto_new
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:49: trailing whitespace.
++000320a4  00003a16 R_ARM_JUMP_SLOT        00000000   poll@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:50: trailing whitespace.
++000320a8  00003716 R_ARM_JUMP_SLOT        00000000   __fxstat64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:51: trailing whitespace.
++000320ac  00003616 R_ARM_JUMP_SLOT        00000000   sigaction@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:52: trailing whitespace.
++000320b0  00003116 R_ARM_JUMP_SLOT        00000000   fwrite@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:53: trailing whitespace.
++000320b4  00004416 R_ARM_JUMP_SLOT        00000000   mosquitto_connect_callback_set
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:54: trailing whitespace.
++000320b8  00004116 R_ARM_JUMP_SLOT        00000000   pread64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:55: trailing whitespace.
++000320bc  00001a16 R_ARM_JUMP_SLOT        00000000   pthread_create@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:56: trailing whitespace.
++000320c0  00006016 R_ARM_JUMP_SLOT        00000000   mosquitto_disconnect_callback_set
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:57: trailing whitespace.
++000320c4  00001c16 R_ARM_JUMP_SLOT        00000000   open64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:58: trailing whitespace.
++000320c8  00001816 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:59: trailing whitespace.
++000320cc  00001216 R_ARM_JUMP_SLOT        00000000   __libc_start_main@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:60: trailing whitespace.
++000320d0  00001016 R_ARM_JUMP_SLOT        00000000   strerror@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:61: trailing whitespace.
++000320d4  00005216 R_ARM_JUMP_SLOT        00000000   epoll_ctl@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:62: trailing whitespace.
++000320d8  00000216 R_ARM_JUMP_SLOT        00000000   __gmon_start__
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:63: trailing whitespace.
++000320dc  00004316 R_ARM_JUMP_SLOT        00000000   pthread_condattr_destroy@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:64: trailing whitespace.
++000320e0  00004916 R_ARM_JUMP_SLOT        00000000   timerfd_create@GLIBC_2.8
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:65: trailing whitespace.
++000320e4  00006516 R_ARM_JUMP_SLOT        00000000   rename@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:66: trailing whitespace.
++000320e8  00001d16 R_ARM_JUMP_SLOT        00000000   __ctype_b_loc@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:67: trailing whitespace.
++000320ec  00000616 R_ARM_JUMP_SLOT        00000000   getpid@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:68: trailing whitespace.
++000320f0  00002216 R_ARM_JUMP_SLOT        00000000   feof@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:69: trailing whitespace.
++000320f4  00005c16 R_ARM_JUMP_SLOT        00000000   flock@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:70: trailing whitespace.
++000320f8  00002116 R_ARM_JUMP_SLOT        00000000   strlen@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:71: trailing whitespace.
++000320fc  00002416 R_ARM_JUMP_SLOT        00000000   strchr@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:72: trailing whitespace.
++00032100  00004816 R_ARM_JUMP_SLOT        00000000   mosquitto_connect
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:73: trailing whitespace.
++00032104  00005516 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_misc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:74: trailing whitespace.
++00032108  00001616 R_ARM_JUMP_SLOT        00000000   fprintf@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:75: trailing whitespace.
++0003210c  00001f16 R_ARM_JUMP_SLOT        00000000   __errno_location@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:76: trailing whitespace.
++00032110  00000a16 R_ARM_JUMP_SLOT        00000000   snprintf@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:77: trailing whitespace.
++00032114  00005e16 R_ARM_JUMP_SLOT        00000000   bind@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:78: trailing whitespace.
++00032118  00004f16 R_ARM_JUMP_SLOT        00000000   memset@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:79: trailing whitespace.
++0003211c  00000f16 R_ARM_JUMP_SLOT        00000000   strtoull@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:80: trailing whitespace.
++00032120  00002516 R_ARM_JUMP_SLOT        00000000   pwrite64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:81: trailing whitespace.
++00032124  00000516 R_ARM_JUMP_SLOT        00000000   write@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:82: trailing whitespace.
++00032128  00004e16 R_ARM_JUMP_SLOT        00000000   fclose@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:83: trailing whitespace.
++0003212c  00003416 R_ARM_JUMP_SLOT        00000000   pipe@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:84: trailing whitespace.
++00032130  00002016 R_ARM_JUMP_SLOT        00000000   mosquitto_publish_callback_set
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:85: trailing whitespace.
++00032134  00005916 R_ARM_JUMP_SLOT        00000000   pthread_cond_timedwait@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:86: trailing whitespace.
++00032138  00006216 R_ARM_JUMP_SLOT        00000000   fcntl64@GLIBC_2.28
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:87: trailing whitespace.
++0003213c  00001316 R_ARM_JUMP_SLOT        00000000   epoll_wait@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:88: trailing whitespace.
++00032140  00005616 R_ARM_JUMP_SLOT        00000000   sigemptyset@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:89: trailing whitespace.
++00032144  00005b16 R_ARM_JUMP_SLOT        00000000   mosquitto_want_write
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:90: trailing whitespace.
++00032148  00003016 R_ARM_JUMP_SLOT        00000000   strrchr@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:91: trailing whitespace.
++0003214c  00002916 R_ARM_JUMP_SLOT        00000000   vfprintf@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:92: trailing whitespace.
++00032150  00002e16 R_ARM_JUMP_SLOT        00000000   pthread_join@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:93: trailing whitespace.
++00032154  00005d16 R_ARM_JUMP_SLOT        00000000   fputc@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:94: trailing whitespace.
++00032158  00006116 R_ARM_JUMP_SLOT        00000000   timerfd_settime@GLIBC_2.8
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:95: trailing whitespace.
++0003215c  00003516 R_ARM_JUMP_SLOT        00000000   vsnprintf@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:96: trailing whitespace.
++00032160  00004d16 R_ARM_JUMP_SLOT        00000000   recvmsg@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:97: trailing whitespace.
++00032164  00000716 R_ARM_JUMP_SLOT        00000000   fopen64@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:98: trailing whitespace.
++00032168  00003d16 R_ARM_JUMP_SLOT        00000000   strpbrk@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:99: trailing whitespace.
++0003216c  00006616 R_ARM_JUMP_SLOT        00000000   pthread_cond_wait@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:100: trailing whitespace.
++00032170  00005f16 R_ARM_JUMP_SLOT        00000000   socket@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:101: trailing whitespace.
++00032174  00004016 R_ARM_JUMP_SLOT        00000000   eventfd@GLIBC_2.7
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:102: trailing whitespace.
++00032178  00001b16 R_ARM_JUMP_SLOT        00000000   __cmsg_nxthdr@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:103: trailing whitespace.
++0003217c  00002b16 R_ARM_JUMP_SLOT        00000000   mosquitto_username_pw_set
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:104: trailing whitespace.
++00032180  00003c16 R_ARM_JUMP_SLOT        00000000   if_nametoindex@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:105: trailing whitespace.
++00032184  00000d16 R_ARM_JUMP_SLOT        00000000   fdatasync@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:106: trailing whitespace.
++00032188  00004a16 R_ARM_JUMP_SLOT        00000000   pthread_cond_signal@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:107: trailing whitespace.
++0003218c  00002316 R_ARM_JUMP_SLOT        00000000   abort@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:108: trailing whitespace.
++00032190  00001e16 R_ARM_JUMP_SLOT        00000000   epoll_create1@GLIBC_2.9
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log:109: trailing whitespace.
++00032194  00002616 R_ARM_JUMP_SLOT        00000000   close@GLIBC_2.4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-rpath-audit.log:2: trailing whitespace.
+++ awk 'BEGIN { count=0 } /\(RPATH\)|\(RUNPATH\)/ { print; count++ } END { print "rpath_runpath_count=" count; exit(count != 0) }' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-rpath-audit.log:3: trailing whitespace.
++rpath_runpath_count=0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:2: trailing whitespace.
+++ env IMX6ULL_SDK_ROOT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/arm-buildroot-linux-gnueabihf-gcc --version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:3: trailing whitespace.
++arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2020.02-gee85cab) 7.5.0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:4: trailing whitespace.
++Copyright © 2017 Free Software Foundation, Inc.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:5: trailing whitespace.
++本程序是自由软件；请参看源代码的版权声明。本软件没有任何担保；
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:6: trailing whitespace.
++包括没有适销性和某一专用目的下的适用性担保。
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log:7: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:2: trailing whitespace.
+++ rg --files artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:3: trailing whitespace.
+++ sort
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:4: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:5: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:6: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:7: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:8: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:9: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-count.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:10: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:11: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-file.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:12: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:13: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:14: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:15: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:16: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-rpath-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:17: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:18: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:19: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:20: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:21: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:22: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-reactor-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:23: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-sink-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:24: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:25: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:26: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:27: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/command_index.md
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:28: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:29: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fresh-build-dir-check.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:30: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-ancestor.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:31: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-diff-check-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:32: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-head.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:33: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:34: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:35: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:36: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:37: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:38: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:39: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:40: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:41: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:42: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:43: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:44: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:45: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:46: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/initial_pull.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:47: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-dpkg-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:48: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:49: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:50: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:51: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:52: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:53: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/test_report.md
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:54: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/uname.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log:55: trailing whitespace.
++artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/warning-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-size.log:2: trailing whitespace.
+++ du -sh artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-size.log:3: trailing whitespace.
++232K	artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:2: trailing whitespace.
+++ cmake --build build/m8-continuous-reconnect-fix-asan-ubsan --parallel 4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:3: trailing whitespace.
++[  2%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:4: trailing whitespace.
++[  4%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:5: trailing whitespace.
++[  6%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:6: trailing whitespace.
++[  9%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:7: trailing whitespace.
++[ 11%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:8: trailing whitespace.
++[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:9: trailing whitespace.
++[ 15%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:10: trailing whitespace.
++[ 18%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:11: trailing whitespace.
++[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:12: trailing whitespace.
++[ 22%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:13: trailing whitespace.
++[ 25%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:14: trailing whitespace.
++[ 27%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:15: trailing whitespace.
++[ 29%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:16: trailing whitespace.
++[ 31%] [32m[1mLinking C static library libgateway_core.a[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:17: trailing whitespace.
++[ 31%] Built target gateway_core
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:18: trailing whitespace.
++[ 34%] [32mBuilding C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:19: trailing whitespace.
++[ 36%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:20: trailing whitespace.
++[ 38%] [32mBuilding C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:21: trailing whitespace.
++[ 40%] [32mBuilding C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:22: trailing whitespace.
++[ 43%] [32m[1mLinking C executable test_error_record[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:23: trailing whitespace.
++[ 45%] [32m[1mLinking C executable test_lifecycle[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:24: trailing whitespace.
++[ 47%] [32m[1mLinking C executable test_config[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:25: trailing whitespace.
++[ 50%] [32m[1mLinking C executable gatewayd[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:26: trailing whitespace.
++[ 50%] Built target test_error_record
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:27: trailing whitespace.
++[ 50%] Built target test_lifecycle
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:28: trailing whitespace.
++[ 50%] Built target gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:29: trailing whitespace.
++[ 52%] [32mBuilding C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:30: trailing whitespace.
++[ 54%] [32mBuilding C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:31: trailing whitespace.
++[ 54%] Built target test_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:32: trailing whitespace.
++[ 56%] [32mBuilding C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:33: trailing whitespace.
++[ 59%] [32m[1mLinking C executable test_log[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:34: trailing whitespace.
++[ 61%] [32mBuilding C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:35: trailing whitespace.
++[ 63%] [32m[1mLinking C executable test_can_receiver[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:36: trailing whitespace.
++[ 65%] [32m[1mLinking C executable test_ring_buffer[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:37: trailing whitespace.
++[ 65%] Built target test_log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:38: trailing whitespace.
++[ 68%] [32mBuilding C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:39: trailing whitespace.
++[ 70%] [32m[1mLinking C executable test_vehicle_decoder[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:40: trailing whitespace.
++[ 70%] Built target test_can_receiver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:41: trailing whitespace.
++[ 72%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:42: trailing whitespace.
++[ 72%] Built target test_ring_buffer
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:43: trailing whitespace.
++[ 75%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:44: trailing whitespace.
++[ 77%] [32m[1mLinking C executable test_pipeline[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:45: trailing whitespace.
++[ 79%] [32m[1mLinking C executable test_mqtt_reactor[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:46: trailing whitespace.
++[ 81%] [32m[1mLinking C executable test_mqtt_sink[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:47: trailing whitespace.
++[ 81%] Built target test_vehicle_decoder
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:48: trailing whitespace.
++[ 84%] [32mBuilding C object gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:49: trailing whitespace.
++[ 84%] Built target test_pipeline
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:50: trailing whitespace.
++[ 86%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:51: trailing whitespace.
++[ 86%] Built target test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:52: trailing whitespace.
++[ 88%] [32m[1mLinking C executable test_spool[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:53: trailing whitespace.
++[ 88%] Built target test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:54: trailing whitespace.
++[ 90%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:55: trailing whitespace.
++[ 93%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:56: trailing whitespace.
++[ 95%] [32m[1mLinking C executable test_mqtt_integration[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:57: trailing whitespace.
++[ 97%] [32m[1mLinking C executable test_mqtt_timing[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:58: trailing whitespace.
++[ 97%] Built target test_spool
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:59: trailing whitespace.
++[100%] [32m[1mLinking C executable test_mqtt_recovery_driver[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:60: trailing whitespace.
++[100%] Built target test_mqtt_integration
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:61: trailing whitespace.
++[100%] Built target test_mqtt_timing
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log:62: trailing whitespace.
++[100%] Built target test_mqtt_recovery_driver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:2: trailing whitespace.
+++ cmake -S . -B build/m8-continuous-reconnect-fix-asan-ubsan -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/tmp/imx6ull-m6-mosquitto-root/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so '-DCMAKE_C_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer -g' -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=address,undefined
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:3: trailing whitespace.
++-- The C compiler identification is GNU 11.4.0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:4: trailing whitespace.
++-- Detecting C compiler ABI info
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:5: trailing whitespace.
++-- Detecting C compiler ABI info - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:6: trailing whitespace.
++-- Check for working C compiler: /usr/bin/cc - skipped
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:7: trailing whitespace.
++-- Detecting C compile features
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:8: trailing whitespace.
++-- Detecting C compile features - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:9: trailing whitespace.
++-- Looking for pthread.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:10: trailing whitespace.
++-- Looking for pthread.h - found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:11: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:12: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:13: trailing whitespace.
++-- Found Threads: TRUE  
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:14: trailing whitespace.
++-- Configuring done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:15: trailing whitespace.
++-- Generating done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log:16: trailing whitespace.
++-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-asan-ubsan
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:2: trailing whitespace.
+++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m8-continuous-reconnect-fix-asan-ubsan -R '^(test_mqtt_sink|test_mqtt_reactor)$' --output-on-failure
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:3: trailing whitespace.
++Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-asan-ubsan
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:4: trailing whitespace.
++Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-asan-ubsan
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:5: trailing whitespace.
++    Start 13: test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:6: trailing whitespace.
++1/2 Test #13: test_mqtt_sink ...................   Passed    0.03 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:7: trailing whitespace.
++    Start 14: test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:8: trailing whitespace.
++2/2 Test #14: test_mqtt_reactor ................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:9: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:10: trailing whitespace.
++100% tests passed, 0 tests failed out of 2
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:11: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:12: trailing whitespace.
++Label Time Summary:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:13: trailing whitespace.
++M6      =   0.03 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:14: trailing whitespace.
++M7      =   0.03 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:15: trailing whitespace.
++M8      =   0.05 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:16: trailing whitespace.
++unit    =   0.05 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:17: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log:18: trailing whitespace.
++Total Test time (real) =   0.05 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-reactor-direct.log:2: trailing whitespace.
+++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 build/m8-continuous-reconnect-fix-asan-ubsan/gateway/test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-sink-direct.log:2: trailing whitespace.
+++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 build/m8-continuous-reconnect-fix-asan-ubsan/gateway/test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:2: trailing whitespace.
+++ cc --version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:3: trailing whitespace.
++cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:4: trailing whitespace.
++Copyright (C) 2021 Free Software Foundation, Inc.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:5: trailing whitespace.
++This is free software; see the source for copying conditions.  There is NO
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:6: trailing whitespace.
++warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log:7: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:2: trailing whitespace.
+++ rg -n 'CMAKE_BUILD_TYPE:|BUILD_TESTING:|CMAKE_C_FLAGS:|CMAKE_EXE_LINKER_FLAGS:|GATEWAY_MOSQUITTO_(INCLUDE_DIR|LIBRARY):|CMAKE_SKIP_RPATH:' build/m8-continuous-reconnect-fix-host/CMakeCache.txt build/m8-continuous-reconnect-fix-asan-ubsan/CMakeCache.txt build/m8-continuous-reconnect-fix-arm/CMakeCache.txt
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:3: trailing whitespace.
++build/m8-continuous-reconnect-fix-host/CMakeCache.txt
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:4: trailing whitespace.
++18:BUILD_TESTING:BOOL=ON
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:5: trailing whitespace.
++28:CMAKE_BUILD_TYPE:STRING=Debug
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:6: trailing whitespace.
++45:CMAKE_C_FLAGS:STRING=
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:7: trailing whitespace.
++63:CMAKE_EXE_LINKER_FLAGS:STRING=
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:8: trailing whitespace.
++173:CMAKE_SKIP_RPATH:BOOL=NO
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:9: trailing whitespace.
++224:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/tmp/imx6ull-m6-mosquitto-root/usr/include
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:10: trailing whitespace.
++227:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:11: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:12: trailing whitespace.
++build/m8-continuous-reconnect-fix-arm/CMakeCache.txt
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:13: trailing whitespace.
++18:BUILD_TESTING:BOOL=OFF
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:14: trailing whitespace.
++28:CMAKE_BUILD_TYPE:STRING=Debug
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:15: trailing whitespace.
++42:CMAKE_C_FLAGS:STRING=
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:16: trailing whitespace.
++60:CMAKE_EXE_LINKER_FLAGS:STRING=
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:17: trailing whitespace.
++170:CMAKE_SKIP_RPATH:BOOL=TRUE
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:18: trailing whitespace.
++208:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/include
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:19: trailing whitespace.
++211:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:20: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:21: trailing whitespace.
++build/m8-continuous-reconnect-fix-asan-ubsan/CMakeCache.txt
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:22: trailing whitespace.
++18:BUILD_TESTING:BOOL=ON
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:23: trailing whitespace.
++28:CMAKE_BUILD_TYPE:STRING=Debug
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:24: trailing whitespace.
++45:CMAKE_C_FLAGS:STRING=-fsanitize=address,undefined -fno-omit-frame-pointer -g
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:25: trailing whitespace.
++63:CMAKE_EXE_LINKER_FLAGS:STRING=-fsanitize=address,undefined
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:26: trailing whitespace.
++173:CMAKE_SKIP_RPATH:BOOL=NO
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:27: trailing whitespace.
++224:GATEWAY_MOSQUITTO_INCLUDE_DIR:PATH=/tmp/imx6ull-m6-mosquitto-root/usr/include
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log:28: trailing whitespace.
++227:GATEWAY_MOSQUITTO_LIBRARY:FILEPATH=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log:2: trailing whitespace.
+++ cmake --version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log:3: trailing whitespace.
++cmake version 3.22.1
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log:4: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log:5: trailing whitespace.
++CMake suite maintained and supported by Kitware (kitware.com/cmake).
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:2: trailing whitespace.
+++ rg -n 'test_durable_reconnect_during_continuous_consume|不调用 poll|gateway_mqtt_sink_poll' gateway/tests/test_mqtt_sink.c gateway/src/mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:3: trailing whitespace.
++gateway/src/mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:4: trailing whitespace.
++1006:            code = gateway_mqtt_sink_poll(sink);
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:5: trailing whitespace.
++1059:gateway_error_code gateway_mqtt_sink_poll(void *context)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:6: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:7: trailing whitespace.
++gateway/tests/test_mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:8: trailing whitespace.
++209:static int test_durable_reconnect_during_continuous_consume(void)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:9: trailing whitespace.
++252:        /* 不调用 poll，模拟持续 CAN 输入使 consumer 永远不 idle。 */
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log:10: trailing whitespace.
++274:    CHECK(test_durable_reconnect_during_continuous_consume() == 0);
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fresh-build-dir-check.log:2: trailing whitespace.
+++ test '!' -e build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fresh-build-dir-check.log:3: trailing whitespace.
+++ test '!' -e build/m8-continuous-reconnect-fix-asan-ubsan
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fresh-build-dir-check.log:4: trailing whitespace.
+++ test '!' -e build/m8-continuous-reconnect-fix-arm
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-diff-check-before-stage.log:2: trailing whitespace.
+++ git diff --check
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-head.log:2: trailing whitespace.
++6c2ed510f75fe8dc762e2ac3586c7cc5a750645e
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log:2: trailing whitespace.
++6c2ed51 (HEAD -> master, origin/master) fix(m8): drive reconnect during continuous input
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log:3: trailing whitespace.
++ gateway/src/mqtt_sink.c        |  36 +++++++++++++--
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log:4: trailing whitespace.
++ gateway/tests/test_mqtt_sink.c | 101 +++++++++++++++++++++++++++++++++++++++++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log:5: trailing whitespace.
++ 2 files changed, 133 insertions(+), 4 deletions(-)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:2: trailing whitespace.
++## master...origin/master
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:3: trailing whitespace.
++?? 20260831T220718p0800-m6-lan-1000-board/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:4: trailing whitespace.
++?? artifacts/20260831T181335+0800-m6-arm-private/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:5: trailing whitespace.
++?? artifacts/20260831T235934+0800-m7-preflight/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:6: trailing whitespace.
++?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log:7: trailing whitespace.
++?? artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:2: trailing whitespace.
+++ git status --short
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:3: trailing whitespace.
++?? 20260831T220718p0800-m6-lan-1000-board/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:4: trailing whitespace.
++?? artifacts/20260831T181335+0800-m6-arm-private/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:5: trailing whitespace.
++?? artifacts/20260831T235934+0800-m7-preflight/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:6: trailing whitespace.
++?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log:7: trailing whitespace.
++?? artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:2: trailing whitespace.
+++ cmake --build build/m8-continuous-reconnect-fix-host --parallel 4
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:3: trailing whitespace.
++[  2%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:4: trailing whitespace.
++[  4%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:5: trailing whitespace.
++[  6%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:6: trailing whitespace.
++[  9%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:7: trailing whitespace.
++[ 11%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:8: trailing whitespace.
++[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:9: trailing whitespace.
++[ 15%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:10: trailing whitespace.
++[ 18%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:11: trailing whitespace.
++[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:12: trailing whitespace.
++[ 22%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:13: trailing whitespace.
++[ 25%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:14: trailing whitespace.
++[ 27%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:15: trailing whitespace.
++[ 29%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:16: trailing whitespace.
++[ 31%] [32m[1mLinking C static library libgateway_core.a[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:17: trailing whitespace.
++[ 31%] Built target gateway_core
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:18: trailing whitespace.
++[ 34%] [32mBuilding C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:19: trailing whitespace.
++[ 36%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:20: trailing whitespace.
++[ 38%] [32mBuilding C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:21: trailing whitespace.
++[ 40%] [32mBuilding C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:22: trailing whitespace.
++[ 43%] [32m[1mLinking C executable test_error_record[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:23: trailing whitespace.
++[ 45%] [32m[1mLinking C executable test_lifecycle[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:24: trailing whitespace.
++[ 47%] [32m[1mLinking C executable test_config[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:25: trailing whitespace.
++[ 50%] [32m[1mLinking C executable gatewayd[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:26: trailing whitespace.
++[ 50%] Built target test_error_record
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:27: trailing whitespace.
++[ 50%] Built target test_lifecycle
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:28: trailing whitespace.
++[ 50%] Built target gatewayd
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:29: trailing whitespace.
++[ 52%] [32mBuilding C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:30: trailing whitespace.
++[ 52%] Built target test_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:31: trailing whitespace.
++[ 54%] [32mBuilding C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:32: trailing whitespace.
++[ 56%] [32mBuilding C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:33: trailing whitespace.
++[ 59%] [32mBuilding C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:34: trailing whitespace.
++[ 61%] [32m[1mLinking C executable test_log[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:35: trailing whitespace.
++[ 63%] [32m[1mLinking C executable test_ring_buffer[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:36: trailing whitespace.
++[ 65%] [32m[1mLinking C executable test_can_receiver[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:37: trailing whitespace.
++[ 65%] Built target test_log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:38: trailing whitespace.
++[ 65%] Built target test_ring_buffer
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:39: trailing whitespace.
++[ 68%] [32mBuilding C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:40: trailing whitespace.
++[ 70%] [32m[1mLinking C executable test_vehicle_decoder[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:41: trailing whitespace.
++[ 70%] Built target test_can_receiver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:42: trailing whitespace.
++[ 72%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:43: trailing whitespace.
++[ 75%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:44: trailing whitespace.
++[ 77%] [32m[1mLinking C executable test_pipeline[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:45: trailing whitespace.
++[ 79%] [32m[1mLinking C executable test_mqtt_reactor[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:46: trailing whitespace.
++[ 79%] Built target test_vehicle_decoder
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:47: trailing whitespace.
++[ 81%] [32m[1mLinking C executable test_mqtt_sink[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:48: trailing whitespace.
++[ 84%] [32mBuilding C object gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:49: trailing whitespace.
++[ 84%] Built target test_pipeline
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:50: trailing whitespace.
++[ 86%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:51: trailing whitespace.
++[ 86%] Built target test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:52: trailing whitespace.
++[ 88%] [32m[1mLinking C executable test_spool[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:53: trailing whitespace.
++[ 88%] Built target test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:54: trailing whitespace.
++[ 90%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:55: trailing whitespace.
++[ 93%] [32m[1mLinking C executable test_mqtt_integration[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:56: trailing whitespace.
++[ 95%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:57: trailing whitespace.
++[ 95%] Built target test_spool
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:58: trailing whitespace.
++[ 97%] [32m[1mLinking C executable test_mqtt_timing[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:59: trailing whitespace.
++[ 97%] Built target test_mqtt_integration
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:60: trailing whitespace.
++[100%] [32m[1mLinking C executable test_mqtt_recovery_driver[0m
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:61: trailing whitespace.
++[100%] Built target test_mqtt_timing
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log:62: trailing whitespace.
++[100%] Built target test_mqtt_recovery_driver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:2: trailing whitespace.
+++ cmake -S . -B build/m8-continuous-reconnect-fix-host -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/tmp/imx6ull-m6-mosquitto-root/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:3: trailing whitespace.
++-- The C compiler identification is GNU 11.4.0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:4: trailing whitespace.
++-- Detecting C compiler ABI info
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:5: trailing whitespace.
++-- Detecting C compiler ABI info - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:6: trailing whitespace.
++-- Check for working C compiler: /usr/bin/cc - skipped
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:7: trailing whitespace.
++-- Detecting C compile features
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:8: trailing whitespace.
++-- Detecting C compile features - done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:9: trailing whitespace.
++-- Looking for pthread.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:10: trailing whitespace.
++-- Looking for pthread.h - found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:11: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:12: trailing whitespace.
++-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:13: trailing whitespace.
++-- Found Threads: TRUE  
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:14: trailing whitespace.
++-- Configuring done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:15: trailing whitespace.
++-- Generating done
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log:16: trailing whitespace.
++-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:2: trailing whitespace.
+++ ctest --test-dir build/m8-continuous-reconnect-fix-host --output-on-failure
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:3: trailing whitespace.
++Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:4: trailing whitespace.
++Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:5: trailing whitespace.
++      Start  1: gatewayd_version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:6: trailing whitespace.
++ 1/17 Test  #1: gatewayd_version .................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:7: trailing whitespace.
++      Start  2: gatewayd_default_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:8: trailing whitespace.
++ 2/17 Test  #2: gatewayd_default_config ..........   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:9: trailing whitespace.
++      Start  3: gatewayd_example_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:10: trailing whitespace.
++ 3/17 Test  #3: gatewayd_example_config ..........   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:11: trailing whitespace.
++      Start  4: test_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:12: trailing whitespace.
++ 4/17 Test  #4: test_config ......................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:13: trailing whitespace.
++      Start  5: test_error_record
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:14: trailing whitespace.
++ 5/17 Test  #5: test_error_record ................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:15: trailing whitespace.
++      Start  6: test_lifecycle
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:16: trailing whitespace.
++ 6/17 Test  #6: test_lifecycle ...................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:17: trailing whitespace.
++      Start  7: test_log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:18: trailing whitespace.
++ 7/17 Test  #7: test_log .........................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:19: trailing whitespace.
++      Start  8: test_ring_buffer
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:20: trailing whitespace.
++ 8/17 Test  #8: test_ring_buffer .................   Passed    0.13 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:21: trailing whitespace.
++      Start  9: test_can_receiver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:22: trailing whitespace.
++ 9/17 Test  #9: test_can_receiver ................***Failed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:23: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_can_receiver.c:66: descriptor >= 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:24: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_can_receiver.c:215: test_kernel_socket_options() == 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:25: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:26: trailing whitespace.
++      Start 10: test_vehicle_decoder
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:27: trailing whitespace.
++10/17 Test #10: test_vehicle_decoder .............   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:28: trailing whitespace.
++      Start 11: test_vehicle_dbc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:29: trailing whitespace.
++11/17 Test #11: test_vehicle_dbc .................   Passed    0.05 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:30: trailing whitespace.
++      Start 12: test_pipeline
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:31: trailing whitespace.
++12/17 Test #12: test_pipeline ....................   Passed    1.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:32: trailing whitespace.
++      Start 13: test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:33: trailing whitespace.
++13/17 Test #13: test_mqtt_sink ...................***Failed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:34: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:234: reserved_socket >= 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:35: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:274: test_durable_reconnect_during_continuous_consume() == 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:36: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:37: trailing whitespace.
++      Start 14: test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:38: trailing whitespace.
++14/17 Test #14: test_mqtt_reactor ................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:39: trailing whitespace.
++      Start 15: test_spool
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:40: trailing whitespace.
++15/17 Test #15: test_spool .......................   Passed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:41: trailing whitespace.
++      Start 16: test_mqtt_validator
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:42: trailing whitespace.
++16/17 Test #16: test_mqtt_validator ..............   Passed    0.84 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:43: trailing whitespace.
++      Start 17: test_mqtt_recovery_validator
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:44: trailing whitespace.
++17/17 Test #17: test_mqtt_recovery_validator .....   Passed    0.38 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:45: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:46: trailing whitespace.
++88% tests passed, 2 tests failed out of 17
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:47: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:48: trailing whitespace.
++Label Time Summary:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:49: trailing whitespace.
++M1          =   0.16 sec*proc (5 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:50: trailing whitespace.
++M2          =   0.00 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:51: trailing whitespace.
++M4          =   0.06 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:52: trailing whitespace.
++M5          =   1.02 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:53: trailing whitespace.
++M6          =   0.85 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:54: trailing whitespace.
++M7          =   1.42 sec*proc (4 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:55: trailing whitespace.
++M8          =   0.03 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:56: trailing whitespace.
++protocol    =   0.05 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:57: trailing whitespace.
++unit        =   2.44 sec*proc (13 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:58: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:59: trailing whitespace.
++Total Test time (real) =   2.50 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:60: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:61: trailing whitespace.
++The following tests FAILED:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:62: trailing whitespace.
++	  9 - test_can_receiver (Failed)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:63: trailing whitespace.
++	 13 - test_mqtt_sink (Failed)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log:64: trailing whitespace.
++Errors while running CTest
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:2: trailing whitespace.
+++ ctest --test-dir build/m8-continuous-reconnect-fix-host --output-on-failure
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:3: trailing whitespace.
++Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:4: trailing whitespace.
++Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:5: trailing whitespace.
++      Start  1: gatewayd_version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:6: trailing whitespace.
++ 1/17 Test  #1: gatewayd_version .................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:7: trailing whitespace.
++      Start  2: gatewayd_default_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:8: trailing whitespace.
++ 2/17 Test  #2: gatewayd_default_config ..........   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:9: trailing whitespace.
++      Start  3: gatewayd_example_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:10: trailing whitespace.
++ 3/17 Test  #3: gatewayd_example_config ..........   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:11: trailing whitespace.
++      Start  4: test_config
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:12: trailing whitespace.
++ 4/17 Test  #4: test_config ......................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:13: trailing whitespace.
++      Start  5: test_error_record
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:14: trailing whitespace.
++ 5/17 Test  #5: test_error_record ................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:15: trailing whitespace.
++      Start  6: test_lifecycle
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:16: trailing whitespace.
++ 6/17 Test  #6: test_lifecycle ...................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:17: trailing whitespace.
++      Start  7: test_log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:18: trailing whitespace.
++ 7/17 Test  #7: test_log .........................   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:19: trailing whitespace.
++      Start  8: test_ring_buffer
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:20: trailing whitespace.
++ 8/17 Test  #8: test_ring_buffer .................   Passed    0.13 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:21: trailing whitespace.
++      Start  9: test_can_receiver
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:22: trailing whitespace.
++ 9/17 Test  #9: test_can_receiver ................   Passed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:23: trailing whitespace.
++      Start 10: test_vehicle_decoder
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:24: trailing whitespace.
++10/17 Test #10: test_vehicle_decoder .............   Passed    0.00 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:25: trailing whitespace.
++      Start 11: test_vehicle_dbc
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:26: trailing whitespace.
++11/17 Test #11: test_vehicle_dbc .................   Passed    0.04 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:27: trailing whitespace.
++      Start 12: test_pipeline
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:28: trailing whitespace.
++12/17 Test #12: test_pipeline ....................   Passed    1.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:29: trailing whitespace.
++      Start 13: test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:30: trailing whitespace.
++13/17 Test #13: test_mqtt_sink ...................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:31: trailing whitespace.
++      Start 14: test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:32: trailing whitespace.
++14/17 Test #14: test_mqtt_reactor ................   Passed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:33: trailing whitespace.
++      Start 15: test_spool
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:34: trailing whitespace.
++15/17 Test #15: test_spool .......................   Passed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:35: trailing whitespace.
++      Start 16: test_mqtt_validator
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:36: trailing whitespace.
++16/17 Test #16: test_mqtt_validator ..............   Passed    0.81 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:37: trailing whitespace.
++      Start 17: test_mqtt_recovery_validator
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:38: trailing whitespace.
++17/17 Test #17: test_mqtt_recovery_validator .....   Passed    0.39 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:39: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:40: trailing whitespace.
++100% tests passed, 0 tests failed out of 17
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:41: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:42: trailing whitespace.
++Label Time Summary:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:43: trailing whitespace.
++M1          =   0.16 sec*proc (5 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:44: trailing whitespace.
++M2          =   0.01 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:45: trailing whitespace.
++M4          =   0.05 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:46: trailing whitespace.
++M5          =   1.01 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:47: trailing whitespace.
++M6          =   0.83 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:48: trailing whitespace.
++M7          =   1.44 sec*proc (4 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:49: trailing whitespace.
++M8          =   0.04 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:50: trailing whitespace.
++protocol    =   0.04 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:51: trailing whitespace.
++unit        =   2.43 sec*proc (13 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:52: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log:53: trailing whitespace.
++Total Test time (real) =   2.49 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:2: trailing whitespace.
+++ ctest --test-dir build/m8-continuous-reconnect-fix-host -R '^(test_mqtt_sink|test_mqtt_reactor)$' --output-on-failure
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:3: trailing whitespace.
++Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:4: trailing whitespace.
++Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:5: trailing whitespace.
++    Start 13: test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:6: trailing whitespace.
++1/2 Test #13: test_mqtt_sink ...................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:7: trailing whitespace.
++    Start 14: test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:8: trailing whitespace.
++2/2 Test #14: test_mqtt_reactor ................   Passed    0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:9: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:10: trailing whitespace.
++100% tests passed, 0 tests failed out of 2
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:11: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:12: trailing whitespace.
++Label Time Summary:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:13: trailing whitespace.
++M6      =   0.02 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:14: trailing whitespace.
++M7      =   0.02 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:15: trailing whitespace.
++M8      =   0.04 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:16: trailing whitespace.
++unit    =   0.04 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:17: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log:18: trailing whitespace.
++Total Test time (real) =   0.04 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:2: trailing whitespace.
+++ ctest --test-dir build/m8-continuous-reconnect-fix-host -R '^(test_mqtt_sink|test_mqtt_reactor)$' --output-on-failure
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:3: trailing whitespace.
++Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:4: trailing whitespace.
++Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-host
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:5: trailing whitespace.
++    Start 13: test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:6: trailing whitespace.
++1/2 Test #13: test_mqtt_sink ...................***Failed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:7: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:234: reserved_socket >= 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:8: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:274: test_durable_reconnect_during_continuous_consume() == 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:9: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:10: trailing whitespace.
++    Start 14: test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:11: trailing whitespace.
++2/2 Test #14: test_mqtt_reactor ................   Passed    0.01 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:12: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:13: trailing whitespace.
++50% tests passed, 1 tests failed out of 2
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:14: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:15: trailing whitespace.
++Label Time Summary:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:16: trailing whitespace.
++M6      =   0.01 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:17: trailing whitespace.
++M7      =   0.01 sec*proc (1 test)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:18: trailing whitespace.
++M8      =   0.02 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:19: trailing whitespace.
++unit    =   0.02 sec*proc (2 tests)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:20: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:21: trailing whitespace.
++Total Test time (real) =   0.02 sec
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:22: trailing whitespace.
++
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:23: trailing whitespace.
++The following tests FAILED:
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:24: trailing whitespace.
++	 13 - test_mqtt_sink (Failed)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log:25: trailing whitespace.
++Errors while running CTest
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:2: trailing whitespace.
+++ stat -c '%n size=%s mtime=%y' build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_reactor gateway/tests/test_mqtt_sink.c gateway/src/mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:3: trailing whitespace.
++build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink size=120128 mtime=2026-09-01 15:43:07.308221971 +0800
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:4: trailing whitespace.
++build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_reactor size=33512 mtime=2026-09-01 15:43:07.236226284 +0800
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:5: trailing whitespace.
++gateway/tests/test_mqtt_sink.c size=10174 mtime=2026-09-01 15:40:04.661163592 +0800
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:6: trailing whitespace.
++gateway/src/mqtt_sink.c size=42174 mtime=2026-09-01 15:40:04.660163652 +0800
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:7: trailing whitespace.
+++ sha256sum build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:8: trailing whitespace.
++fb9fcb502f856b881efc06efa3a750dc48aa81a83c9557677d94713cf857cecb  build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log:9: trailing whitespace.
++a92bcdf6e558126907736d2761307aeb9bc512097a73ff18ec81a37bb6e6ce25  build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_reactor
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:2: trailing whitespace.
+++ readlink -f /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:3: trailing whitespace.
++/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:4: trailing whitespace.
+++ sha256sum /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:5: trailing whitespace.
++b977523c8e51cd5a0833b6f9601f74a952a909796170dd856057d92b7cc30d8b  /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:6: trailing whitespace.
++3d4af05ec30029c53ea9c68ad2a1e9f9ffaab97e098c139c7be282bf1c2d2c95  /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:7: trailing whitespace.
+++ rg -n 'LIBMOSQUITTO_(MAJOR|MINOR|REVISION)' /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:8: trailing whitespace.
++67:#define LIBMOSQUITTO_MAJOR 2
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:9: trailing whitespace.
++68:#define LIBMOSQUITTO_MINOR 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:10: trailing whitespace.
++69:#define LIBMOSQUITTO_REVISION 11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:11: trailing whitespace.
++71:#define LIBMOSQUITTO_VERSION_NUMBER (LIBMOSQUITTO_MAJOR*1000000+LIBMOSQUITTO_MINOR*1000+LIBMOSQUITTO_REVISION)
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:12: trailing whitespace.
++207: * version it was compiled against by using the LIBMOSQUITTO_MAJOR,
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log:13: trailing whitespace.
++208: * LIBMOSQUITTO_MINOR and LIBMOSQUITTO_REVISION defines.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct-unsandboxed.log:2: trailing whitespace.
+++ build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct.log:2: trailing whitespace.
+++ build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct.log:3: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:234: reserved_socket >= 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct.log:4: trailing whitespace.
++CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:274: test_durable_reconnect_during_continuous_consume() == 0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-dpkg-version.log:2: trailing whitespace.
+++ dpkg-query -W libmosquitto-dev libmosquitto1
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-dpkg-version.log:3: trailing whitespace.
++[1mdpkg-query:[0m 没有找到与 libmosquitto-dev 相匹配的软件包
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-dpkg-version.log:4: trailing whitespace.
++[1mdpkg-query:[0m 没有找到与 libmosquitto1 相匹配的软件包
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log:2: trailing whitespace.
+++ pkg-config --modversion libmosquitto
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log:3: trailing whitespace.
++Package libmosquitto was not found in the pkg-config search path.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log:4: trailing whitespace.
++Perhaps you should add the directory containing `libmosquitto.pc'
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log:5: trailing whitespace.
++to the PKG_CONFIG_PATH environment variable
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log:6: trailing whitespace.
++No package 'libmosquitto' found
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:2: trailing whitespace.
+++ make --version
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:3: trailing whitespace.
++GNU Make 4.3
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:4: trailing whitespace.
++为 x86_64-pc-linux-gnu 编译
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:5: trailing whitespace.
++Copyright (C) 1988-2020 Free Software Foundation, Inc.
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:6: trailing whitespace.
++许可证：GPLv3+：GNU 通用公共许可证第 3 版或更新版本<http://gnu.org/licenses/gpl.html>。
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:7: trailing whitespace.
++本软件是自由软件：您可以自由修改和重新发布它。
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log:8: trailing whitespace.
++在法律允许的范围内没有其他保证。
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:2: trailing whitespace.
+++ sed -n 1,200p /etc/os-release
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:3: trailing whitespace.
++PRETTY_NAME="Ubuntu 22.04.5 LTS"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:4: trailing whitespace.
++NAME="Ubuntu"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:5: trailing whitespace.
++VERSION_ID="22.04"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:6: trailing whitespace.
++VERSION="22.04.5 LTS (Jammy Jellyfish)"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:7: trailing whitespace.
++VERSION_CODENAME=jammy
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:8: trailing whitespace.
++ID=ubuntu
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:9: trailing whitespace.
++ID_LIKE=debian
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:10: trailing whitespace.
++HOME_URL="https://www.ubuntu.com/"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:11: trailing whitespace.
++SUPPORT_URL="https://help.ubuntu.com/"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:12: trailing whitespace.
++BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:13: trailing whitespace.
++PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log:14: trailing whitespace.
++UBUNTU_CODENAME=jammy
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/sensitive-scan.log:2: trailing whitespace.
+++ rg -n -i --glob '!sensitive-scan.log' 'BEGIN (RSA |OPENSSH |EC )?PRIVATE KEY|password[[:space:]]*[:=][[:space:]]*[^<"[:space:]]|passwd[[:space:]]*[:=]|api[_-]?key[[:space:]]*[:=]|secret[[:space:]]*[:=]|token[[:space:]]*[:=]|([0-9]{1,3}\.){3}[0-9]{1,3}' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/sensitive-scan.log:3: trailing whitespace.
+++ wc -l
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/sensitive-scan.log:4: trailing whitespace.
++0
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:2: trailing whitespace.
+++ sha256sum gateway/src/mqtt_sink.c gateway/tests/test_mqtt_sink.c gateway/src/mqtt_reactor.c gateway/tests/test_mqtt_reactor.c gateway/cmake/toolchains/imx6ull-buildroot.cmake
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:3: trailing whitespace.
++256833c498082c7cb863f361cece1532b78c5f87ea7c16ff1e4f9607b019b112  gateway/src/mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:4: trailing whitespace.
++98ff9d60170d2a67301bb8ee07c1f8879fde590f8975e7b4316c14e44dc868b3  gateway/tests/test_mqtt_sink.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:5: trailing whitespace.
++0b65705e4f548bba5a8120a2413bd0d182d3f7c65c668c60c57c3a979a142c85  gateway/src/mqtt_reactor.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:6: trailing whitespace.
++f07c56133d77578705c6939bd1fd5a7c361ee433f81d74adaa1b1839ae082f7d  gateway/tests/test_mqtt_reactor.c
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log:7: trailing whitespace.
++df5632066a095307885dfd056f7acfba5f084d47abcdb794dd8079d05dd05e71  gateway/cmake/toolchains/imx6ull-buildroot.cmake
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log:2: trailing whitespace.
+++ sha256sum build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11 build/m6-arm-private/stage/usr/include/mosquitto.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log:3: trailing whitespace.
++b32c8ac4defb2b2920fba2e42f263869508c42e3c1719440db37ffc8d8c2f636  build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log:4: trailing whitespace.
++b977523c8e51cd5a0833b6f9601f74a952a909796170dd856057d92b7cc30d8b  build/m6-arm-private/stage/usr/include/mosquitto.h
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log:5: trailing whitespace.
+++ readlink -f build/m6-arm-private/stage/usr/lib/libmosquitto.so
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log:6: trailing whitespace.
++/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/uname.log:2: trailing whitespace.
+++ uname -a
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/uname.log:3: trailing whitespace.
++Linux wangyizhen-virtual-machine 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/warning-audit.log:2: trailing whitespace.
+++ awk 'BEGIN { IGNORECASE=1; count=0 } /warning:/ { count++ } END { print "warning_count=" count; exit(count != 0) }' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/warning-audit.log:3: trailing whitespace.
++warning_count=0
+
+Script done on 2026-09-01 15:48:47+08:00 [COMMAND_EXIT_CODE="2"]

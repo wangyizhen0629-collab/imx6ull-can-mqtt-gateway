@@ -1,0 +1,20 @@
+Script started on 2026-09-01 15:44:22+08:00 [<not executed on terminal>]
++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m8-continuous-reconnect-fix-asan-ubsan -R '^(test_mqtt_sink|test_mqtt_reactor)$' --output-on-failure
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-asan-ubsan
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-asan-ubsan
+    Start 13: test_mqtt_sink
+1/2 Test #13: test_mqtt_sink ...................   Passed    0.03 sec
+    Start 14: test_mqtt_reactor
+2/2 Test #14: test_mqtt_reactor ................   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+M6      =   0.03 sec*proc (1 test)
+M7      =   0.03 sec*proc (1 test)
+M8      =   0.05 sec*proc (2 tests)
+unit    =   0.05 sec*proc (2 tests)
+
+Total Test time (real) =   0.05 sec
+
+Script done on 2026-09-01 15:44:22+08:00 [COMMAND_EXIT_CODE="0"]

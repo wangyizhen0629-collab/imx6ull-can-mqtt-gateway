@@ -1,0 +1,6 @@
+Script started on 2026-09-01 15:42:40+08:00 [<not executed on terminal>]
++ dpkg-query -W libmosquitto-dev libmosquitto1
+[1mdpkg-query:[0m 没有找到与 libmosquitto-dev 相匹配的软件包
+[1mdpkg-query:[0m 没有找到与 libmosquitto1 相匹配的软件包
+
+Script done on 2026-09-01 15:42:40+08:00 [COMMAND_EXIT_CODE="1"]

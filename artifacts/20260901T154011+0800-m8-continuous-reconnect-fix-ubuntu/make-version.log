@@ -1,0 +1,10 @@
+Script started on 2026-09-01 15:42:33+08:00 [<not executed on terminal>]
++ make --version
+GNU Make 4.3
+为 x86_64-pc-linux-gnu 编译
+Copyright (C) 1988-2020 Free Software Foundation, Inc.
+许可证：GPLv3+：GNU 通用公共许可证第 3 版或更新版本<http://gnu.org/licenses/gpl.html>。
+本软件是自由软件：您可以自由修改和重新发布它。
+在法律允许的范围内没有其他保证。
+
+Script done on 2026-09-01 15:42:33+08:00 [COMMAND_EXIT_CODE="0"]

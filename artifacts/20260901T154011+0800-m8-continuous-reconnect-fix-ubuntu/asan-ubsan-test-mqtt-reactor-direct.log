@@ -1,0 +1,4 @@
+Script started on 2026-09-01 15:44:22+08:00 [<not executed on terminal>]
++ env ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 build/m8-continuous-reconnect-fix-asan-ubsan/gateway/test_mqtt_reactor
+
+Script done on 2026-09-01 15:44:22+08:00 [COMMAND_EXIT_CODE="0"]

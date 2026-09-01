@@ -1,0 +1,5 @@
+Script started on 2026-09-01 15:42:33+08:00 [<not executed on terminal>]
++ uname -a
+Linux wangyizhen-virtual-machine 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:43:15 UTC  x86_64 x86_64 x86_64 GNU/Linux
+
+Script done on 2026-09-01 15:42:33+08:00 [COMMAND_EXIT_CODE="0"]

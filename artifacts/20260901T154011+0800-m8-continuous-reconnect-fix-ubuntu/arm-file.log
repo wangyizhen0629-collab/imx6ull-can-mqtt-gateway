@@ -1,0 +1,5 @@
+Script started on 2026-09-01 15:45:13+08:00 [<not executed on terminal>]
++ file build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+build/m8-continuous-reconnect-fix-arm/gateway/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped
+
+Script done on 2026-09-01 15:45:13+08:00 [COMMAND_EXIT_CODE="0"]

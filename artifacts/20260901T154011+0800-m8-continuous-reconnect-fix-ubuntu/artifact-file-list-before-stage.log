@@ -1,0 +1,57 @@
+Script started on 2026-09-01 15:48:29+08:00 [<not executed on terminal>]
++ rg --files artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
++ sort
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-binary-identity.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-count.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-count.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-external-api-unique-retry.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-file.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-header.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-program-headers.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-relocations.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-rpath-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-toolchain-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/artifact-file-list-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-ctest-m8.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-reactor-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-test-mqtt-sink-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cc-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-cache-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/cmake-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/command_index.md
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fix-source-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/fresh-build-dir-check.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-ancestor.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-diff-check-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-head.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-show-stat.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-after-pull.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/git-status-before-stage.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-configure.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-sandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-full-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-ctest-m8.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-fresh-binary-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-libmosquitto-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct-unsandboxed.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-test-mqtt-sink-direct.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/initial_pull.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-dpkg-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/libmosquitto-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/make-version.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/os-release.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/source-sha256.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/target-libmosquitto-audit.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/test_report.md
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/uname.log
+artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/warning-audit.log
+
+Script done on 2026-09-01 15:48:29+08:00 [COMMAND_EXIT_CODE="0"]

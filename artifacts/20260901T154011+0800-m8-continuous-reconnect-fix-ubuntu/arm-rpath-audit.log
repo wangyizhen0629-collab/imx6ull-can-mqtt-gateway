@@ -1,0 +1,5 @@
+Script started on 2026-09-01 15:45:41+08:00 [<not executed on terminal>]
++ awk 'BEGIN { count=0 } /\(RPATH\)|\(RUNPATH\)/ { print; count++ } END { print "rpath_runpath_count=" count; exit(count != 0) }' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-readelf-dynamic.log
+rpath_runpath_count=0
+
+Script done on 2026-09-01 15:45:41+08:00 [COMMAND_EXIT_CODE="0"]

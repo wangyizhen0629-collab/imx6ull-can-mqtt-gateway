@@ -1,0 +1,15 @@
+Script started on 2026-09-01 15:43:01+08:00 [<not executed on terminal>]
++ readlink -f /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
++ sha256sum /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
+b977523c8e51cd5a0833b6f9601f74a952a909796170dd856057d92b7cc30d8b  /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h
+3d4af05ec30029c53ea9c68ad2a1e9f9ffaab97e098c139c7be282bf1c2d2c95  /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so.2.0.11
++ rg -n 'LIBMOSQUITTO_(MAJOR|MINOR|REVISION)' /tmp/imx6ull-m6-mosquitto-root/usr/include/mosquitto.h
+67:#define LIBMOSQUITTO_MAJOR 2
+68:#define LIBMOSQUITTO_MINOR 0
+69:#define LIBMOSQUITTO_REVISION 11
+71:#define LIBMOSQUITTO_VERSION_NUMBER (LIBMOSQUITTO_MAJOR*1000000+LIBMOSQUITTO_MINOR*1000+LIBMOSQUITTO_REVISION)
+207: * version it was compiled against by using the LIBMOSQUITTO_MAJOR,
+208: * LIBMOSQUITTO_MINOR and LIBMOSQUITTO_REVISION defines.
+
+Script done on 2026-09-01 15:43:01+08:00 [COMMAND_EXIT_CODE="0"]

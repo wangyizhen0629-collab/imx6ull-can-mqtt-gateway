@@ -1,0 +1,5 @@
+Script started on 2026-09-01 15:48:29+08:00 [<not executed on terminal>]
++ du -sh artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+232K	artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu
+
+Script done on 2026-09-01 15:48:29+08:00 [COMMAND_EXIT_CODE="0"]

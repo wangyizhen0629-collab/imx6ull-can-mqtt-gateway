@@ -1,0 +1,8 @@
+Script started on 2026-09-01 15:42:33+08:00 [<not executed on terminal>]
++ pkg-config --modversion libmosquitto
+Package libmosquitto was not found in the pkg-config search path.
+Perhaps you should add the directory containing `libmosquitto.pc'
+to the PKG_CONFIG_PATH environment variable
+No package 'libmosquitto' found
+
+Script done on 2026-09-01 15:42:33+08:00 [COMMAND_EXIT_CODE="1"]

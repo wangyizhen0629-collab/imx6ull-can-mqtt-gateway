@@ -1,0 +1,9 @@
+Script started on 2026-09-01 15:45:41+08:00 [<not executed on terminal>]
++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
++ awk '/mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }'
+awk: 命令行:1: /mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }
+awk: 命令行:1:                                                                       ^ 反斜杠不是行的最后一个字符
+awk: 命令行:1: /mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)/ { seen[\u00024NF]=1; print } END { for (name in seen) count++; print "external_loop_api_unique=" count; exit(count != 5) }
+awk: 命令行:1:                                                                       ^ syntax error
+
+Script done on 2026-09-01 15:45:41+08:00 [COMMAND_EXIT_CODE="1"]

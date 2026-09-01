@@ -1,0 +1,22 @@
+Script started on 2026-09-01 15:44:34+08:00 [<not executed on terminal>]
++ env IMX6ULL_SDK_ROOT=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot cmake -S . -B build/m8-continuous-reconnect-fix-arm -DCMAKE_TOOLCHAIN_FILE=gateway/cmake/toolchains/imx6ull-buildroot.cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=OFF -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m6-arm-private/stage/usr/lib/libmosquitto.so.2.0.11 -DCMAKE_SKIP_RPATH=TRUE
+-- The C compiler identification is GNU 7.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/arm-buildroot-linux-gnueabihf-gcc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-arm
+
+Script done on 2026-09-01 15:44:35+08:00 [COMMAND_EXIT_CODE="0"]

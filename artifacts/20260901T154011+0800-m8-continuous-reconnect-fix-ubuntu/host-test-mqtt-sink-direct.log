@@ -1,0 +1,6 @@
+Script started on 2026-09-01 15:43:13+08:00 [<not executed on terminal>]
++ build/m8-continuous-reconnect-fix-host/gateway/test_mqtt_sink
+CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:234: reserved_socket >= 0
+CHECK failed at /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c:274: test_durable_reconnect_during_continuous_consume() == 0
+
+Script done on 2026-09-01 15:43:13+08:00 [COMMAND_EXIT_CODE="1"]

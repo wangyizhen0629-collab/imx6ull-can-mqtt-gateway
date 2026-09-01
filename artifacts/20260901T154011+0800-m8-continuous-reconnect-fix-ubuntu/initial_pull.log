@@ -1,0 +1,21 @@
+COMMAND: git status --short --branch
+EXIT_CODE: 0
+## master...origin/master
+?? 20260831T220718p0800-m6-lan-1000-board/
+?? artifacts/20260831T181335+0800-m6-arm-private/
+?? artifacts/20260831T235934+0800-m7-preflight/
+?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+
+COMMAND: git pull --ff-only origin master
+EXIT_CODE: 0
+来自 github.com:wangyizhen0629-collab/imx6ull-can-mqtt-gateway
+ * branch            master     -> FETCH_HEAD
+   1ae4d2f..6c2ed51  master     -> origin/master
+更新 1ae4d2f..6c2ed51
+Fast-forward
+ gateway/src/mqtt_sink.c        |  36 +++++++++++++--
+ gateway/tests/test_mqtt_sink.c | 101 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 133 insertions(+), 4 deletions(-)
+
+NOTE: git 的后台 gc 同时报告已有 `.git/gc.log` 与不可达松散对象警告；本任务不清理、
+prune 或修改这些仓库内部对象。

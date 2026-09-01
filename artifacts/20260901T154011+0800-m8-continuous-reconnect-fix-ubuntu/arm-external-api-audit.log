@@ -1,0 +1,10 @@
+Script started on 2026-09-01 15:45:14+08:00 [<not executed on terminal>]
++ readelf -rW build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
++ rg 'mosquitto_(socket|loop_read|loop_write|loop_misc|want_write)'
+00032018  00001416 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_read
+00032088  00002f16 R_ARM_JUMP_SLOT        00000000   mosquitto_socket
+000320c8  00001816 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_write
+00032104  00005516 R_ARM_JUMP_SLOT        00000000   mosquitto_loop_misc
+00032144  00005b16 R_ARM_JUMP_SLOT        00000000   mosquitto_want_write
+
+Script done on 2026-09-01 15:45:14+08:00 [COMMAND_EXIT_CODE="0"]

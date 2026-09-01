@@ -1,0 +1,5 @@
+Script started on 2026-09-01 15:45:14+08:00 [<not executed on terminal>]
++ awk 'BEGIN { IGNORECASE=1; count=0 } /warning:/ { count++ } END { print "warning_count=" count; exit(count != 0) }' artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/host-build.log artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/asan-ubsan-build.log artifacts/20260901T154011+0800-m8-continuous-reconnect-fix-ubuntu/arm-build.log
+warning_count=0
+
+Script done on 2026-09-01 15:45:14+08:00 [COMMAND_EXIT_CODE="0"]

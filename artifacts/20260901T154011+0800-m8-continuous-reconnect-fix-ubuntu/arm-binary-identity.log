@@ -1,0 +1,9 @@
+Script started on 2026-09-01 15:45:13+08:00 [<not executed on terminal>]
++ sha256sum build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+c27cae52c6e746035e058cc77e78cb0dc1003f58f3036312b000579e0af9e368  build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
++ stat -c '%n size=%s mtime=%y' build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+build/m8-continuous-reconnect-fix-arm/gateway/gatewayd size=198180 mtime=2026-09-01 15:44:44.271413336 +0800
++ realpath build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m8-continuous-reconnect-fix-arm/gateway/gatewayd
+
+Script done on 2026-09-01 15:45:13+08:00 [COMMAND_EXIT_CODE="0"]

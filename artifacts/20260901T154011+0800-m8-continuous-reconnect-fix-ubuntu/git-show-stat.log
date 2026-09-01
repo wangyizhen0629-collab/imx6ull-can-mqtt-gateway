@@ -1,0 +1,7 @@
+Script started on 2026-09-01 15:40:53+08:00 [<not executed on terminal>]
+6c2ed51 (HEAD -> master, origin/master) fix(m8): drive reconnect during continuous input
+ gateway/src/mqtt_sink.c        |  36 +++++++++++++--
+ gateway/tests/test_mqtt_sink.c | 101 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 133 insertions(+), 4 deletions(-)
+
+Script done on 2026-09-01 15:40:53+08:00 [COMMAND_EXIT_CODE="0"]

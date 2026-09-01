@@ -1,0 +1,12 @@
+Script started on 2026-09-01 15:42:33+08:00 [<not executed on terminal>]
++ rg -n 'test_durable_reconnect_during_continuous_consume|不调用 poll|gateway_mqtt_sink_poll' gateway/tests/test_mqtt_sink.c gateway/src/mqtt_sink.c
+gateway/src/mqtt_sink.c
+1006:            code = gateway_mqtt_sink_poll(sink);
+1059:gateway_error_code gateway_mqtt_sink_poll(void *context)
+
+gateway/tests/test_mqtt_sink.c
+209:static int test_durable_reconnect_during_continuous_consume(void)
+252:        /* 不调用 poll，模拟持续 CAN 输入使 consumer 永远不 idle。 */
+274:    CHECK(test_durable_reconnect_during_continuous_consume() == 0);
+
+Script done on 2026-09-01 15:42:33+08:00 [COMMAND_EXIT_CODE="0"]

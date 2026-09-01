@@ -1,0 +1,7 @@
+Script started on 2026-09-01 15:42:33+08:00 [<not executed on terminal>]
++ cmake --version
+cmake version 3.22.1
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+
+Script done on 2026-09-01 15:42:33+08:00 [COMMAND_EXIT_CODE="0"]
