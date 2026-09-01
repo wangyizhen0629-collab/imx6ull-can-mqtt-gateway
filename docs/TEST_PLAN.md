@@ -192,6 +192,30 @@ spool、`kill -9`、去重和epoll属于M7/M8，M6没有执行。
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。
 
+## M7 当前测试状态与接续要求
+
+离线实现证据`artifacts/20260901T093654+0800-m7-offline-final/`已经执行：Ubuntu
+warning-clean全量CTest16/16、ASan+UBSan全量16/16、M7标签3/3及ARMv7 warning-clean
+交叉构建均PASS；LeakSanitizer为`NOT RUN`。`test_spool`覆盖CRC、逐条sync、原子state、
+重开、部分/损坏尾部、cursor损坏安全回退、内部损坏拒绝和单写者锁；恢复validator
+回归5/5覆盖raw duplicate与去重完整性。
+
+以下退出测试仍为`NOT RUN`，必须由Windows Broker与i.MX6ULL侧协同建立新的唯一run：
+
+- 在线基线后实际停止Windows Broker，确认gateway进程继续运行、spool pending增长；
+- 恢复Broker，确认积压按seq补传且只有匹配PUBACK推进cursor；
+- Broker断开、spool已有未确认记录时实际`kill -9` gateway，保存返回状态并从同一spool
+  重启，确认gateway seq不复用、unique记录完整；
+- 在专用测试副本注入尾部和state/cursor损坏，保存注入前后hash、精确offset/bytes和
+  恢复日志；
+- 合并subscriber JSON并运行`validate_m7_recovery.py`，报告raw duplicate、unique、
+  missing和effective duplicate；同时对账Broker/gateway publish/PUBACK/reconnect与
+  spool append/replay/ACK/pending；
+- 保存Broker配置/版本、gateway/binary/library SHA256、CAN前后状态、spool文件系统信息、
+  原始日志和验证通过的`manifest.sha256`。
+
+完成前M7保持`NOT MET`。M8 external-loop/epoll等价测试不得提前执行。
+
 ## 统一指标定义
 
 - MQTT missing：积压完全补传后，期望范围内缺失的 unique `device_id + seq` 数量。

@@ -1,0 +1,15 @@
+configuration=Debug
+compiler=cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+cmake=3.22.1
+execution=sandbox outside, required only so existing M2 PF_CAN test can create an unbound socket
+tests_total=16
+tests_passed=16
+tests_failed=0
+M7_test_spool=PASS
+M7_test_mqtt_recovery_validator=PASS
+M7_label=3/3 PASS
+total_test_time_seconds=2.42
+
+The earlier restricted-sandbox run was 15/16 and failed only test_can_receiver
+at socket(PF_CAN). It was rerun outside the sandbox and passed 16/16; the first
+failure is preserved in the pre-Broker report and is not rewritten as PASS.

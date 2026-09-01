@@ -1,0 +1,11 @@
+configuration=Debug
+compiler=cc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+flags=-fsanitize=address,undefined -fno-omit-frame-pointer -g
+ASAN_OPTIONS=detect_leaks=0:halt_on_error=1
+UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1
+tests_total=16
+tests_passed=16
+tests_failed=0
+M7_label=3/3 PASS
+total_test_time_seconds=2.57
+LeakSanitizer=NOT RUN: detect_leaks=0 because the current execution environment is under ptrace

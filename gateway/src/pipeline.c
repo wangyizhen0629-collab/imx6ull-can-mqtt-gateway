@@ -221,7 +221,9 @@ gateway_error_code gateway_pipeline_create(gateway_pipeline **pipeline,
     created->config = *config;
     created->producer_error = GATEWAY_OK;
     created->consumer_error = GATEWAY_OK;
-    created->next_gateway_seq = 1;
+    created->next_gateway_seq = config->initial_gateway_seq == 0
+                                    ? 1
+                                    : config->initial_gateway_seq;
     if (pthread_mutex_init(&created->state_mutex, NULL) != 0) {
         free(created);
         return GATEWAY_ERROR_SYSTEM;

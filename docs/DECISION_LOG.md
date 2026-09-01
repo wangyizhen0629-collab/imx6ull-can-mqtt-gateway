@@ -385,6 +385,44 @@
   subscriber重放、归档hash和范围审计通过；临时Broker端口已无listener。
   这只是证据一致性收尾，不改变上述 `NOT MET` 决定。
 
+## D-029：真实i.MX6ULL物理CAN到Windows LAN Broker证据关闭M6
+
+- 日期：2026-09-01
+- 状态：已接受；M6门禁MET
+- 决定：以SHA256固定的ARMv7 `gatewayd`和私有libmosquitto 2.0.11在真实i.MX6ULL
+  运行，物理CAN输入发布到Windows Mosquitto 2.1.2。正式subscriber保存1000批、
+  115335条连续记录；batch seq 1～1000、gateway seq 1～115335，missing/duplicate/
+  reordered均为0。gateway和Broker原始日志对账为1033次publish及1033次匹配PUBACK，
+  unexpected和MQTT error均为0。
+- 独立复核：`artifacts/20260901T090837+0800-m6-lan-gate-review/`验证原始
+  `manifest.sha256` 131/131、strict validator 8/8、subscriber重放、Broker/gateway及
+  CAN前后计数，判定PASS_WITH_LIMITATIONS。
+- 限制：板端wall clock仍为1970；停止边界`can_accepted`比`queue_success`多1帧的原因
+  没有独立证据；不产生正确UTC、时延、吞吐或长期可靠性结论。D-028的host阶段
+  `NOT MET`保持历史事实，但M6总门禁由本决定更新为`MET`。
+
+## D-030：M7采用逐记录耐久spool、保守cursor恢复和QoS 1去重边界
+
+- 日期：2026-09-01
+- 状态：设计与离线实现已接受；M7总门禁NOT MET
+- data格式：固定80字节entry，使用magic/version/length、CRC32和显式little-endian
+  `telemetry_record`载荷；逐条append后`fdatasync`。文件为append-only并持有单写者
+  `flock`，启用64-bit file offset。
+- state格式：固定40字节，保存CRC、已确认offset/seq和next batch。更新顺序是临时文件
+  写入、`fdatasync`、`rename`、父目录`fsync`；只有匹配当前MID的PUBACK后才推进。
+- 恢复策略：部分尾部或最后一条损坏记录截断到最后有效entry；内部损坏拒绝启动。
+  state缺失/损坏/越界时从offset 0安全重放。该保守策略允许raw duplicate，禁止把未确认
+  数据当成成功；gateway seq始终从data最后有效记录继续。
+- 断线策略：durable模式将Broker不可用视为可恢复transport状态，继续同步spool并按
+  `mqtt_reconnect_interval_ms`重试；磁盘/格式错误是fatal。每次重连重建clean-session
+  libmosquitto客户端，仍限制一个in-flight batch。
+- 容量边界：当前不做compaction和静默drop；ENOSPC或sync失败采用fail-stop并单独计数。
+  目标介质、容量阈值、寿命和后续回收策略必须由真实部署条件决定，不能在M7证据中
+  推测。
+- 验证边界：Ubuntu普通/ASan+UBSan全量16/16及ARMv7 warning-clean构建已通过；Windows
+  Broker断线/恢复、subscriber原始抓取、实际`kill -9`及目标持久介质均为`NOT RUN`。
+  因此M7保持`NOT MET`，也不授权M8 external-loop/epoll实现。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

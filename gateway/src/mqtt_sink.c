@@ -1,6 +1,7 @@
 #include "gateway/mqtt_sink.h"
 
 #include "gateway/config.h"
+#include "gateway/spool.h"
 
 #include <inttypes.h>
 #include <limits.h>
@@ -35,10 +36,12 @@ struct gateway_mqtt_sink {
     char topic[256];
     uint32_t batch_interval_ms;
     uint32_t ack_timeout_ms;
+    uint32_t reconnect_interval_ms;
     size_t max_records;
     gateway_stats *stats;
     gateway_logger *logger;
     struct mosquitto *mosq;
+    gateway_spool *spool;
     telemetry_record *records;
     char *payload;
     size_t record_count;
@@ -48,6 +51,12 @@ struct gateway_mqtt_sink {
     bool connect_callback_seen;
     int connect_result;
     bool explicit_disconnect;
+    bool durable;
+    bool ever_connected;
+    bool transport_lost;
+    bool reconnect_deadline_set;
+    bool replay_pending;
+    struct timespec reconnect_deadline;
     bool have_last_gateway_seq;
     uint64_t last_gateway_seq;
     pthread_mutex_t snapshot_mutex;
@@ -249,12 +258,55 @@ static int milliseconds_until(const struct timespec *deadline)
     return milliseconds > INT_MAX ? INT_MAX : (int)milliseconds;
 }
 
-static void snapshot_set_failed(gateway_mqtt_sink *sink)
+static void snapshot_mark_failed(gateway_mqtt_sink *sink)
 {
     (void)pthread_mutex_lock(&sink->snapshot_mutex);
     sink->snapshot.failed = true;
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+}
+
+static void snapshot_set_mqtt_failed(gateway_mqtt_sink *sink)
+{
+    snapshot_mark_failed(sink);
     gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_ERRORS);
+}
+
+static void sync_spool_snapshot(gateway_mqtt_sink *sink)
+{
+    gateway_spool_snapshot spool_snapshot;
+
+    if (!sink->durable) {
+        return;
+    }
+    gateway_spool_read(sink->spool, &spool_snapshot);
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    sink->snapshot.durable = true;
+    sink->snapshot.buffered_records =
+        spool_snapshot.pending_records > SIZE_MAX
+            ? SIZE_MAX
+            : (size_t)spool_snapshot.pending_records;
+    sink->snapshot.spool_total_records = spool_snapshot.total_records;
+    sink->snapshot.spool_pending_records = spool_snapshot.pending_records;
+    sink->snapshot.spool_records_appended = spool_snapshot.records_appended;
+    sink->snapshot.spool_records_replayed = spool_snapshot.records_replayed;
+    sink->snapshot.spool_tail_recoveries = spool_snapshot.tail_recoveries;
+    sink->snapshot.spool_state_recoveries = spool_snapshot.state_recoveries;
+    sink->snapshot.spool_corruptions = spool_snapshot.corruptions;
+    sink->snapshot.next_batch_seq = spool_snapshot.next_batch_seq;
+    sink->snapshot.last_acked_gateway_seq =
+        spool_snapshot.last_acked_gateway_seq;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+}
+
+static gateway_error_code spool_failure(gateway_mqtt_sink *sink,
+                                        gateway_error_code code,
+                                        const char *operation)
+{
+    snapshot_mark_failed(sink);
+    gateway_stats_increment(sink->stats, GATEWAY_STAT_SPOOL_ERRORS);
+    gateway_log(sink->logger, GATEWAY_LOG_ERROR, "spool", "%s failed: %s",
+                operation, gateway_error_string(code));
+    return code;
 }
 
 static gateway_error_code mqtt_failure(gateway_mqtt_sink *sink,
@@ -262,7 +314,7 @@ static gateway_error_code mqtt_failure(gateway_mqtt_sink *sink,
                                        int mosquitto_code,
                                        const char *operation)
 {
-    snapshot_set_failed(sink);
+    snapshot_set_mqtt_failed(sink);
     if (mosquitto_code == MOSQ_ERR_SUCCESS) {
         gateway_log(sink->logger, GATEWAY_LOG_ERROR, "mqtt", "%s failed: %s",
                     operation, gateway_error_string(code));
@@ -294,8 +346,92 @@ static void on_disconnect(struct mosquitto *mosq, void *context, int result)
     sink->snapshot.connected = false;
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
     if (!sink->explicit_disconnect && result != 0) {
-        snapshot_set_failed(sink);
+        if (sink->durable) {
+            sink->transport_lost = true;
+        } else {
+            snapshot_set_mqtt_failed(sink);
+        }
     }
+}
+
+static void on_publish(struct mosquitto *mosq, void *context, int mid);
+
+static gateway_error_code create_mosquitto_client(gateway_mqtt_sink *sink)
+{
+    char client_id[MQTT_CLIENT_ID_SIZE];
+    int code;
+
+    (void)snprintf(client_id, sizeof(client_id), "gatewayd-%s-%ld",
+                   sink->device_id, (long)getpid());
+    sink->mosq = mosquitto_new(client_id, true, sink);
+    if (sink->mosq == NULL) {
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    mosquitto_connect_callback_set(sink->mosq, on_connect);
+    mosquitto_disconnect_callback_set(sink->mosq, on_disconnect);
+    mosquitto_publish_callback_set(sink->mosq, on_publish);
+    code = mosquitto_max_inflight_messages_set(sink->mosq, 1);
+    if (code != MOSQ_ERR_SUCCESS) {
+        mosquitto_destroy(sink->mosq);
+        sink->mosq = NULL;
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    if (sink->broker_username[0] != '\0') {
+        code = mosquitto_username_pw_set(sink->mosq, sink->broker_username,
+                                         sink->broker_password);
+        if (code != MOSQ_ERR_SUCCESS) {
+            mosquitto_destroy(sink->mosq);
+            sink->mosq = NULL;
+            return GATEWAY_ERROR_INVALID_VALUE;
+        }
+    }
+    return GATEWAY_OK;
+}
+
+static gateway_error_code reset_mosquitto_client(gateway_mqtt_sink *sink)
+{
+    if (sink->mosq != NULL) {
+        mosquitto_destroy(sink->mosq);
+        sink->mosq = NULL;
+    }
+    sink->transport_lost = false;
+    sink->connect_callback_seen = false;
+    sink->explicit_disconnect = false;
+    return create_mosquitto_client(sink);
+}
+
+static gateway_error_code durable_transport_offline(
+    gateway_mqtt_sink *sink,
+    int mosquitto_code,
+    const char *operation)
+{
+    gateway_error_code code;
+
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    sink->snapshot.connected = false;
+    sink->snapshot.in_flight = false;
+    sink->snapshot.in_flight_mid = -1;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+    gateway_spool_cancel_prepared(sink->spool);
+    gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_ERRORS);
+    gateway_log(sink->logger, GATEWAY_LOG_WARN, "mqtt",
+                "%s: offline, durable records retained: %s", operation,
+                mosquitto_code == MOSQ_ERR_SUCCESS
+                    ? "timeout"
+                    : mosquitto_strerror(mosquitto_code));
+    code = reset_mosquitto_client(sink);
+    if (code != GATEWAY_OK) {
+        return mqtt_failure(sink, code, MOSQ_ERR_SUCCESS,
+                            "MQTT client reset");
+    }
+    if (!deadline_after_milliseconds(sink->reconnect_interval_ms,
+                                     &sink->reconnect_deadline)) {
+        return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
+                            "reconnect deadline");
+    }
+    sink->reconnect_deadline_set = true;
+    sync_spool_snapshot(sink);
+    return GATEWAY_OK;
 }
 
 static void on_publish(struct mosquitto *mosq, void *context, int mid)
@@ -333,7 +469,8 @@ gateway_error_code gateway_mqtt_sink_create(
     const gateway_mqtt_sink_config *config)
 {
     gateway_mqtt_sink *created;
-    char client_id[MQTT_CLIENT_ID_SIZE];
+    gateway_spool_snapshot spool_snapshot;
+    gateway_error_code spool_code;
     int code;
 
     if (sink == NULL || config == NULL || config->device_id == NULL ||
@@ -350,6 +487,8 @@ gateway_error_code gateway_mqtt_sink_create(
         strlen(config->broker_username) >= GATEWAY_BROKER_USERNAME_SIZE ||
         strlen(config->broker_password) >= GATEWAY_BROKER_PASSWORD_SIZE ||
         strlen(config->topic) >= GATEWAY_MQTT_TOPIC_SIZE ||
+        (config->spool_path != NULL && config->spool_path[0] != '\0' &&
+         strlen(config->spool_path) >= GATEWAY_SPOOL_PATH_SIZE) ||
         (config->broker_username[0] == '\0' &&
          config->broker_password[0] != '\0')) {
         return GATEWAY_ERROR_ARGUMENT;
@@ -389,11 +528,34 @@ gateway_error_code gateway_mqtt_sink_create(
     created->broker_port = config->broker_port;
     created->batch_interval_ms = config->batch_interval_ms;
     created->ack_timeout_ms = config->ack_timeout_ms;
+    created->reconnect_interval_ms = config->reconnect_interval_ms == 0
+                                         ? 1000U
+                                         : config->reconnect_interval_ms;
     created->max_records = config->max_records;
     created->stats = config->stats;
     created->logger = config->logger;
     created->snapshot.next_batch_seq = 1;
     created->snapshot.in_flight_mid = -1;
+
+    if (config->spool_path != NULL && config->spool_path[0] != '\0') {
+        created->durable = true;
+        spool_code = gateway_spool_open(&created->spool, config->spool_path);
+        if (spool_code != GATEWAY_OK) {
+            gateway_mqtt_sink_destroy(created);
+            return spool_code;
+        }
+        gateway_spool_read(created->spool, &spool_snapshot);
+        created->have_last_gateway_seq = spool_snapshot.last_gateway_seq != 0;
+        created->last_gateway_seq = spool_snapshot.last_gateway_seq;
+        created->replay_pending = spool_snapshot.pending_records != 0;
+        gateway_stats_add(created->stats,
+                          GATEWAY_STAT_SPOOL_TAIL_RECOVERIES,
+                          spool_snapshot.tail_recoveries);
+        gateway_stats_add(created->stats,
+                          GATEWAY_STAT_SPOOL_STATE_RECOVERIES,
+                          spool_snapshot.state_recoveries);
+        sync_spool_snapshot(created);
+    }
 
     code = mosquitto_lib_init();
     if (code != MOSQ_ERR_SUCCESS) {
@@ -401,29 +563,9 @@ gateway_error_code gateway_mqtt_sink_create(
         return GATEWAY_ERROR_SYSTEM;
     }
     created->library_initialized = true;
-    (void)snprintf(client_id, sizeof(client_id), "gatewayd-%s-%ld",
-                   created->device_id, (long)getpid());
-    created->mosq = mosquitto_new(client_id, true, created);
-    if (created->mosq == NULL) {
+    if (create_mosquitto_client(created) != GATEWAY_OK) {
         gateway_mqtt_sink_destroy(created);
         return GATEWAY_ERROR_SYSTEM;
-    }
-    mosquitto_connect_callback_set(created->mosq, on_connect);
-    mosquitto_disconnect_callback_set(created->mosq, on_disconnect);
-    mosquitto_publish_callback_set(created->mosq, on_publish);
-    code = mosquitto_max_inflight_messages_set(created->mosq, 1);
-    if (code != MOSQ_ERR_SUCCESS) {
-        gateway_mqtt_sink_destroy(created);
-        return GATEWAY_ERROR_SYSTEM;
-    }
-    if (created->broker_username[0] != '\0') {
-        code = mosquitto_username_pw_set(created->mosq,
-                                         created->broker_username,
-                                         created->broker_password);
-        if (code != MOSQ_ERR_SUCCESS) {
-            gateway_mqtt_sink_destroy(created);
-            return GATEWAY_ERROR_INVALID_VALUE;
-        }
     }
     *sink = created;
     return GATEWAY_OK;
@@ -440,6 +582,7 @@ void gateway_mqtt_sink_destroy(gateway_mqtt_sink *sink)
     if (sink->library_initialized) {
         (void)mosquitto_lib_cleanup();
     }
+    gateway_spool_close(sink->spool);
     if (sink->snapshot_mutex_initialized) {
         (void)pthread_mutex_destroy(&sink->snapshot_mutex);
     }
@@ -463,6 +606,9 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
     code = mosquitto_connect(sink->mosq, sink->broker_host,
                              (int)sink->broker_port, MQTT_KEEPALIVE_SECONDS);
     if (code != MOSQ_ERR_SUCCESS) {
+        if (sink->durable) {
+            return durable_transport_offline(sink, code, "connect");
+        }
         return mqtt_failure(sink, GATEWAY_ERROR_IO, code, "connect");
     }
     if (!deadline_after_milliseconds(sink->ack_timeout_ms, &deadline)) {
@@ -474,6 +620,10 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
         int slice;
 
         if (remaining <= 0) {
+            if (sink->durable) {
+                return durable_transport_offline(sink, MOSQ_ERR_SUCCESS,
+                                                 "CONNACK wait");
+            }
             return mqtt_failure(sink, GATEWAY_ERROR_TIMEOUT,
                                 MOSQ_ERR_SUCCESS, "CONNACK wait");
         }
@@ -481,6 +631,10 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
                                                : MQTT_LOOP_SLICE_MS;
         code = mosquitto_loop(sink->mosq, slice, 1);
         if (code != MOSQ_ERR_SUCCESS) {
+            if (sink->durable) {
+                return durable_transport_offline(sink, code,
+                                                 "CONNACK network loop");
+            }
             return mqtt_failure(sink, GATEWAY_ERROR_IO, code,
                                 "CONNACK network loop");
         }
@@ -490,10 +644,132 @@ gateway_error_code gateway_mqtt_sink_connect(gateway_mqtt_sink *sink)
                             "CONNACK rejected");
     }
     gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_CONNECT_SUCCESS);
+    if (sink->ever_connected) {
+        gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_RECONNECTS);
+    }
+    sink->ever_connected = true;
+    sink->reconnect_deadline_set = false;
     gateway_log(sink->logger, GATEWAY_LOG_INFO, "mqtt",
                 "connected broker=%s port=%u topic=%s qos=1 max_inflight=1",
                 sink->broker_host, (unsigned int)sink->broker_port,
                 sink->topic);
+    return GATEWAY_OK;
+}
+
+static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
+{
+    struct timespec deadline;
+    gateway_spool_snapshot spool_snapshot;
+    size_t payload_size;
+    size_t record_count = 0;
+    uint64_t batch_seq = 0;
+    uint64_t acknowledged_last_seq;
+    bool connected;
+    int mid = -1;
+    int code;
+    gateway_error_code gateway_code;
+
+    gateway_spool_read(sink->spool, &spool_snapshot);
+    if (spool_snapshot.pending_records == 0) {
+        sink->replay_pending = false;
+        sink->batch_deadline_set = false;
+        sync_spool_snapshot(sink);
+        return GATEWAY_OK;
+    }
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    connected = sink->snapshot.connected && !sink->snapshot.failed &&
+                !sink->snapshot.in_flight;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+    if (!connected) {
+        return GATEWAY_OK;
+    }
+
+    gateway_code = gateway_spool_prepare_batch(
+        sink->spool, sink->records, sink->max_records, &record_count,
+        &batch_seq);
+    if (gateway_code != GATEWAY_OK) {
+        return spool_failure(sink, gateway_code, "prepare batch");
+    }
+    if (record_count == 0) {
+        sync_spool_snapshot(sink);
+        return GATEWAY_OK;
+    }
+    gateway_stats_add(sink->stats, GATEWAY_STAT_SPOOL_RECORDS_REPLAYED,
+                      (uint64_t)record_count);
+    acknowledged_last_seq = sink->records[record_count - 1].gateway_seq;
+    gateway_code = gateway_mqtt_encode_batch(
+        sink->payload, GATEWAY_MQTT_PAYLOAD_CAPACITY, sink->device_id,
+        batch_seq, sink->records, record_count, &payload_size);
+    if (gateway_code != GATEWAY_OK || payload_size > INT_MAX) {
+        gateway_spool_cancel_prepared(sink->spool);
+        return mqtt_failure(sink,
+                            gateway_code == GATEWAY_OK ? GATEWAY_ERROR_RANGE
+                                                       : gateway_code,
+                            MOSQ_ERR_SUCCESS, "batch encode");
+    }
+    gateway_stats_increment(sink->stats,
+                            GATEWAY_STAT_MQTT_PUBLISH_ATTEMPTS);
+    code = mosquitto_publish(sink->mosq, &mid, sink->topic,
+                             (int)payload_size, sink->payload, 1, false);
+    if (code != MOSQ_ERR_SUCCESS) {
+        return durable_transport_offline(sink, code, "publish");
+    }
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    sink->snapshot.in_flight = true;
+    sink->snapshot.in_flight_mid = mid;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+    gateway_stats_increment(sink->stats,
+                            GATEWAY_STAT_MQTT_PUBLISH_ACCEPTED);
+
+    if (!deadline_after_milliseconds(sink->ack_timeout_ms, &deadline)) {
+        return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM, MOSQ_ERR_SUCCESS,
+                            "PUBACK deadline");
+    }
+    for (;;) {
+        bool in_flight;
+        int remaining;
+        int slice;
+
+        (void)pthread_mutex_lock(&sink->snapshot_mutex);
+        in_flight = sink->snapshot.in_flight;
+        (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+        if (!in_flight) {
+            break;
+        }
+        remaining = milliseconds_until(&deadline);
+        if (remaining <= 0) {
+            return durable_transport_offline(sink, MOSQ_ERR_SUCCESS,
+                                             "PUBACK wait");
+        }
+        slice = remaining < MQTT_LOOP_SLICE_MS ? remaining
+                                               : MQTT_LOOP_SLICE_MS;
+        code = mosquitto_loop(sink->mosq, slice, 1);
+        if (code != MOSQ_ERR_SUCCESS || sink->transport_lost) {
+            return durable_transport_offline(sink, code,
+                                             "PUBACK network loop");
+        }
+    }
+
+    /* 只有匹配的 PUBACK 到达后，才原子推进 state 游标。 */
+    gateway_code = gateway_spool_ack_prepared(sink->spool);
+    if (gateway_code != GATEWAY_OK) {
+        return spool_failure(sink, gateway_code, "persist ACK cursor");
+    }
+    gateway_stats_add(sink->stats, GATEWAY_STAT_SPOOL_RECORDS_ACKED,
+                      (uint64_t)record_count);
+    gateway_stats_add(sink->stats, GATEWAY_STAT_MQTT_RECORDS_ACKED,
+                      (uint64_t)record_count);
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    sink->snapshot.batches_acked++;
+    sink->snapshot.records_acked += (uint64_t)record_count;
+    sink->snapshot.last_acked_batch_seq = batch_seq;
+    sink->snapshot.last_acked_gateway_seq = acknowledged_last_seq;
+    sink->snapshot.in_flight_mid = -1;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+    gateway_spool_read(sink->spool, &spool_snapshot);
+    sink->replay_pending = spool_snapshot.pending_records != 0;
+    sink->batch_deadline_set = false;
+    sync_spool_snapshot(sink);
     return GATEWAY_OK;
 }
 
@@ -509,6 +785,9 @@ gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink)
 
     if (sink == NULL) {
         return GATEWAY_ERROR_ARGUMENT;
+    }
+    if (sink->durable) {
+        return flush_durable(sink);
     }
     if (sink->record_count == 0) {
         return GATEWAY_OK;
@@ -604,6 +883,36 @@ gateway_error_code gateway_mqtt_sink_consume(
     if (sink == NULL || record == NULL || !required_record_status_valid(record)) {
         return GATEWAY_ERROR_INVALID_VALUE;
     }
+    if (sink->durable) {
+        gateway_spool_snapshot spool_snapshot;
+
+        if (sink->have_last_gateway_seq &&
+            record->gateway_seq <= sink->last_gateway_seq) {
+            return GATEWAY_ERROR_INVALID_VALUE;
+        }
+        code = gateway_spool_append(sink->spool, record);
+        if (code != GATEWAY_OK) {
+            return spool_failure(sink, code, "append record");
+        }
+        gateway_stats_increment(sink->stats,
+                                GATEWAY_STAT_SPOOL_RECORDS_APPENDED);
+        sink->have_last_gateway_seq = true;
+        sink->last_gateway_seq = record->gateway_seq;
+        if (!sink->batch_deadline_set) {
+            if (!deadline_after_milliseconds(sink->batch_interval_ms,
+                                             &sink->batch_deadline)) {
+                return spool_failure(sink, GATEWAY_ERROR_SYSTEM,
+                                     "batch deadline");
+            }
+            sink->batch_deadline_set = true;
+        }
+        gateway_spool_read(sink->spool, &spool_snapshot);
+        sync_spool_snapshot(sink);
+        if (spool_snapshot.pending_records >= sink->max_records) {
+            return flush_durable(sink);
+        }
+        return GATEWAY_OK;
+    }
     (void)pthread_mutex_lock(&sink->snapshot_mutex);
     ready = sink->snapshot.connected && !sink->snapshot.failed &&
             !sink->snapshot.in_flight;
@@ -653,6 +962,34 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
     if (sink == NULL) {
         return GATEWAY_ERROR_ARGUMENT;
     }
+    if (sink->durable) {
+        gateway_spool_snapshot spool_snapshot;
+        bool connected;
+
+        (void)pthread_mutex_lock(&sink->snapshot_mutex);
+        connected = sink->snapshot.connected;
+        (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+        if (!connected) {
+            if (!sink->reconnect_deadline_set ||
+                timespec_reached(&sink->reconnect_deadline)) {
+                return gateway_mqtt_sink_connect(sink);
+            }
+            return GATEWAY_OK;
+        }
+        code = mosquitto_loop(sink->mosq, 0, 1);
+        if (code != MOSQ_ERR_SUCCESS || sink->transport_lost) {
+            return durable_transport_offline(sink, code, "network poll");
+        }
+        gateway_spool_read(sink->spool, &spool_snapshot);
+        if (spool_snapshot.pending_records != 0 &&
+            (sink->replay_pending ||
+             spool_snapshot.pending_records >= sink->max_records ||
+             (sink->batch_deadline_set &&
+              timespec_reached(&sink->batch_deadline)))) {
+            return flush_durable(sink);
+        }
+        return GATEWAY_OK;
+    }
     code = mosquitto_loop(sink->mosq, 0, 1);
     if (code != MOSQ_ERR_SUCCESS) {
         return mqtt_failure(sink, GATEWAY_ERROR_IO, code, "network poll");
@@ -693,9 +1030,23 @@ void gateway_mqtt_sink_read(gateway_mqtt_sink *sink,
     if (sink == NULL || snapshot == NULL) {
         return;
     }
+    sync_spool_snapshot(sink);
     (void)pthread_mutex_lock(&sink->snapshot_mutex);
     *snapshot = sink->snapshot;
     (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+}
+
+uint64_t gateway_mqtt_sink_next_gateway_seq(gateway_mqtt_sink *sink)
+{
+    uint64_t last_sequence;
+
+    if (sink == NULL) {
+        return 0;
+    }
+    last_sequence = sink->durable
+                        ? gateway_spool_last_gateway_seq(sink->spool)
+                        : sink->last_gateway_seq;
+    return last_sequence == UINT64_MAX ? 0 : last_sequence + 1;
 }
 
 void gateway_mqtt_library_version(int *major, int *minor, int *revision)

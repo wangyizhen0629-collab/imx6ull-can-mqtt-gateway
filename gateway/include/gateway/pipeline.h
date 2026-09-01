@@ -41,6 +41,8 @@ typedef struct {
     gateway_pipeline_idle_fn consume_idle;
     gateway_lifecycle *lifecycle;
     gateway_stats *stats;
+    /* 0 保留为兼容默认值；M7 重启时传入 spool 恢复出的下一个序号。 */
+    uint64_t initial_gateway_seq;
 } gateway_pipeline_config;
 
 typedef struct gateway_pipeline gateway_pipeline;

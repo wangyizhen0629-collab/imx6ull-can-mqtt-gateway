@@ -46,6 +46,7 @@ add_library(gateway_core STATIC
     src/mqtt_sink.c
     src/pipeline.c
     src/ring_buffer.c
+    src/spool.c
     src/stats.c
     src/vehicle_decoder.c
 )
@@ -55,6 +56,7 @@ target_compile_features(gateway_core PUBLIC c_std_11)
 target_compile_definitions(gateway_core PUBLIC
     _POSIX_C_SOURCE=200809L
     _DEFAULT_SOURCE
+    _FILE_OFFSET_BITS=64
 )
 target_include_directories(gateway_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -121,13 +123,22 @@ if(BUILD_TESTING)
     set_tests_properties(test_vehicle_dbc PROPERTIES LABELS "M4;protocol")
 
     add_gateway_unit_test(test_pipeline M5)
+    set_tests_properties(test_pipeline PROPERTIES LABELS "M5;M7;unit")
     add_gateway_unit_test(test_mqtt_sink M6)
+    add_gateway_unit_test(test_spool M7)
     add_test(
         NAME test_mqtt_validator
         COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
                 ${PROJECT_SOURCE_DIR}/tools/mqtt/test_validate_m6_batches.py
     )
     set_tests_properties(test_mqtt_validator PROPERTIES LABELS "M6;unit")
+    add_test(
+        NAME test_mqtt_recovery_validator
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
+                ${PROJECT_SOURCE_DIR}/tools/mqtt/test_validate_m7_recovery.py
+    )
+    set_tests_properties(test_mqtt_recovery_validator PROPERTIES
+                         LABELS "M7;unit")
 
     # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
     # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。
@@ -144,6 +155,16 @@ if(BUILD_TESTING)
     target_link_libraries(test_mqtt_timing PRIVATE gateway_core)
     if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
         target_compile_options(test_mqtt_timing PRIVATE
+                               ${GATEWAY_WARNING_OPTIONS})
+    endif()
+
+    # M7 恢复驱动器由显式的 Broker/SIGKILL 脚本调用，不进入默认 CTest。
+    add_executable(test_mqtt_recovery_driver
+                   tests/test_mqtt_recovery_driver.c)
+    target_compile_features(test_mqtt_recovery_driver PRIVATE c_std_11)
+    target_link_libraries(test_mqtt_recovery_driver PRIVATE gateway_core)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(test_mqtt_recovery_driver PRIVATE
                                ${GATEWAY_WARNING_OPTIONS})
     endif()
 endif()

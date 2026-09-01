@@ -24,6 +24,9 @@ typedef struct {
     const char *topic;
     uint32_t batch_interval_ms;
     uint32_t ack_timeout_ms;
+    uint32_t reconnect_interval_ms;
+    /* NULL/空字符串保留 M6 内存批处理；非空启用 M7 持久化语义。 */
+    const char *spool_path;
     size_t max_records;
     gateway_stats *stats;
     gateway_logger *logger;
@@ -42,6 +45,14 @@ typedef struct {
     uint64_t records_acked;
     uint64_t puback_matched;
     uint64_t puback_unexpected;
+    bool durable;
+    uint64_t spool_total_records;
+    uint64_t spool_pending_records;
+    uint64_t spool_records_appended;
+    uint64_t spool_records_replayed;
+    uint64_t spool_tail_recoveries;
+    uint64_t spool_state_recoveries;
+    uint64_t spool_corruptions;
 } gateway_mqtt_sink_snapshot;
 
 typedef struct gateway_mqtt_sink gateway_mqtt_sink;
@@ -59,6 +70,7 @@ gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink);
 gateway_error_code gateway_mqtt_sink_disconnect(gateway_mqtt_sink *sink);
 void gateway_mqtt_sink_read(gateway_mqtt_sink *sink,
                             gateway_mqtt_sink_snapshot *snapshot);
+uint64_t gateway_mqtt_sink_next_gateway_seq(gateway_mqtt_sink *sink);
 
 gateway_error_code gateway_mqtt_encode_batch(
     char *payload,

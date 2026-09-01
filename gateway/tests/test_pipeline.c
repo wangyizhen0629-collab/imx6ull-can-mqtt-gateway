@@ -143,12 +143,13 @@ static gateway_error_code receive_synthetic_record(
     return GATEWAY_OK;
 }
 
-static int fixture_init(pipeline_fixture *fixture,
-                        synthetic_source *source,
-                        size_t capacity,
-                        uint32_t push_timeout_ms,
-                        uint32_t sink_delay_ms,
-                        int receive_timeout_ms)
+static int fixture_init_at_sequence(pipeline_fixture *fixture,
+                                    synthetic_source *source,
+                                    size_t capacity,
+                                    uint32_t push_timeout_ms,
+                                    uint32_t sink_delay_ms,
+                                    int receive_timeout_ms,
+                                    uint64_t initial_gateway_seq)
 {
     gateway_pipeline_config config;
 
@@ -166,8 +167,20 @@ static int fixture_init(pipeline_fixture *fixture,
     config.consume_context = &fixture->sink;
     config.lifecycle = &fixture->lifecycle;
     config.stats = &fixture->stats;
+    config.initial_gateway_seq = initial_gateway_seq;
     CHECK(gateway_pipeline_create(&fixture->pipeline, &config) == GATEWAY_OK);
     return 0;
+}
+
+static int fixture_init(pipeline_fixture *fixture,
+                        synthetic_source *source,
+                        size_t capacity,
+                        uint32_t push_timeout_ms,
+                        uint32_t sink_delay_ms,
+                        int receive_timeout_ms)
+{
+    return fixture_init_at_sequence(fixture, source, capacity, push_timeout_ms,
+                                    sink_delay_ms, receive_timeout_ms, 0);
 }
 
 static void fixture_destroy(pipeline_fixture *fixture)
@@ -385,11 +398,36 @@ static int test_sigterm_wakes_and_stops_pipeline(void)
     return 0;
 }
 
+static int test_initial_gateway_sequence_is_honored(void)
+{
+    synthetic_source source;
+    pipeline_fixture fixture;
+    gateway_mock_sink_snapshot sink;
+    gateway_pipeline_snapshot pipeline;
+
+    (void)memset(&source, 0, sizeof(source));
+    source.count = 1;
+    source.corrupt_index = SIZE_MAX;
+    source.can_ids[0] = GATEWAY_CAN_ID_VEHICLE_DYNAMICS;
+    CHECK(fixture_init_at_sequence(&fixture, &source, 4, 0, 0, 20, 42) == 0);
+    CHECK(gateway_pipeline_start(fixture.pipeline) == GATEWAY_OK);
+    CHECK(gateway_pipeline_join(fixture.pipeline) == GATEWAY_OK);
+    gateway_mock_sink_read(&fixture.sink, &sink);
+    gateway_pipeline_read(fixture.pipeline, &pipeline);
+    CHECK(sink.consumed == 1);
+    CHECK(sink.first_gateway_seq == 42);
+    CHECK(sink.last_gateway_seq == 42);
+    CHECK(pipeline.next_gateway_seq == 43);
+    fixture_destroy(&fixture);
+    return 0;
+}
+
 int main(void)
 {
     CHECK(test_baseline_111_frames_per_second() == 0);
     CHECK(test_slow_consumer_overload_invariants() == 0);
     CHECK(test_decode_rejection_is_not_enqueued() == 0);
     CHECK(test_sigterm_wakes_and_stops_pipeline() == 0);
+    CHECK(test_initial_gateway_sequence_is_honored() == 0);
     return 0;
 }

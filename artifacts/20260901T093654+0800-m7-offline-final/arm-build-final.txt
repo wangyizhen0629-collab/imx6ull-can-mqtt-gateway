@@ -1,0 +1,11 @@
+compiler=arm-buildroot-linux-gnueabihf-gcc.br_real (Buildroot 2020.02-gee85cab) 7.5.0
+warning_flags=-Wall -Wextra -Wpedantic -Werror
+build_testing=OFF
+build=PASS
+elf=ELF 32-bit LSB executable, ARM, EABI5, hard-float
+interpreter=/lib/ld-linux-armhf.so.3
+needed=libpthread.so.0,libmosquitto.so.1,libc.so.6
+rpath_runpath=none
+gatewayd_sha256=9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25
+deployment=NOT RUN: no target-board deployment or process authorization in this handoff
+board_execution=NOT RUN: Windows Broker and target-side recovery work is handed off

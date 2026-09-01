@@ -96,12 +96,15 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M6 host loopback已解决测试实例：使用临时Mosquitto/libmosquitto 2.0.11，Broker只监听
   `127.0.0.1:18884`、匿名、禁用持久化，并在测试后停止。该配置只服务M6主机功能证据，
   不是未来局域网/部署配置。
-- 局域网/目标板测试仍需确定专用 `device_id`、Broker hostname/address、端口、认证方式、
-  topic规则和client ID冲突策略；真实局域网地址和凭据不得提交。
-- PC局域网测试实例采用哪个Mosquitto版本、如何受控启停，以及目标libmosquitto是否与其
-  兼容？M6 host 2.0.11结果不能替代该选择。
+- M6局域网实例已确认为Windows Mosquitto 2.1.2，且已与板端私有libmosquitto 2.0.11
+  完成真实1000-batch门禁；M6兼容性问题已关闭。M7仍需为新的断线/恢复run确定脱敏的
+  `device_id`、topic、端口和受控启停步骤；真实局域网地址和凭据不得提交。
 - 目标板哪个目录/存储介质适合 spool durability 测试？容量和写入寿命限制是什么？
-- 耐久策略选择每 batch sync 还是有上限的周期 sync？spool 满时如何处理？
+- M7原型已决定每条记录append后`fdatasync`，state按temp-sync-rename-directory-sync
+  推进；不做静默drop。当前ENOSPC/sync失败采用fail-stop。真实介质是否承受该写放大、
+  spool容量阈值和已确认前缀的安全回收/compaction策略仍待目标测试后决定。
+- Windows Broker断开/恢复时由谁精确控制Broker进程，i.MX6ULL侧由谁记录`kill -9`
+  返回状态、spool文件hash和重启日志？必须先明确授权和角色，不能只保存一侧结论。
 - 目标板使用什么时间源，wall clock 是否可能跳变？
 
 ## 测试和部署授权
@@ -111,7 +114,7 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - 长时间运行 artifact 的备份和保留策略是什么？
 - M9 使用 BusyBox `inittab` respawn，还是镜像中已有可验证的 supervisor？
 
-## M1～M6 后续验证边界
+## M1～M7 后续验证边界
 
 - M1/M2 当前源码已随 M2 的 ARM `gatewayd` 使用真实 Buildroot SDK 完成交叉编译，并
   在 i.MX6ULL 上完成动态加载和 controller loopback；该结论仅覆盖当前 SHA256 binary。
@@ -128,13 +131,14 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M2 主机单测验证未绑定 CAN_RAW socket 的过滤选项和 datagram timestamp 解析；真实
   i.MX6ULL bind/controller loopback 已另有板端证据。两类结果必须分别引用，不能用
   controller loopback 外推物理 CAN 或性能。
-- M6 Ubuntu主机已使用实际libmosquitto 2.0.11完成1000个QoS 1 loopback batch：publisher
-  匹配PUBACK 1000/1000，subscriber batch_seq/gateway seq为1～1000且无缺失/重复。
-  该结果不是局域网跨主机或板端证据；目标SDK开发文件、ARM构建、部署和真实物理
-  CAN → MQTT仍为 `NOT RUN`，M6总门禁保持 `NOT MET`。
-- M6收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 已复核源码/二进制
-  hash、1000条subscriber JSON和M7/M8边界，且确认临时Broker端口无listener。
-  该收尾不解决目标SDK、LAN或板端的上述待确认项。
+- M6后续已用私有ARMv7 libmosquitto和真实i.MX6ULL物理CAN连接Windows Broker；正式
+  subscriber 1000批/115335条连续记录，gateway/Broker 1033次publish/PUBACK对账一致。
+  `artifacts/20260901T090837+0800-m6-lan-gate-review/`完成manifest 131/131和原始证据
+  独立复核，M6门禁现为`MET`。正确UTC、性能、可靠性及停止边界1帧原因仍未解决。
+- M7源码、主机普通/ASan+UBSan全量16/16和ARMv7交叉构建已通过，证据为
+  `artifacts/20260901T093654+0800-m7-offline-final/`。Windows Broker断线/恢复、实际
+  `kill -9`、subscriber合并验证及目标持久介质均为`NOT RUN`，所以M7仍为`NOT MET`。
+  接续条件见`docs/milestones/M7.md`，不得提前实现M8。
 
 ## 本次已解决项
 
@@ -170,6 +174,11 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   低流量timer路径和subscriber seq验证已通过；最终loopback证据为
   `artifacts/20260831T135630+0800-m6-mqtt-final/`。这项只允许描述为Ubuntu x86_64
   loopback功能验证，不能写成i.MX6ULL或完整CAN--MQTT链路。
+- M6目标门禁：真实i.MX6ULL物理CAN到Windows Broker的1000批及独立manifest/原始证据
+  复核已通过，M6状态为`MET`。
+- M7离线实现：固定格式spool、CRC、原子ACK cursor、尾部/state恢复、seq恢复、重连、
+  单写者锁、独立stats和去重validator均已实现并通过主机/ARM构建；尚未解决的跨主机
+  断线和崩溃恢复保持在上文待办中。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

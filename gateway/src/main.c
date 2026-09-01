@@ -476,7 +476,7 @@ static void log_mqtt_summary(gateway_logger *logger,
     gateway_pipeline_read(pipeline, &pipeline_snapshot);
     gateway_log(
         logger, GATEWAY_LOG_INFO, "mqtt",
-        "M6_MQTT_SUMMARY can_accepted=%" PRIu64
+        "M7_MQTT_SUMMARY can_accepted=%" PRIu64
         " decode_success=%" PRIu64 " queue_success=%" PRIu64
         " queue_drop=%" PRIu64 " queue_pop=%" PRIu64
         " queue_count=%zu mqtt_connect_success=%" PRIu64
@@ -485,7 +485,12 @@ static void log_mqtt_summary(gateway_logger *logger,
         " batches_acked=%" PRIu64 " records_acked=%" PRIu64
         " last_batch_seq=%" PRIu64 " last_gateway_seq=%" PRIu64
         " buffered=%zu in_flight=%d mqtt_errors=%" PRIu64
-        " reconnects=%" PRIu64,
+        " reconnects=%" PRIu64
+        " spool_appended=%" PRIu64 " spool_replayed=%" PRIu64
+        " spool_acked=%" PRIu64 " spool_pending=%" PRIu64
+        " spool_tail_recoveries=%" PRIu64
+        " spool_state_recoveries=%" PRIu64
+        " spool_corruptions=%" PRIu64 " spool_errors=%" PRIu64,
         stats_snapshot.counters[GATEWAY_STAT_CAN_RECEIVE_SUCCESS],
         stats_snapshot.counters[GATEWAY_STAT_CAN_DECODE_SUCCESS],
         stats_snapshot.counters[GATEWAY_STAT_QUEUE_PUSH_SUCCESS],
@@ -502,7 +507,15 @@ static void log_mqtt_summary(gateway_logger *logger,
         sink_snapshot.last_acked_gateway_seq,
         sink_snapshot.buffered_records, sink_snapshot.in_flight ? 1 : 0,
         stats_snapshot.counters[GATEWAY_STAT_MQTT_ERRORS],
-        stats_snapshot.counters[GATEWAY_STAT_MQTT_RECONNECTS]);
+        stats_snapshot.counters[GATEWAY_STAT_MQTT_RECONNECTS],
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_RECORDS_APPENDED],
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_RECORDS_REPLAYED],
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_RECORDS_ACKED],
+        sink_snapshot.spool_pending_records,
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_TAIL_RECOVERIES],
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_STATE_RECOVERIES],
+        sink_snapshot.spool_corruptions,
+        stats_snapshot.counters[GATEWAY_STAT_SPOOL_ERRORS]);
 }
 
 static int run_mqtt_pipeline(const gateway_config *config,
@@ -551,6 +564,8 @@ static int run_mqtt_pipeline(const gateway_config *config,
     sink_config.topic = config->mqtt_topic;
     sink_config.batch_interval_ms = config->batch_interval_ms;
     sink_config.ack_timeout_ms = config->mqtt_ack_timeout_ms;
+    sink_config.reconnect_interval_ms = config->mqtt_reconnect_interval_ms;
+    sink_config.spool_path = config->spool_path;
     sink_config.max_records = GATEWAY_MQTT_BATCH_MAX_RECORDS;
     sink_config.stats = &stats;
     sink_config.logger = logger;
@@ -581,6 +596,13 @@ static int run_mqtt_pipeline(const gateway_config *config,
     pipeline_config.consume_idle = gateway_mqtt_sink_poll;
     pipeline_config.lifecycle = &lifecycle;
     pipeline_config.stats = &stats;
+    pipeline_config.initial_gateway_seq =
+        gateway_mqtt_sink_next_gateway_seq(sink);
+    if (pipeline_config.initial_gateway_seq == 0) {
+        gateway_log(logger, GATEWAY_LOG_ERROR, "spool",
+                    "gateway_seq exhausted");
+        goto cleanup;
+    }
     if (gateway_pipeline_create(&pipeline, &pipeline_config) != GATEWAY_OK ||
         gateway_pipeline_start(pipeline) != GATEWAY_OK) {
         gateway_log(logger, GATEWAY_LOG_ERROR, "mqtt",
@@ -589,10 +611,12 @@ static int run_mqtt_pipeline(const gateway_config *config,
     }
     pipeline_started = true;
     gateway_log(logger, GATEWAY_LOG_INFO, "mqtt",
-                "M6 pipeline started interface=%s batch_interval_ms=%u "
-                "ack_timeout_ms=%u qos=1 max_inflight=1",
+                "M7 pipeline started interface=%s batch_interval_ms=%u "
+                "ack_timeout_ms=%u reconnect_interval_ms=%u "
+                "qos=1 max_inflight=1 spool_path=%s",
                 config->can_interface, config->batch_interval_ms,
-                config->mqtt_ack_timeout_ms);
+                config->mqtt_ack_timeout_ms,
+                config->mqtt_reconnect_interval_ms, config->spool_path);
 
     for (;;) {
         gateway_pipeline_snapshot snapshot;
@@ -639,7 +663,8 @@ static int run_mqtt_pipeline(const gateway_config *config,
             pipeline_snapshot.producer_error == GATEWAY_OK &&
             pipeline_snapshot.consumer_error == GATEWAY_OK &&
             pipeline_snapshot.queue_count == 0 && !sink_snapshot.failed &&
-            !sink_snapshot.in_flight && sink_snapshot.buffered_records == 0 &&
+            !sink_snapshot.in_flight &&
+            (sink_snapshot.durable || sink_snapshot.buffered_records == 0) &&
             sink_snapshot.puback_unexpected == 0) {
             result = 0;
         }

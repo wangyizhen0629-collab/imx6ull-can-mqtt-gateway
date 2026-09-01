@@ -172,13 +172,15 @@ receive timeout 只表示此前无输入时的100 ms poll；不能把整段64/69
 本次没有 `can_before/after`、正确 UTC 或 shell `wait` 精确退出码，故不产生 CAN 错误
 增量、持续运行、吞吐、时延或可靠性结论。
 
-M6 已在 Ubuntu x86_64 主机实现 libmosquitto MQTT QoS 1 sink：按单调时钟和固定上限
-组成 JSON batch，显式限制单个 in-flight publish，只有收到相同 MID 的 PUBACK 才推进
-batch/record 确认统计；低流量时由 consumer timed pop 的 idle tick 触发到期 batch。
-实际 Mosquitto/libmosquitto 2.0.11 loopback 集成已完成1000个单记录测试 batch，publisher
-的1000次 PUBACK 全部匹配，subscriber 的 batch_seq/gateway seq 均为1～1000且没有缺失
-或重复。该结果是主机 loopback 功能验证，不是局域网跨主机或 i.MX6ULL 证据。
+M6 使用libmosquitto MQTT QoS 1 sink，按单调时钟和固定上限组成JSON batch，显式限制
+单个in-flight publish，只有收到匹配MID的PUBACK才推进确认统计。除Ubuntu loopback
+1000-batch外，项目所有者已在真实i.MX6ULL上使用私有ARMv7 libmosquitto 2.0.11和
+物理CAN输入连接Windows Mosquitto 2.1.2；正式subscriber保存1000批/115335条连续记录，
+gateway与Broker对账1033次publish/PUBACK一致。独立manifest和原始证据复核已通过，
+M6于2026-09-01达到门禁。正确UTC、性能、时延和长期可靠性仍未验证。
 
-当前 Buildroot SDK 缺少目标 `mosquitto.h` 和 libmosquitto 开发链接输入，M6 ARM交叉构建、
-部署、真实物理 CAN → MQTT 和局域网跨主机测试均为 `NOT RUN`，所以 M6 总退出门禁仍为
-`NOT MET`。spool I/O、重连恢复、去重、epoll 和部署功能仍未实现，属于 M7 及后续阶段。
+M7当前实现append-only固定格式spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
+seq恢复、断线重连、单写者锁、独立stats和QoS 1去重validator。Ubuntu普通与
+ASan+UBSan全量16/16以及ARMv7 warning-clean交叉构建均通过。实际Windows Broker断线/
+恢复、subscriber原始重复、`kill -9`后同一spool重启和目标持久介质均为`NOT RUN`，故
+M7总门禁仍为`NOT MET`。M8 external-loop/epoll、部署和后续功能尚未开始。

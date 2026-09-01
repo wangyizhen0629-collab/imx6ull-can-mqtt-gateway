@@ -1,0 +1,11 @@
+cmake -S . -B build-m7 -DGATEWAY_MOSQUITTO_ROOT=/tmp/imx6ull-m6-mosquitto-root/usr -DCMAKE_BUILD_TYPE=Debug
+cmake --build build-m7 --parallel 4
+ctest --test-dir build-m7 --output-on-failure
+cmake -S . -B build-m7-asan-ubsan -DGATEWAY_MOSQUITTO_ROOT=/tmp/imx6ull-m6-mosquitto-root/usr -DCMAKE_BUILD_TYPE=Debug '-DCMAKE_C_FLAGS=-fsanitize=address,undefined -fno-omit-frame-pointer -g'
+cmake --build build-m7-asan-ubsan --parallel 4
+ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build-m7-asan-ubsan --output-on-failure
+IMX6ULL_SDK_ROOT=<workspace>/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot cmake -S . -B build-m7-arm-3 -DCMAKE_TOOLCHAIN_FILE=gateway/cmake/toolchains/imx6ull-buildroot.cmake -DGATEWAY_MOSQUITTO_INCLUDE_DIR=<workspace>/build/m6-arm-private/stage/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=<workspace>/build/m6-arm-private/stage/usr/lib/libmosquitto.so -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Debug -DCMAKE_SKIP_RPATH=TRUE
+IMX6ULL_SDK_ROOT=<workspace>/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot cmake --build build-m7-arm-3 --parallel 4
+file build-m7-arm-3/gateway/gatewayd
+readelf -d build-m7-arm-3/gateway/gatewayd
+sha256sum build-m7/gateway/gatewayd build-m7/gateway/test_pipeline build-m7/gateway/test_spool build-m7/gateway/test_mqtt_recovery_driver build-m7-arm-3/gateway/gatewayd gateway/src/spool.c gateway/src/mqtt_sink.c gateway/src/pipeline.c tools/mqtt/validate_m7_recovery.py

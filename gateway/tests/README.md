@@ -63,5 +63,18 @@ batch全部收到匹配PUBACK，subscriber的batch_seq和gateway seq均为1～10
 重复或乱序。独立100 ms测试interval用例验证低流量idle tick能发送到期batch。证据在
 `artifacts/20260831T135630+0800-m6-mqtt-final/`。
 
-这些测试不是局域网跨主机、ARMv7、i.MX6ULL或真实CAN → MQTT证据；当前目标SDK缺少
-libmosquitto开发文件，相关项目为 `NOT RUN`。断线重连、spool、恢复和epoll不属于M6。
+上述段落记录M6 host loopback时的边界；后续真实i.MX6ULL到Windows Broker证据已经
+关闭M6，详见`docs/milestones/M6.md`。
+
+M7新增`test_spool`和`test_mqtt_recovery_validator`并注册到默认CTest：
+
+- `test_spool`覆盖固定entry/state格式、CRC、append同步、PUBACK游标等价API、重开、
+  部分尾部截断、state损坏安全回退、内部损坏拒绝及单写者锁；
+- Python恢复validator允许内容一致的raw duplicate，要求按`device_id + seq`去重后连续
+  完整，并拒绝缺失、首次乱序或内容冲突的重复；
+- `test_mqtt_sink`增加无需Broker的offline durable append和gateway seq重启恢复覆盖。
+
+`test_mqtt_recovery_driver`只构建、不注册到默认CTest；
+`tools/mqtt/run_m7_recovery_integration.py`会实际启停loopback Broker/subscriber并发送
+`SIGKILL`，只有获得明确批准后才能显式运行。本项目实际Broker位于Windows，所以当前
+这些跨进程测试为`NOT RUN`，不能用离线单测替代。M8 epoll不属于这些测试。

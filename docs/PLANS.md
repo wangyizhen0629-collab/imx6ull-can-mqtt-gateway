@@ -42,7 +42,12 @@
   gateway seq为1～115335，missing/duplicate/reordered均为0；gateway和Broker原始日志
   对账为1033次publish与1033次匹配PUBACK，unexpected和MQTT error均为0。Ubuntu独立
   复核确认manifest 131/131、严格validator 8/8及原始Broker/gateway/CAN计数通过。
-  正确UTC、时延、吞吐、长期可靠性和M7恢复语义仍未验证；M7及后续尚未开始。
+  正确UTC、时延、吞吐和长期可靠性仍未验证。
+- M7 已获单独授权并完成源码、Ubuntu离线回归和ARMv7交叉构建。append-only
+  `spool.data`、原子`spool.state`、CRC/尾部恢复、PUBACK游标、seq恢复、重连及去重
+  validator已实现；全量普通/ASan+UBSan均16/16 PASS，ARMv7 warning-clean构建PASS。
+  Windows Broker断线/恢复、subscriber原始证据、实际`kill -9`及目标板持久介质测试均为
+  `NOT RUN`，故M7仍为`NOT MET`。M8及后续未开始。
 
 ## Milestone 总表
 
@@ -59,7 +64,7 @@
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
 | M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
-| M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 未开始 |
+| M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 进行中；源码/主机/ARM构建PASS，Windows Broker与`kill -9` NOT RUN，总门禁NOT MET |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
 | M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
@@ -345,6 +350,36 @@ M6要求的实际库、ARMv7目标运行、真实物理CAN到局域网Broker、�
 证明M6 QoS 1基线功能链路；板端wall clock仍为1970，正确UTC、端到端时延、吞吐、长期
 可靠性、Broker精确退出码和停止边界1帧原因均未验证。spool、断线重连、补传、去重、
 `kill -9`及epoll仍为`NOT RUN`，属于M7/M8。M7及后续尚未开始。
+
+## M7 当前记录
+
+1. 开始前以`artifacts/20260901T093205+0800-m7-host-pre-broker/`复核M6为`MET`，并记录
+   项目所有者在M6关闭后单独批准只执行M7。起始HEAD为
+   `f185222bc685e54355b635388bf0094f7ec41b6e`，当时与`origin/master`一致。
+2. 新增append-only spool：每条80字节、显式little-endian、magic/version/length/CRC32；
+   append逐条`fdatasync`。`spool.state`使用CRC、ACK offset/seq和next batch，按临时文件
+   sync、rename、父目录fsync原子更新。data文件使用单写者`flock`和64-bit file offset。
+3. 启动扫描会截断部分尾部或最后一条损坏记录；内部损坏拒绝启动。state缺失或损坏时
+   回退到offset 0，允许原始重复但不虚报交付。只有匹配MID的PUBACK到达后才推进state。
+4. pipeline的下一个gateway seq从data最后有效记录恢复；断线后记录继续持久化，按新增
+   `mqtt_reconnect_interval_ms`重试。每次重连重建clean-session客户端并保持最多一个
+   in-flight batch；没有使用M8 external-loop/epoll API。
+5. stats区分spool append/replay/ACK、tail/state recovery、corruption/error和MQTT错误。
+   M7 validator允许内容一致的QoS 1原始重复，但要求按`device_id + seq`去重后连续有序、
+   missing=0、effective duplicate=0。
+6. 最终离线证据`artifacts/20260901T093654+0800-m7-offline-final/`记录Ubuntu Debug
+   warning-clean、沙箱外全量CTest16/16、ASan+UBSan全量16/16和M7标签3/3 PASS；
+   LeakSanitizer为`NOT RUN`。恢复validator回归5/5 PASS。
+7. 同一源码用Buildroot GCC 7.5.0完成ARMv7 warning-clean交叉构建；binary SHA256为
+   `9c4efe5c12f9797e8eda03ada8c6b2162ff0225aa7680c7ac199afdc45382b25`，hard-float、
+   依赖目标`libmosquitto.so.1`、无RPATH/RUNPATH。部署和板端执行均为`NOT RUN`。
+8. 项目所有者确认实际Broker位于Windows，并要求提交/push后由Windows Codex继续。
+   Windows Broker断线/恢复、subscriber原始证据、目标板spool及实际`kill -9`未执行，
+   禁止根据单元测试推测结果；接续清单见`docs/milestones/M7.md`。
+
+M7退出条件要求实际断线/恢复和`kill -9`证明顺序恢复及去重后完整。当前只有实现、离线
+测试和ARM构建证据，所以M7总门禁保持 **NOT MET**。接续工作只允许完成M7，不得提前
+实现M8或后续功能。
 
 ## M1 完成记录
 

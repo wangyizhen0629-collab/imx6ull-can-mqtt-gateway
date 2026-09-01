@@ -20,6 +20,7 @@ enum {
     CONFIG_FIELD_QUEUE_PUSH_TIMEOUT_MS,
     CONFIG_FIELD_BATCH_INTERVAL_MS,
     CONFIG_FIELD_MQTT_ACK_TIMEOUT_MS,
+    CONFIG_FIELD_MQTT_RECONNECT_INTERVAL_MS,
     CONFIG_FIELD_SPOOL_PATH,
     CONFIG_FIELD_LOG_LEVEL,
     CONFIG_FIELD_COUNT
@@ -129,7 +130,8 @@ static int field_index(const char *key)
         "device_id", "can_interface", "broker_host", "broker_port",
         "broker_username", "broker_password", "mqtt_topic",
         "queue_capacity", "queue_push_timeout_ms", "batch_interval_ms",
-        "mqtt_ack_timeout_ms", "spool_path", "log_level"
+        "mqtt_ack_timeout_ms", "mqtt_reconnect_interval_ms", "spool_path",
+        "log_level"
     };
     int index;
 
@@ -244,6 +246,14 @@ static gateway_error_code set_field(gateway_config *config,
         }
         config->mqtt_ack_timeout_ms = (uint32_t)parsed;
         break;
+    case CONFIG_FIELD_MQTT_RECONNECT_INTERVAL_MS:
+        code = parse_unsigned(value, GATEWAY_MQTT_RECONNECT_INTERVAL_MS_MIN,
+                              GATEWAY_MQTT_RECONNECT_INTERVAL_MS_MAX, &parsed);
+        if (code != GATEWAY_OK) {
+            return set_error(error, code, line, key, NULL);
+        }
+        config->mqtt_reconnect_interval_ms = (uint32_t)parsed;
+        break;
     case CONFIG_FIELD_SPOOL_PATH:
         if (!valid_visible_string(value, GATEWAY_SPOOL_PATH_SIZE - 1, true) ||
             value[0] != '/') {
@@ -284,6 +294,7 @@ void gateway_config_init_defaults(gateway_config *config)
     config->queue_push_timeout_ms = 50;
     config->batch_interval_ms = 1000;
     config->mqtt_ack_timeout_ms = 5000;
+    config->mqtt_reconnect_interval_ms = 1000;
     (void)snprintf(config->spool_path, sizeof(config->spool_path),
                    "/var/lib/gatewayd/spool.data");
     config->log_level = GATEWAY_LOG_INFO;
@@ -458,6 +469,13 @@ gateway_error_code gateway_config_validate(const gateway_config *config,
         return set_error(error, GATEWAY_ERROR_RANGE, 0,
                          "mqtt_ack_timeout_ms", NULL);
     }
+    if (config->mqtt_reconnect_interval_ms <
+            GATEWAY_MQTT_RECONNECT_INTERVAL_MS_MIN ||
+        config->mqtt_reconnect_interval_ms >
+            GATEWAY_MQTT_RECONNECT_INTERVAL_MS_MAX) {
+        return set_error(error, GATEWAY_ERROR_RANGE, 0,
+                         "mqtt_reconnect_interval_ms", NULL);
+    }
     if (!valid_visible_string(config->spool_path,
                               GATEWAY_SPOOL_PATH_SIZE - 1, true) ||
         config->spool_path[0] != '/') {
@@ -483,12 +501,14 @@ void gateway_config_log_redacted(const gateway_config *config,
                 "broker_username=%s broker_password=<redacted> mqtt_topic=%s "
                 "queue_capacity=%zu queue_push_timeout_ms=%u "
                 "batch_interval_ms=%u mqtt_ack_timeout_ms=%u "
+                "mqtt_reconnect_interval_ms=%u "
                 "spool_path=%s log_level=%s",
                 config->device_id, config->can_interface, config->broker_host,
                 (unsigned int)config->broker_port,
                 config->broker_username[0] == '\0' ? "<unset>" : "<redacted>",
                 config->mqtt_topic, config->queue_capacity,
                 config->queue_push_timeout_ms, config->batch_interval_ms,
-                config->mqtt_ack_timeout_ms, config->spool_path,
+                config->mqtt_ack_timeout_ms,
+                config->mqtt_reconnect_interval_ms, config->spool_path,
                 gateway_log_level_name(config->log_level));
 }

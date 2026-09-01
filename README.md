@@ -33,12 +33,15 @@ queue drop、故意慢消费者、`SIGTERM` 和 ARMv7 交叉构建。SHA256 固�
 为0；慢消费者过载产生3561次明确 drop，计数守恒；两次 signal 15 后均完成 post-join
 summary。M5 已通过。
 
-M6 已实现 `libmosquitto` MQTT 3.1.1 QoS 1 sink、有界批量 JSON、批次定时刷新、
-PUBACK 计数与 `gatewayd --run-mqtt` 链路。Ubuntu 主机 warning-clean 和
-ASan+UBSan 回归通过；受批准启动的临时本机 Mosquitto 完成1000批/1000条、
-1000个匹配 PUBACK，订阅端验证无缺失、重复或乱序。但 Buildroot SDK 不含目标侧
-`libmosquitto` 开发文件，局域网跨主机和 i.MX6ULL 物理 CAN 端到端验证均为
-`NOT RUN`，因此 M6 总门禁仍为 `NOT MET`。spool I/O、epoll 和 M7 及后续功能未实现。
+M6 已完成 `libmosquitto` MQTT 3.1.1 QoS 1 sink、有界批量JSON、定时刷新及匹配
+PUBACK门禁。真实i.MX6ULL使用物理CAN输入连接Windows Broker；正式subscriber保存
+1000批/115335条连续记录，gateway/Broker对账1033次publish/PUBACK一致，独立manifest
+与原始证据复核通过。M6状态为`MET`，但不产生正确UTC、性能或可靠性结论。
+
+M7 已实现固定格式append-only spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
+seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UBSan全量16/16及ARMv7
+交叉构建通过；Windows Broker实际断线/恢复、subscriber原始证据、`kill -9`恢复和目标
+持久介质均为`NOT RUN`，所以M7总门禁仍为`NOT MET`。M8及后续尚未开始。
 
 ## Ubuntu 主机构建
 
@@ -67,9 +70,9 @@ cmake -S . -B build -DGATEWAY_MOSQUITTO_ROOT=/path/to/mosquitto/root
 `can0`，但会打开配置的 CAN 接口并启动工作线程；在目标板部署/运行、修改接口状态或
 发送进程信号前仍必须取得明确批准。
 
-`--run-mqtt` 是 M6 实时链路入口，它同样不会自行配置 `can0` 或启动 Broker，
-但会打开 CAN 接口、连接配置的 Broker 并启动工作线程。目标板部署/运行、Broker
-状态改动或网络/CAN 状态改动仍受仓库批准规则约束。
+`--run-mqtt` 是当前M7实时链路入口，它同样不会自行配置`can0`或启动Broker，但会打开
+CAN接口、创建/锁定`spool_path`、连接配置的Broker并启动工作线程。目标板部署/运行、
+Broker状态改动、进程kill或网络/CAN状态改动仍受仓库批准规则约束。
 
 请先阅读[项目规范](docs/PROJECT_SPEC.md)、[阶段计划](docs/PLANS.md)和
 [待确认问题](docs/OPEN_QUESTIONS.md)。M0 证据记录在
@@ -79,4 +82,5 @@ cmake -S . -B build -DGATEWAY_MOSQUITTO_ROOT=/path/to/mosquitto/root
 [docs/milestones/M3.md](docs/milestones/M3.md)和
 [docs/milestones/M4.md](docs/milestones/M4.md)、
 [docs/milestones/M5.md](docs/milestones/M5.md)，M6 执行记录在
-[docs/milestones/M6.md](docs/milestones/M6.md)。
+[docs/milestones/M6.md](docs/milestones/M6.md)，M7交接与未执行门禁在
+[docs/milestones/M7.md](docs/milestones/M7.md)。

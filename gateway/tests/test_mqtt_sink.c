@@ -3,7 +3,9 @@
 #include "gateway/stats.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define CHECK(condition)                                                       \
     do {                                                                       \
@@ -105,9 +107,69 @@ static int test_library_and_create_validation(void)
     return 0;
 }
 
+static int test_durable_offline_append_and_sequence_recovery(void)
+{
+    char directory[] = "/tmp/gateway-mqtt-spool-test-XXXXXX";
+    char spool_path[256];
+    gateway_mqtt_sink_config config;
+    gateway_mqtt_sink_snapshot snapshot;
+    gateway_mqtt_sink *sink = NULL;
+    gateway_stats stats;
+    gateway_logger logger;
+    telemetry_record record;
+
+    CHECK(mkdtemp(directory) != NULL);
+    CHECK(snprintf(spool_path, sizeof(spool_path), "%s/spool.data",
+                   directory) > 0);
+    CHECK(gateway_stats_init(&stats) == GATEWAY_OK);
+    CHECK(gateway_logger_init(&logger, stderr, GATEWAY_LOG_ERROR) ==
+          GATEWAY_OK);
+    (void)memset(&config, 0, sizeof(config));
+    config.device_id = "unit-gateway";
+    config.broker_host = "127.0.0.1";
+    config.broker_port = 1883;
+    config.broker_username = "";
+    config.broker_password = "";
+    config.topic = "test/m7/unit";
+    config.batch_interval_ms = 1000;
+    config.ack_timeout_ms = 1000;
+    config.reconnect_interval_ms = 100;
+    config.spool_path = spool_path;
+    config.max_records = 2;
+    config.stats = &stats;
+    config.logger = &logger;
+    CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
+    CHECK(gateway_mqtt_sink_next_gateway_seq(sink) == 1);
+    record = make_record(1, 1);
+    CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+    record = make_record(2, 2);
+    CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.durable);
+    CHECK(snapshot.spool_total_records == 2);
+    CHECK(snapshot.spool_pending_records == 2);
+    CHECK(snapshot.spool_records_appended == 2);
+    CHECK(gateway_mqtt_sink_next_gateway_seq(sink) == 3);
+    gateway_mqtt_sink_destroy(sink);
+    sink = NULL;
+
+    CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.spool_pending_records == 2);
+    CHECK(snapshot.spool_state_recoveries == 1);
+    CHECK(gateway_mqtt_sink_next_gateway_seq(sink) == 3);
+    gateway_mqtt_sink_destroy(sink);
+    gateway_logger_destroy(&logger);
+    gateway_stats_destroy(&stats);
+    CHECK(unlink(spool_path) == 0);
+    CHECK(rmdir(directory) == 0);
+    return 0;
+}
+
 int main(void)
 {
     CHECK(test_batch_encoding() == 0);
     CHECK(test_library_and_create_validation() == 0);
+    CHECK(test_durable_offline_append_and_sequence_recovery() == 0);
     return 0;
 }
