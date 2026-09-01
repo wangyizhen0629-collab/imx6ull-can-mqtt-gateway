@@ -164,16 +164,30 @@ M6 主机最终测试如下：
   duplicate和reordered均为0。上述条件均实际PASS；
 - 同一MQTT run还以100 ms测试interval和单记录验证idle tick触发到期batch。观测
   105.236 ms只用于确认功能路径，不能作为时延或性能数字；生产默认interval为1000 ms；
-- `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认Buildroot SDK缺少目标
-  libmosquitto开发文件，所以ARM交叉构建、部署和板端运行均为 **NOT RUN**；
-- 正式计划要求的局域网跨主机、真实i.MX6ULL物理CAN → MQTT也是 **NOT RUN**。
-  host loopback不能代替该证据，因此M6总退出门禁保持 **NOT MET**。
+- `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认当时Buildroot SDK缺少
+  目标libmosquitto开发文件，所以该run的ARM交叉构建、部署和板端运行均为
+  **NOT RUN**；这一历史结果保持不变，后续证据另行补齐；
+- 截至当时收尾，正式计划要求的局域网跨主机、真实i.MX6ULL物理CAN → MQTT也是
+  **NOT RUN**，host loopback不能替代该证据；
 - 收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 重跑M6单测、重放1000条
   subscriber JSON、复核归档hash与M7/M8范围，全部PASS；临时Broker端口已
-  确认无listener。该审计不会将上述 `NOT RUN` 项转为PASS。
+  确认无listener。该审计本身没有将上述`NOT RUN`项转为PASS；
+- 经明确批准的`artifacts/20260831T220718p0800-m6-lan-1000/` 在真实i.MX6ULL上使用
+  SHA256固定binary和私有libmosquitto 2.0.11，将物理CAN数据发布到专用有线LAN内的
+  Windows Mosquitto 2.1.2。正式subscriber必须且实际保存1000批；严格validator确认
+  batch_seq 1～1000、gateway seq 1～115335，missing/duplicate/reordered均为0；
+- 同一LAN run的gateway publish attempt/accepted/matched PUBACK均为1033，unexpected
+  和MQTT error为0；Broker原始日志必须且实际重新计数为gateway PUBLISH/PUBACK
+  1033/1033、正式subscriber PUBLISH/PUBACK 1000/1000；
+- 2026-09-01在Ubuntu独立复核该LAN run的原始`manifest.sha256` 131/131、严格
+  validator回归8/8、subscriber重放、Broker/gateway对账和CAN前后快照，结果
+  PASS_WITH_LIMITATIONS。M6退出门禁据此为 **MET**。
 
-M6的1000个单记录测试batch用于覆盖1000次QoS 1状态转换，不是1秒生产负载、吞吐或
-运行时长测试。Broker断线/恢复、spool、`kill -9`、去重和epoll属于M7/M8，M6不得执行。
+主机loopback的1000个单记录测试batch只用于覆盖1000次QoS 1状态转换；真实LAN run的
+1000个batch共115335条记录，同样只证明M6功能门禁，不产生吞吐、时延或长期可靠性
+结论。板端wall clock为1970，正确UTC仍为`NOT RUN`；`can_accepted`与`queue_success`
+在停止边界相差1帧，原因未被独立捕获，不推测为发布成功或丢失。Broker断线/恢复、
+spool、`kill -9`、去重和epoll属于M7/M8，M6没有执行。
 
 长时间测试、Broker 控制、接口状态、固件烧录、进程控制和部署操作必须在执行前
 单独取得明确批准。

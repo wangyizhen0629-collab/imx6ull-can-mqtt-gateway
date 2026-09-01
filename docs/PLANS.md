@@ -35,12 +35,14 @@
   1条在关闭竞争中拒绝，计数守恒；两次 signal 15 后均输出 post-join summary。
   timeout 由 STM32 在进程启动后才开启解释，不作为队列失败，也不宣称全程连续负载。
   M5 于2026-08-31通过。
-- M6 已获项目所有者授权并完成 Ubuntu x86_64 主机实现与 loopback 基线。实际
-  Mosquitto/libmosquitto 2.0.11 下1000个 QoS 1测试 batch 均收到匹配 PUBACK，subscriber
-  的 batch_seq/gateway seq 均为1～1000且 missing/duplicate 为0；主机 warning-clean
-  和 ASan+UBSan 全量13/13通过。由于正式门禁要求局域网验证，而本次只有同机 loopback；
-  且 Buildroot SDK 缺少目标 libmosquitto 开发文件，ARM交叉构建和 i.MX6ULL 运行均为
-  `NOT RUN`。因此 M6 实现已完成，但总退出门禁为 `NOT MET`；M7 及后续未开始。
+- M6 已于2026-09-01通过。Ubuntu x86_64主机warning-clean和ASan+UBSan全量13/13、
+  libmosquitto 2.0.11 loopback 1000-batch基线均通过；随后真实i.MX6ULL动态加载私有
+  libmosquitto 2.0.11和SHA256固定的ARMv7 `gatewayd`，以物理CAN输入连接局域网Windows
+  Mosquitto Broker。正式subscriber保存1000批、115335条连续记录，batch_seq为1～1000、
+  gateway seq为1～115335，missing/duplicate/reordered均为0；gateway和Broker原始日志
+  对账为1033次publish与1033次匹配PUBACK，unexpected和MQTT error均为0。Ubuntu独立
+  复核确认manifest 131/131、严格validator 8/8及原始Broker/gateway/CAN计数通过。
+  正确UTC、时延、吞吐、长期可靠性和M7恢复语义仍未验证；M7及后续尚未开始。
 
 ## Milestone 总表
 
@@ -56,7 +58,7 @@
 | M3-E | `gatewayd` 接入真实 CAN | 在真实 `can0` 完成有限接收；原10分钟门禁由项目所有者豁免 | 已完成；两次1110帧 smoke 正常，10分钟测试 NOT RUN/已豁免 |
 | M4 | 自定义 DBC、静态解码器、黄金向量 | 主机黄金向量通过，有物理意义的真实 STM32 模拟规律与解码结果一致 | 2026-08-31 已通过；42条向量、6660帧主机模型及60秒实物逐帧审计 PASS |
 | M5 | 生产者--消费者链路和 mock sink | 基准负载 queue drop 为 0；过载策略和 SIGTERM 退出通过 | 2026-08-31 已通过；主机/ASan/ARM构建及真实 i.MX6ULL 基准、过载、SIGTERM PASS |
-| M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 主机实现/loopback 1000-batch PASS；局域网、ARM及板端 NOT RUN，门禁 NOT MET |
+| M6 | libmosquitto MQTT QoS 1 基线 | 实际库已验证；至少 1000 batch，seq 和 PUBACK 统计通过 | 2026-09-01 已通过；主机、ARMv7、真实板端物理CAN到局域网Broker及1000-batch validator PASS |
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 未开始 |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 未开始 |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 未开始 |
@@ -314,19 +316,35 @@ signal 15 graceful shutdown；不产生持续运行、CAN error增量、吞吐�
 10. 同一 run 的低流量定时用例配置100 ms测试 interval，只放入1条记录；idle tick在
     105.236 ms后完成 publish/PUBACK。该数值只证明 timer路径，不作为时延或性能指标；
     正式默认仍为1000 ms。
-11. ARM依赖审计 `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认当前
-    Buildroot SDK sysroot没有 `mosquitto.h`、目标库或`.pc`文件，CMake配置退出1。因此
-    ARM交叉构建、部署和板端执行全部为 `NOT RUN`，没有生成 M6 ARM binary。
-12. 局域网跨主机、真实 i.MX6ULL 物理 CAN → MQTT、正确板端 UTC及目标库精确版本均
-    `NOT RUN`。本次 loopback不能替代 `docs/TEST_PLAN.md` 要求的局域网门禁。
+11. ARM依赖审计 `artifacts/20260831T135759+0800-m6-arm-dependency-audit/` 确认当时
+    Buildroot SDK sysroot没有 `mosquitto.h`、目标库或`.pc`文件，CMake配置退出1；该run
+    的ARM交叉构建、部署和板端执行均为`NOT RUN`，没有生成M6 ARM binary。该历史失败
+    保持不变，后续以私有构建和板端run补齐，不能倒写为本run通过。
+12. 截至上述主机收尾时，局域网跨主机、真实i.MX6ULL物理CAN → MQTT、正确板端UTC及
+    目标库精确版本均为`NOT RUN`；host loopback本身不能替代局域网门禁。
 13. 收尾审计 `artifacts/20260831T140625+0800-m6-close-audit/` 重跑M6专项单测、
     重放1000条subscriber JSON validator，复核归档源码/二进制哈希、JSON、
     文档格式与M7/M8范围，全部PASS。获批准的只读端口检查确认18884
     无listener；收尾过程没有重新启动Broker。
+14. 经项目所有者批准的真实LAN run
+    `artifacts/20260831T220718p0800-m6-lan-1000/` 使用SHA256固定的ARMv7 binary及私有
+    libmosquitto 2.0.11，从真实i.MX6ULL物理CAN发布到专用有线LAN内的Windows
+    Mosquitto 2.1.2。正式subscriber退出0并保存1000批、115335条记录；batch_seq
+    1～1000和gateway seq 1～115335均连续，missing/duplicate/reordered均为0。
+    gateway最终确认1033批/119082条记录；publish attempt/accepted/matched PUBACK均为
+    1033，unexpected、MQTT error和queue drop均为0；Broker原始日志重新计数完全一致。
+15. 2026-09-01 Ubuntu独立复核以CRLF兼容的只读方式验证上述LAN run的
+    `manifest.sha256`所列131个文件全部匹配，重放当前严格整数validator并通过8/8回归，
+    重新解析Broker/gateway/CAN原始证据。CAN前后均为ERROR-ACTIVE、500 kbit/s，RX
+    error/drop/overrun及CAN错误类计数增量均为0。`can_accepted=119083`比
+    `queue_success=119082`多1帧，原始证据不能独立解释该停止边界差值，因此不外推为
+    每个CAN输入均已发布。
 
-M6 源码和 Ubuntu loopback 基线已经完成，但正式退出条件尚缺局域网/目标环境证据，
-所以当前状态为 **NOT MET**。不得据此写成 i.MX6ULL CAN--MQTT 完整链路、吞吐、时延、
-可靠性或持久化结果。M7 及后续未开始。
+M6要求的实际库、ARMv7目标运行、真实物理CAN到局域网Broker、至少1000个QoS 1 batch、
+连续unique seq及匹配PUBACK均已有真实证据，退出门禁为 **2026-09-01 MET**。该判定只
+证明M6 QoS 1基线功能链路；板端wall clock仍为1970，正确UTC、端到端时延、吞吐、长期
+可靠性、Broker精确退出码和停止边界1帧原因均未验证。spool、断线重连、补传、去重、
+`kill -9`及epoll仍为`NOT RUN`，属于M7/M8。M7及后续尚未开始。
 
 ## M1 完成记录
 
