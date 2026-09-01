@@ -49,7 +49,14 @@ static void sleep_milliseconds(unsigned int milliseconds)
     }
 }
 
-static int reserve_unlistened_loopback_port(uint16_t *port)
+static double elapsed_milliseconds(const struct timespec *start,
+                                   const struct timespec *end)
+{
+    return (double)(end->tv_sec - start->tv_sec) * 1000.0 +
+           (double)(end->tv_nsec - start->tv_nsec) / 1000000.0;
+}
+
+static int create_silent_loopback_listener(uint16_t *port)
 {
     struct sockaddr_in address;
     socklen_t address_size = sizeof(address);
@@ -67,6 +74,10 @@ static int reserve_unlistened_loopback_port(uint16_t *port)
              sizeof(address)) != 0 ||
         getsockname(descriptor, (struct sockaddr *)&address,
                     &address_size) != 0) {
+        (void)close(descriptor);
+        return -1;
+    }
+    if (listen(descriptor, 8) != 0) {
         (void)close(descriptor);
         return -1;
     }
@@ -219,6 +230,8 @@ static int test_durable_reconnect_during_continuous_consume(void)
     uint64_t sequence;
     uint16_t closed_port = 0;
     int reserved_socket;
+    struct timespec consume_start;
+    struct timespec consume_end;
 
     CHECK(mkdtemp(directory) != NULL);
     CHECK(snprintf(spool_path, sizeof(spool_path), "%s/spool.data",
@@ -229,15 +242,15 @@ static int test_durable_reconnect_during_continuous_consume(void)
     (void)memset(&config, 0, sizeof(config));
     config.device_id = "unit-gateway";
     config.broker_host = "127.0.0.1";
-    /* 绑定但不 listen，避免依赖宿主机某个固定端口恰好未被占用。 */
-    reserved_socket = reserve_unlistened_loopback_port(&closed_port);
+    /* TCP握手成功但不返回CONNACK，模拟网络连接阶段静默。 */
+    reserved_socket = create_silent_loopback_listener(&closed_port);
     CHECK(reserved_socket >= 0);
     config.broker_port = closed_port;
     config.broker_username = "";
     config.broker_password = "";
     config.topic = "test/m8/continuous-reconnect";
     config.batch_interval_ms = 1000;
-    config.ack_timeout_ms = 100;
+    config.ack_timeout_ms = 500;
     config.reconnect_interval_ms = 1;
     config.spool_path = spool_path;
     config.max_records = 100;
@@ -250,7 +263,10 @@ static int test_durable_reconnect_during_continuous_consume(void)
 
         sleep_milliseconds(2);
         /* 不调用 poll，模拟持续 CAN 输入使 consumer 永远不 idle。 */
+        CHECK(clock_gettime(CLOCK_MONOTONIC, &consume_start) == 0);
         CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+        CHECK(clock_gettime(CLOCK_MONOTONIC, &consume_end) == 0);
+        CHECK(elapsed_milliseconds(&consume_start, &consume_end) < 250.0);
     }
     gateway_mqtt_sink_read(sink, &snapshot);
     gateway_stats_read(&stats, &stats_snapshot);

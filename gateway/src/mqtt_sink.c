@@ -58,8 +58,11 @@ struct gateway_mqtt_sink {
     bool ever_connected;
     bool transport_lost;
     bool reconnect_deadline_set;
+    bool reconnect_in_progress;
+    bool reconnect_attempt_deadline_set;
     bool replay_pending;
     struct timespec reconnect_deadline;
+    struct timespec reconnect_attempt_deadline;
     bool have_last_gateway_seq;
     uint64_t last_gateway_seq;
     pthread_mutex_t snapshot_mutex;
@@ -442,6 +445,8 @@ static gateway_error_code reset_mosquitto_client(gateway_mqtt_sink *sink)
     sink->transport_lost = false;
     sink->connect_callback_seen = false;
     sink->explicit_disconnect = false;
+    sink->reconnect_in_progress = false;
+    sink->reconnect_attempt_deadline_set = false;
     code = create_mosquitto_client(sink);
     if (code != GATEWAY_OK) {
         return code;
@@ -842,9 +847,36 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
     return GATEWAY_OK;
 }
 
-static gateway_error_code durable_reconnect_if_due(gateway_mqtt_sink *sink)
+static gateway_error_code complete_reconnect(gateway_mqtt_sink *sink)
 {
+    if (!sink->connect_callback_seen) {
+        return GATEWAY_OK;
+    }
+    sink->reconnect_in_progress = false;
+    sink->reconnect_attempt_deadline_set = false;
+    if (sink->connect_result != 0) {
+        return mqtt_failure(sink, GATEWAY_ERROR_IO, MOSQ_ERR_SUCCESS,
+                            "reconnect CONNACK rejected");
+    }
+    gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_CONNECT_SUCCESS);
+    if (sink->ever_connected) {
+        gateway_stats_increment(sink->stats, GATEWAY_STAT_MQTT_RECONNECTS);
+    }
+    sink->ever_connected = true;
+    sink->reconnect_deadline_set = false;
+    sink->replay_pending = true;
+    gateway_log(sink->logger, GATEWAY_LOG_INFO, "mqtt",
+                "connected broker=%s port=%u topic=%s qos=1 max_inflight=1",
+                sink->broker_host, (unsigned int)sink->broker_port,
+                sink->topic);
+    return GATEWAY_OK;
+}
+
+static gateway_error_code durable_reconnect_step(gateway_mqtt_sink *sink)
+{
+    gateway_error_code reactor_code;
     bool connected;
+    int code = MOSQ_ERR_SUCCESS;
 
     (void)pthread_mutex_lock(&sink->snapshot_mutex);
     connected = sink->snapshot.connected;
@@ -852,9 +884,50 @@ static gateway_error_code durable_reconnect_if_due(gateway_mqtt_sink *sink)
     if (connected) {
         return GATEWAY_OK;
     }
-    if (!sink->reconnect_deadline_set ||
-        timespec_reached(&sink->reconnect_deadline)) {
-        return gateway_mqtt_sink_connect(sink);
+    if (!sink->reconnect_in_progress &&
+        (!sink->reconnect_deadline_set ||
+         timespec_reached(&sink->reconnect_deadline))) {
+        gateway_stats_increment(sink->stats,
+                                GATEWAY_STAT_MQTT_CONNECT_ATTEMPTS);
+        sink->connect_callback_seen = false;
+        sink->connect_result = 0;
+        code = mosquitto_connect_async(sink->mosq, sink->broker_host,
+                                       (int)sink->broker_port,
+                                       MQTT_KEEPALIVE_SECONDS);
+        if (code != MOSQ_ERR_SUCCESS) {
+            return durable_transport_offline(sink, code,
+                                             "async reconnect");
+        }
+        if (gateway_mqtt_reactor_notify(sink->reactor) != GATEWAY_OK) {
+            return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM,
+                                MOSQ_ERR_SUCCESS,
+                                "async reconnect notification");
+        }
+        if (!deadline_after_milliseconds(
+                sink->ack_timeout_ms,
+                &sink->reconnect_attempt_deadline)) {
+            return mqtt_failure(sink, GATEWAY_ERROR_SYSTEM,
+                                MOSQ_ERR_SUCCESS,
+                                "async reconnect deadline");
+        }
+        sink->reconnect_in_progress = true;
+        sink->reconnect_attempt_deadline_set = true;
+    }
+    if (!sink->reconnect_in_progress) {
+        return GATEWAY_OK;
+    }
+    reactor_code = reactor_step(sink, 0, &code);
+    if (reactor_code != GATEWAY_OK || sink->transport_lost) {
+        return durable_transport_offline(sink, code,
+                                         "async reconnect external loop");
+    }
+    if (sink->connect_callback_seen) {
+        return complete_reconnect(sink);
+    }
+    if (sink->reconnect_attempt_deadline_set &&
+        timespec_reached(&sink->reconnect_attempt_deadline)) {
+        return durable_transport_offline(sink, MOSQ_ERR_SUCCESS,
+                                         "async reconnect wait");
     }
     return GATEWAY_OK;
 }
@@ -1069,7 +1142,7 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
         gateway_spool_snapshot spool_snapshot;
         bool connected;
 
-        reactor_code = durable_reconnect_if_due(sink);
+        reactor_code = durable_reconnect_step(sink);
         if (reactor_code != GATEWAY_OK) {
             return reactor_code;
         }
