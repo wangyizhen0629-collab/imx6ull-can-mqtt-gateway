@@ -2,9 +2,14 @@
 #include "gateway/mqtt_sink.h"
 #include "gateway/stats.h"
 
+#include <arpa/inet.h>
+#include <errno.h>
+#include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/socket.h>
+#include <time.h>
 #include <unistd.h>
 
 #define CHECK(condition)                                                       \
@@ -32,6 +37,41 @@ static telemetry_record make_record(uint64_t sequence, uint8_t marker)
                           GATEWAY_RECORD_STATUS_CHECKSUM_VALID |
                           GATEWAY_RECORD_STATUS_DECODED_VALID;
     return record;
+}
+
+static void sleep_milliseconds(unsigned int milliseconds)
+{
+    struct timespec remaining;
+
+    remaining.tv_sec = (time_t)(milliseconds / 1000U);
+    remaining.tv_nsec = (long)(milliseconds % 1000U) * 1000000L;
+    while (nanosleep(&remaining, &remaining) != 0 && errno == EINTR) {
+    }
+}
+
+static int reserve_unlistened_loopback_port(uint16_t *port)
+{
+    struct sockaddr_in address;
+    socklen_t address_size = sizeof(address);
+    int descriptor;
+
+    descriptor = socket(AF_INET, SOCK_STREAM, 0);
+    if (descriptor < 0) {
+        return -1;
+    }
+    (void)memset(&address, 0, sizeof(address));
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    address.sin_port = 0;
+    if (bind(descriptor, (const struct sockaddr *)&address,
+             sizeof(address)) != 0 ||
+        getsockname(descriptor, (struct sockaddr *)&address,
+                    &address_size) != 0) {
+        (void)close(descriptor);
+        return -1;
+    }
+    *port = ntohs(address.sin_port);
+    return descriptor;
 }
 
 static int test_batch_encoding(void)
@@ -166,10 +206,71 @@ static int test_durable_offline_append_and_sequence_recovery(void)
     return 0;
 }
 
+static int test_durable_reconnect_during_continuous_consume(void)
+{
+    char directory[] = "/tmp/gateway-mqtt-reconnect-test-XXXXXX";
+    char spool_path[256];
+    gateway_mqtt_sink_config config;
+    gateway_mqtt_sink_snapshot snapshot;
+    gateway_stats_snapshot stats_snapshot;
+    gateway_mqtt_sink *sink = NULL;
+    gateway_stats stats;
+    gateway_logger logger;
+    uint64_t sequence;
+    uint16_t closed_port = 0;
+    int reserved_socket;
+
+    CHECK(mkdtemp(directory) != NULL);
+    CHECK(snprintf(spool_path, sizeof(spool_path), "%s/spool.data",
+                   directory) > 0);
+    CHECK(gateway_stats_init(&stats) == GATEWAY_OK);
+    CHECK(gateway_logger_init(&logger, stderr, GATEWAY_LOG_ERROR) ==
+          GATEWAY_OK);
+    (void)memset(&config, 0, sizeof(config));
+    config.device_id = "unit-gateway";
+    config.broker_host = "127.0.0.1";
+    /* 绑定但不 listen，避免依赖宿主机某个固定端口恰好未被占用。 */
+    reserved_socket = reserve_unlistened_loopback_port(&closed_port);
+    CHECK(reserved_socket >= 0);
+    config.broker_port = closed_port;
+    config.broker_username = "";
+    config.broker_password = "";
+    config.topic = "test/m8/continuous-reconnect";
+    config.batch_interval_ms = 1000;
+    config.ack_timeout_ms = 100;
+    config.reconnect_interval_ms = 1;
+    config.spool_path = spool_path;
+    config.max_records = 100;
+    config.stats = &stats;
+    config.logger = &logger;
+    CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
+    CHECK(gateway_mqtt_sink_connect(sink) == GATEWAY_OK);
+    for (sequence = 1; sequence <= 4; sequence++) {
+        telemetry_record record = make_record(sequence, (uint8_t)sequence);
+
+        sleep_milliseconds(2);
+        /* 不调用 poll，模拟持续 CAN 输入使 consumer 永远不 idle。 */
+        CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+    }
+    gateway_mqtt_sink_read(sink, &snapshot);
+    gateway_stats_read(&stats, &stats_snapshot);
+    CHECK(!snapshot.connected);
+    CHECK(snapshot.spool_pending_records == 4);
+    CHECK(stats_snapshot.counters[GATEWAY_STAT_MQTT_CONNECT_ATTEMPTS] > 1);
+    gateway_mqtt_sink_destroy(sink);
+    CHECK(close(reserved_socket) == 0);
+    gateway_logger_destroy(&logger);
+    gateway_stats_destroy(&stats);
+    CHECK(unlink(spool_path) == 0);
+    CHECK(rmdir(directory) == 0);
+    return 0;
+}
+
 int main(void)
 {
     CHECK(test_batch_encoding() == 0);
     CHECK(test_library_and_create_validation() == 0);
     CHECK(test_durable_offline_append_and_sequence_recovery() == 0);
+    CHECK(test_durable_reconnect_during_continuous_consume() == 0);
     return 0;
 }

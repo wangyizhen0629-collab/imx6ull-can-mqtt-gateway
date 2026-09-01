@@ -842,6 +842,23 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
     return GATEWAY_OK;
 }
 
+static gateway_error_code durable_reconnect_if_due(gateway_mqtt_sink *sink)
+{
+    bool connected;
+
+    (void)pthread_mutex_lock(&sink->snapshot_mutex);
+    connected = sink->snapshot.connected;
+    (void)pthread_mutex_unlock(&sink->snapshot_mutex);
+    if (connected) {
+        return GATEWAY_OK;
+    }
+    if (!sink->reconnect_deadline_set ||
+        timespec_reached(&sink->reconnect_deadline)) {
+        return gateway_mqtt_sink_connect(sink);
+    }
+    return GATEWAY_OK;
+}
+
 gateway_error_code gateway_mqtt_sink_flush(gateway_mqtt_sink *sink)
 {
     struct timespec deadline;
@@ -980,6 +997,17 @@ gateway_error_code gateway_mqtt_sink_consume(
             }
             sink->batch_deadline_set = true;
         }
+        /*
+         * 持续 CAN 输入时 consumer 队列不会进入 idle 回调；因此重连期限
+         * 和 external-loop 也必须在 consume 路径推进，不能只依赖队列
+         * 空闲时的 consume_idle 回调。
+         */
+        if (sink->ever_connected || sink->reconnect_deadline_set) {
+            code = gateway_mqtt_sink_poll(sink);
+            if (code != GATEWAY_OK) {
+                return code;
+            }
+        }
         gateway_spool_read(sink->spool, &spool_snapshot);
         sync_spool_snapshot(sink);
         if (spool_snapshot.pending_records >= sink->max_records) {
@@ -1041,14 +1069,14 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
         gateway_spool_snapshot spool_snapshot;
         bool connected;
 
+        reactor_code = durable_reconnect_if_due(sink);
+        if (reactor_code != GATEWAY_OK) {
+            return reactor_code;
+        }
         (void)pthread_mutex_lock(&sink->snapshot_mutex);
         connected = sink->snapshot.connected;
         (void)pthread_mutex_unlock(&sink->snapshot_mutex);
         if (!connected) {
-            if (!sink->reconnect_deadline_set ||
-                timespec_reached(&sink->reconnect_deadline)) {
-                return gateway_mqtt_sink_connect(sink);
-            }
             return GATEWAY_OK;
         }
         reactor_code = reactor_step(sink, 0, &code);
