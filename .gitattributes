@@ -40,3 +40,7 @@
 /artifacts/20260902T121149+0800-m10-spool-v2-host-final/** -text -whitespace
 /artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/** -text -whitespace
 /artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/** -text -whitespace
+/artifacts/20260902T133021+0800-m10-spool-v2-recovery-source-audit/** -text -whitespace
+/artifacts/20260902T133022+0800-m10-spool-v2-recovery-host-final/** -text -whitespace
+/artifacts/20260902T133023+0800-m10-spool-v2-recovery-asan-ubsan/** -text -whitespace
+/artifacts/20260902T133024+0800-m10-spool-v2-recovery-arm-relwithdebinfo/** -text -whitespace

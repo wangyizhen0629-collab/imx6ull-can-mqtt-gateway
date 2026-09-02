@@ -726,8 +726,28 @@ static gateway_error_code scan_one_segment(gateway_spool_v2 *spool,
     return GATEWAY_OK;
 }
 
+static gateway_error_code sync_recovered_segment(gateway_spool_v2 *spool,
+                                                  uint64_t segment_number)
+{
+    gateway_error_code code;
+    int descriptor;
+
+    code = open_segment_fd(spool, segment_number, O_RDWR, &descriptor);
+    if (code != GATEWAY_OK) {
+        return code;
+    }
+    code = sync_descriptor(spool, descriptor, false,
+                           GATEWAY_SPOOL_FAULT_SEGMENT_SYNC);
+    if (close(descriptor) != 0 && code == GATEWAY_OK) {
+        code = GATEWAY_ERROR_IO;
+    }
+    return code;
+}
+
 static gateway_error_code validate_and_scan(gateway_spool_v2 *spool)
 {
+    const uint64_t persisted_write_segment = spool->write_segment;
+    const uint64_t persisted_write_offset = spool->write_offset;
     uint64_t previous_seq = 0;
     uint64_t actual_last_seq = 0;
     uint64_t actual_pending_last_seq = 0;
@@ -773,11 +793,21 @@ static gateway_error_code validate_and_scan(gateway_spool_v2 *spool)
             if (spool->write_offset != 0) {
                 return GATEWAY_ERROR_INVALID_VALUE;
             }
-        } else if (write->size < spool->write_offset) {
+        } else if (write->size < persisted_write_offset) {
             return GATEWAY_ERROR_INVALID_VALUE;
-        } else if (write->size > spool->write_offset) {
+        } else if (write->size > persisted_write_offset) {
+            gateway_error_code code;
+
             if (write->last_seq > spool->sequence_fence) {
                 return GATEWAY_ERROR_INVALID_VALUE;
+            }
+            /*
+             * state只能引用已先同步的数据。扫描看到的完整尾记录可能只是崩溃后仍
+             * 存在于页缓存；必须先同步承载它们的旧write segment，再推进游标。
+             */
+            code = sync_recovered_segment(spool, persisted_write_segment);
+            if (code != GATEWAY_OK) {
+                return code;
             }
             spool->write_offset = write->size;
             spool->last_allocated_seq = write->last_seq;
@@ -924,7 +954,8 @@ gateway_error_code gateway_spool_v2_open(
     gateway_spool_v2 **spool,
     const char *directory,
     const gateway_spool_v2_options *options,
-    uint64_t segment_records)
+    uint64_t segment_records,
+    gateway_spool_fault_point initial_fault)
 {
     gateway_spool_v2 *created;
     gateway_error_code code;
@@ -939,7 +970,9 @@ gateway_error_code gateway_spool_v2_open(
         options->sync_records == 0 ||
         options->sync_records > segment_records ||
         options->sync_interval_ms == 0 ||
-        options->sync_interval_ms > 60000U) {
+        options->sync_interval_ms > 60000U ||
+        initial_fault < GATEWAY_SPOOL_FAULT_NONE ||
+        initial_fault > GATEWAY_SPOOL_FAULT_SEGMENT_DELETE) {
         return GATEWAY_ERROR_ARGUMENT;
     }
     *spool = NULL;
@@ -951,6 +984,7 @@ gateway_error_code gateway_spool_v2_open(
     created->lock_fd = -1;
     created->segment_fd = -1;
     created->options = *options;
+    created->fault_once = initial_fault;
     created->segment_records = segment_records;
     created->segment_bytes = segment_records * GATEWAY_SPOOL_ENTRY_SIZE;
     code = ensure_directory(created, directory);

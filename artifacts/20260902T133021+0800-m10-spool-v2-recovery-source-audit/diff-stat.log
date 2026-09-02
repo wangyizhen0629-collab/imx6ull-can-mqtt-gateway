@@ -1,0 +1,19 @@
+Script started on 2026-09-02 13:37:50+08:00 [<not executed on terminal>]
+ .gitattributes                         |   4 +
+ README.md                              |   6 +-
+ docs/DECISION_LOG.md                   |  18 ++++
+ docs/OPEN_QUESTIONS.md                 |   9 ++
+ docs/PLANS.md                          |  19 ++++
+ docs/PROJECT_SPEC.md                   |   3 +
+ docs/RESUME_TRACEABILITY.md            |  10 +++
+ docs/TEST_PLAN.md                      |   9 ++
+ docs/milestones/M10.md                 |  30 +++++++
+ docs/milestones/M10_SPOOL_V2_DESIGN.md |  37 +++++++-
+ gateway/include/gateway/spool.h        |   6 ++
+ gateway/src/spool.c                    |  25 +++++-
+ gateway/src/spool_v2.c                 |  42 ++++++++-
+ gateway/src/spool_v2_internal.h        |   3 +-
+ gateway/tests/test_spool.c             | 158 +++++++++++++++++++++++++++++++++
+ 15 files changed, 366 insertions(+), 13 deletions(-)
+
+Script done on 2026-09-02 13:37:50+08:00 [COMMAND_EXIT_CODE="0"]

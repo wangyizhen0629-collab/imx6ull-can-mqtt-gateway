@@ -649,6 +649,24 @@
   触碰板端现有M9 spool、硬件、CAN、Broker、固件、进程或长测。真实掉电、板端容量与
   性能、500/1000帧/s、20轮断网和24小时全部`NOT RUN`；不得关闭M10或开始M11。
 
+## D-042：恢复接纳完整尾记录必须再次建立data-before-state
+
+- 日期：2026-09-02
+- 状态：已接受离线纠正；M10总门禁仍为`NOT MET`
+- 问题：GST2持久write cursor之后的完整记录可能来自进程崩溃后仍存在的页缓存。仅凭
+  扫描校验CRC/sequence就先提交引用它们的新state，不能证明segment data已先持久化。
+- 决定：加载state时保存原持久write segment/offset。扫描拟接纳游标后的完整记录时，
+  重新打开原write segment并先执行`fdatasync`；同步与close成功后才更新内存cursor，
+  再执行state tmp完整写、tmp `fdatasync`、close、rename和父目录`fsync`。失败时open
+  fail closed且旧state逐字节不变。尾记录恰好填满segment时，成功同步后cursor滚到下一
+  segment/0，但state提交前不创建下一segment。
+- 离线依据：Debug warning-clean、全量CTest21/21、标签M7 4/4、M8 2/2、M9 1/1、M10
+  5/5；ASan+UBSan全量21/21；ARMv7 `RelWithDebInfo` clean rebuild和静态ELF审计PASS。
+  新binary为312172 bytes，SHA256
+  `b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`，未部署或执行。
+- 限制：上述只证明离线恢复顺序。pending=0的一秒batch可能频繁创建/同步/删除小segment，
+  在线写放大是否改善必须由另行批准的120秒板端预演实测；本轮为`NOT RUN`，不得推测。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

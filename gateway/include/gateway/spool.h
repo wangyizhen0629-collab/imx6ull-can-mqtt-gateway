@@ -94,6 +94,12 @@ gateway_error_code gateway_spool_test_open_v2(
     const char *directory,
     const gateway_spool_v2_options *options,
     uint64_t segment_records);
+gateway_error_code gateway_spool_test_open_v2_with_fault(
+    gateway_spool **spool,
+    const char *directory,
+    const gateway_spool_v2_options *options,
+    uint64_t segment_records,
+    gateway_spool_fault_point fault);
 gateway_error_code gateway_spool_test_fail_next(
     gateway_spool *spool,
     gateway_spool_fault_point point);

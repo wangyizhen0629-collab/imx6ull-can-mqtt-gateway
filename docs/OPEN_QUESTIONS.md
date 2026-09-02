@@ -228,6 +228,15 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   `07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`；旧
   `d234f2c5...fbf`已过期。v2何时在板端启用、容量是否下调以及候选128/1000是否调整，
   必须等另行批准的短预演和真实测试，当前不得推定。
+- Windows审查发现的恢复data-before-state缺口已由独立纠正提交修复：state游标之后的
+  完整记录必须先`fdatasync`原write segment，再推进cursor并提交state；失败保持旧state
+  并fail closed。纠正证据为`artifacts/20260902T133021+0800-m10-spool-v2-recovery-source-audit/`
+  及相邻host/sanitizer/ARM三个run，新ARM SHA256为
+  `b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`。此前
+  `07c185...be5e`已过期。
+- 仍待回答：pending=0且一秒batch时，segment create/sync/delete频率和块设备实际写入
+  是否抵消group commit收益？必须在经批准的120秒板端预演同步采集`spool_syncs`、
+  segment churn和块设备写增量；当前`NOT RUN`，不能称“在线写放大已解决”。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

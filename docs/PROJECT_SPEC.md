@@ -107,6 +107,9 @@ M4 同步创建和验证。
 - v2默认容量上限为256 MiB，达到上限返回明确容量错误，绝不覆盖未ACK记录。默认仍为
   `spool_sync_records=1`严格逐条同步；M10候选配置是128条或1000 ms先到者触发同步，
   Broker离线、publish前和正常关闭也必须flush。group commit不宣称掉电零丢失。
+- v2恢复扫描若准备接纳持久write cursor之后的完整记录，必须先对原write segment执行
+  `fdatasync`，成功后才能提交引用这些记录的新state；失败必须保持旧state并fail closed。
+  在线写放大是否改善只能由板端块设备指标实测，不能由离线sync计数推断。
 - 只有目标 libmosquitto 实际支持并验证 `mosquitto_socket`、`mosquitto_loop_read`、
   `mosquitto_loop_write`、`mosquitto_loop_misc` 后，M8 才能采用 epoll reactor。
 - 部署只使用 BusyBox 兼容 init/respawn/supervisor，不使用 systemd。

@@ -231,3 +231,13 @@ M10 corrective prep从基线`6ee5d475f5451e6cba72f0041613009ed9fc9250`在独立�
 PASS，SHA256为`07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`。
 legacy默认不变；v2必须显式启用且旧binary `d234f2c5...fbf`已过期。以上只支持“实现并
 通过离线故障/回归和交叉构建”，不支持真实板端掉电、写放大改善、CPU/RSS或稳定性。
+
+Windows复核随后发现恢复路径会在未先同步segment时接纳GST2 write cursor之后的完整
+记录。独立纠正提交保存原持久cursor，并强制`fdatasync(old write segment)`成功后才提交
+引用扫描尾记录的新state；故障时open失败且旧state逐字节不变。定向`_exit`测试覆盖部分
+segment及恰好填满segment；纠正后的host run
+`artifacts/20260902T133022+0800-m10-spool-v2-recovery-host-final/`全量21/21、标签
+4/4、2/2、1/1、5/5，sanitizer全量21/21，ARM新SHA256为
+`b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`。该binary未上板。
+pending=0的一秒batch可能频繁segment create/sync/delete，在线写放大仍需120秒板端预演
+量化；该项及所有真实硬件/长测继续`NOT RUN`，M10仍`NOT MET`。

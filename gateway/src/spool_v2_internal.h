@@ -9,7 +9,8 @@ gateway_error_code gateway_spool_v2_open(
     gateway_spool_v2 **spool,
     const char *directory,
     const gateway_spool_v2_options *options,
-    uint64_t segment_records);
+    uint64_t segment_records,
+    gateway_spool_fault_point initial_fault);
 void gateway_spool_v2_close(gateway_spool_v2 *spool);
 gateway_error_code gateway_spool_v2_append(gateway_spool_v2 *spool,
                                             const telemetry_record *record);

@@ -291,6 +291,15 @@ queue drop、batch/seq/reconnect/duplicate、spool 最大积压、`/proc` CPU/RS
 - group commit覆盖记录数阈值、单调时间阈值、Broker离线poll、跨多segment积压/顺序
   drain、publish候选前强制flush、正常关闭flush和sync失败传播。候选128/1000仅是后续
   测试配置，不是性能结论。
+- 恢复若扫描到GST2持久write cursor之后的完整记录，必须保存原cursor并在提交新state前
+  先同步承载记录的原write segment。定向故障必须证明sync失败使open失败、state generation/
+  cursor逐字节不变，随后无故障reopen可恢复；部分segment及恰好填满segment均须覆盖，
+  后者的新write cursor为下一segment/0。
+- 至少一个定向场景使用子进程`_exit`或SIGKILL且不调用用户态close，避免只验证正常关闭
+  路径。恢复顺序仍只属于主机故障注入，不替代真实掉电测试。
 - 最终必须运行Debug warning-clean全量CTest及M7/M8/M9/M10标签、ASan+UBSan全量、
   ARMv7 `RelWithDebInfo` clean verbose rebuild和ELF/NEEDED/RPATH/SHA审计。LeakSanitizer、
   真实硬件、CAN、Broker、掉电和长时间测试按本轮限制写`NOT RUN`。
+- 120秒板端预演除既有功能/指标外，必须同时量化`spool_syncs`、segment create/delete
+  次数或等价churn及块设备写增量，特别检查pending=0一秒batch的元数据写入；未执行前
+  禁止声称在线写放大改善。

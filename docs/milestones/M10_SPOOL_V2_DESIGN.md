@@ -137,6 +137,27 @@ state 与 segment 扫描结果必须相互约束：扫描所得最大实际 sequ
 任何记录进入 MQTT publish 候选集之前，`gateway_spool_prepare_batch` 必须先完成步骤
 5～6；同步失败则不读取、不编码、不 publish。
 
+### 恢复时接纳持久state游标之后的完整记录
+
+加载GST2后必须先保存其中原始的`write_segment`和`write_offset`，扫描过程不得用文件长度
+静默覆盖这两个持久游标。若原write segment文件含有游标之后、CRC和sequence均有效且不
+超过reservation fence的完整记录，恢复保持“同步并接纳”语义，精确顺序为：
+
+1. `openat(segment, O_RDWR)`、`fstat`、`pread`并校验完整记录，关闭扫描fd；若有半条尾部，
+   先`ftruncate`到最后完整边界并`fdatasync`后关闭。
+2. 重新`openat`原持久write segment为`O_RDWR`，对整个segment执行`fdatasync`并关闭。
+   同步或关闭失败立即使open失败；不得更新磁盘state。
+3. 只有步骤2成功后，才在内存中把last allocated和write offset推进到扫描所得完整边界。
+   若完整边界恰好等于segment容量，内存write cursor滚到下一单调segment的offset 0；此时
+   不创建下一个segment文件。
+4. 以新generation执行state事务：`openat(state.v2.tmp, O_TRUNC)`、完整`pwrite`、
+   `fdatasync(tmp)`、`close(tmp)`、`renameat(tmp,state.v2)`、`fsync(directory)`。
+
+因此恢复所需segment sync失败时，原state的generation、last allocated、write segment/
+offset和reservation fence保持逐字节不变；随后无故障reopen可重复扫描、先同步再接纳。
+若state落后且segment记录已经由先前flush同步，恢复仍保守地再次`fdatasync`，不依靠对
+崩溃前页缓存状态的猜测。
+
 ### PUBACK、state 和回收
 
 1. 只有匹配当前单 in-flight publish 的 PUBACK 才计算新的 ACK cursor、last ACK seq 和
@@ -168,8 +189,9 @@ corruption 等历史统计。
 | reservation rename 后、目录 fsync 前 | 只接受旧 state 或完整新 state；若新 fence 可见，恢复从 fence 后继续，允许缺口但不复用 |
 | segment 创建前后、首次目录 fsync 前 | 空的新文件可删除后重建；非空文件必须有有效旧 state 才可扫描，否则 fail closed |
 | 80 字节 pwrite 前 | state 和 segment 都保持上一持久边界 |
-| pwrite 途中或完成但 segment sync 前 | 仅最后活跃 segment 尾部可被截断到最后有效 80 字节边界；group 窗口内记录可丢失 |
-| segment sync 后、state tmp 前 | 扫描到完整记录；在有效 fence 内安全纳入，ACK/batch仍取旧 state，不丢已同步记录 |
+| pwrite 途中或完成但 segment sync 前 | 仅最后活跃 segment 尾部可被截断到最后有效80字节边界；若扫描看到state write cursor之后的完整记录，必须先`fdatasync`原write segment，成功后才可接纳并提交state；sync失败保持旧state并fail closed |
+| 恢复segment sync成功后、纠正state tmp前 | 完整记录现已满足data-before-state；旧state仍有效，重复崩溃后再次扫描并同步即可 |
+| segment sync 后、state tmp 前 | 扫描到完整记录；在有效 fence 内按上述恢复顺序再次同步后安全纳入，ACK/batch仍取旧state |
 | state tmp 写入或 fdatasync 前后、rename 前 | 忽略/清理 tmp，使用旧 state并按已同步 segment前向协调；不倒退 ACK |
 | state rename 后、目录 fsync 前 | 只接受 CRC 完整的旧或新 state；二者都不引用未同步数据。无法满足扫描约束则 fail closed |
 | ACK state 提交前任一点 | 旧 ACK 生效；对应 batch 会重放，允许 QoS 1 raw duplicate |
@@ -215,12 +237,23 @@ state、state 指向不存在的未 ACK 数据，均不允许“尽量继续”�
 - 一旦 segment `fdatasync` 成功但随后 state 提交失败，实例 fail-stop；重启扫描可在
   已持久 fence 内纳入完整记录。应用不继续 publish 或覆盖不确定数据。
 
+group commit只修正了调用和数据顺序，不构成在线写放大已改善的实测结论。当前
+pending为0时，ACK会把部分活跃segment的write/ACK cursor滚到下一编号并删除该segment；
+1秒batch可能表现为每秒创建、同步和删除一个小segment。该元数据写入是否抵消group
+commit收益，必须留待经批准的板端120秒预演同时量化`spool_syncs`、segment create/delete
+以及块设备写入增量；本轮不得推测。
+
 ## 必须验证的离线测试
 
 提交 A 覆盖 segment 滚动/跨段顺序、全段及 pending=0 回收、删除后 sequence/batch
 不复用、活跃尾部、内部 CRC、缺失/乱序、容量上限以及 append/sync/state rename/delete
 故障注入。提交 B 再覆盖记录/时间阈值、离线定时 flush、publish 前强制 flush、正常关闭、
 sync 失败传播和跨多个 segment 的离线积压/顺序 drain 状态机。
+
+纠正提交C必须再构造不调用用户态close的子进程`_exit`场景，使完整记录位于持久state
+write cursor之后；分别覆盖部分segment和恰好填满segment。恢复segment sync故障注入时
+open必须失败且state逐字节不变，随后无故障reopen必须先同步再推进generation/cursor并
+按sequence顺序读回记录。
 
 现有 M7/M8 的 GSP1 SIGKILL、重连、GST1 损坏安全重放和 duplicate validator 必须全量
 回归；它们验证兼容路径，不得改写为 v2 真实 Broker 证据。所有真实硬件、板端、CAN、

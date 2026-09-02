@@ -1,0 +1,22 @@
+Script started on 2026-09-02 13:33:23+08:00 [<not executed on terminal>]
+[  5%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[ 11%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+[ 17%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[ 23%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+[ 29%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+[ 35%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+[ 41%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+[ 47%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[ 58%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+[ 52%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+[ 64%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[ 70%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+[ 76%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+[ 82%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool_v2.c.o[0m
+[ 88%] [32m[1mLinking C static library libgateway_core.a[0m
+[ 88%] Built target gateway_core
+[ 94%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+[100%] [32m[1mLinking C executable gatewayd[0m
+[100%] Built target gatewayd
+
+Script done on 2026-09-02 13:33:25+08:00 [COMMAND_EXIT_CODE="0"]

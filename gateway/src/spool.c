@@ -500,7 +500,8 @@ static gateway_error_code open_v2_dispatch(
     gateway_spool **spool,
     const char *directory,
     const gateway_spool_v2_options *options,
-    uint64_t segment_records)
+    uint64_t segment_records,
+    gateway_spool_fault_point initial_fault)
 {
     gateway_spool *created;
     gateway_error_code code;
@@ -516,7 +517,7 @@ static gateway_error_code open_v2_dispatch(
     created->data_fd = -1;
     created->v2 = true;
     code = gateway_spool_v2_open(&created->v2_spool, directory, options,
-                                 segment_records);
+                                 segment_records, initial_fault);
     if (code != GATEWAY_OK) {
         gateway_spool_close(created);
         return code;
@@ -531,7 +532,8 @@ gateway_error_code gateway_spool_open_v2(
     const gateway_spool_v2_options *options)
 {
     return open_v2_dispatch(spool, directory, options,
-                            GATEWAY_SPOOL_V2_SEGMENT_RECORDS);
+                            GATEWAY_SPOOL_V2_SEGMENT_RECORDS,
+                            GATEWAY_SPOOL_FAULT_NONE);
 }
 
 gateway_error_code gateway_spool_test_open_v2(
@@ -540,7 +542,22 @@ gateway_error_code gateway_spool_test_open_v2(
     const gateway_spool_v2_options *options,
     uint64_t segment_records)
 {
-    return open_v2_dispatch(spool, directory, options, segment_records);
+    return open_v2_dispatch(spool, directory, options, segment_records,
+                            GATEWAY_SPOOL_FAULT_NONE);
+}
+
+gateway_error_code gateway_spool_test_open_v2_with_fault(
+    gateway_spool **spool,
+    const char *directory,
+    const gateway_spool_v2_options *options,
+    uint64_t segment_records,
+    gateway_spool_fault_point fault)
+{
+    if (fault == GATEWAY_SPOOL_FAULT_NONE) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    return open_v2_dispatch(spool, directory, options, segment_records,
+                            fault);
 }
 
 void gateway_spool_close(gateway_spool *spool)

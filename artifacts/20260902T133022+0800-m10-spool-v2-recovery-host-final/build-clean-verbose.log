@@ -1,0 +1,424 @@
+Script started on 2026-09-02 13:30:50+08:00 [<not executed on terminal>]
+/usr/bin/gmake  -f CMakeFiles/Makefile2 clean
+gmake[1]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/Experimental.dir/build.make CMakeFiles/Experimental.dir/clean
+/usr/bin/gmake  -f CMakeFiles/Nightly.dir/build.make CMakeFiles/Nightly.dir/clean
+/usr/bin/gmake  -f CMakeFiles/Continuous.dir/build.make CMakeFiles/Continuous.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/Experimental.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyMemoryCheck.dir/build.make CMakeFiles/NightlyMemoryCheck.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/Nightly.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyStart.dir/build.make CMakeFiles/NightlyStart.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/Continuous.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyMemoryCheck.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyUpdate.dir/build.make CMakeFiles/NightlyUpdate.dir/clean
+/usr/bin/gmake  -f CMakeFiles/NightlyConfigure.dir/build.make CMakeFiles/NightlyConfigure.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyStart.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyBuild.dir/build.make CMakeFiles/NightlyBuild.dir/clean
+/usr/bin/gmake  -f CMakeFiles/NightlyTest.dir/build.make CMakeFiles/NightlyTest.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyBuild.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyUpdate.dir/cmake_clean.cmake
+/usr/bin/cmake -P CMakeFiles/NightlyConfigure.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyTest.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyCoverage.dir/build.make CMakeFiles/NightlyCoverage.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyCoverage.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/NightlyMemCheck.dir/build.make CMakeFiles/NightlyMemCheck.dir/clean
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/NightlySubmit.dir/build.make CMakeFiles/NightlySubmit.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ExperimentalStart.dir/build.make CMakeFiles/ExperimentalStart.dir/clean
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlyMemCheck.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ExperimentalUpdate.dir/build.make CMakeFiles/ExperimentalUpdate.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ExperimentalConfigure.dir/build.make CMakeFiles/ExperimentalConfigure.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/NightlySubmit.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalUpdate.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalConfigure.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ExperimentalBuild.dir/build.make CMakeFiles/ExperimentalBuild.dir/clean
+/usr/bin/cmake -P CMakeFiles/ExperimentalStart.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/ExperimentalTest.dir/build.make CMakeFiles/ExperimentalTest.dir/clean
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalBuild.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalTest.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/ExperimentalCoverage.dir/build.make CMakeFiles/ExperimentalCoverage.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ExperimentalMemCheck.dir/build.make CMakeFiles/ExperimentalMemCheck.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ExperimentalSubmit.dir/build.make CMakeFiles/ExperimentalSubmit.dir/clean
+/usr/bin/cmake -P CMakeFiles/ExperimentalCoverage.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/ContinuousStart.dir/build.make CMakeFiles/ContinuousStart.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalMemCheck.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ContinuousUpdate.dir/build.make CMakeFiles/ContinuousUpdate.dir/clean
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ContinuousConfigure.dir/build.make CMakeFiles/ContinuousConfigure.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ContinuousBuild.dir/build.make CMakeFiles/ContinuousBuild.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousStart.dir/cmake_clean.cmake
+/usr/bin/gmake  -f CMakeFiles/ContinuousTest.dir/build.make CMakeFiles/ContinuousTest.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ContinuousCoverage.dir/build.make CMakeFiles/ContinuousCoverage.dir/clean
+/usr/bin/gmake  -f CMakeFiles/ContinuousMemCheck.dir/build.make CMakeFiles/ContinuousMemCheck.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousConfigure.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousUpdate.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ExperimentalSubmit.dir/cmake_clean.cmake
+/usr/bin/cmake -P CMakeFiles/ContinuousCoverage.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousBuild.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousTest.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousMemCheck.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f CMakeFiles/ContinuousSubmit.dir/build.make CMakeFiles/ContinuousSubmit.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/gateway_core.dir/build.make gateway/CMakeFiles/gateway_core.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -P CMakeFiles/ContinuousSubmit.dir/cmake_clean.cmake
+/usr/bin/gmake  -f gateway/CMakeFiles/gatewayd.dir/build.make gateway/CMakeFiles/gatewayd.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/gateway_core.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_config.dir/build.make gateway/CMakeFiles/test_config.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/gatewayd.dir/cmake_clean.cmake
+/usr/bin/gmake  -f gateway/CMakeFiles/test_error_record.dir/build.make gateway/CMakeFiles/test_error_record.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_lifecycle.dir/build.make gateway/CMakeFiles/test_lifecycle.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_config.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_error_record.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_lifecycle.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_log.dir/build.make gateway/CMakeFiles/test_log.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_ring_buffer.dir/build.make gateway/CMakeFiles/test_ring_buffer.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_can_receiver.dir/build.make gateway/CMakeFiles/test_can_receiver.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_ring_buffer.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_log.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_can_receiver.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_vehicle_decoder.dir/build.make gateway/CMakeFiles/test_vehicle_decoder.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_pipeline.dir/build.make gateway/CMakeFiles/test_pipeline.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_vehicle_decoder.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_sink.dir/build.make gateway/CMakeFiles/test_mqtt_sink.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_reactor.dir/build.make gateway/CMakeFiles/test_mqtt_reactor.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_mqtt_reactor.dir/cmake_clean.cmake
+/usr/bin/gmake  -f gateway/CMakeFiles/test_spool.dir/build.make gateway/CMakeFiles/test_spool.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_pipeline.dir/cmake_clean.cmake
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_integration.dir/build.make gateway/CMakeFiles/test_mqtt_integration.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_mqtt_sink.dir/cmake_clean.cmake
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_spool.dir/cmake_clean.cmake
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_timing.dir/build.make gateway/CMakeFiles/test_mqtt_timing.dir/clean
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_recovery_driver.dir/build.make gateway/CMakeFiles/test_mqtt_recovery_driver.dir/clean
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_mqtt_integration.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_mqtt_timing.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/test_mqtt_recovery_driver.dir/cmake_clean.cmake
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[1]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -S/home/wangyizhen/projects/imx6ull-can-mqtt-gateway -B/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/CMakeFiles /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[1]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/gateway_core.dir/build.make gateway/CMakeFiles/gateway_core.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/gateway_core.dir/DependInfo.cmake --color=
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/gateway_core.dir/build.make gateway/CMakeFiles/gateway_core.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[  2%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[  4%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[  6%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o -MF CMakeFiles/gateway_core.dir/src/can_receiver.c.o.d -o CMakeFiles/gateway_core.dir/src/can_receiver.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/can_receiver.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/config.c.o -MF CMakeFiles/gateway_core.dir/src/config.c.o.d -o CMakeFiles/gateway_core.dir/src/config.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/config.c
+[  8%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/error.c.o -MF CMakeFiles/gateway_core.dir/src/error.c.o.d -o CMakeFiles/gateway_core.dir/src/error.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/error.c
+[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/log.c.o -MF CMakeFiles/gateway_core.dir/src/log.c.o.d -o CMakeFiles/gateway_core.dir/src/log.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/log.c
+[ 15%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o -MF CMakeFiles/gateway_core.dir/src/lifecycle.c.o.d -o CMakeFiles/gateway_core.dir/src/lifecycle.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/lifecycle.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o -MF CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o.d -o CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/mqtt_reactor.c
+[ 17%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o -MF CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o.d -o CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/mqtt_sink.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o -MF CMakeFiles/gateway_core.dir/src/mock_sink.c.o.d -o CMakeFiles/gateway_core.dir/src/mock_sink.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/mock_sink.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o -MF CMakeFiles/gateway_core.dir/src/pipeline.c.o.d -o CMakeFiles/gateway_core.dir/src/pipeline.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/pipeline.c
+[ 22%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[ 24%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+[ 26%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool_v2.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/spool_v2.c.o -MF CMakeFiles/gateway_core.dir/src/spool_v2.c.o.d -o CMakeFiles/gateway_core.dir/src/spool_v2.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/spool_v2.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o -MF CMakeFiles/gateway_core.dir/src/ring_buffer.c.o.d -o CMakeFiles/gateway_core.dir/src/ring_buffer.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/ring_buffer.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/spool.c.o -MF CMakeFiles/gateway_core.dir/src/spool.c.o.d -o CMakeFiles/gateway_core.dir/src/spool.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/spool.c
+[ 28%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[ 31%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o -MF CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o.d -o CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/vehicle_decoder.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gateway_core.dir/src/stats.c.o -MF CMakeFiles/gateway_core.dir/src/stats.c.o.d -o CMakeFiles/gateway_core.dir/src/stats.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/stats.c
+[ 33%] [32m[1mLinking C static library libgateway_core.a[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -P CMakeFiles/gateway_core.dir/cmake_clean_target.cmake
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/gateway_core.dir/link.txt --verbose=1
+/usr/bin/ar qc libgateway_core.a CMakeFiles/gateway_core.dir/src/can_receiver.c.o CMakeFiles/gateway_core.dir/src/config.c.o CMakeFiles/gateway_core.dir/src/error.c.o CMakeFiles/gateway_core.dir/src/lifecycle.c.o CMakeFiles/gateway_core.dir/src/log.c.o CMakeFiles/gateway_core.dir/src/mock_sink.c.o CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o CMakeFiles/gateway_core.dir/src/pipeline.c.o CMakeFiles/gateway_core.dir/src/ring_buffer.c.o CMakeFiles/gateway_core.dir/src/spool.c.o CMakeFiles/gateway_core.dir/src/spool_v2.c.o CMakeFiles/gateway_core.dir/src/stats.c.o CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o
+/usr/bin/ranlib libgateway_core.a
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 33%] Built target gateway_core
+/usr/bin/gmake  -f gateway/CMakeFiles/gatewayd.dir/build.make gateway/CMakeFiles/gatewayd.dir/depend
+/usr/bin/gmake  -f gateway/CMakeFiles/test_config.dir/build.make gateway/CMakeFiles/test_config.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/gatewayd.dir/DependInfo.cmake --color=
+/usr/bin/gmake  -f gateway/CMakeFiles/test_error_record.dir/build.make gateway/CMakeFiles/test_error_record.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_config.dir/DependInfo.cmake --color=
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_error_record.dir/DependInfo.cmake --color=
+/usr/bin/gmake  -f gateway/CMakeFiles/test_lifecycle.dir/build.make gateway/CMakeFiles/test_lifecycle.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_lifecycle.dir/DependInfo.cmake --color=
+/usr/bin/gmake  -f gateway/CMakeFiles/test_log.dir/build.make gateway/CMakeFiles/test_log.dir/depend
+/usr/bin/gmake  -f gateway/CMakeFiles/test_ring_buffer.dir/build.make gateway/CMakeFiles/test_ring_buffer.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_log.dir/DependInfo.cmake --color=
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_ring_buffer.dir/DependInfo.cmake --color=
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_can_receiver.dir/build.make gateway/CMakeFiles/test_can_receiver.dir/depend
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_can_receiver.dir/DependInfo.cmake --color=
+/usr/bin/gmake  -f gateway/CMakeFiles/gatewayd.dir/build.make gateway/CMakeFiles/gatewayd.dir/build
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_config.dir/build.make gateway/CMakeFiles/test_config.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_error_record.dir/build.make gateway/CMakeFiles/test_error_record.dir/build
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_lifecycle.dir/build.make gateway/CMakeFiles/test_lifecycle.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_vehicle_decoder.dir/build.make gateway/CMakeFiles/test_vehicle_decoder.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_pipeline.dir/build.make gateway/CMakeFiles/test_pipeline.dir/depend
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_sink.dir/build.make gateway/CMakeFiles/test_mqtt_sink.dir/depend
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_reactor.dir/build.make gateway/CMakeFiles/test_mqtt_reactor.dir/depend
+/usr/bin/gmake  -f gateway/CMakeFiles/test_spool.dir/build.make gateway/CMakeFiles/test_spool.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_spool.dir/DependInfo.cmake --color=
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 35%] [32mBuilding C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o[0m
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_integration.dir/build.make gateway/CMakeFiles/test_mqtt_integration.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 42%] [32mBuilding C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_mqtt_reactor.dir/DependInfo.cmake --color=
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_mqtt_sink.dir/DependInfo.cmake --color=
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_vehicle_decoder.dir/DependInfo.cmake --color=
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_config.dir/tests/test_config.c.o -MF CMakeFiles/test_config.dir/tests/test_config.c.o.d -o CMakeFiles/test_config.dir/tests/test_config.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_config.c
+[ 37%] [32mBuilding C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o -MF CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o.d -o CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_lifecycle.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o -MF CMakeFiles/test_error_record.dir/tests/test_error_record.c.o.d -o CMakeFiles/test_error_record.dir/tests/test_error_record.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_error_record.c
+/usr/bin/gmake  -f gateway/CMakeFiles/test_ring_buffer.dir/build.make gateway/CMakeFiles/test_ring_buffer.dir/build
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_timing.dir/build.make gateway/CMakeFiles/test_mqtt_timing.dir/depend
+[ 40%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_recovery_driver.dir/build.make gateway/CMakeFiles/test_mqtt_recovery_driver.dir/depend
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_mqtt_integration.dir/DependInfo.cmake --color=
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_pipeline.dir/DependInfo.cmake --color=
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/gatewayd.dir/src/main.c.o -MF CMakeFiles/gatewayd.dir/src/main.c.o.d -o CMakeFiles/gatewayd.dir/src/main.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/main.c
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_can_receiver.dir/build.make gateway/CMakeFiles/test_can_receiver.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_mqtt_recovery_driver.dir/DependInfo.cmake --color=
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_log.dir/build.make gateway/CMakeFiles/test_log.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_spool.dir/build.make gateway/CMakeFiles/test_spool.dir/build
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/wangyizhen/projects/imx6ull-can-mqtt-gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway/CMakeFiles/test_mqtt_timing.dir/DependInfo.cmake --color=
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_sink.dir/build.make gateway/CMakeFiles/test_mqtt_sink.dir/build
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_vehicle_decoder.dir/build.make gateway/CMakeFiles/test_vehicle_decoder.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_reactor.dir/build.make gateway/CMakeFiles/test_mqtt_reactor.dir/build
+[ 44%] [32mBuilding C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o[0m
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_integration.dir/build.make gateway/CMakeFiles/test_mqtt_integration.dir/build
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_pipeline.dir/build.make gateway/CMakeFiles/test_pipeline.dir/build
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_recovery_driver.dir/build.make gateway/CMakeFiles/test_mqtt_recovery_driver.dir/build
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o -MF CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o.d -o CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_ring_buffer.c
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/gmake  -f gateway/CMakeFiles/test_mqtt_timing.dir/build.make gateway/CMakeFiles/test_mqtt_timing.dir/build
+[ 51%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o[0m
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 进入目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 46%] [32mBuilding C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o -MF CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o.d -o CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_can_receiver.c
+[ 48%] [32mBuilding C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o[0m
+[ 53%] [32mBuilding C object gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o -MF CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o.d -o CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_sink.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_log.dir/tests/test_log.c.o -MF CMakeFiles/test_log.dir/tests/test_log.c.o.d -o CMakeFiles/test_log.dir/tests/test_log.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_log.c
+[ 55%] [32mBuilding C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o -MF CMakeFiles/test_spool.dir/tests/test_spool.c.o.d -o CMakeFiles/test_spool.dir/tests/test_spool.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_spool.c
+[ 57%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o[0m
+[ 60%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o -MF CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o.d -o CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_reactor.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -DGATEWAY_GOLDEN_VECTOR_PATH=\"/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/protocol/test_vectors/vehicle_golden.csv\" -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o -MF CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o.d -o CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_vehicle_decoder.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o -MF CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o.d -o CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_timing.c
+[ 62%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o[0m
+[ 64%] [32mBuilding C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o[0m
+[ 66%] [32m[1mLinking C executable test_error_record[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o -MF CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o.d -o CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_pipeline.c
+[ 68%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o -MF CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o.d -o CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_recovery_driver.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cc -D_DEFAULT_SOURCE -D_FILE_OFFSET_BITS=64 -D_POSIX_C_SOURCE=200809L -I/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include -isystem /tmp/imx6ull-m6-mosquitto-root/usr/include -g -Wall -Wextra -Wpedantic -Werror -MD -MT gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o -MF CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o.d -o CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o -c /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/tests/test_mqtt_integration.c
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_error_record.dir/link.txt --verbose=1
+[ 71%] [32m[1mLinking C executable test_config[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_config.dir/link.txt --verbose=1
+[ 73%] [32m[1mLinking C executable test_lifecycle[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_lifecycle.dir/link.txt --verbose=1
+/usr/bin/cc -g CMakeFiles/test_error_record.dir/tests/test_error_record.c.o -o test_error_record  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+/usr/bin/cc -g CMakeFiles/test_config.dir/tests/test_config.c.o -o test_config  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+/usr/bin/cc -g CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o -o test_lifecycle  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[ 75%] [32m[1mLinking C executable test_log[0m
+[ 77%] [32m[1mLinking C executable test_mqtt_reactor[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_mqtt_reactor.dir/link.txt --verbose=1
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_log.dir/link.txt --verbose=1
+[ 80%] [32m[1mLinking C executable test_can_receiver[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_can_receiver.dir/link.txt --verbose=1
+/usr/bin/cc -g CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o -o test_mqtt_reactor  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+/usr/bin/cc -g CMakeFiles/test_log.dir/tests/test_log.c.o -o test_log  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 82%] [32m[1mLinking C executable test_mqtt_timing[0m
+[ 84%] [32m[1mLinking C executable test_ring_buffer[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_mqtt_timing.dir/link.txt --verbose=1
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cc -g CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o -o test_can_receiver  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_ring_buffer.dir/link.txt --verbose=1
+[ 86%] [32m[1mLinking C executable test_mqtt_recovery_driver[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_mqtt_recovery_driver.dir/link.txt --verbose=1
+[ 86%] Built target test_lifecycle
+[ 88%] [32m[1mLinking C executable gatewayd[0m
+[ 91%] [32m[1mLinking C executable test_mqtt_integration[0m
+/usr/bin/cc -g CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o -o test_mqtt_timing  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/gatewayd.dir/link.txt --verbose=1
+/usr/bin/cc -g CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o -o test_ring_buffer  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[ 91%] Built target test_config
+/usr/bin/cc -g CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o -o test_mqtt_recovery_driver  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_mqtt_integration.dir/link.txt --verbose=1
+[ 91%] Built target test_error_record
+/usr/bin/cc -g CMakeFiles/gatewayd.dir/src/main.c.o -o gatewayd  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu: libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 93%] [32m[1mLinking C executable test_pipeline[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_pipeline.dir/link.txt --verbose=1
+/usr/bin/cc -g CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o -o test_mqtt_integration  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[ 93%] Built target test_can_receiver
+/usr/bin/cc -g CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o -o test_pipeline  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 95%] [32m[1mLinking C executable test_mqtt_sink[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_mqtt_sink.dir/link.txt --verbose=1
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 95%] Built target test_ring_buffer
+/usr/bin/cc -g CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o -o test_mqtt_sink  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[ 95%] Built target test_mqtt_reactor
+[ 95%] Built target test_log
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[ 97%] [32m[1mLinking C executable test_vehicle_decoder[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_vehicle_decoder.dir/link.txt --verbose=1
+[ 97%] Built target test_pipeline
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cc -g CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o -o test_vehicle_decoder  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[ 97%] Built target gatewayd
+[ 97%] Built target test_mqtt_recovery_driver
+[100%] [32m[1mLinking C executable test_spool[0m
+cd /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/gateway && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_spool.dir/link.txt --verbose=1
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cc -g CMakeFiles/test_spool.dir/tests/test_spool.c.o -o test_spool  -Wl,-rpath,/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu libgateway_core.a /tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so 
+[100%] Built target test_vehicle_decoder
+[100%] Built target test_mqtt_integration
+[100%] Built target test_mqtt_timing
+[100%] Built target test_mqtt_sink
+gmake[2]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+[100%] Built target test_spool
+gmake[1]: 离开目录“/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host”
+/usr/bin/cmake -E cmake_progress_start /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host/CMakeFiles 0
+
+Script done on 2026-09-02 13:30:52+08:00 [COMMAND_EXIT_CODE="0"]
