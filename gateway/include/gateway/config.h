@@ -3,6 +3,7 @@
 
 #include "gateway/error.h"
 #include "gateway/log.h"
+#include "gateway/spool.h"
 
 #include <stddef.h>
 #include <stdint.h>
@@ -41,6 +42,10 @@ typedef struct {
     uint32_t mqtt_ack_timeout_ms;
     uint32_t mqtt_reconnect_interval_ms;
     char spool_path[GATEWAY_SPOOL_PATH_SIZE];
+    gateway_spool_format spool_format;
+    uint64_t spool_max_bytes;
+    uint32_t spool_sync_records;
+    uint32_t spool_sync_interval_ms;
     gateway_log_level log_level;
 } gateway_config;
 

@@ -25,7 +25,7 @@ ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成
 | pthread 有界生产者--消费者队列及明确过载策略 | M1/M5 队列、生命周期、stats 配置 | 并发/满队列/close 单测和目标基准/过载 | M5 主机/ASan全量12/12、ARM构建及板端基准/过载通过 | 板端基准3694条queue drop 0；容量4慢consumer按策略drop 3561；均为单次功能值 | 是，不得写成吞吐、时延或可靠性指标 |
 | Ubuntu x86_64 loopback 上的 libmosquitto QoS 1 单 in-flight batch | M6 `mqtt_sink`、配置、validator | 实际Broker、1000 batch、匹配PUBACK和subscriber seq | M6 host/ASan及loopback集成run | libmosquitto 2.0.11；1000/1000匹配PUBACK；seq 1～1000无缺失/重复 | 是，必须注明host loopback，不能写板端/完整链路 |
 | i.MX6ULL物理CAN到Windows LAN Broker的QoS 1基线 | M6 ARM构建、私有目标库、配置和validator | 真实板端、物理CAN、1000 batch、PUBACK及原始证据复核 | M6 LAN run及2026-09-01独立gate review | subscriber 1000批/115335条连续记录；gateway/Broker 1033次publish/PUBACK一致 | 是，必须注明单次功能门禁，不写性能、时延或可靠性 |
-| 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
+| 持久化spool、断线重连补传与进程崩溃恢复 | M7 legacy spool/MQTT/seq恢复；M10显式分段v2回收/group commit | M7 ARM/板端断线/SIGKILL；v2主机故障注入、sanitizer、ARM静态构建 | M7离线/LAN gate2及M10 spool-v2三个run | M7 raw 71288/unique35644/missing0；v2 Debug与ASan全量21/21、ARM PASS | M7 legacy表述是；v2仅可写离线实现，不得写真实掉电、板端性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 Ubuntu/ARM证据及最终Windows/i.MX6ULL gate | API兼容、全量17/17、M8/ASan/UBSan 2/2；真实323 batch、unique seq 1～27434、missing/effective duplicate 0，reactor必需计数非零 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写性能、时延或长期可靠性 |
 | BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM、目标安装/reload/restart/SIGKILL/ash cooldown及手动post-boot补充run | 新boot ID；PID 1自动拉起supervisor；最终1/1；SIGKILL/restart换PID；3次快速失败后cooldown | 是，但只写真实i.MX6ULL单次BusyBox进程监督门禁；注明CAN基线手工恢复，不写完整无人值守产品ready |
 | 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 BusyBox采集器、离线报告器、场景validator、三档STM32 profile和candump分析器 | 经批准的500/1000帧/s、20轮断网、每秒/proc及24小时流程 | M10离线run、Windows profile准备run、Ubuntu复核run与未来真实场景run | 分析器8/8、全量CTest21/21、三档Keil rebuild和ARM RelWithDebInfo静态验证PASS；真实场景全部NOT RUN，无性能/稳定性数值 | 否 |
@@ -221,3 +221,23 @@ Ubuntu复核`artifacts/20260902T101743+0800-m10-ubuntu-review/`发现并修正�
 `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`，其ELF/解释器/
 NEEDED/无RPATH均PASS。该binary未部署或上板运行；烧录/短预演和全部真实场景仍为
 `NOT RUN`，不改变表中“否”。
+
+M10 corrective prep从基线`6ee5d475f5451e6cba72f0041613009ed9fc9250`在独立分支实现
+分段spool v2安全回收和有界group commit。主机run
+`artifacts/20260902T121149+0800-m10-spool-v2-host-final/`全量21/21，M7/M8/M9/M10标签
+分别4/4、2/2、1/1、5/5；sanitizer run
+`artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/`全量21/21；ARM run
+`artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/`的ELF/依赖/无RPATH检查
+PASS，SHA256为`07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`。
+legacy默认不变；v2必须显式启用且旧binary `d234f2c5...fbf`已过期。以上只支持“实现并
+通过离线故障/回归和交叉构建”，不支持真实板端掉电、写放大改善、CPU/RSS或稳定性。
+
+Windows复核随后发现恢复路径会在未先同步segment时接纳GST2 write cursor之后的完整
+记录。独立纠正提交保存原持久cursor，并强制`fdatasync(old write segment)`成功后才提交
+引用扫描尾记录的新state；故障时open失败且旧state逐字节不变。定向`_exit`测试覆盖部分
+segment及恰好填满segment；纠正后的host run
+`artifacts/20260902T133022+0800-m10-spool-v2-recovery-host-final/`全量21/21、标签
+4/4、2/2、1/1、5/5，sanitizer全量21/21，ARM新SHA256为
+`b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`。该binary未上板。
+pending=0的一秒batch可能频繁segment create/sync/delete，在线写放大仍需120秒板端预演
+量化；该项及所有真实硬件/长测继续`NOT RUN`，M10仍`NOT MET`。

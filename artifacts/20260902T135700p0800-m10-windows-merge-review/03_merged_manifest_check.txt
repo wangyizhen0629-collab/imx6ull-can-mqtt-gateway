@@ -1,0 +1,15 @@
+﻿started_local=2026-09-02T14:01:20.8148830+08:00
+manifest=artifacts/20260902T104013p0800-m10-windows-preflight/artifact_manifest.sha256 result=PASS entries=28
+manifest=artifacts/20260902T121148+0800-m10-spool-v2-source-audit/artifact_manifest.v2.sha256 result=PASS entries=23
+manifest=artifacts/20260902T121149+0800-m10-spool-v2-host-final/artifact_manifest.v2.sha256 result=PASS entries=16
+manifest=artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/artifact_manifest.sha256 result=PASS entries=8
+manifest=artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/artifact_manifest.v2.sha256 result=PASS entries=20
+manifest=artifacts/20260902T133021+0800-m10-spool-v2-recovery-source-audit/artifact_manifest.sha256 result=PASS entries=24
+manifest=artifacts/20260902T133022+0800-m10-spool-v2-recovery-host-final/artifact_manifest.sha256 result=PASS entries=12
+manifest=artifacts/20260902T133023+0800-m10-spool-v2-recovery-asan-ubsan/artifact_manifest.sha256 result=PASS entries=8
+manifest=artifacts/20260902T133024+0800-m10-spool-v2-recovery-arm-relwithdebinfo/artifact_manifest.sha256 result=PASS entries=19
+finished_local=2026-09-02T14:01:21.2136976+08:00
+manifests_checked=9
+entries_checked=158
+failures=0
+result=PASS

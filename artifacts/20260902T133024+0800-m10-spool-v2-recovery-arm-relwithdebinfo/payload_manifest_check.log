@@ -1,0 +1,17 @@
+./build-clean-verbose.log: OK
+./build.log: OK
+./commands.md: OK
+./compiler-version.log: OK
+./configure-v2.log: OK
+./configure.log: OK
+./file.log: OK
+./input-sha256.log: OK
+./not_run.md: OK
+./readelf-dynamic.log: OK
+./readelf-header.log: OK
+./readelf-program.log: OK
+./sha256-after.log: OK
+./sha256-before.log: OK
+./size-after.log: OK
+./size-before.log: OK
+./test_report.md: OK

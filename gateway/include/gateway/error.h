@@ -12,7 +12,8 @@ typedef enum {
     GATEWAY_ERROR_INVALID_VALUE = 7,
     GATEWAY_ERROR_TIMEOUT = 8,
     GATEWAY_ERROR_CLOSED = 9,
-    GATEWAY_ERROR_SYSTEM = 10
+    GATEWAY_ERROR_SYSTEM = 10,
+    GATEWAY_ERROR_CAPACITY = 11
 } gateway_error_code;
 
 const char *gateway_error_string(gateway_error_code code);

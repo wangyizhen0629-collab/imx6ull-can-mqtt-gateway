@@ -1,0 +1,11 @@
+﻿started_local=2026-09-02T14:06:46.8311443+08:00
+scope=all staged tracked blobs; detector-source scripts excluded from content matching only
+files_scanned=184
+reviewed_non_secret=4
+actionable_findings=0
+reviewed_non_secret=gateway/src/main.c:591
+reviewed_non_secret=gateway/src/mqtt_sink.c:542
+reviewed_non_secret=gateway/tests/test_config.c:51
+reviewed_non_secret=gateway/tests/test_config.c:178
+result=PASS
+finished_local=2026-09-02T14:06:46.8377538+08:00

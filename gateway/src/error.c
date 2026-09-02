@@ -25,6 +25,8 @@ const char *gateway_error_string(gateway_error_code code)
         return "closed";
     case GATEWAY_ERROR_SYSTEM:
         return "system error";
+    case GATEWAY_ERROR_CAPACITY:
+        return "capacity limit reached";
     default:
         return "unknown error";
     }

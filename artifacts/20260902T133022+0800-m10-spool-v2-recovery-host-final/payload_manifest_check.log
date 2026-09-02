@@ -1,0 +1,10 @@
+./build-clean-verbose.log: OK
+./commands.md: OK
+./configure.log: OK
+./ctest-M10.log: OK
+./ctest-M7.log: OK
+./ctest-M8.log: OK
+./ctest-M9.log: OK
+./ctest-full.log: OK
+./not_run.md: OK
+./test_report.md: OK

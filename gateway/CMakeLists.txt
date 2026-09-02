@@ -48,6 +48,7 @@ add_library(gateway_core STATIC
     src/pipeline.c
     src/ring_buffer.c
     src/spool.c
+    src/spool_v2.c
     src/stats.c
     src/vehicle_decoder.c
 )
@@ -126,9 +127,9 @@ if(BUILD_TESTING)
     add_gateway_unit_test(test_pipeline M5)
     set_tests_properties(test_pipeline PROPERTIES LABELS "M5;M7;unit")
     add_gateway_unit_test(test_mqtt_sink M6)
-    set_tests_properties(test_mqtt_sink PROPERTIES LABELS "M6;M7;M8;unit")
+    set_tests_properties(test_mqtt_sink PROPERTIES LABELS "M6;M7;M8;M10;unit")
     add_gateway_unit_test(test_mqtt_reactor M8)
-    add_gateway_unit_test(test_spool M7)
+    add_gateway_unit_test(test_spool "M7;M10")
     add_test(
         NAME test_mqtt_validator
         COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B

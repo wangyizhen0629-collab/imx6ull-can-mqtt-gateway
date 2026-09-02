@@ -1,0 +1,13 @@
+Script started on 2026-09-02 13:32:56+08:00 [<not executed on terminal>]
+CMake Error at gateway/cmake/toolchains/imx6ull-buildroot.cmake:3 (message):
+  Set IMX6ULL_SDK_ROOT to the relocated Buildroot SDK root
+Call Stack (most recent call first):
+  /usr/share/cmake-3.22/Modules/CMakeDetermineSystem.cmake:124 (include)
+  CMakeLists.txt:3 (project)
+
+
+CMake Error: CMake was unable to find a build program corresponding to "Unix Makefiles".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+-- Configuring incomplete, errors occurred!
+
+Script done on 2026-09-02 13:32:56+08:00 [COMMAND_EXIT_CODE="1"]

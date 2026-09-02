@@ -38,7 +38,7 @@ PUBACK门禁。真实i.MX6ULL使用物理CAN输入连接Windows Broker；正式s
 1000批/115335条连续记录，gateway/Broker对账1033次publish/PUBACK一致，独立manifest
 与原始证据复核通过。M6状态为`MET`，但不产生正确UTC、性能或可靠性结论。
 
-M7 已实现固定格式append-only spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
+M7 已实现固定格式append-only legacy spool、CRC、原子PUBACK cursor、尾部/state恢复、gateway
 seq恢复、断线重连、单写者锁和去重validator。Ubuntu普通/ASan+UBSan全量16/16及ARMv7
 交叉构建通过；真实i.MX6ULL ext4 spool、Windows Broker断线、一次`kill -9`、补传及
 损坏恢复均有证据，M7门禁为`MET`。M8随后确认目标libmosquitto external-loop API并
@@ -51,14 +51,19 @@ HUP 1/1、restart换PID、一次SIGKILL恢复和BusyBox 1.31.1 ash隔离cooldown
 supervisor/child为1/1且child PID超过60秒不变。因此M9进程监督门禁为`MET`。板端时钟
 仍为1970，CAN持久自动配置、Broker交付、性能和无人值守完整产品ready不属于该结论。
 
-M10现已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS报告和四场景严格validator；
-主机warning-clean/ASan+UBSan全量20/20、最终M10专项2/2及ARMv7交叉构建通过。Windows
+M10现已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS报告和四场景严格validator。Windows
 又冻结111/500/1000帧/s STM32编译期profile，三个Keil target全量rebuild均0 error/
 0 warning。Ubuntu随后修正扩展帧文本ID边界，分析器8/8、当前全量CTest21/21，并生成
-通过ELF/RPATH复核的`RelWithDebInfo` ARM binary，SHA256为
-`d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。该binary未上板；
+通过ELF/RPATH复核的旧`RelWithDebInfo` ARM binary。M10 corrective prep又在独立功能分支
+加入显式选择的分段spool v2：全segment ACK后安全回收、256 MiB默认容量上限、不可复用
+序号reservation，以及可配置group commit；legacy默认和逐条同步语义保持不变。当前源码
+Debug warning-clean与ASan+UBSan全量均21/21，新的ARMv7 `RelWithDebInfo` SHA256为
+`b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`，未提交、未部署、
+未上板。旧SHA `d234f2c5...fbf`已过期，禁止沿用；
 烧录、短预演、500/1000帧/s各30分钟、20轮5分钟断网、板端指标和24小时基准全部
-`NOT RUN`。M10总门禁为`NOT MET`，没有性能或长期可靠性结论。
+`NOT RUN`。恢复时接纳state游标后的完整记录现在会先同步原write segment再提交state；
+但pending=0的一秒batch仍可能频繁滚动小segment，在线写放大须由120秒板端预演量化。
+M10总门禁为`NOT MET`，没有性能或长期可靠性结论。
 
 ## Ubuntu 主机构建
 

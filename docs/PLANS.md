@@ -68,8 +68,12 @@
   warning-clean主机构建、沙箱外全量CTest20/20、最终M10专项2/2、ASan+UBSan全量20/20、
   sanitizer M10专项2/2和ARMv7 warning-clean构建均通过。Windows完成三档profile和Keil
   准备后，Ubuntu复核修正扩展帧文本ID边界，最终分析器8/8、全量CTest21/21，并冻结
-  `RelWithDebInfo` ARM binary SHA256
-  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`；该binary未上板。
+  旧`RelWithDebInfo` ARM binary SHA256
+  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。随后M10 corrective
+  prep在独立功能分支实现显式分段spool v2安全回收和有界group commit；当前Debug与
+  ASan+UBSan全量均21/21，M10标签5/5，新ARMv7 `RelWithDebInfo` SHA256为
+  `07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`。两个binary均未执行；
+  旧SHA已经过期，禁止后续沿用。
   500/1000帧/s各30分钟、20轮每轮5分钟断网、板端`/proc`和24小时基准均为`NOT RUN`。
   M10总门禁为`NOT MET`，本轮停止在M10。
 
@@ -610,6 +614,50 @@ CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready
 16. 最终复跑发现文档化生成器命令先后使用旧脚本名、遗漏必需`--project`，两次均exit 2；
     失败保存在`artifacts/20260902T103243+0800-m10-ubuntu-final-rerun/`。补齐真实脚本和
     工程路径后canonical target检查PASS；分析器8/8及沙箱外CTest21/21也再次PASS。
+17. corrective prep前置检查确认M9仍为`MET`，tracked工作树干净且四个既有未跟踪目录
+    未动；fetch/pull均fast-forward，HEAD与`origin/master`严格等于
+    `6ee5d475f5451e6cba72f0041613009ed9fc9250`。随后创建独立分支
+    `m10-spool-v2-reclaim`，未直接修改或merge `master`。
+18. 先冻结`docs/milestones/M10_SPOOL_V2_DESIGN.md`。显式`spool_format=v2`使用全新
+    目录、GSP2/GST2 CRC、65536条/5242880字节segment和state tmp+fdatasync+rename+
+    parent fsync事务。只有全segment ACK且ACK state先持久化才删除，并再次fsync目录；
+    legacy默认、格式和历史证据不改，未知/缺失/乱序格式fail closed。
+19. 第一提交实现分段滚动/顺序读取/回收、永久sequence/batch/segment高水位、256 MiB
+    默认容量上限和明确capacity错误，并保持逐条`fdatasync`。测试覆盖pending清零后重启
+    序号不复用、活跃尾部、内部CRC、缺失/乱序和append/sync/state/rename/delete故障。
+20. 第二提交增加`spool_sync_records`/`spool_sync_interval_ms`。默认1/1000保持严格语义；
+    M10候选128/1000以先到者为准。Broker离线poll、记录/时间阈值、segment滚动、publish
+    前和正常关闭均flush；sync失败向上传播。reservation允许崩溃后出现缺口但禁止seq复用。
+21. 最终Debug证据`artifacts/20260902T121149+0800-m10-spool-v2-host-final/`为warning-clean、
+    全量CTest21/21，标签M7 4/4、M8 2/2、M9 1/1、M10 5/5。ASan+UBSan证据
+    `artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/`全量21/21且无诊断；
+    LeakSanitizer仍为`NOT RUN`。
+22. ARM证据`artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/`完成
+    `RelWithDebInfo` clean verbose warning-clean rebuild、ELF/解释器/NEEDED/无RPATH检查，
+    前后SHA均为`07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`。
+    binary只在忽略的`build/`，未提交、传输、部署或执行。
+23. 本轮没有连接、修改或清理板端现有M9 spool，也没有执行STM32烧录、三档短candump、
+    120秒板端预演、Broker控制或任何长测。旧M10 binary保留在既有板端非系统暂存位置但
+    已过期。所有真实硬件和长时间项目继续`NOT RUN`。
+24. Windows审查在提交A/B之后发现恢复data-before-state阻断：扫描会接纳GST2持久write
+    cursor之后的完整记录，却可能先提交引用这些记录的新state而未同步segment。独立
+    纠正提交C保留原持久write segment/offset；只有原segment `fdatasync`和close成功后
+    才推进内存游标并提交新state，失败则open fail closed且旧state不变。
+25. 定向测试用子进程`_exit`制造不调用用户态flush/close的完整尾记录，覆盖部分segment
+    和恰好填满segment。恢复sync故障时open返回I/O错误且state逐字节不变；无故障重开
+    安全接纳。满段cursor滚到下一segment/0，state提交前不创建下一segment。
+26. 纠正后Debug证据`artifacts/20260902T133022+0800-m10-spool-v2-recovery-host-final/`
+    warning-clean、全量CTest21/21，标签M7 4/4、M8 2/2、M9 1/1、M10 5/5；ASan+UBSan
+    证据`artifacts/20260902T133023+0800-m10-spool-v2-recovery-asan-ubsan/`全量21/21且无
+    诊断，LeakSanitizer为`NOT RUN`。
+27. ARM第一次configure遗漏`IMX6ULL_SDK_ROOT`而exit 1且未生成binary，失败日志原样保留。
+    纠正后在不同build目录完成`RelWithDebInfo` clean verbose warning-clean rebuild；
+    312172-byte binary SHA256为
+    `b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`，ELF/解释器/
+    NEEDED/无RPATH均PASS，未提交、传输、部署或运行。
+28. group commit只通过离线语义回归，不能写成在线写放大实测改善。pending=0的一秒批次
+    可能每秒create/sync/delete小segment，`spool_syncs`、segment churn和块设备写增量
+    留待经批准的120秒板端预演；该预演及全部真实硬件、Broker和长测仍`NOT RUN`。
 
 M10离线工具与可执行回归已完成，但退出门禁要求的真实压力、断网、指标和24小时报告不齐，
 故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮

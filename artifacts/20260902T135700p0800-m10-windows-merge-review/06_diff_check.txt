@@ -1,0 +1,6 @@
+﻿command=git diff --cached --check
+started_local=2026-09-02T14:01:36.7403785+08:00
+finished_local=2026-09-02T14:01:36.8911698+08:00
+exit_code=0
+--- output ---
+(empty)

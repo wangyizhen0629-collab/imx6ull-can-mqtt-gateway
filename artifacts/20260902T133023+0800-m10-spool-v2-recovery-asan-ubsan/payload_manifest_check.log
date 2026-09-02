@@ -1,0 +1,6 @@
+./build-clean.log: OK
+./commands.md: OK
+./configure.log: OK
+./ctest-full.log: OK
+./not_run.md: OK
+./test_report.md: OK

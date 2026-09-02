@@ -298,6 +298,15 @@ static void sync_spool_snapshot(gateway_mqtt_sink *sink)
     sink->snapshot.spool_tail_recoveries = spool_snapshot.tail_recoveries;
     sink->snapshot.spool_state_recoveries = spool_snapshot.state_recoveries;
     sink->snapshot.spool_corruptions = spool_snapshot.corruptions;
+    sink->snapshot.spool_physical_bytes = spool_snapshot.physical_bytes;
+    sink->snapshot.spool_pending_bytes = spool_snapshot.pending_bytes;
+    sink->snapshot.spool_segment_count = spool_snapshot.segment_count;
+    sink->snapshot.spool_segments_reclaimed =
+        spool_snapshot.segments_reclaimed;
+    sink->snapshot.spool_sync_count = spool_snapshot.sync_count;
+    sink->snapshot.spool_sync_failures = spool_snapshot.sync_failures;
+    sink->snapshot.spool_unsynced_records = spool_snapshot.unsynced_records;
+    sink->snapshot.spool_v2 = spool_snapshot.v2;
     sink->snapshot.next_batch_seq = spool_snapshot.next_batch_seq;
     sink->snapshot.last_acked_gateway_seq =
         spool_snapshot.last_acked_gateway_seq;
@@ -593,8 +602,27 @@ gateway_error_code gateway_mqtt_sink_create(
     created->snapshot.reactor_network_fd = -1;
 
     if (config->spool_path != NULL && config->spool_path[0] != '\0') {
+        gateway_spool_v2_options spool_options;
+
         created->durable = true;
-        spool_code = gateway_spool_open(&created->spool, config->spool_path);
+        if (config->spool_format == GATEWAY_SPOOL_FORMAT_V2) {
+            gateway_spool_v2_options_init(&spool_options);
+            if (config->spool_max_bytes != 0) {
+                spool_options.max_bytes = config->spool_max_bytes;
+            }
+            if (config->spool_sync_records != 0) {
+                spool_options.sync_records = config->spool_sync_records;
+            }
+            if (config->spool_sync_interval_ms != 0) {
+                spool_options.sync_interval_ms =
+                    config->spool_sync_interval_ms;
+            }
+            spool_code = gateway_spool_open_v2(
+                &created->spool, config->spool_path, &spool_options);
+        } else {
+            spool_code = gateway_spool_open(&created->spool,
+                                            config->spool_path);
+        }
         if (spool_code != GATEWAY_OK) {
             gateway_mqtt_sink_destroy(created);
             return spool_code;
@@ -739,6 +767,10 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
     int code;
     gateway_error_code gateway_code;
 
+    gateway_code = gateway_spool_flush(sink->spool);
+    if (gateway_code != GATEWAY_OK) {
+        return spool_failure(sink, gateway_code, "flush durable records");
+    }
     gateway_spool_read(sink->spool, &spool_snapshot);
     if (spool_snapshot.pending_records == 0) {
         sink->replay_pending = false;
@@ -1142,6 +1174,11 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
         gateway_spool_snapshot spool_snapshot;
         bool connected;
 
+        reactor_code = gateway_spool_poll(sink->spool);
+        if (reactor_code != GATEWAY_OK) {
+            return spool_failure(sink, reactor_code,
+                                 "group commit deadline");
+        }
         reactor_code = durable_reconnect_step(sink);
         if (reactor_code != GATEWAY_OK) {
             return reactor_code;

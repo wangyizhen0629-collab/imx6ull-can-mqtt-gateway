@@ -1,11 +1,19 @@
 #include "gateway/spool.h"
 
+#include <errno.h>
 #include <fcntl.h>
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <time.h>
 #include <unistd.h>
+
+enum {
+    TEST_V2_STATE_SIZE = 112
+};
 
 #define CHECK(condition)                                                       \
     do {                                                                       \
@@ -32,6 +40,16 @@ static telemetry_record make_record(uint64_t sequence)
     record.ecu_counter = (uint8_t)sequence;
     record.decoded_payload[0] = (uint8_t)(sequence + 1U);
     return record;
+}
+
+static void sleep_milliseconds(unsigned int milliseconds)
+{
+    struct timespec remaining;
+
+    remaining.tv_sec = (time_t)(milliseconds / 1000U);
+    remaining.tv_nsec = (long)(milliseconds % 1000U) * 1000000L;
+    while (nanosleep(&remaining, &remaining) != 0 && errno == EINTR) {
+    }
 }
 
 static int write_byte(const char *path, off_t offset, uint8_t value)
@@ -68,6 +86,86 @@ static int append_bytes(const char *path, const uint8_t *bytes, size_t size)
         count = -1;
     }
     return count == (ssize_t)size ? 0 : -1;
+}
+
+static uint64_t test_get_u64(const uint8_t *source)
+{
+    uint64_t value = 0;
+    size_t index;
+
+    for (index = 0; index < 8; index++) {
+        value |= (uint64_t)source[index] << (index * 8U);
+    }
+    return value;
+}
+
+static int read_file_exact(const char *path, uint8_t *buffer, size_t size)
+{
+    size_t completed = 0;
+    int descriptor = open(path, O_RDONLY);
+
+    if (descriptor < 0) {
+        return -1;
+    }
+    while (completed < size) {
+        ssize_t count = read(descriptor, buffer + completed,
+                             size - completed);
+
+        if (count < 0 && errno == EINTR) {
+            continue;
+        }
+        if (count <= 0) {
+            (void)close(descriptor);
+            return -1;
+        }
+        completed += (size_t)count;
+    }
+    if (close(descriptor) != 0) {
+        return -1;
+    }
+    return 0;
+}
+
+static int create_abrupt_v2_tail(
+    const char *directory,
+    const gateway_spool_v2_options *options,
+    bool fill_segment)
+{
+    pid_t child = fork();
+    int status;
+
+    if (child < 0) {
+        return -1;
+    }
+    if (child == 0) {
+        gateway_spool *spool = NULL;
+        telemetry_record record = make_record(1);
+
+        if (gateway_spool_test_open_v2(&spool, directory, options, 2) !=
+            GATEWAY_OK) {
+            _exit(10);
+        }
+        if (gateway_spool_append(spool, &record) != GATEWAY_OK) {
+            _exit(11);
+        }
+        if (fill_segment) {
+            record = make_record(2);
+            if (gateway_spool_test_fail_next(
+                    spool, GATEWAY_SPOOL_FAULT_STATE_WRITE) != GATEWAY_OK) {
+                _exit(12);
+            }
+            if (gateway_spool_append(spool, &record) != GATEWAY_ERROR_IO) {
+                _exit(13);
+            }
+        }
+        /* 模拟异常退出：不调用flush或close的用户态路径。 */
+        _exit(0);
+    }
+    if (waitpid(child, &status, 0) != child || !WIFEXITED(status) ||
+        WEXITSTATUS(status) != 0) {
+        return -1;
+    }
+    return 0;
 }
 
 static int test_append_ack_reopen_and_tail_recovery(const char *data_path,
@@ -162,6 +260,626 @@ static int test_single_writer_lock(const char *data_path)
     return 0;
 }
 
+static int remove_v2_directory(const char *directory, uint64_t maximum_segment)
+{
+    char path[512];
+    uint64_t number;
+
+    for (number = 1; number <= maximum_segment; number++) {
+        int written = snprintf(path, sizeof(path),
+                               "%s/segment-%020" PRIu64 ".gsp2",
+                               directory, number);
+
+        if (written < 0 || (size_t)written >= sizeof(path)) {
+            return -1;
+        }
+        if (unlink(path) != 0 && errno != ENOENT) {
+            return -1;
+        }
+    }
+    if (snprintf(path, sizeof(path), "%s/state.v2", directory) < 0) {
+        return -1;
+    }
+    if (unlink(path) != 0 && errno != ENOENT) {
+        return -1;
+    }
+    if (snprintf(path, sizeof(path), "%s/state.v2.tmp", directory) < 0) {
+        return -1;
+    }
+    if (unlink(path) != 0 && errno != ENOENT) {
+        return -1;
+    }
+    if (snprintf(path, sizeof(path), "%s/lock", directory) < 0 ||
+        unlink(path) != 0) {
+        return -1;
+    }
+    return rmdir(directory);
+}
+
+static int test_v2_roll_reclaim_and_sequence_state(const char *parent)
+{
+    char directory[256];
+    gateway_spool_v2_options options;
+    gateway_spool_snapshot snapshot;
+    gateway_spool *spool = NULL;
+    telemetry_record records[4];
+    uint64_t batch_seq = 0;
+    size_t count = 0;
+    uint64_t sequence;
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-roll", parent) > 0);
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 6 * GATEWAY_SPOOL_ENTRY_SIZE;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 5; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.v2);
+    CHECK(snapshot.segment_count == 3);
+    CHECK(snapshot.physical_bytes == 5 * GATEWAY_SPOOL_ENTRY_SIZE);
+    CHECK(snapshot.pending_bytes == snapshot.physical_bytes);
+    CHECK(gateway_spool_prepare_batch(spool, records, 3, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 3 && batch_seq == 1);
+    CHECK(records[0].gateway_seq == 1 && records[2].gateway_seq == 3);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 2);
+    CHECK(snapshot.segment_count == 2);
+    CHECK(snapshot.segments_reclaimed == 1);
+    CHECK(snapshot.physical_bytes == 3 * GATEWAY_SPOOL_ENTRY_SIZE);
+    CHECK(gateway_spool_prepare_batch(spool, records, 4, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 2 && batch_seq == 2);
+    CHECK(records[0].gateway_seq == 4 && records[1].gateway_seq == 5);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 0);
+    CHECK(snapshot.physical_bytes == 0);
+    CHECK(snapshot.segment_count == 0);
+    CHECK(snapshot.last_gateway_seq == 5);
+    CHECK(snapshot.last_acked_gateway_seq == 5);
+    CHECK(snapshot.next_batch_seq == 3);
+    gateway_spool_close(spool);
+    spool = NULL;
+
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 5);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.next_batch_seq == 3);
+    {
+        telemetry_record record = make_record(6);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 4) == 0);
+    return 0;
+}
+
+static int test_v2_capacity_preserves_unacked(const char *parent)
+{
+    char directory[256];
+    gateway_spool_v2_options options;
+    gateway_spool_snapshot snapshot;
+    gateway_spool *spool = NULL;
+    telemetry_record records[2];
+    telemetry_record record;
+    uint64_t batch_seq;
+    size_t count;
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-capacity", parent) >
+          0);
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 2 * GATEWAY_SPOOL_ENTRY_SIZE;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    record = make_record(1);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    record = make_record(2);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    record = make_record(3);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_ERROR_CAPACITY);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 2);
+    CHECK(snapshot.physical_bytes == 2 * GATEWAY_SPOOL_ENTRY_SIZE);
+    CHECK(gateway_spool_prepare_batch(spool, records, 2, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 2);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+    return 0;
+}
+
+static int test_v2_tail_corruption_and_missing(const char *parent)
+{
+    char directory[256];
+    char path[512];
+    gateway_spool_v2_options options;
+    gateway_spool_snapshot snapshot;
+    gateway_spool *spool = NULL;
+    uint8_t partial[7] = {1, 2, 3, 4, 5, 6, 7};
+    uint64_t sequence;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 6 * GATEWAY_SPOOL_ENTRY_SIZE;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-tail", parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 3) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 2; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(snprintf(path, sizeof(path),
+                   "%s/segment-00000000000000000001.gsp2", directory) > 0);
+    CHECK(append_bytes(path, partial, sizeof(partial)) == 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 3) ==
+          GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.tail_recoveries == 1);
+    CHECK(snapshot.pending_records == 2);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 2) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-corrupt", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 3) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 3; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(snprintf(path, sizeof(path),
+                   "%s/segment-00000000000000000001.gsp2", directory) > 0);
+    CHECK(write_byte(path, GATEWAY_SPOOL_ENTRY_SIZE + 20, 0xaaU) == 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 3) ==
+          GATEWAY_ERROR_INVALID_VALUE);
+    CHECK(spool == NULL);
+    CHECK(remove_v2_directory(directory, 2) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-missing", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 4; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(snprintf(path, sizeof(path),
+                   "%s/segment-00000000000000000001.gsp2", directory) > 0);
+    CHECK(unlink(path) == 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_ERROR_INVALID_VALUE);
+    CHECK(spool == NULL);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+    return 0;
+}
+
+static int test_v2_fault_injection(const char *parent)
+{
+    static const gateway_spool_fault_point append_faults[] = {
+        GATEWAY_SPOOL_FAULT_APPEND_WRITE,
+        GATEWAY_SPOOL_FAULT_SEGMENT_SYNC,
+        GATEWAY_SPOOL_FAULT_STATE_WRITE,
+        GATEWAY_SPOOL_FAULT_STATE_SYNC,
+        GATEWAY_SPOOL_FAULT_DIRECTORY_SYNC
+    };
+    gateway_spool_v2_options options;
+    size_t index;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 4 * GATEWAY_SPOOL_ENTRY_SIZE;
+    for (index = 0; index < sizeof(append_faults) / sizeof(append_faults[0]);
+         index++) {
+        char directory[256];
+        gateway_spool *spool = NULL;
+        telemetry_record record = make_record(1);
+
+        CHECK(snprintf(directory, sizeof(directory), "%s/v2-fault-%zu",
+                       parent, index) > 0);
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        CHECK(gateway_spool_test_fail_next(spool, append_faults[index]) ==
+              GATEWAY_OK);
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_ERROR_IO);
+        gateway_spool_close(spool);
+        spool = NULL;
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        record = make_record(gateway_spool_last_gateway_seq(spool) + 1);
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+        gateway_spool_close(spool);
+        CHECK(remove_v2_directory(directory, 3) == 0);
+    }
+    {
+        char directory[256];
+        gateway_spool *spool = NULL;
+        telemetry_record record = make_record(1);
+        telemetry_record prepared;
+        uint64_t batch_seq;
+        size_t count;
+
+        CHECK(snprintf(directory, sizeof(directory), "%s/v2-fault-ack",
+                       parent) > 0);
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+        CHECK(gateway_spool_prepare_batch(spool, &prepared, 1, &count,
+                                          &batch_seq) == GATEWAY_OK);
+        CHECK(gateway_spool_test_fail_next(
+                  spool, GATEWAY_SPOOL_FAULT_STATE_RENAME) == GATEWAY_OK);
+        CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_ERROR_IO);
+        gateway_spool_close(spool);
+        spool = NULL;
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        CHECK(gateway_spool_prepare_batch(spool, &prepared, 1, &count,
+                                          &batch_seq) == GATEWAY_OK);
+        CHECK(count == 1 && prepared.gateway_seq == 1);
+        CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+        gateway_spool_close(spool);
+        CHECK(remove_v2_directory(directory, 3) == 0);
+    }
+    {
+        char directory[256];
+        gateway_spool *spool = NULL;
+        gateway_spool_snapshot snapshot;
+        telemetry_record record = make_record(1);
+        telemetry_record prepared;
+        uint64_t batch_seq;
+        size_t count;
+
+        CHECK(snprintf(directory, sizeof(directory), "%s/v2-fault-delete",
+                       parent) > 0);
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+        CHECK(gateway_spool_prepare_batch(spool, &prepared, 1, &count,
+                                          &batch_seq) == GATEWAY_OK);
+        CHECK(gateway_spool_test_fail_next(
+                  spool, GATEWAY_SPOOL_FAULT_SEGMENT_DELETE) == GATEWAY_OK);
+        CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_ERROR_IO);
+        gateway_spool_close(spool);
+        spool = NULL;
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        gateway_spool_read(spool, &snapshot);
+        CHECK(snapshot.pending_records == 0 && snapshot.physical_bytes == 0);
+        CHECK(gateway_spool_last_gateway_seq(spool) == 1);
+        gateway_spool_close(spool);
+        CHECK(remove_v2_directory(directory, 3) == 0);
+    }
+    return 0;
+}
+
+static int test_v2_fail_closed_layout(const char *parent)
+{
+    char directory[256];
+    char path[512];
+    gateway_spool_v2_options options;
+    gateway_spool *spool = NULL;
+    telemetry_record record;
+    int descriptor;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 6 * GATEWAY_SPOOL_ENTRY_SIZE;
+    CHECK(snprintf(path, sizeof(path), "%s/legacy-file", parent) > 0);
+    descriptor = open(path, O_WRONLY | O_CREAT | O_EXCL, 0600);
+    CHECK(descriptor >= 0);
+    CHECK(close(descriptor) == 0);
+    CHECK(gateway_spool_test_open_v2(&spool, path, &options, 2) ==
+          GATEWAY_ERROR_INVALID_VALUE);
+    CHECK(spool == NULL);
+    CHECK(unlink(path) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-no-state", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    record = make_record(1);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(snprintf(path, sizeof(path), "%s/state.v2", directory) > 0);
+    CHECK(unlink(path) == 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_ERROR_INVALID_VALUE);
+    CHECK(spool == NULL);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-gap", parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    record = make_record(1);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    record = make_record(2);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    record = make_record(3);
+    CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    gateway_spool_close(spool);
+    spool = NULL;
+    {
+        char destination[512];
+
+        CHECK(snprintf(path, sizeof(path),
+                       "%s/segment-00000000000000000002.gsp2",
+                       directory) > 0);
+        CHECK(snprintf(destination, sizeof(destination),
+                       "%s/segment-00000000000000000003.gsp2",
+                       directory) > 0);
+        CHECK(rename(path, destination) == 0);
+    }
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_ERROR_INVALID_VALUE);
+    CHECK(spool == NULL);
+    CHECK(remove_v2_directory(directory, 4) == 0);
+    return 0;
+}
+
+static int test_v2_recovery_syncs_data_before_state(const char *parent)
+{
+    gateway_spool_v2_options options;
+    unsigned int scenario;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 4 * GATEWAY_SPOOL_ENTRY_SIZE;
+    options.sync_records = 2;
+    options.sync_interval_ms = 60000;
+    for (scenario = 0; scenario < 2; scenario++) {
+        uint8_t state_before[TEST_V2_STATE_SIZE];
+        uint8_t state_after_failure[TEST_V2_STATE_SIZE];
+        uint8_t state_after_recovery[TEST_V2_STATE_SIZE];
+        char directory[256];
+        char state_path[512];
+        gateway_spool_snapshot snapshot;
+        telemetry_record records[2];
+        gateway_spool *spool = NULL;
+        uint64_t batch_seq = 0;
+        size_t count = 0;
+        const bool fill_segment = scenario != 0;
+
+        CHECK(snprintf(directory, sizeof(directory), "%s/v2-recovery-sync-%u",
+                       parent, scenario) > 0);
+        CHECK(snprintf(state_path, sizeof(state_path), "%s/state.v2",
+                       directory) > 0);
+        CHECK(create_abrupt_v2_tail(directory, &options, fill_segment) == 0);
+        CHECK(read_file_exact(state_path, state_before,
+                              sizeof(state_before)) == 0);
+        CHECK(test_get_u64(state_before + 24) == 0);
+        CHECK(test_get_u64(state_before + 32) == 2);
+        CHECK(test_get_u64(state_before + 72) == 1);
+        CHECK(test_get_u64(state_before + 80) == 0);
+
+        CHECK(gateway_spool_test_open_v2_with_fault(
+                  &spool, directory, &options, 2,
+                  GATEWAY_SPOOL_FAULT_SEGMENT_SYNC) == GATEWAY_ERROR_IO);
+        CHECK(spool == NULL);
+        CHECK(read_file_exact(state_path, state_after_failure,
+                              sizeof(state_after_failure)) == 0);
+        CHECK(memcmp(state_before, state_after_failure,
+                     sizeof(state_before)) == 0);
+
+        CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+              GATEWAY_OK);
+        gateway_spool_read(spool, &snapshot);
+        CHECK(snapshot.state_recoveries == 1);
+        CHECK(snapshot.pending_records == (fill_segment ? 2U : 1U));
+        CHECK(gateway_spool_last_gateway_seq(spool) == 2);
+        CHECK(read_file_exact(state_path, state_after_recovery,
+                              sizeof(state_after_recovery)) == 0);
+        CHECK(test_get_u64(state_after_recovery + 16) ==
+              test_get_u64(state_before + 16) + 1);
+        CHECK(test_get_u64(state_after_recovery + 24) ==
+              (fill_segment ? 2U : 1U));
+        CHECK(test_get_u64(state_after_recovery + 32) == 2);
+        CHECK(test_get_u64(state_after_recovery + 72) ==
+              (fill_segment ? 2U : 1U));
+        CHECK(test_get_u64(state_after_recovery + 80) ==
+              (fill_segment ? 0U : GATEWAY_SPOOL_ENTRY_SIZE));
+        CHECK(gateway_spool_prepare_batch(spool, records, 2, &count,
+                                          &batch_seq) == GATEWAY_OK);
+        CHECK(count == (fill_segment ? 2U : 1U));
+        CHECK(records[0].gateway_seq == 1);
+        CHECK(records[count - 1].gateway_seq == (fill_segment ? 2U : 1U));
+        gateway_spool_cancel_prepared(spool);
+        gateway_spool_close(spool);
+        CHECK(remove_v2_directory(directory, 3) == 0);
+    }
+    return 0;
+}
+
+static int test_v2_group_commit(const char *parent)
+{
+    char directory[256];
+    gateway_spool_v2_options options;
+    gateway_spool_snapshot first;
+    gateway_spool_snapshot second;
+    gateway_spool_snapshot snapshot;
+    gateway_spool *spool = NULL;
+    telemetry_record records[6];
+    uint64_t batch_seq;
+    size_t count;
+    uint64_t sequence;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 10 * GATEWAY_SPOOL_ENTRY_SIZE;
+    options.sync_records = 3;
+    options.sync_interval_ms = 60000;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-count", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 1);
+    {
+        telemetry_record record = make_record(2);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &second);
+    CHECK(second.unsynced_records == 2);
+    CHECK(second.sync_count == first.sync_count);
+    {
+        telemetry_record record = make_record(3);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.unsynced_records == 0);
+    CHECK(snapshot.sync_count > second.sync_count);
+    CHECK(gateway_spool_prepare_batch(spool, records, 6, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 3 && records[0].gateway_seq == 1 &&
+          records[2].gateway_seq == 3);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_interval_ms = 20;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-time", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 1);
+    sleep_milliseconds(30);
+    CHECK(gateway_spool_poll(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &second);
+    CHECK(second.unsynced_records == 0 && second.sync_count > first.sync_count);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 4;
+    options.sync_interval_ms = 60000;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-prepare",
+                   parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 2; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 2);
+    CHECK(gateway_spool_prepare_batch(spool, records, 6, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    gateway_spool_read(spool, &second);
+    CHECK(count == 2 && second.unsynced_records == 0);
+    CHECK(second.sync_count > first.sync_count);
+    gateway_spool_cancel_prepared(spool);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 2 && snapshot.unsynced_records == 0);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 2);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-close", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.unsynced_records == 1);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 1 && snapshot.unsynced_records == 0);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 1);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 3;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-failure",
+                   parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    CHECK(gateway_spool_test_fail_next(
+              spool, GATEWAY_SPOOL_FAULT_SEGMENT_SYNC) == GATEWAY_OK);
+    CHECK(gateway_spool_flush(spool) == GATEWAY_ERROR_IO);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.sync_failures == 1 && snapshot.unsynced_records == 1);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 3);
+    {
+        telemetry_record record = make_record(4);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 2;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-cross", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 6; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    CHECK(gateway_spool_prepare_batch(spool, records, 4, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 4 && records[0].gateway_seq == 1 &&
+          records[3].gateway_seq == 4);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    CHECK(gateway_spool_prepare_batch(spool, records, 4, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 2 && records[0].gateway_seq == 5 &&
+          records[1].gateway_seq == 6);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 0 && snapshot.physical_bytes == 0);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 5) == 0);
+    return 0;
+}
+
 int main(void)
 {
     char directory[] = "/tmp/gateway-spool-test-XXXXXX";
@@ -179,6 +897,13 @@ int main(void)
     CHECK(test_append_ack_reopen_and_tail_recovery(data_path, state_path) == 0);
     CHECK(test_interior_corruption_is_fatal(corrupt_path) == 0);
     CHECK(test_single_writer_lock(lock_path) == 0);
+    CHECK(test_v2_roll_reclaim_and_sequence_state(directory) == 0);
+    CHECK(test_v2_capacity_preserves_unacked(directory) == 0);
+    CHECK(test_v2_tail_corruption_and_missing(directory) == 0);
+    CHECK(test_v2_fault_injection(directory) == 0);
+    CHECK(test_v2_fail_closed_layout(directory) == 0);
+    CHECK(test_v2_recovery_syncs_data_before_state(directory) == 0);
+    CHECK(test_v2_group_commit(directory) == 0);
     CHECK(unlink(data_path) == 0);
     CHECK(unlink(state_path) == 0);
     CHECK(unlink(corrupt_path) == 0);

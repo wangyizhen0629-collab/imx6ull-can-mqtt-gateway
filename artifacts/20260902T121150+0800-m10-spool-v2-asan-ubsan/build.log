@@ -1,0 +1,64 @@
+Script started on 2026-09-02 12:13:27+08:00 [<not executed on terminal>]
+[  2%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o[0m
+[  4%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o[0m
+[  6%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o[0m
+[  8%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o[0m
+[ 11%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o[0m
+[ 13%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o[0m
+[ 15%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o[0m
+[ 17%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o[0m
+[ 20%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o[0m
+[ 22%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o[0m
+[ 24%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o[0m
+[ 26%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/spool_v2.c.o[0m
+[ 28%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o[0m
+[ 31%] [32mBuilding C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o[0m
+[ 33%] [32m[1mLinking C static library libgateway_core.a[0m
+[ 33%] Built target gateway_core
+[ 35%] [32mBuilding C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o[0m
+[ 37%] [32mBuilding C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o[0m
+[ 40%] [32m[1mLinking C executable test_config[0m
+[ 42%] [32m[1mLinking C executable gatewayd[0m
+[ 42%] Built target test_config
+[ 44%] [32mBuilding C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o[0m
+[ 44%] Built target gatewayd
+[ 46%] [32m[1mLinking C executable test_error_record[0m
+[ 48%] [32mBuilding C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o[0m
+[ 51%] [32m[1mLinking C executable test_lifecycle[0m
+[ 51%] Built target test_error_record
+[ 53%] [32mBuilding C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o[0m
+[ 55%] [32m[1mLinking C executable test_log[0m
+[ 55%] Built target test_lifecycle
+[ 57%] [32mBuilding C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o[0m
+[ 57%] Built target test_log
+[ 60%] [32mBuilding C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o[0m
+[ 62%] [32m[1mLinking C executable test_ring_buffer[0m
+[ 64%] [32m[1mLinking C executable test_can_receiver[0m
+[ 64%] Built target test_ring_buffer
+[ 66%] [32mBuilding C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o[0m
+[ 66%] Built target test_can_receiver
+[ 68%] [32mBuilding C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o[0m
+[ 71%] [32m[1mLinking C executable test_vehicle_decoder[0m
+[ 73%] [32m[1mLinking C executable test_pipeline[0m
+[ 73%] Built target test_vehicle_decoder
+[ 75%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o[0m
+[ 75%] Built target test_pipeline
+[ 77%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o[0m
+[ 80%] [32m[1mLinking C executable test_mqtt_reactor[0m
+[ 82%] [32m[1mLinking C executable test_mqtt_sink[0m
+[ 82%] Built target test_mqtt_reactor
+[ 82%] Built target test_mqtt_sink
+[ 84%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o[0m
+[ 86%] [32mBuilding C object gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o[0m
+[ 88%] [32m[1mLinking C executable test_mqtt_integration[0m
+[ 91%] [32m[1mLinking C executable test_spool[0m
+[ 91%] Built target test_mqtt_integration
+[ 93%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o[0m
+[ 95%] [32m[1mLinking C executable test_mqtt_timing[0m
+[ 95%] Built target test_spool
+[ 97%] [32mBuilding C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o[0m
+[100%] [32m[1mLinking C executable test_mqtt_recovery_driver[0m
+[100%] Built target test_mqtt_timing
+[100%] Built target test_mqtt_recovery_driver
+
+Script done on 2026-09-02 12:13:31+08:00 [COMMAND_EXIT_CODE="0"]

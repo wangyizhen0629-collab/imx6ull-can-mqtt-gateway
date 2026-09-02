@@ -1,0 +1,25 @@
+Script started on 2026-09-02 13:31:27+08:00 [<not executed on terminal>]
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host
+    Start 12: test_pipeline
+1/4 Test #12: test_pipeline ....................   Passed    1.01 sec
+    Start 13: test_mqtt_sink
+2/4 Test #13: test_mqtt_sink ...................   Passed    0.57 sec
+    Start 15: test_spool
+3/4 Test #15: test_spool .......................   Passed    0.38 sec
+    Start 17: test_mqtt_recovery_validator
+4/4 Test #17: test_mqtt_recovery_validator .....   Passed    0.40 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Label Time Summary:
+M10     =   0.95 sec*proc (2 tests)
+M5      =   1.01 sec*proc (1 test)
+M6      =   0.57 sec*proc (1 test)
+M7      =   2.37 sec*proc (4 tests)
+M8      =   0.57 sec*proc (1 test)
+unit    =   2.37 sec*proc (4 tests)
+
+Total Test time (real) =   2.37 sec
+
+Script done on 2026-09-02 13:31:29+08:00 [COMMAND_EXIT_CODE="0"]

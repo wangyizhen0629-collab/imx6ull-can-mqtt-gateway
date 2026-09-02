@@ -206,8 +206,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 ## M10 当前仍未解决的边界
 
 - 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
-- 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
-  和长期可靠性仍未运行。不得用M8短时功能门禁回答这些问题。
+- 分段spool v2已在离线测试中解决“全ACK记录不回收”和逐条同步写放大的实现缺口；默认
+  256 MiB容量上限、明确capacity错误、全segment ACK后回收和128/1000候选group commit
+  已冻结。真实掉电、存储/目录flush语义、板端容量水位、写放大改善、性能/时延/吞吐、
+  CPU/RSS、介质寿命和长期可靠性仍未运行，不得用主机故障注入或M8短门禁替代。
 - M9仓库实现、主机/ASan+UBSan、ARM、板端安装/reload/restart/SIGKILL恢复、BusyBox ash
   cooldown和手动post-boot补充门禁已有真实证据，M9为`MET`。仍未解决的产品问题是正确
   UTC、CAN持久启动配置、Broker交付以及性能/长期可靠性；这些不得从M9短时进程监督门禁
@@ -220,6 +222,21 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   `artifacts/20260902T101743+0800-m10-ubuntu-review/`又关闭全量复核、分析器扩展帧边界和
   正式`RelWithDebInfo` binary生成/静态验证缺口；STM32烧录、binary上板、三档短candump、
   120秒指标预演和短端到端对账仍为`NOT RUN`。
+- 当前spool v2证据为`artifacts/20260902T121149+0800-m10-spool-v2-host-final/`、
+  `artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/`和
+  `artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/`。新ARM SHA256为
+  `07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`；旧
+  `d234f2c5...fbf`已过期。v2何时在板端启用、容量是否下调以及候选128/1000是否调整，
+  必须等另行批准的短预演和真实测试，当前不得推定。
+- Windows审查发现的恢复data-before-state缺口已由独立纠正提交修复：state游标之后的
+  完整记录必须先`fdatasync`原write segment，再推进cursor并提交state；失败保持旧state
+  并fail closed。纠正证据为`artifacts/20260902T133021+0800-m10-spool-v2-recovery-source-audit/`
+  及相邻host/sanitizer/ARM三个run，新ARM SHA256为
+  `b79c723a4561c936d8b9b8cf90e87ba6da79a30111746aae4c2d69fb7eff0e16`。此前
+  `07c185...be5e`已过期。
+- 仍待回答：pending=0且一秒batch时，segment create/sync/delete频率和块设备实际写入
+  是否抵消group commit收益？必须在经批准的120秒板端预演同步采集`spool_syncs`、
+  segment churn和块设备写增量；当前`NOT RUN`，不能称“在线写放大已解决”。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

@@ -1,0 +1,15 @@
+Script started on 2026-09-02 13:31:30+08:00 [<not executed on terminal>]
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/20260902T133022-m10-spool-v2-recovery-host
+    Start 18: test_busybox_gatewayd_supervisor
+1/1 Test #18: test_busybox_gatewayd_supervisor ...   Passed    8.12 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Label Time Summary:
+M9        =   8.12 sec*proc (1 test)
+deploy    =   8.12 sec*proc (1 test)
+
+Total Test time (real) =   8.13 sec
+
+Script done on 2026-09-02 13:31:38+08:00 [COMMAND_EXIT_CODE="0"]

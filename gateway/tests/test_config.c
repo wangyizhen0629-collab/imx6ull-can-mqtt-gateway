@@ -56,6 +56,10 @@ static int test_defaults_file_and_override(void)
         "mqtt_ack_timeout_ms=2500\n"
         "mqtt_reconnect_interval_ms=250\n"
         "spool_path=/tmp/gateway-test-spool.data\n"
+        "spool_format=v2\n"
+        "spool_max_bytes=10485760\n"
+        "spool_sync_records=128\n"
+        "spool_sync_interval_ms=1000\n"
         "log_level=debug\n";
     char path[] = "/tmp/gateway-config-valid-XXXXXX";
     char output[2048];
@@ -76,6 +80,10 @@ static int test_defaults_file_and_override(void)
     CHECK(config.log_level == GATEWAY_LOG_DEBUG);
     CHECK(config.mqtt_ack_timeout_ms == 2500);
     CHECK(config.mqtt_reconnect_interval_ms == 250);
+    CHECK(config.spool_format == GATEWAY_SPOOL_FORMAT_V2);
+    CHECK(config.spool_max_bytes == UINT64_C(10485760));
+    CHECK(config.spool_sync_records == 128);
+    CHECK(config.spool_sync_interval_ms == 1000);
     CHECK(gateway_config_apply_assignment(&config, "queue_capacity=8", &error) ==
           GATEWAY_OK);
     CHECK(config.queue_capacity == 8);
@@ -131,6 +139,16 @@ static int test_invalid_inputs_and_boundaries(void)
                             GATEWAY_ERROR_INVALID_VALUE, 1) == 0);
     CHECK(expect_file_error("spool_path=relative/path\n",
                             GATEWAY_ERROR_INVALID_VALUE, 1) == 0);
+    CHECK(expect_file_error("spool_format=auto\n",
+                            GATEWAY_ERROR_INVALID_VALUE, 1) == 0);
+    CHECK(expect_file_error("spool_max_bytes=5242801\n",
+                            GATEWAY_ERROR_RANGE, 1) == 0);
+    CHECK(expect_file_error("spool_sync_records=0\n",
+                            GATEWAY_ERROR_RANGE, 1) == 0);
+    CHECK(expect_file_error("spool_sync_records=65537\n",
+                            GATEWAY_ERROR_RANGE, 1) == 0);
+    CHECK(expect_file_error("spool_sync_interval_ms=60001\n",
+                            GATEWAY_ERROR_RANGE, 1) == 0);
 
     gateway_config_init_defaults(&config);
     CHECK(gateway_config_apply_assignment(&config, "queue_capacity=65536",
@@ -164,6 +182,9 @@ static int test_invalid_inputs_and_boundaries(void)
     CHECK(gateway_config_apply_assignment(&config, "broker_port=65535", &error) ==
           GATEWAY_OK);
     CHECK(gateway_config_apply_assignment(&config, "broker_port=65536", &error) ==
+          GATEWAY_ERROR_RANGE);
+    CHECK(gateway_config_apply_assignment(&config,
+                                          "spool_max_bytes=5242879", &error) ==
           GATEWAY_ERROR_RANGE);
     CHECK(gateway_config_apply_assignment(&config, "not-an-assignment", &error) ==
           GATEWAY_ERROR_PARSE);

@@ -1,0 +1,11 @@
+﻿started_local=2026-09-02T14:01:21.3257234+08:00
+scope=staged tracked files before this review artifact is staged
+patterns=private-key marker, private/link-local IPv4, non-redacted credential assignment, forbidden filename
+files_scanned=172
+findings=4
+result=FAIL
+credential_assignment=gateway/src/main.c:591 key=password
+credential_assignment=gateway/src/mqtt_sink.c:542 key=password
+credential_assignment=gateway/tests/test_config.c:51 key=password
+credential_assignment=gateway/tests/test_config.c:178 key=password
+finished_local=2026-09-02T14:01:36.6466709+08:00

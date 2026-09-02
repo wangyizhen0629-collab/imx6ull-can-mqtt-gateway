@@ -1,0 +1,18 @@
+Script started on 2026-09-02 13:37:50+08:00 [<not executed on terminal>]
+.gitattributes
+README.md
+docs/DECISION_LOG.md
+docs/OPEN_QUESTIONS.md
+docs/PLANS.md
+docs/PROJECT_SPEC.md
+docs/RESUME_TRACEABILITY.md
+docs/TEST_PLAN.md
+docs/milestones/M10.md
+docs/milestones/M10_SPOOL_V2_DESIGN.md
+gateway/include/gateway/spool.h
+gateway/src/spool.c
+gateway/src/spool_v2.c
+gateway/src/spool_v2_internal.h
+gateway/tests/test_spool.c
+
+Script done on 2026-09-02 13:37:50+08:00 [COMMAND_EXIT_CODE="0"]

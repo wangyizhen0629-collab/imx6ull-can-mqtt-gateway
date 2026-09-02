@@ -56,7 +56,7 @@ STM32F103C8T6 确定性模拟 ECU
   -> 合法性校验和自定义 DBC 解码
   -> 固定大小 telemetry_record
   -> 有界环形缓冲区（bounded ring buffer）
-  -> 1 秒 batch 和 append-only spool
+  -> 1 秒 batch 和显式选择的legacy或分段v2 spool
   -> 单个 in-flight MQTT QoS 1 发布
   -> PUBACK 后推进确认游标
   -> PC subscriber 和序列校验程序
@@ -100,8 +100,16 @@ M4 同步创建和验证。
   high-watermark。计划的满队列策略是短时间有界等待后丢弃新记录。
 - MQTT 使用经过验证的 C 库和 QoS 1，初期只允许一个 in-flight batch；只有匹配的
   PUBACK 到达后才算发布成功。
-- 持久化使用 append-only `spool.data` 和原子推进的 `spool.state`，包含 CRC、尾部恢复、
-  顺序补传和 seq 恢复。
+- 持久化默认保留M7的append-only `spool.data`/`spool.state`严格兼容路径；M10新增必须显式
+  选择且使用全新目录的分段v2格式。v2每个生产segment固定65536条80字节记录，只有整个
+  segment全部ACK且ACK state已通过tmp、`fdatasync`、rename和父目录`fsync`持久化后才
+  删除，并再次同步目录。未知、缺失或乱序格式fail closed，不对legacy做原地迁移。
+- v2默认容量上限为256 MiB，达到上限返回明确容量错误，绝不覆盖未ACK记录。默认仍为
+  `spool_sync_records=1`严格逐条同步；M10候选配置是128条或1000 ms先到者触发同步，
+  Broker离线、publish前和正常关闭也必须flush。group commit不宣称掉电零丢失。
+- v2恢复扫描若准备接纳持久write cursor之后的完整记录，必须先对原write segment执行
+  `fdatasync`，成功后才能提交引用这些记录的新state；失败必须保持旧state并fail closed。
+  在线写放大是否改善只能由板端块设备指标实测，不能由离线sync计数推断。
 - 只有目标 libmosquitto 实际支持并验证 `mosquitto_socket`、`mosquitto_loop_read`、
   `mosquitto_loop_write`、`mosquitto_loop_misc` 后，M8 才能采用 epoll reactor。
 - 部署只使用 BusyBox 兼容 init/respawn/supervisor，不使用 systemd。
@@ -116,7 +124,8 @@ STM32 侧 TJA1050 模块和 i.MX6ULL 板载 CAN 模块各有一个 120 Ω，因�
 ## 统计、配置和安全边界
 
 最终统计必须区分 CAN 接收/校验/计数器错误、队列流量/丢弃/水位、MQTT
-publish/PUBACK/reconnect、spool append/replay/corrupt 和正常退出。ARMv7 上不得未经
+publish/PUBACK/reconnect、spool append/replay/corrupt、physical/pending bytes、segment
+数量/回收、sync次数/失败/未同步记录和正常退出。ARMv7 上不得未经
 验证假定 64-bit 原子操作 lock-free，必须明确同步并测试。
 
 device ID、CAN 接口、Broker 地址/端口/凭据、topic、spool 路径、队列容量和时间参数
@@ -191,7 +200,9 @@ ID，证明PID 1在无人工start/restart/HUP时自动拉起唯一supervisor；�
 BusyBox进程监督门禁为`MET`。M10已实现BusyBox `/proc`采集、Ubuntu CPU/RSS汇总、
 四场景严格门禁工具，以及111/500/1000帧/s的STM32编译期profile和独立candump分析器；
 主机、sanitizer、ARMv7离线验证和Windows三个Keil全量rebuild均已通过。Ubuntu复核又
-修正扩展帧文本ID边界，分析器8/8、全量CTest21/21，并冻结通过ELF/RPATH检查的
-`RelWithDebInfo` ARM binary及SHA；该binary未上板。真实500/1000帧/s压力、20轮Broker
+修正扩展帧文本ID边界，分析器8/8、全量CTest21/21。随后M10 corrective prep在独立分支
+加入分段spool v2安全回收和有界group commit；Debug与ASan+UBSan全量均21/21，新的
+`RelWithDebInfo` ARM binary通过ELF/RPATH检查且未上板。此前SHA为`d234f2c5...fbf`的
+binary已因spool源码变化而过期，不得用于后续M10。真实500/1000帧/s压力、20轮Broker
 断网、板端指标和24小时基准均为`NOT RUN`，故M10总门禁为`NOT MET`。CAN持久配置、
 Broker交付、正确UTC、完整产品无人值守ready、性能和长期可靠性仍无结论。

@@ -1,0 +1,13 @@
+﻿run_id=20260902T135700p0800-m10-windows-merge-review
+local_time=2026-09-02T13:59:56.2115534+08:00
+repo_root=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway
+branch=master
+head=c9582763407d3e996eff0fd5878aad4033f3bfcd
+origin_master=6ee5d475f5451e6cba72f0041613009ed9fc9250
+merge_head=d7f2857a7b3f90f6231b2d55f78f45c7b0c9fe5f
+feature_head=d7f2857a7b3f90f6231b2d55f78f45c7b0c9fe5f
+board_operated=NO
+can_operated=NO
+broker_operated=NO
+stm32_operated=NO
+long_test_started=NO
