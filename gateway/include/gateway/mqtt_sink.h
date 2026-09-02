@@ -3,6 +3,7 @@
 
 #include "gateway/error.h"
 #include "gateway/log.h"
+#include "gateway/spool.h"
 #include "gateway/stats.h"
 #include "gateway/telemetry_record.h"
 
@@ -27,6 +28,8 @@ typedef struct {
     uint32_t reconnect_interval_ms;
     /* NULL/空字符串保留 M6 内存批处理；非空启用 M7 持久化语义。 */
     const char *spool_path;
+    gateway_spool_format spool_format;
+    uint64_t spool_max_bytes;
     size_t max_records;
     gateway_stats *stats;
     gateway_logger *logger;
@@ -53,6 +56,14 @@ typedef struct {
     uint64_t spool_tail_recoveries;
     uint64_t spool_state_recoveries;
     uint64_t spool_corruptions;
+    uint64_t spool_physical_bytes;
+    uint64_t spool_pending_bytes;
+    uint64_t spool_segment_count;
+    uint64_t spool_segments_reclaimed;
+    uint64_t spool_sync_count;
+    uint64_t spool_sync_failures;
+    uint64_t spool_unsynced_records;
+    bool spool_v2;
     bool reactor_enabled;
     int reactor_network_fd;
     uint64_t reactor_epoll_waits;

@@ -282,11 +282,79 @@ static int test_durable_reconnect_during_continuous_consume(void)
     return 0;
 }
 
+static int test_v2_durable_offline_reopen(void)
+{
+    char parent[] = "/tmp/gateway-mqtt-v2-test-XXXXXX";
+    char spool_path[256];
+    char file_path[512];
+    gateway_mqtt_sink_config config;
+    gateway_mqtt_sink_snapshot snapshot;
+    gateway_mqtt_sink *sink = NULL;
+    gateway_stats stats;
+    gateway_logger logger;
+    uint64_t sequence;
+
+    CHECK(mkdtemp(parent) != NULL);
+    CHECK(snprintf(spool_path, sizeof(spool_path), "%s/spool-v2", parent) > 0);
+    CHECK(gateway_stats_init(&stats) == GATEWAY_OK);
+    CHECK(gateway_logger_init(&logger, stderr, GATEWAY_LOG_ERROR) ==
+          GATEWAY_OK);
+    (void)memset(&config, 0, sizeof(config));
+    config.device_id = "unit-gateway";
+    config.broker_host = "127.0.0.1";
+    config.broker_port = 1883;
+    config.broker_username = "";
+    config.broker_password = "";
+    config.topic = "test/m10/v2-offline";
+    config.batch_interval_ms = 1000;
+    config.ack_timeout_ms = 1000;
+    config.reconnect_interval_ms = 100;
+    config.spool_path = spool_path;
+    config.spool_format = GATEWAY_SPOOL_FORMAT_V2;
+    config.spool_max_bytes = GATEWAY_SPOOL_MAX_BYTES_DEFAULT;
+    config.max_records = 4;
+    config.stats = &stats;
+    config.logger = &logger;
+    CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
+    for (sequence = 1; sequence <= 3; sequence++) {
+        telemetry_record record = make_record(sequence, (uint8_t)sequence);
+
+        CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+    }
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.spool_v2);
+    CHECK(snapshot.spool_pending_records == 3);
+    CHECK(snapshot.spool_physical_bytes ==
+          3 * GATEWAY_SPOOL_ENTRY_SIZE);
+    CHECK(snapshot.spool_segment_count == 1);
+    gateway_mqtt_sink_destroy(sink);
+    sink = NULL;
+    CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.spool_v2 && snapshot.spool_pending_records == 3);
+    CHECK(gateway_mqtt_sink_next_gateway_seq(sink) == 4);
+    gateway_mqtt_sink_destroy(sink);
+    gateway_logger_destroy(&logger);
+    gateway_stats_destroy(&stats);
+    CHECK(snprintf(file_path, sizeof(file_path),
+                   "%s/segment-00000000000000000001.gsp2", spool_path) > 0);
+    CHECK(unlink(file_path) == 0);
+    CHECK(snprintf(file_path, sizeof(file_path), "%s/state.v2", spool_path) >
+          0);
+    CHECK(unlink(file_path) == 0);
+    CHECK(snprintf(file_path, sizeof(file_path), "%s/lock", spool_path) > 0);
+    CHECK(unlink(file_path) == 0);
+    CHECK(rmdir(spool_path) == 0);
+    CHECK(rmdir(parent) == 0);
+    return 0;
+}
+
 int main(void)
 {
     CHECK(test_batch_encoding() == 0);
     CHECK(test_library_and_create_validation() == 0);
     CHECK(test_durable_offline_append_and_sequence_recovery() == 0);
+    CHECK(test_v2_durable_offline_reopen() == 0);
     CHECK(test_durable_reconnect_during_continuous_consume() == 0);
     return 0;
 }

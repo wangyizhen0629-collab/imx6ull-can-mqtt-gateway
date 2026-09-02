@@ -1,6 +1,7 @@
 #include "gateway/spool.h"
 
 #include "gateway/config.h"
+#include "spool_v2_internal.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -25,6 +26,8 @@ static const uint8_t ENTRY_MAGIC[4] = {'G', 'S', 'P', '1'};
 static const uint8_t STATE_MAGIC[4] = {'G', 'S', 'T', '1'};
 
 struct gateway_spool {
+    gateway_spool_v2 *v2_spool;
+    bool v2;
     int data_fd;
     char data_path[GATEWAY_SPOOL_PATH_SIZE];
     char state_path[STATE_PATH_SIZE];
@@ -483,12 +486,71 @@ gateway_error_code gateway_spool_open(gateway_spool **spool,
     return GATEWAY_OK;
 }
 
+void gateway_spool_v2_options_init(gateway_spool_v2_options *options)
+{
+    if (options == NULL) {
+        return;
+    }
+    options->max_bytes = GATEWAY_SPOOL_MAX_BYTES_DEFAULT;
+    options->sync_records = GATEWAY_SPOOL_SYNC_RECORDS_DEFAULT;
+    options->sync_interval_ms = GATEWAY_SPOOL_SYNC_INTERVAL_MS_DEFAULT;
+}
+
+static gateway_error_code open_v2_dispatch(
+    gateway_spool **spool,
+    const char *directory,
+    const gateway_spool_v2_options *options,
+    uint64_t segment_records)
+{
+    gateway_spool *created;
+    gateway_error_code code;
+
+    if (spool == NULL || directory == NULL || options == NULL) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    *spool = NULL;
+    created = calloc(1, sizeof(*created));
+    if (created == NULL) {
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    created->data_fd = -1;
+    created->v2 = true;
+    code = gateway_spool_v2_open(&created->v2_spool, directory, options,
+                                 segment_records);
+    if (code != GATEWAY_OK) {
+        gateway_spool_close(created);
+        return code;
+    }
+    *spool = created;
+    return GATEWAY_OK;
+}
+
+gateway_error_code gateway_spool_open_v2(
+    gateway_spool **spool,
+    const char *directory,
+    const gateway_spool_v2_options *options)
+{
+    return open_v2_dispatch(spool, directory, options,
+                            GATEWAY_SPOOL_V2_SEGMENT_RECORDS);
+}
+
+gateway_error_code gateway_spool_test_open_v2(
+    gateway_spool **spool,
+    const char *directory,
+    const gateway_spool_v2_options *options,
+    uint64_t segment_records)
+{
+    return open_v2_dispatch(spool, directory, options, segment_records);
+}
+
 void gateway_spool_close(gateway_spool *spool)
 {
     if (spool == NULL) {
         return;
     }
-    if (spool->data_fd >= 0) {
+    if (spool->v2) {
+        gateway_spool_v2_close(spool->v2_spool);
+    } else if (spool->data_fd >= 0) {
         (void)close(spool->data_fd);
     }
     free(spool);
@@ -501,6 +563,9 @@ gateway_error_code gateway_spool_append(gateway_spool *spool,
     off_t original_end;
     gateway_error_code code;
 
+    if (spool != NULL && spool->v2) {
+        return gateway_spool_v2_append(spool->v2_spool, record);
+    }
     if (spool == NULL || record == NULL || record->gateway_seq == 0 ||
         (spool->last_gateway_seq != 0 &&
          record->gateway_seq <= spool->last_gateway_seq)) {
@@ -528,6 +593,10 @@ gateway_error_code gateway_spool_prepare_batch(gateway_spool *spool,
     off_t offset;
     size_t count = 0;
 
+    if (spool != NULL && spool->v2) {
+        return gateway_spool_v2_prepare_batch(
+            spool->v2_spool, records, capacity, record_count, batch_seq);
+    }
     if (spool == NULL || records == NULL || capacity == 0 ||
         record_count == NULL || batch_seq == NULL || spool->batch_prepared) {
         return GATEWAY_ERROR_ARGUMENT;
@@ -566,6 +635,9 @@ gateway_error_code gateway_spool_ack_prepared(gateway_spool *spool)
     uint64_t last_seq;
     gateway_error_code code;
 
+    if (spool != NULL && spool->v2) {
+        return gateway_spool_v2_ack_prepared(spool->v2_spool);
+    }
     if (spool == NULL || !spool->batch_prepared) {
         return GATEWAY_ERROR_ARGUMENT;
     }
@@ -591,7 +663,9 @@ gateway_error_code gateway_spool_ack_prepared(gateway_spool *spool)
 
 void gateway_spool_cancel_prepared(gateway_spool *spool)
 {
-    if (spool != NULL) {
+    if (spool != NULL && spool->v2) {
+        gateway_spool_v2_cancel_prepared(spool->v2_spool);
+    } else if (spool != NULL) {
         spool->batch_prepared = false;
         spool->prepared_end = 0;
     }
@@ -599,13 +673,47 @@ void gateway_spool_cancel_prepared(gateway_spool *spool)
 
 uint64_t gateway_spool_last_gateway_seq(const gateway_spool *spool)
 {
-    return spool == NULL ? 0 : spool->last_gateway_seq;
+    if (spool == NULL) {
+        return 0;
+    }
+    return spool->v2 ? gateway_spool_v2_last_gateway_seq(spool->v2_spool)
+                     : spool->last_gateway_seq;
+}
+
+gateway_error_code gateway_spool_flush(gateway_spool *spool)
+{
+    if (spool == NULL) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    return spool->v2 ? gateway_spool_v2_flush(spool->v2_spool) : GATEWAY_OK;
+}
+
+gateway_error_code gateway_spool_poll(gateway_spool *spool)
+{
+    if (spool == NULL) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    return spool->v2 ? gateway_spool_v2_poll(spool->v2_spool) : GATEWAY_OK;
+}
+
+gateway_error_code gateway_spool_test_fail_next(
+    gateway_spool *spool,
+    gateway_spool_fault_point point)
+{
+    if (spool == NULL || !spool->v2) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    return gateway_spool_v2_fail_next(spool->v2_spool, point);
 }
 
 void gateway_spool_read(const gateway_spool *spool,
                         gateway_spool_snapshot *snapshot)
 {
     if (spool == NULL || snapshot == NULL) {
+        return;
+    }
+    if (spool->v2) {
+        gateway_spool_v2_read(spool->v2_spool, snapshot);
         return;
     }
     (void)memset(snapshot, 0, sizeof(*snapshot));
@@ -622,5 +730,7 @@ void gateway_spool_read(const gateway_spool *spool,
     snapshot->tail_recoveries = spool->tail_recoveries;
     snapshot->state_recoveries = spool->state_recoveries;
     snapshot->corruptions = spool->corruptions;
+    snapshot->physical_bytes = (uint64_t)spool->data_end;
+    snapshot->pending_bytes = (uint64_t)(spool->data_end - spool->ack_offset);
     snapshot->batch_prepared = spool->batch_prepared;
 }
