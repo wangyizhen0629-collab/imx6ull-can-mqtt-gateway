@@ -584,7 +584,7 @@
 ## D-039：M10冻结整数STM32压力profile并改用RelWithDebInfo正式输入
 
 - 日期：2026-09-02
-- 状态：Windows准备已接受并PASS；等待Ubuntu复核，M10仍为`NOT MET`
+- 状态：Windows准备提交`06eaf8e`已push并PASS；等待Ubuntu复核，M10仍为`NOT MET`
 - 输入决定：项目所有者明确选择推荐方案。三个编译期Keil target分别为111帧/s的
   100/10/1、500帧/s的450/45/5和1000帧/s的900/90/10；压力档使用100-slot整数超帧，
   slot周期为2 ms/1 ms。60秒车况仍按10 ms状态时钟推进，不随高频采样加速。

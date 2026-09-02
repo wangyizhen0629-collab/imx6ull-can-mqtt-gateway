@@ -582,8 +582,9 @@ CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready
    构建产物被忽略且不提交。首次脚本run因PowerShell stderr捕获错误停止，保留在
    `artifacts/20260902T094551+0800-m10-windows-profile-prep/`，其中Keil build为`NOT RUN`。
 10. 本次未烧录、未修改目标/CAN/Broker/网络/进程，未执行短硬件预演或长时间测试。Windows
-    准备代码必须先提交push并停止；Ubuntu拉取后仍需复核diff、全量CTest、分析器回归和
-    新`RelWithDebInfo` ARM binary/ELF/RPATH/SHA，明确放行后才可申请下一步硬件授权。
+    准备提交`06eaf8efafe126f74330fc60dbd291b1dffe1cfe`已push并停止；Ubuntu拉取后仍需复核
+    diff、全量CTest、分析器回归和新`RelWithDebInfo` ARM binary/ELF/RPATH/SHA，明确
+    放行后才可申请下一步硬件授权。
 
 M10离线工具与可执行回归已完成，但退出门禁要求的真实压力、断网、指标和24小时报告不齐，
 故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮

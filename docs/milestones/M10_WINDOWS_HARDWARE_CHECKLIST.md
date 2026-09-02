@@ -64,7 +64,7 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
 - [x] 现有`tools/protocol/check_stm32_candump.py`固定为111帧/s的60秒合同。必须先扩展它
   或新增M10专用分析器，使其能从真实candump按profile输出每ID计数、实际持续时间、速率、
   counter gap、DLC/checksum和意外ID；为新分析器增加无硬件回归。
-- [ ] STM32源码、分析器和测试先形成单独M10准备提交并push，然后停止，由Ubuntu拉取并
+- [x] STM32源码、分析器和测试先形成单独M10准备提交并push，然后停止，由Ubuntu拉取并
   复核diff、warning-clean/CTest和分析器回归。Ubuntu明确放行后才能烧录或长跑。
 
 建议先提交“profile设计表”供项目所有者确认，不要在未确认每ID分配和边界语义时自行
@@ -72,8 +72,9 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
 
 Windows准备结果：项目所有者已确认`M10_STM32_PROFILE_DESIGN.md`；分析器回归7/7、
 三个ARMCC 5.06u6 target完整rebuild 0 error/0 warning及产品hash见
-`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。本节最后一项“提交并push后
-停止”仍待本次提交完成；Ubuntu复核、烧录和真实短测均未开始。
+`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。准备提交
+`06eaf8efafe126f74330fc60dbd291b1dffe1cfe`已push到`origin/master`，Windows现已停止；
+Ubuntu复核、烧录和真实短测均未开始。
 
 停止条件：500/1000仅是推算值；高负载时发送失败；三类ID任一为0；counter/checksum
 合同改变；Keil有warning/error；分析器不能从原始数据独立复算。此时不得开始正式run。
