@@ -1,0 +1,6 @@
+﻿command=git diff --check
+started_local=2026-09-02T10:47:44.4159296+08:00
+finished_local=2026-09-02T10:47:44.5743463+08:00
+exit_code=0
+--- output ---
+warning: in the working copy of '.gitattributes', LF will be replaced by CRLF the next time Git touches it

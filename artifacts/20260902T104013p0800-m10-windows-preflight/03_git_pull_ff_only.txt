@@ -1,0 +1,8 @@
+﻿command=git pull --ff-only origin master
+started_local=2026-09-02T10:42:38.5732384+08:00
+finished_local=2026-09-02T10:42:41.5906770+08:00
+exit_code=0
+--- output ---
+From https://github.com/wangyizhen0629-collab/imx6ull-can-mqtt-gateway
+ * branch            master     -> FETCH_HEAD
+Already up to date.

@@ -1,0 +1,5 @@
+﻿command=git fetch origin
+started_local=2026-09-02T10:42:36.4397866+08:00
+finished_local=2026-09-02T10:42:38.5704321+08:00
+exit_code=0
+--- output ---

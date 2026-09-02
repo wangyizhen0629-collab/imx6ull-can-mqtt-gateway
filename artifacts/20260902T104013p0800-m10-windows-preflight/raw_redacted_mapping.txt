@@ -1,0 +1,3 @@
+result=NOT APPLICABLE
+reason=This Windows-only preflight did not collect target endpoints, credentials, private configuration, or private_raw evidence.
+

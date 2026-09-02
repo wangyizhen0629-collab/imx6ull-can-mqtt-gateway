@@ -1,0 +1,18 @@
+﻿command=python tools\protocol\test_analyze_m10_candump.py -v 2>&1
+started_local=2026-09-02T10:43:50.9968739+08:00
+finished_local=2026-09-02T10:43:53.4651715+08:00
+exit_code=0
+--- output ---
+test_all_profiles_pass (__main__.M10CandumpAnalyzerTest.test_all_profiles_pass) ... ok
+test_checksum_error_is_rejected (__main__.M10CandumpAnalyzerTest.test_checksum_error_is_rejected) ... ok
+test_counter_gap_is_rejected (__main__.M10CandumpAnalyzerTest.test_counter_gap_is_rejected) ... ok
+test_extended_target_id_is_rejected (__main__.M10CandumpAnalyzerTest.test_extended_target_id_is_rejected) ... ok
+test_legacy_m4_contract_still_passes (__main__.M10CandumpAnalyzerTest.test_legacy_m4_contract_still_passes) ... ok
+test_missing_schedule_slot_is_rejected (__main__.M10CandumpAnalyzerTest.test_missing_schedule_slot_is_rejected) ... ok
+test_profile_source_and_keil_targets_are_consistent (__main__.M10CandumpAnalyzerTest.test_profile_source_and_keil_targets_are_consistent) ... ok
+test_short_capture_is_rejected (__main__.M10CandumpAnalyzerTest.test_short_capture_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 2.162s
+
+OK

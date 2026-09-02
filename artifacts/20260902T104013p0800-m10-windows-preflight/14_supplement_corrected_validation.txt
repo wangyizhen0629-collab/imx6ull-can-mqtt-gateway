@@ -1,0 +1,17 @@
+﻿command=corrected read-only validation of clean analyzer and Mosquitto help/version evidence
+started_local=2026-09-02T10:44:48.4579097+08:00
+correction=mosquitto_pub 2.1.2 --help prints version/help and returns 1; no host/topic/message was supplied, so no Broker connection was attempted
+mosquitto_process_count_observed_after_help=1
+mosquitto_process_observation=pre-existing-or-external-state pid=33212; no action taken
+check=clean_analyzer_exit_zero result=PASS
+check=clean_analyzer_extended_id_pass result=PASS
+check=clean_analyzer_ran_8_tests result=PASS
+check=clean_analyzer_result_ok result=PASS
+check=broker_help_exit_zero result=PASS
+check=broker_version_present result=PASS
+check=pub_help_expected_exit_one result=PASS
+check=pub_version_present result=PASS
+failed_checks=0
+result=PASS
+finished_local=2026-09-02T10:44:48.4763366+08:00
+exit_code=0

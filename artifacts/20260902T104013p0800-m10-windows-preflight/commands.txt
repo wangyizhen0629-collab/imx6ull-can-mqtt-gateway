@@ -1,0 +1,11 @@
+git status --short --branch
+git fetch origin
+git pull --ff-only origin master
+git rev-parse HEAD
+git rev-parse origin/master
+git merge-base --is-ancestor 691c3bd HEAD
+rg -n test_extended_target_id_is_rejected tools/protocol/test_analyze_m10_candump.py
+python tools/protocol/test_analyze_m10_candump.py -v
+rg -n (M9/M10 gate status patterns) docs/PLANS.md docs/milestones/M9.md docs/milestones/M10.md
+Windows/PowerShell/Git/Python/Keil/ARMCC/CubeMX/ST-Link/Mosquitto/OpenSSH version inspection
+

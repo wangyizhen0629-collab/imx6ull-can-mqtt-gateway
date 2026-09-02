@@ -1,0 +1,5 @@
+﻿command=git merge-base --is-ancestor 691c3bd HEAD
+started_local=2026-09-02T10:42:41.7543625+08:00
+finished_local=2026-09-02T10:42:41.8326500+08:00
+exit_code=0
+--- output ---

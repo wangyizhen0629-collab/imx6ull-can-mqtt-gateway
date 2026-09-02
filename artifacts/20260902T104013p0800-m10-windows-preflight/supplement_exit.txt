@@ -1,0 +1,5 @@
+﻿local_time=2026-09-02T10:43:53.8399654+08:00
+clean_analyzer_capture=PASS
+mosquitto_version_capture=FAIL
+broker_started=NO
+exit_code=1

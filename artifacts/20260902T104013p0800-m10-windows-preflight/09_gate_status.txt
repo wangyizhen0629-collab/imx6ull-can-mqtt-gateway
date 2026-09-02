@@ -1,0 +1,25 @@
+﻿command=rg -n gate status docs/PLANS.md docs/milestones/M9.md docs/milestones/M10.md
+started_local=2026-09-02T10:42:45.5372597+08:00
+finished_local=2026-09-02T10:42:45.6005820+08:00
+exit_code=0
+--- output ---
+docs/milestones/M10.md:5:- 前置M9门禁：**MET**
+docs/milestones/M10.md:19:- M10总退出门禁：**NOT MET**
+docs/milestones/M10.md:30:restart、SIGKILL恢复和BusyBox ash cooldown，M9为`MET`，M10允许开始。
+docs/milestones/M9.md:5:- 前置M8门禁：**MET**
+docs/milestones/M9.md:16:- M9总退出门禁：**MET**
+docs/milestones/M9.md:104:和异常拉起”没有真实目标板证据，所以M9总门禁只能是 **NOT MET**。本轮到此停止，
+docs/milestones/M9.md:122:`NOT RUN`，M9继续`NOT MET`，M10未开始。
+docs/milestones/M9.md:210:证据，因此M9总门禁为 **MET**。板端时钟仍为1970；CAN持久自动配置、Broker交付、正确
+docs/PLANS.md:65:  9951超过60秒不变且身份/SHA/库映射正确。因此M9 BusyBox进程监督门禁为`MET`。
+docs/PLANS.md:74:  M10总门禁为`NOT MET`，本轮停止在M10。
+docs/PLANS.md:94:| M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 工具/离线回归已完成；真实场景均NOT RUN，总门禁NOT MET |
+docs/PLANS.md:283:5. 前置审计 `artifacts/20260831T122305+0800-m5-preflight/` 重新确认 M4 门禁 MET。
+docs/PLANS.md:336:7. 前置审计 `artifacts/20260831T134104+0800-m6-preflight/` 重新确认 M5 门禁 MET。
+docs/PLANS.md:373:连续unique seq及匹配PUBACK均已有真实证据，退出门禁为 **2026-09-01 MET**。该判定只
+docs/PLANS.md:424:`effective duplicate=0`，因此M7总门禁为 **MET**。本结论只关闭M7；M8 external-loop/
+docs/PLANS.md:431:   `06dce43fc537365e11f2752aba7eea60098cb259`，M7门禁为`MET`，M9及后续未开始。
+docs/PLANS.md:474:    effective duplicate0，exit0。因此M8总门禁为 **MET**。
+docs/PLANS.md:483:   和201项manifest均PASS，M8门禁为`MET`，M10未开始。
+docs/PLANS.md:540:隔离storm cooldown和最终正常状态，M9总门禁为 **MET**。该结论只覆盖BusyBox进程监督；
+docs/PLANS.md:615:故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮

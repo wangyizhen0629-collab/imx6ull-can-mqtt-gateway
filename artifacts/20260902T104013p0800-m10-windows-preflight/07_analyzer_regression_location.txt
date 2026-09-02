@@ -1,0 +1,6 @@
+﻿command=rg -n test_extended_target_id_is_rejected tools/protocol/test_analyze_m10_candump.py
+started_local=2026-09-02T10:42:41.8345062+08:00
+finished_local=2026-09-02T10:42:42.7691095+08:00
+exit_code=0
+--- output ---
+170:    def test_extended_target_id_is_rejected(self) -> None:

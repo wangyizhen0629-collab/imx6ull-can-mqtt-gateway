@@ -1,0 +1,7 @@
+run_id=20260902T104013p0800-m10-windows-preflight
+scope=Windows M10 checklist section 1 preflight and analyzer regression only
+authorized=git status/fetch/ff-only pull/revision checks; local tool version discovery; analyzer 8/8 regression
+not_authorized=STM32 build or flash; ARM binary transfer or deployment; target login or process changes; CAN changes; Broker changes; network changes; long-duration hardware tests
+gate_before=M9 MET; M10 NOT MET
+board_clock_note=No board connection in this run; no board timestamp or uptime claims.
+

@@ -1,0 +1,24 @@
+﻿command=preflight validation
+started_local=2026-09-02T10:42:47.3846654+08:00
+expected_head=6ee5d475f5451e6cba72f0041613009ed9fc9250
+actual_head=6ee5d475f5451e6cba72f0041613009ed9fc9250
+actual_origin_master=6ee5d475f5451e6cba72f0041613009ed9fc9250
+required_ancestor=691c3bd
+tracked_status_exit=0
+tracked_status_output=(empty)
+check=git_status_exit_zero result=PASS
+check=git_fetch_exit_zero result=PASS
+check=git_pull_ff_only_exit_zero result=PASS
+check=head_matches_expected result=PASS
+check=origin_master_matches_expected result=PASS
+check=required_commit_is_ancestor result=PASS
+check=extended_id_regression_present result=PASS
+check=analyzer_exit_zero result=PASS
+check=analyzer_ran_8_tests result=PASS
+check=analyzer_result_ok result=PASS
+check=gate_status_query_exit_zero result=PASS
+check=tracked_worktree_clean result=PASS
+failed_checks=0
+result=PASS
+finished_local=2026-09-02T10:42:47.3917310+08:00
+exit_code=0
