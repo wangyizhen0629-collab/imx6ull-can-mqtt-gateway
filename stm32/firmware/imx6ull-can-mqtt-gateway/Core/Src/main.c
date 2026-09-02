@@ -25,6 +25,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "ecu_traffic_profile.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -136,6 +138,13 @@ static uint32_t ecu_distance_accumulator;
 static uint16_t ecu_warmup_tick_count;
 static uint16_t ecu_cooldown_tick_count;
 
+#if ECU_TRAFFIC_PROFILE != ECU_TRAFFIC_PROFILE_111
+static uint32_t ecu_stress_last_release_ms;
+static uint32_t ecu_stress_state_last_advance_ms;
+static volatile uint32_t ecu_stress_missed_slot_count;
+static uint8_t ecu_stress_slot;
+#endif
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -143,8 +152,16 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
 static void ECU_InitSchedule(uint32_t now);
+#if ECU_TRAFFIC_PROFILE == ECU_TRAFFIC_PROFILE_111
 static uint8_t ECU_ProcessMessage(ECU_MessageStateTypeDef *message,
                                   uint32_t now);
+#endif
+static uint8_t ECU_TransmitMessage(ECU_MessageStateTypeDef *message);
+#if ECU_TRAFFIC_PROFILE != ECU_TRAFFIC_PROFILE_111
+static uint8_t ECU_ProcessStressSlot(uint32_t now);
+static uint8_t ECU_StressMessageIndex(uint8_t slot);
+static void ECU_ProcessStressStateClock(uint32_t now);
+#endif
 static void ECU_BuildPayload(const ECU_MessageStateTypeDef *message,
                              uint8_t payload[8]);
 static void ECU_UpdateVehicleState(void);
@@ -172,6 +189,13 @@ static void ECU_InitSchedule(uint32_t now)
   {
     ecu_messages[index].last_release_ms = now;
   }
+
+#if ECU_TRAFFIC_PROFILE != ECU_TRAFFIC_PROFILE_111
+  ecu_stress_last_release_ms = now;
+  ecu_stress_state_last_advance_ms = now;
+  ecu_stress_missed_slot_count = 0U;
+  ecu_stress_slot = 0U;
+#endif
 }
 
 static uint8_t ECU_SelectGear(uint16_t speed_centi_kph)
@@ -371,21 +395,9 @@ static void ECU_BuildPayload(const ECU_MessageStateTypeDef *message,
   ECU_FinalizePayload(message->counter, payload);
 }
 
-static uint8_t ECU_ProcessMessage(ECU_MessageStateTypeDef *message,
-                                  uint32_t now)
+static uint8_t ECU_TransmitMessage(ECU_MessageStateTypeDef *message)
 {
   uint8_t tx_data[8] = {0};
-  uint32_t elapsed;
-
-  elapsed = now - message->last_release_ms;
-  if (elapsed < message->period_ms)
-  {
-    return 0U;
-  }
-
-  /* Preserve the schedule phase while skipping any already missed slots. */
-  message->last_release_ms += (elapsed / message->period_ms) *
-                              message->period_ms;
 
   ECU_BuildPayload(message, tx_data);
 
@@ -399,6 +411,97 @@ static uint8_t ECU_ProcessMessage(ECU_MessageStateTypeDef *message,
   message->tx_failure_count++;
   return 0U;
 }
+
+#if ECU_TRAFFIC_PROFILE == ECU_TRAFFIC_PROFILE_111
+static uint8_t ECU_ProcessMessage(ECU_MessageStateTypeDef *message,
+                                  uint32_t now)
+{
+  uint32_t elapsed;
+
+  elapsed = now - message->last_release_ms;
+  if (elapsed < message->period_ms)
+  {
+    return 0U;
+  }
+
+  /* Preserve the schedule phase while skipping any already missed slots. */
+  message->last_release_ms += (elapsed / message->period_ms) *
+                              message->period_ms;
+  return ECU_TransmitMessage(message);
+}
+#endif
+
+#if ECU_TRAFFIC_PROFILE != ECU_TRAFFIC_PROFILE_111
+static uint8_t ECU_StressMessageIndex(uint8_t slot)
+{
+  if (slot == (ECU_STRESS_SUPERFRAME_SLOTS - 1U))
+  {
+    return 2U;
+  }
+  if (((slot + 1U) % 10U) == 0U)
+  {
+    return 1U;
+  }
+  return 0U;
+}
+
+static uint8_t ECU_ProcessStressSlot(uint32_t now)
+{
+  uint32_t elapsed;
+  uint32_t elapsed_slots;
+  uint8_t message_index;
+  uint8_t sent;
+
+  elapsed = now - ecu_stress_last_release_ms;
+  if (elapsed < ECU_STRESS_SLOT_PERIOD_MS)
+  {
+    return 0U;
+  }
+
+  elapsed_slots = elapsed / ECU_STRESS_SLOT_PERIOD_MS;
+  ecu_stress_last_release_ms += elapsed_slots * ECU_STRESS_SLOT_PERIOD_MS;
+
+  if (elapsed_slots > 1U)
+  {
+    ecu_stress_missed_slot_count += elapsed_slots - 1U;
+    ecu_stress_slot = (uint8_t)(
+      (ecu_stress_slot + ((elapsed_slots - 1U) %
+                          ECU_STRESS_SUPERFRAME_SLOTS)) %
+      ECU_STRESS_SUPERFRAME_SLOTS);
+  }
+
+  message_index = ECU_StressMessageIndex(ecu_stress_slot);
+  sent = ECU_TransmitMessage(&ecu_messages[message_index]);
+
+  /*
+   * 失败帧不重试、不推进该ID counter，也不突发补发；slot仍按单调时钟推进。
+   * 正式门禁必须由candump速率/序列及Keil Watch中的failure/missed计数共同判零。
+   */
+  ecu_stress_slot++;
+  if (ecu_stress_slot >= ECU_STRESS_SUPERFRAME_SLOTS)
+  {
+    ecu_stress_slot = 0U;
+  }
+  return (message_index == 0U) ? sent : 0U;
+}
+
+static void ECU_ProcessStressStateClock(uint32_t now)
+{
+  uint32_t elapsed;
+  uint32_t state_ticks;
+
+  elapsed = now - ecu_stress_state_last_advance_ms;
+  state_ticks = elapsed / 10U;
+  ecu_stress_state_last_advance_ms += state_ticks * 10U;
+
+  while (state_ticks > 0U)
+  {
+    ECU_AdvanceVehicleState();
+    ECU_UpdateVehicleState();
+    state_ticks--;
+  }
+}
+#endif
 
 static void ECU_AdvanceVehicleState(void)
 {
@@ -499,18 +602,24 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     uint32_t now;
+#if ECU_TRAFFIC_PROFILE == ECU_TRAFFIC_PROFILE_111
     uint8_t dynamics_sent;
+#endif
 
     now = HAL_GetTick();
     ECU_UpdateVehicleState();
+#if ECU_TRAFFIC_PROFILE == ECU_TRAFFIC_PROFILE_111
     dynamics_sent = ECU_ProcessMessage(&ecu_messages[0], now);
     (void)ECU_ProcessMessage(&ecu_messages[1], now);
     (void)ECU_ProcessMessage(&ecu_messages[2], now);
-
     if (dynamics_sent != 0U)
     {
       ECU_AdvanceVehicleState();
     }
+#else
+    (void)ECU_ProcessStressSlot(now);
+    ECU_ProcessStressStateClock(now);
+#endif
   }
   /* USER CODE END 3 */
 }

@@ -1,0 +1,6 @@
+﻿target=M10_111 type=axf result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_111\gateway_m10_111.axf
+target=M10_111 type=hex result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_111\gateway_m10_111.hex
+target=M10_500 type=axf result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_500\gateway_m10_500.axf
+target=M10_500 type=hex result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_500\gateway_m10_500.hex
+target=M10_1000 type=axf result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_1000\gateway_m10_1000.axf
+target=M10_1000 type=hex result=MISSING path=E:\imx6ull-can-mqtt-gateway\imx6ull-can-mqtt-gateway\stm32\firmware\imx6ull-can-mqtt-gateway\MDK-ARM\M10_1000\gateway_m10_1000.hex

@@ -570,6 +570,20 @@ CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready
    STM32、Windows Broker或subscriber端点/凭据/已验证传输路径，也没有本轮具体外部状态
    操作条件。因此500/1000帧/s各30分钟、20轮5分钟Broker断网、板端`/proc`采样和24小时
    基准全部`NOT RUN`；没有修改CAN、网络、`/etc`、init、进程、Broker、固件或依赖。
+7. Windows从远端`f67b3652e382dc41d97750b74df71b5d6d1d88cb`继续准备。项目所有者确认采用
+   推荐整数profile：111档100/10/1帧/s、500档450/45/5帧/s、1000档900/90/10帧/s；
+   压力档采用100-slot、2 ms/1 ms确定性调度，状态模型仍按10 ms推进。正式gatewayd
+   选择由Ubuntu新建`RelWithDebInfo`，不沿用现有Debug SHA作为性能输入。
+8. 新增M10 candump分析器及7项无硬件回归，覆盖三档速率/每ID计数、counter、DLC、XOR、
+   压力slot序列、意外/error frame、CAN前后状态和旧M4 6660帧合同；Windows直接执行7/7
+   PASS，并把测试注册到CTest，等待Ubuntu执行全量复核。
+9. `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`保存三个Keil target的
+   ARMCC 5.06u6全量rebuild，均0 error/0 warning；六个`.axf/.hex`完成大小/SHA256复核，
+   构建产物被忽略且不提交。首次脚本run因PowerShell stderr捕获错误停止，保留在
+   `artifacts/20260902T094551+0800-m10-windows-profile-prep/`，其中Keil build为`NOT RUN`。
+10. 本次未烧录、未修改目标/CAN/Broker/网络/进程，未执行短硬件预演或长时间测试。Windows
+    准备代码必须先提交push并停止；Ubuntu拉取后仍需复核diff、全量CTest、分析器回归和
+    新`RelWithDebInfo` ARM binary/ELF/RPATH/SHA，明确放行后才可申请下一步硬件授权。
 
 M10离线工具与可执行回归已完成，但退出门禁要求的真实压力、断网、指标和24小时报告不齐，
 故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮

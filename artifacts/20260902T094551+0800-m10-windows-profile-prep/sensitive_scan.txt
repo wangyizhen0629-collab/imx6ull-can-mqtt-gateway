@@ -1,0 +1,2 @@
+﻿result=PASS
+files_scanned=11

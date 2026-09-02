@@ -259,3 +259,17 @@ ARMv7构建已通过，但本机真实Broker/M7等价恢复测试因缺少知情
 和启用 durable spool。只有真实 STM32 与物理总线能够稳定提供相应负载后，才能声称
 500 帧/s 或 1000 帧/s 的 30 分钟结果。24 小时报告必须包含 CAN 总数/gap/error、
 queue drop、batch/seq/reconnect/duplicate、spool 最大积压、`/proc` CPU/RSS 和进程退出。
+
+### M10 STM32 profile与原始CAN准备门禁
+
+- `M10_111`固定100/10/1帧/s；`M10_500`固定450/45/5帧/s；`M10_1000`固定
+  900/90/10帧/s，顺序均为`0x100/0x101/0x102`。
+- 压力档使用100-slot整数超帧，500档2 ms/slot，1000档1 ms/slot；不得以Windows sleep、
+  短窗平均值或发送请求次数替代真实candump速率。
+- CAN发送只有TXOK才推进对应ID counter；failure不重试、不补发。错过slot累计missed并
+  跳过；正式短测/长测的failure与missed必须均为0。
+- `analyze_m10_candump.py`必须同时检查三ID计数/速率、完整持续时间、Rolling Counter、
+  DLC、XOR、压力slot序列、意外/error frame，以及CAN前后bitrate/state/berr/RX错误增量。
+- Windows无硬件回归和三个Keil target rebuild已在
+  `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`通过；烧录和真实短candump仍
+  `NOT RUN`。Ubuntu必须先执行全量CTest/分析器复核并冻结`RelWithDebInfo` ARM binary。

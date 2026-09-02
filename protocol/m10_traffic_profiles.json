@@ -1,0 +1,43 @@
+{
+  "schema": "gateway.m10.stm32-profiles.v1",
+  "profiles": {
+    "111": {
+      "build_define": "ECU_TRAFFIC_PROFILE=111",
+      "keil_target": "M10_111",
+      "scheduler": "independent-period-ms",
+      "superframe_ms": 1000,
+      "frames_per_superframe": {
+        "0x100": 100,
+        "0x101": 10,
+        "0x102": 1
+      },
+      "target_rate_fps": 111
+    },
+    "500": {
+      "build_define": "ECU_TRAFFIC_PROFILE=500",
+      "keil_target": "M10_500",
+      "scheduler": "fixed-slot-superframe",
+      "slot_period_ms": 2,
+      "superframe_ms": 200,
+      "frames_per_superframe": {
+        "0x100": 90,
+        "0x101": 9,
+        "0x102": 1
+      },
+      "target_rate_fps": 500
+    },
+    "1000": {
+      "build_define": "ECU_TRAFFIC_PROFILE=1000",
+      "keil_target": "M10_1000",
+      "scheduler": "fixed-slot-superframe",
+      "slot_period_ms": 1,
+      "superframe_ms": 100,
+      "frames_per_superframe": {
+        "0x100": 90,
+        "0x101": 9,
+        "0x102": 1
+      },
+      "target_rate_fps": 1000
+    }
+  }
+}

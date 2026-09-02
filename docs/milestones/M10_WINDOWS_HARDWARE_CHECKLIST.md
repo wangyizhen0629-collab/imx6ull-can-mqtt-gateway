@@ -53,15 +53,15 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
 当前仓库STM32固件只按10/100/1000 ms发送`0x100/0x101/0x102`，总速率111帧/s；它不能
 直接证明500或1000帧/s。正式烧录前必须完成：
 
-- [ ] 为111、500、1000帧/s冻结明确的每ID速率、调度算法、运行边界和选择方式；三类
+- [x] 为111、500、1000帧/s冻结明确的每ID速率、调度算法、运行边界和选择方式；三类
   标准DLC-8帧、各自Rolling Counter、XOR Checksum及既有DBC语义必须保留。
-- [ ] 压力profile必须基于整数、可复现调度；不得用Windows sleep或平均估算冒充物理
+- [x] 压力profile必须基于整数、可复现调度；不得用Windows sleep或平均估算冒充物理
   速率。必须说明发送失败时counter和调度如何处理。
-- [ ] 业务修改优先位于`USER CODE BEGIN/END`。不得加入RTOS、USB协议、GUI、网络栈、
+- [x] 业务修改优先位于`USER CODE BEGIN/END`。不得加入RTOS、USB协议、GUI、网络栈、
   MQTT、文件系统或其他超出模拟ECU范围的组件。
-- [ ] Keil对每个将烧录的profile执行完整rebuild，保存0 error/0 warning原始日志、固件
+- [x] Keil对每个将烧录的profile执行完整rebuild，保存0 error/0 warning原始日志、固件
   SHA256、`.ioc`/工程/关键源码SHA256和实际target名称。
-- [ ] 现有`tools/protocol/check_stm32_candump.py`固定为111帧/s的60秒合同。必须先扩展它
+- [x] 现有`tools/protocol/check_stm32_candump.py`固定为111帧/s的60秒合同。必须先扩展它
   或新增M10专用分析器，使其能从真实candump按profile输出每ID计数、实际持续时间、速率、
   counter gap、DLC/checksum和意外ID；为新分析器增加无硬件回归。
 - [ ] STM32源码、分析器和测试先形成单独M10准备提交并push，然后停止，由Ubuntu拉取并
@@ -69,6 +69,11 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
 
 建议先提交“profile设计表”供项目所有者确认，不要在未确认每ID分配和边界语义时自行
 选择一个恰好相加为500/1000的数字组合。
+
+Windows准备结果：项目所有者已确认`M10_STM32_PROFILE_DESIGN.md`；分析器回归7/7、
+三个ARMCC 5.06u6 target完整rebuild 0 error/0 warning及产品hash见
+`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。本节最后一项“提交并push后
+停止”仍待本次提交完成；Ubuntu复核、烧录和真实短测均未开始。
 
 停止条件：500/1000仅是推算值；高负载时发送失败；三类ID任一为0；counter/checksum
 合同改变；Keil有warning/error；分析器不能从原始数据独立复算。此时不得开始正式run。
@@ -80,6 +85,9 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
   尚未部署或上板运行。项目所有者必须二选一并记录：
   1. 明确接受所有M10数值只代表这个精确Debug binary；或
   2. 先回Ubuntu生成并验证指定的Release/RelWithDebInfo binary，再以新SHA替换被测输入。
+
+已选择方案2：`RelWithDebInfo`。Ubuntu尚未生成、验证或冻结新SHA，因此本项保持未完成，
+现有Debug SHA不得用于正式M10性能run。
 - [ ] binary必须经私有传输取得；不得从Git artifact猜测或用M9旧binary替代。先在非系统
   staging目录复核`sha256sum`、`file`、`readelf -h/-l/-d`和无RPATH/RUNPATH。
 - [ ] 板端实际加载的`libmosquitto.so.1`真实文件SHA256应与已冻结值

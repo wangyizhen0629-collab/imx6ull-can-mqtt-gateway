@@ -1,0 +1,6 @@
+powershell -NoProfile -ExecutionPolicy Bypass -File artifacts/20260902T100231+0800-m10-windows-prep-final-audit2/run_final_audit.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File artifacts/20260902T100231+0800-m10-windows-prep-final-audit2/finalize_manifest.ps1
+
+脚本内部执行Python分析器回归、既有M4 candump重放、Keil target generator检查、XML/JSON/
+Python解析、Keil依赖Git跟踪审计、此前manifest复核、构建产物ignore审计、git diff --check
+和预定提交范围敏感信息扫描。所有输出文件均拒绝覆盖。

@@ -1,0 +1,1 @@
+﻿PASS: canonical Keil targets M10_111/M10_500/M10_1000

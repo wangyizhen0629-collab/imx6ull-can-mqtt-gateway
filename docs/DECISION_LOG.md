@@ -581,6 +581,25 @@
 - 影响：工具实现完成不等于性能/稳定性通过。M10总门禁保持`NOT MET`，相关简历表述不可用；
   本轮停止在M10。
 
+## D-039：M10冻结整数STM32压力profile并改用RelWithDebInfo正式输入
+
+- 日期：2026-09-02
+- 状态：Windows准备已接受并PASS；等待Ubuntu复核，M10仍为`NOT MET`
+- 输入决定：项目所有者明确选择推荐方案。三个编译期Keil target分别为111帧/s的
+  100/10/1、500帧/s的450/45/5和1000帧/s的900/90/10；压力档使用100-slot整数超帧，
+  slot周期为2 ms/1 ms。60秒车况仍按10 ms状态时钟推进，不随高频采样加速。
+- 失败语义：只有CAN TXOK才推进该ID counter。发送失败只累计failure，不重试或突发补发；
+  主循环错过slot只累计missed并按单调时钟跳过。正式门禁要求failure/missed均为0，且由
+  candump独立验证速率、ID序列、counter、DLC、XOR和CAN前后统计。
+- Windows依据：M10分析器无硬件回归7/7 PASS；三个ARMCC 5.06u6 Keil target全量rebuild
+  均0 error/0 warning，产品SHA见
+  `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。第一次捕获脚本失败run保留，
+  第二次uVision异步产品检查竞态的原始`MISSING`及完成后纠正证据同时保留。
+- binary决定：正式性能输入不使用现有Debug SHA；Ubuntu拉取本准备提交后生成、验证并冻结
+  `RelWithDebInfo` ARM binary的新SHA。该项当前`NOT RUN`。
+- 影响：Windows准备PASS只允许进入Ubuntu复核停止点，不授权烧录、目标/Broker控制、
+  短预演或长时间测试；真实四场景未执行，M10保持`NOT MET`。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

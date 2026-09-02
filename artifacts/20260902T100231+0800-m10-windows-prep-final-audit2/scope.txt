@@ -1,0 +1,6 @@
+本run只做M10 Windows准备提交的只读收尾审计：重跑分析器测试、重放既有M4真实物理抓包、
+核对Keil target/工程依赖、复核此前artifact manifest、检查diff和预定提交范围敏感信息。
+
+这是20260902T095951+0800-m10-windows-prep-final-audit脚本失败后的新run。它不烧录、不连接
+或修改目标板/STM32/CAN/Broker/网络/进程，不执行短硬件预演或长时间测试。M10保持
+NOT MET，Ubuntu复核及RelWithDebInfo ARM binary仍为NOT RUN。

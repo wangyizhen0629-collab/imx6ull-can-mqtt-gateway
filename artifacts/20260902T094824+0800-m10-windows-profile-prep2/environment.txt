@@ -1,0 +1,11 @@
+﻿powershell=5.1.26100.9168
+python=Python 3.11.7
+git=git version 2.51.0.windows.1
+uv4_path=D:\keil5\UV4\UV4.exe
+uv4_version=5.30.0.0
+armcc_path=D:\keil5\ARM\ARMCC\bin\armcc.exe
+Product: MDK Plus 5.30
+Component: ARM Compiler 5.06 update 6 (build 750)
+Tool: armcc [4d3637]
+For support see http://www.arm.com/support
+Software supplied by: ARM Limited

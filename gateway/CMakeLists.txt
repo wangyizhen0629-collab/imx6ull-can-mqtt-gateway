@@ -168,6 +168,13 @@ if(BUILD_TESTING)
     )
     set_tests_properties(test_m10_evidence_validator PROPERTIES
                          LABELS "M10;metrics")
+    add_test(
+        NAME test_m10_candump_analyzer
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
+                ${PROJECT_SOURCE_DIR}/tools/protocol/test_analyze_m10_candump.py
+    )
+    set_tests_properties(test_m10_candump_analyzer PROPERTIES
+                         LABELS "M10;protocol")
 
     # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
     # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。

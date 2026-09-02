@@ -1,0 +1,3 @@
+﻿target=M10_111 ignored=True tracked_product_count=0
+target=M10_500 ignored=True tracked_product_count=0
+target=M10_1000 ignored=True tracked_product_count=0

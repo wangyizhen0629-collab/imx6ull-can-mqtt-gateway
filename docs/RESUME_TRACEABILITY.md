@@ -27,7 +27,7 @@ ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成
 | 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 Ubuntu/ARM证据及最终Windows/i.MX6ULL gate | API兼容、全量17/17、M8/ASan/UBSan 2/2；真实323 batch、unique seq 1～27434、missing/effective duplicate 0，reactor必需计数非零 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写性能、时延或长期可靠性 |
 | BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM、目标安装/reload/restart/SIGKILL/ash cooldown及手动post-boot补充run | 新boot ID；PID 1自动拉起supervisor；最终1/1；SIGKILL/restart换PID；3次快速失败后cooldown | 是，但只写真实i.MX6ULL单次BusyBox进程监督门禁；注明CAN基线手工恢复，不写完整无人值守产品ready |
-| 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 BusyBox采集器、离线报告器、场景validator和精确配置 | 经批准的500/1000帧/s、20轮断网、每秒/proc及24小时流程 | M10离线run与真实场景run | 工具回归PASS；真实场景全部NOT RUN，无性能/稳定性数值 | 否 |
+| 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 BusyBox采集器、离线报告器、场景validator、三档STM32 profile和candump分析器 | 经批准的500/1000帧/s、20轮断网、每秒/proc及24小时流程 | M10离线run、Windows profile准备run与未来真实场景run | 工具回归及三档Keil rebuild PASS；真实场景全部NOT RUN，无性能/稳定性数值 | 否 |
 
 一行满足条件后，只能用已有不可变 run 计算出的数值替换“未测量”，并补充精确源码、
 测试、配置和 `artifacts/<run_id>/` 链接。STM32 Keil 结果与 Linux 结果必须分别标明环境。
@@ -211,3 +211,9 @@ RPATH/RUNPATH。合成CSV只验证工具，不能写成运行时长或性能。
 真实场景run`artifacts/20260901T235415+0800-m10-board-not-run/`明确把500/1000帧/s各
 30分钟、20轮每轮5分钟Broker断网、板端`/proc`和24小时基准全部标为`NOT RUN`。因此
 M10总门禁为`NOT MET`，表中压力、CPU/RSS与稳定性描述仍不可写简历。
+
+Windows准备随后冻结111/500/1000档为100/10/1、450/45/5和900/90/10帧/s，并增加独立
+candump分析器。`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`记录分析器
+7/7和三个Keil ARMCC 5.06u6全量rebuild 0 error/0 warning，固件只保存hash而未提交。
+这只支持“准备工具和固件可构建”表述；Ubuntu全量复核、`RelWithDebInfo` ARM binary、
+烧录/短预演和全部真实场景仍为`NOT RUN`，不改变表中“否”。

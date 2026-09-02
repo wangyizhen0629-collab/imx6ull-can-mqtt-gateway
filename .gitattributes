@@ -30,3 +30,7 @@
 /artifacts/20260901T235152+0800-m10-arm-cross/** -text -whitespace
 /artifacts/20260901T235415+0800-m10-board-not-run/** -text -whitespace
 /artifacts/20260902T000714+0800-m10-final-audit/** -text -whitespace
+/artifacts/20260902T094551+0800-m10-windows-profile-prep/** -text -whitespace
+/artifacts/20260902T094824+0800-m10-windows-profile-prep2/** -text -whitespace
+/artifacts/20260902T095951+0800-m10-windows-prep-final-audit/** -text -whitespace
+/artifacts/20260902T100231+0800-m10-windows-prep-final-audit2/** -text -whitespace

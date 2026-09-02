@@ -1,0 +1,3 @@
+﻿result=PASS
+files_scanned=24
+scope=private-key markers, credential assignments, private/loopback/link-local IPv4 literals

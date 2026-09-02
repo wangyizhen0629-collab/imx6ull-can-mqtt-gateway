@@ -1,0 +1,5 @@
+原始 build_product_sha256.txt 中的六个 MISSING 不是编译失败。
+
+原因：命令行 UV4.exe 把三个构建请求交给已有 uVision 进程后即返回；证据脚本随即检查产品，早于构建完成。之后三个日志均完整结束，且六个 .axf/.hex 已落盘。
+
+纠正方法：不覆盖原始错误记录；等待 uVision 进程退出后，用 build_completion_recheck.ps1 追加日志判定、产品大小/SHA256 与进程复核。最终判断必须同时阅读原始记录和 after_completion 复核。

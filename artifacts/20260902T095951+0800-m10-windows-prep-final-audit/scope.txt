@@ -1,0 +1,5 @@
+本run只做M10 Windows准备提交的只读收尾审计：重跑分析器测试、重放既有M4真实物理抓包、
+核对Keil target/工程依赖、复核前两个artifact manifest、检查diff和预定提交范围敏感信息。
+
+本run不烧录、不连接或修改目标板/STM32/CAN/Broker/网络/进程，不执行短硬件预演或任何
+长时间测试。M10保持NOT MET，Ubuntu复核及RelWithDebInfo ARM binary仍为NOT RUN。

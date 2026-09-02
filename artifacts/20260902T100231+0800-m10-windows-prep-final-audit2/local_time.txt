@@ -1,0 +1,4 @@
+﻿timezone=China Standard Time
+start_local=2026-09-02T10:05:12.504+08:00
+end_local=2026-09-02T10:05:20.166+08:00
+elapsed_seconds=7.662

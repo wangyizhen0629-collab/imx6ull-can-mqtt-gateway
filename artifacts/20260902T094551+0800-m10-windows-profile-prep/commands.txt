@@ -1,0 +1,16 @@
+PowerShell 5.1，工作目录为仓库根目录：
+
+powershell -NoProfile -ExecutionPolicy Bypass -File artifacts/20260902T094551+0800-m10-windows-profile-prep/run_windows_profile_prep.ps1
+
+脚本内部按顺序执行：
+
+git rev-parse HEAD
+git status --short --branch
+python -B tools/stm32/generate_m10_keil_targets.py --project stm32/firmware/imx6ull-can-mqtt-gateway/MDK-ARM/imx6ull-can-mqtt-gateway.uvprojx --check
+python -B tools/protocol/test_analyze_m10_candump.py
+D:\keil5\UV4\UV4.exe -r <project> -t M10_111 -j0 -o <unique-log>
+D:\keil5\UV4\UV4.exe -r <project> -t M10_500 -j0 -o <unique-log>
+D:\keil5\UV4\UV4.exe -r <project> -t M10_1000 -j0 -o <unique-log>
+Get-FileHash -Algorithm SHA256 <source-and-build-products>
+
+脚本拒绝覆盖其输出文件；三个 M10 输出目录在执行前均不存在。

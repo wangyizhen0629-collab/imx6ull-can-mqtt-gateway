@@ -47,3 +47,14 @@ bits 清零，三类消息分别维护模256 counter，byte 7 始终是 byte 0�
 实物捕获和逐帧审计位于
 `artifacts/20260831T111733+0800-m4-stm32-physical-final/`。其中6660帧与上述模型逐帧
 一致；该证据是离线 CAN/协议审计，不代表 `gatewayd` 已在 i.MX6ULL 实时调用解码器。
+
+## M10压力profile
+
+`m10_traffic_profiles.json`冻结111/500/1000帧/s三档输入。111档保持100/10/1帧/s；
+500档为450/45/5帧/s，1000档为900/90/10帧/s。两个压力档用100-slot整数超帧调度，
+不改变ID、DLC、DBC、counter或XOR合同；60秒车况模型仍按10 ms状态时钟推进。
+
+精确调度、发送失败语义、Keil target和正式计数下限见
+`docs/milestones/M10_STM32_PROFILE_DESIGN.md`。这些是已冻结的测试输入定义，不是已经
+完成的烧录或真实速率证据；Windows三个Keil target的构建准备证据已PASS，但仍必须以
+烧录后的短candump证明物理profile。

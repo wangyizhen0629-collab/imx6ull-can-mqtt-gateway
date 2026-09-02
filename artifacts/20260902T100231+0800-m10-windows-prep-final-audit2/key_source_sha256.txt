@@ -1,0 +1,7 @@
+﻿1743fd444d4f6f02b72e6371b47953c9de0631a42f4904c234cf74b7226671f6  size=1041  protocol/m10_traffic_profiles.json
+809b27d8c9c3b89821b20cf86f6219bc06cc1c4ddee9c6ac1a57c0d835e4e39e  size=1085  stm32/firmware/imx6ull-can-mqtt-gateway/Core/Inc/ecu_traffic_profile.h
+0bd3cc64798a4cad4de91ec32bfbbc211cfa11fa2a1ca78c7da9eb1b07958630  size=20383  stm32/firmware/imx6ull-can-mqtt-gateway/Core/Src/main.c
+9ffc2d1efd8f7a305bd49f08185d0ecca960f3d705c53860fa4e798bc1863a77  size=81678  stm32/firmware/imx6ull-can-mqtt-gateway/MDK-ARM/imx6ull-can-mqtt-gateway.uvprojx
+3582d3c8179f337cb0f0addaf5ad365de401feab1bacb64d09f0a0769cfcd1bc  size=14097  tools/protocol/analyze_m10_candump.py
+57cc39430bf8fd6a44cb7928aabbf3e1c5567dc4e95022a248cec3cb751588b1  size=9805  tools/protocol/test_analyze_m10_candump.py
+72e636e0b4bdaf806ad332d807dadcc3b4cb526e78f0b93d2a5fddc77e1443ac  size=3687  tools/stm32/generate_m10_keil_targets.py

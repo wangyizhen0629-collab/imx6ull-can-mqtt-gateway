@@ -26,6 +26,12 @@
 .mxproject
 /stm32/**/MDK-ARM/DebugConfig/
 /stm32/**/MDK-ARM/EventRecorderStub.scvd
+/stm32/**/MDK-ARM/M10_111/
+/stm32/**/MDK-ARM/M10_500/
+/stm32/**/MDK-ARM/M10_1000/
+/stm32/**/MDK-ARM/RTE/_M10_111/
+/stm32/**/MDK-ARM/RTE/_M10_500/
+/stm32/**/MDK-ARM/RTE/_M10_1000/
 
 # Runtime state and credentials must not enter version control.
 *.pid
