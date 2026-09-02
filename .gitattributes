@@ -36,3 +36,7 @@
 /artifacts/20260902T100231+0800-m10-windows-prep-final-audit2/** -text -whitespace
 /artifacts/20260902T101743+0800-m10-ubuntu-review/** -text -whitespace
 /artifacts/20260902T103243+0800-m10-ubuntu-final-rerun/** -text -whitespace
+/artifacts/20260902T121148+0800-m10-spool-v2-source-audit/** -text -whitespace
+/artifacts/20260902T121149+0800-m10-spool-v2-host-final/** -text -whitespace
+/artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/** -text -whitespace
+/artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/** -text -whitespace

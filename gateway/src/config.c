@@ -25,6 +25,8 @@ enum {
     CONFIG_FIELD_SPOOL_PATH,
     CONFIG_FIELD_SPOOL_FORMAT,
     CONFIG_FIELD_SPOOL_MAX_BYTES,
+    CONFIG_FIELD_SPOOL_SYNC_RECORDS,
+    CONFIG_FIELD_SPOOL_SYNC_INTERVAL_MS,
     CONFIG_FIELD_LOG_LEVEL,
     CONFIG_FIELD_COUNT
 };
@@ -134,7 +136,8 @@ static int field_index(const char *key)
         "broker_username", "broker_password", "mqtt_topic",
         "queue_capacity", "queue_push_timeout_ms", "batch_interval_ms",
         "mqtt_ack_timeout_ms", "mqtt_reconnect_interval_ms", "spool_path",
-        "spool_format", "spool_max_bytes", "log_level"
+        "spool_format", "spool_max_bytes", "spool_sync_records",
+        "spool_sync_interval_ms", "log_level"
     };
     int index;
 
@@ -284,6 +287,21 @@ static gateway_error_code set_field(gateway_config *config,
         }
         config->spool_max_bytes = (uint64_t)parsed;
         break;
+    case CONFIG_FIELD_SPOOL_SYNC_RECORDS:
+        code = parse_unsigned(value, 1, GATEWAY_SPOOL_V2_SEGMENT_RECORDS,
+                              &parsed);
+        if (code != GATEWAY_OK) {
+            return set_error(error, code, line, key, NULL);
+        }
+        config->spool_sync_records = (uint32_t)parsed;
+        break;
+    case CONFIG_FIELD_SPOOL_SYNC_INTERVAL_MS:
+        code = parse_unsigned(value, 1, 60000, &parsed);
+        if (code != GATEWAY_OK) {
+            return set_error(error, code, line, key, NULL);
+        }
+        config->spool_sync_interval_ms = (uint32_t)parsed;
+        break;
     case CONFIG_FIELD_LOG_LEVEL:
         code = gateway_log_level_parse(value, &level);
         if (code != GATEWAY_OK) {
@@ -320,6 +338,9 @@ void gateway_config_init_defaults(gateway_config *config)
                    "/var/lib/gatewayd/spool.data");
     config->spool_format = GATEWAY_SPOOL_FORMAT_LEGACY;
     config->spool_max_bytes = GATEWAY_SPOOL_MAX_BYTES_DEFAULT;
+    config->spool_sync_records = GATEWAY_SPOOL_SYNC_RECORDS_DEFAULT;
+    config->spool_sync_interval_ms =
+        GATEWAY_SPOOL_SYNC_INTERVAL_MS_DEFAULT;
     config->log_level = GATEWAY_LOG_INFO;
 }
 
@@ -515,6 +536,16 @@ gateway_error_code gateway_config_validate(const gateway_config *config,
         return set_error(error, GATEWAY_ERROR_RANGE, 0, "spool_max_bytes",
                          "must fit at least one segment and not exceed 64 GiB");
     }
+    if (config->spool_sync_records == 0 ||
+        config->spool_sync_records > GATEWAY_SPOOL_V2_SEGMENT_RECORDS) {
+        return set_error(error, GATEWAY_ERROR_RANGE, 0,
+                         "spool_sync_records", NULL);
+    }
+    if (config->spool_sync_interval_ms == 0 ||
+        config->spool_sync_interval_ms > 60000U) {
+        return set_error(error, GATEWAY_ERROR_RANGE, 0,
+                         "spool_sync_interval_ms", NULL);
+    }
     if (config->log_level < GATEWAY_LOG_DEBUG ||
         config->log_level > GATEWAY_LOG_ERROR) {
         return set_error(error, GATEWAY_ERROR_INVALID_VALUE, 0, "log_level",
@@ -536,6 +567,7 @@ void gateway_config_log_redacted(const gateway_config *config,
                 "batch_interval_ms=%u mqtt_ack_timeout_ms=%u "
                 "mqtt_reconnect_interval_ms=%u "
                 "spool_path=%s spool_format=%s spool_max_bytes=%" PRIu64
+                " spool_sync_records=%u spool_sync_interval_ms=%u"
                 " log_level=%s",
                 config->device_id, config->can_interface, config->broker_host,
                 (unsigned int)config->broker_port,
@@ -547,5 +579,7 @@ void gateway_config_log_redacted(const gateway_config *config,
                 config->spool_format == GATEWAY_SPOOL_FORMAT_V2 ? "v2"
                                                                 : "legacy",
                 config->spool_max_bytes,
+                config->spool_sync_records,
+                config->spool_sync_interval_ms,
                 gateway_log_level_name(config->log_level));
 }

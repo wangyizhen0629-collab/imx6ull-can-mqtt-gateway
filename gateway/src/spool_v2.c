@@ -67,6 +67,9 @@ struct gateway_spool_v2 {
     uint64_t segments_reclaimed;
     uint64_t sync_count;
     uint64_t sync_failures;
+    uint64_t unsynced_records;
+    struct timespec sync_deadline;
+    bool sync_deadline_set;
     gateway_spool_fault_point fault_once;
     bool batch_prepared;
     bool failed;
@@ -221,6 +224,38 @@ static gateway_error_code sync_directory(gateway_spool_v2 *spool)
 {
     return sync_descriptor(spool, spool->directory_fd, true,
                            GATEWAY_SPOOL_FAULT_DIRECTORY_SYNC);
+}
+
+static gateway_error_code sync_deadline_reached(
+    const struct timespec *deadline,
+    bool *reached)
+{
+    struct timespec now;
+
+    if (clock_gettime(CLOCK_MONOTONIC, &now) != 0) {
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    *reached = now.tv_sec > deadline->tv_sec ||
+               (now.tv_sec == deadline->tv_sec &&
+                now.tv_nsec >= deadline->tv_nsec);
+    return GATEWAY_OK;
+}
+
+static gateway_error_code set_sync_deadline(gateway_spool_v2 *spool)
+{
+    if (clock_gettime(CLOCK_MONOTONIC, &spool->sync_deadline) != 0) {
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    spool->sync_deadline.tv_sec +=
+        (time_t)(spool->options.sync_interval_ms / 1000U);
+    spool->sync_deadline.tv_nsec +=
+        (long)(spool->options.sync_interval_ms % 1000U) * 1000000L;
+    if (spool->sync_deadline.tv_nsec >= 1000000000L) {
+        spool->sync_deadline.tv_sec++;
+        spool->sync_deadline.tv_nsec -= 1000000000L;
+    }
+    spool->sync_deadline_set = true;
+    return GATEWAY_OK;
 }
 
 static void encode_record(uint8_t entry[GATEWAY_SPOOL_ENTRY_SIZE],
@@ -746,7 +781,6 @@ static gateway_error_code validate_and_scan(gateway_spool_v2 *spool)
             }
             spool->write_offset = write->size;
             spool->last_allocated_seq = write->last_seq;
-            spool->sequence_fence = write->last_seq;
             if (spool->write_offset == spool->segment_bytes) {
                 if (spool->write_segment == UINT64_MAX) {
                     return GATEWAY_ERROR_RANGE;
@@ -902,7 +936,9 @@ gateway_error_code gateway_spool_v2_open(
         segment_records > GATEWAY_SPOOL_V2_SEGMENT_RECORDS ||
         options->max_bytes < segment_records * GATEWAY_SPOOL_ENTRY_SIZE ||
         options->max_bytes > GATEWAY_SPOOL_MAX_BYTES_MAX ||
-        options->sync_records != 1 || options->sync_interval_ms == 0 ||
+        options->sync_records == 0 ||
+        options->sync_records > segment_records ||
+        options->sync_interval_ms == 0 ||
         options->sync_interval_ms > 60000U) {
         return GATEWAY_ERROR_ARGUMENT;
     }
@@ -1001,19 +1037,31 @@ gateway_error_code gateway_spool_v2_append(gateway_spool_v2 *spool,
     if (spool->failed) {
         return GATEWAY_ERROR_CLOSED;
     }
-    if (record->gateway_seq <= spool->last_allocated_seq ||
-        record->gateway_seq <= spool->sequence_fence) {
+    if (record->gateway_seq <= spool->last_allocated_seq) {
         return GATEWAY_ERROR_INVALID_VALUE;
     }
     if (spool->physical_bytes > spool->options.max_bytes -
                                     GATEWAY_SPOOL_ENTRY_SIZE) {
         return GATEWAY_ERROR_CAPACITY;
     }
-    spool->sequence_fence = record->gateway_seq;
-    code = persist_state(spool);
-    if (code != GATEWAY_OK) {
-        spool->failed = true;
-        return code;
+    if (record->gateway_seq > spool->sequence_fence) {
+        uint64_t reservation = (uint64_t)spool->options.sync_records - 1;
+
+        if (spool->unsynced_records != 0) {
+            code = gateway_spool_v2_flush(spool);
+            if (code != GATEWAY_OK) {
+                return code;
+            }
+        }
+        spool->sequence_fence =
+            record->gateway_seq > UINT64_MAX - reservation
+                ? UINT64_MAX
+                : record->gateway_seq + reservation;
+        code = persist_state(spool);
+        if (code != GATEWAY_OK) {
+            spool->failed = true;
+            return code;
+        }
     }
     code = ensure_write_segment(spool);
     if (code != GATEWAY_OK) {
@@ -1027,10 +1075,6 @@ gateway_error_code gateway_spool_v2_append(gateway_spool_v2 *spool,
     } else {
         code = write_exact(spool->segment_fd, entry, sizeof(entry),
                            (off_t)spool->write_offset);
-    }
-    if (code == GATEWAY_OK) {
-        code = sync_descriptor(spool, spool->segment_fd, false,
-                               GATEWAY_SPOOL_FAULT_SEGMENT_SYNC);
     }
     if (code != GATEWAY_OK) {
         (void)ftruncate(spool->segment_fd, (off_t)original_offset);
@@ -1051,25 +1095,17 @@ gateway_error_code gateway_spool_v2_append(gateway_spool_v2 *spool,
     spool->write_offset += GATEWAY_SPOOL_ENTRY_SIZE;
     spool->last_allocated_seq = record->gateway_seq;
     spool->records_appended++;
-    if (spool->write_offset == spool->segment_bytes) {
-        if (spool->write_segment == UINT64_MAX) {
+    spool->unsynced_records++;
+    if (!spool->sync_deadline_set) {
+        code = set_sync_deadline(spool);
+        if (code != GATEWAY_OK) {
             spool->failed = true;
-            return GATEWAY_ERROR_RANGE;
+            return code;
         }
-        if (close(spool->segment_fd) != 0) {
-            spool->segment_fd = -1;
-            spool->failed = true;
-            return GATEWAY_ERROR_IO;
-        }
-        spool->segment_fd = -1;
-        spool->open_segment = 0;
-        spool->write_segment++;
-        spool->write_offset = 0;
     }
-    code = persist_state(spool);
-    if (code != GATEWAY_OK) {
-        spool->failed = true;
-        return code;
+    if (spool->unsynced_records >= spool->options.sync_records ||
+        spool->write_offset == spool->segment_bytes) {
+        return gateway_spool_v2_flush(spool);
     }
     return GATEWAY_OK;
 }
@@ -1242,15 +1278,79 @@ void gateway_spool_v2_cancel_prepared(gateway_spool_v2 *spool)
 
 gateway_error_code gateway_spool_v2_flush(gateway_spool_v2 *spool)
 {
+    gateway_error_code code;
+    bool rotate;
+
     if (spool == NULL) {
         return GATEWAY_ERROR_ARGUMENT;
     }
-    return spool->failed ? GATEWAY_ERROR_CLOSED : GATEWAY_OK;
+    if (spool->failed) {
+        return GATEWAY_ERROR_CLOSED;
+    }
+    if (spool->unsynced_records == 0) {
+        return GATEWAY_OK;
+    }
+    if (spool->segment_fd < 0) {
+        spool->failed = true;
+        return GATEWAY_ERROR_SYSTEM;
+    }
+    code = sync_descriptor(spool, spool->segment_fd, false,
+                           GATEWAY_SPOOL_FAULT_SEGMENT_SYNC);
+    if (code != GATEWAY_OK) {
+        spool->failed = true;
+        return code;
+    }
+    rotate = spool->write_offset == spool->segment_bytes;
+    if (rotate) {
+        if (spool->write_segment == UINT64_MAX) {
+            spool->failed = true;
+            return GATEWAY_ERROR_RANGE;
+        }
+        spool->write_segment++;
+        spool->write_offset = 0;
+    }
+    spool->sequence_fence = spool->last_allocated_seq;
+    code = persist_state(spool);
+    if (code != GATEWAY_OK) {
+        spool->failed = true;
+        return code;
+    }
+    spool->unsynced_records = 0;
+    spool->sync_deadline_set = false;
+    if (rotate) {
+        if (close(spool->segment_fd) != 0) {
+            spool->segment_fd = -1;
+            spool->failed = true;
+            return GATEWAY_ERROR_IO;
+        }
+        spool->segment_fd = -1;
+        spool->open_segment = 0;
+    }
+    return GATEWAY_OK;
 }
 
 gateway_error_code gateway_spool_v2_poll(gateway_spool_v2 *spool)
 {
-    return gateway_spool_v2_flush(spool);
+    bool reached = false;
+    gateway_error_code code;
+
+    if (spool == NULL) {
+        return GATEWAY_ERROR_ARGUMENT;
+    }
+    if (spool->failed) {
+        return GATEWAY_ERROR_CLOSED;
+    }
+    if (spool->unsynced_records != 0 && spool->sync_deadline_set) {
+        code = sync_deadline_reached(&spool->sync_deadline, &reached);
+        if (code != GATEWAY_OK) {
+            spool->failed = true;
+            return code;
+        }
+        if (reached) {
+            return gateway_spool_v2_flush(spool);
+        }
+    }
+    return GATEWAY_OK;
 }
 
 uint64_t gateway_spool_v2_last_gateway_seq(const gateway_spool_v2 *spool)
@@ -1290,6 +1390,7 @@ void gateway_spool_v2_read(const gateway_spool_v2 *spool,
     snapshot->segments_reclaimed = spool->segments_reclaimed;
     snapshot->sync_count = spool->sync_count;
     snapshot->sync_failures = spool->sync_failures;
+    snapshot->unsynced_records = spool->unsynced_records;
     snapshot->v2 = true;
     snapshot->batch_prepared = spool->batch_prepared;
 }

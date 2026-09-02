@@ -1,0 +1,34 @@
+Script started on 2026-09-02 12:22:54+08:00 [<not executed on terminal>]
+ .gitattributes                            |    4 +
+ README.md                                 |   13 +-
+ docs/DECISION_LOG.md                      |   24 +
+ docs/OPEN_QUESTIONS.md                    |   12 +-
+ docs/PLANS.md                             |   33 +-
+ docs/PROJECT_SPEC.md                      |   20 +-
+ docs/RESUME_TRACEABILITY.md               |   12 +-
+ docs/TEST_PLAN.md                         |   18 +
+ docs/milestones/M10.md                    |   63 +-
+ docs/milestones/M10_SPOOL_V2_DESIGN.md    |  227 +++++
+ docs/milestones/M7.md                     |    7 +
+ docs/milestones/M8.md                     |    7 +
+ docs/milestones/M9.md                     |    8 +
+ gateway/CMakeLists.txt                    |    5 +-
+ gateway/config/gateway.conf.example       |    6 +
+ gateway/include/gateway/config.h          |    5 +
+ gateway/include/gateway/error.h           |    3 +-
+ gateway/include/gateway/mqtt_sink.h       |   13 +
+ gateway/include/gateway/spool.h           |   56 +-
+ gateway/src/config.c                      |   75 +-
+ gateway/src/error.c                       |    2 +
+ gateway/src/main.c                        |   27 +-
+ gateway/src/mqtt_sink.c                   |   39 +-
+ gateway/src/spool.c                       |  116 ++-
+ gateway/src/spool_v2.c                    | 1409 +++++++++++++++++++++++++++++
+ gateway/src/spool_v2_internal.h           |   32 +
+ gateway/tests/test_config.c               |   21 +
+ gateway/tests/test_mqtt_recovery_driver.c |   23 +-
+ gateway/tests/test_mqtt_sink.c            |   88 ++
+ gateway/tests/test_spool.c                |  567 ++++++++++++
+ 30 files changed, 2901 insertions(+), 34 deletions(-)
+
+Script done on 2026-09-02 12:22:55+08:00 [COMMAND_EXIT_CODE="0"]

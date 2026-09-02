@@ -30,6 +30,8 @@ typedef struct {
     const char *spool_path;
     gateway_spool_format spool_format;
     uint64_t spool_max_bytes;
+    uint32_t spool_sync_records;
+    uint32_t spool_sync_interval_ms;
     size_t max_records;
     gateway_stats *stats;
     gateway_logger *logger;

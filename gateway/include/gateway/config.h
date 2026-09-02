@@ -44,6 +44,8 @@ typedef struct {
     char spool_path[GATEWAY_SPOOL_PATH_SIZE];
     gateway_spool_format spool_format;
     uint64_t spool_max_bytes;
+    uint32_t spool_sync_records;
+    uint32_t spool_sync_interval_ms;
     gateway_log_level log_level;
 } gateway_config;
 

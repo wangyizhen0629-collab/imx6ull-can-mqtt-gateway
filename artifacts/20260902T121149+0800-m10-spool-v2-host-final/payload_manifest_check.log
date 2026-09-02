@@ -1,0 +1,13 @@
+Script started on 2026-09-02 12:24:43+08:00 [<not executed on terminal>]
+./build-clean-verbose.log: 成功
+./commands.md: 成功
+./configure.log: 成功
+./ctest-M10.log: 成功
+./ctest-M7.log: 成功
+./ctest-M8.log: 成功
+./ctest-M9.log: 成功
+./ctest-full.log: 成功
+./not_run.md: 成功
+./test_report.md: 成功
+
+Script done on 2026-09-02 12:24:43+08:00 [COMMAND_EXIT_CODE="0"]

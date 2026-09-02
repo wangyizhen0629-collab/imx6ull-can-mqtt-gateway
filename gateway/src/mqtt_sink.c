@@ -610,6 +610,13 @@ gateway_error_code gateway_mqtt_sink_create(
             if (config->spool_max_bytes != 0) {
                 spool_options.max_bytes = config->spool_max_bytes;
             }
+            if (config->spool_sync_records != 0) {
+                spool_options.sync_records = config->spool_sync_records;
+            }
+            if (config->spool_sync_interval_ms != 0) {
+                spool_options.sync_interval_ms =
+                    config->spool_sync_interval_ms;
+            }
             spool_code = gateway_spool_open_v2(
                 &created->spool, config->spool_path, &spool_options);
         } else {
@@ -760,6 +767,10 @@ static gateway_error_code flush_durable(gateway_mqtt_sink *sink)
     int code;
     gateway_error_code gateway_code;
 
+    gateway_code = gateway_spool_flush(sink->spool);
+    if (gateway_code != GATEWAY_OK) {
+        return spool_failure(sink, gateway_code, "flush durable records");
+    }
     gateway_spool_read(sink->spool, &spool_snapshot);
     if (spool_snapshot.pending_records == 0) {
         sink->replay_pending = false;
@@ -1163,6 +1174,11 @@ gateway_error_code gateway_mqtt_sink_poll(void *context)
         gateway_spool_snapshot spool_snapshot;
         bool connected;
 
+        reactor_code = gateway_spool_poll(sink->spool);
+        if (reactor_code != GATEWAY_OK) {
+            return spool_failure(sink, reactor_code,
+                                 "group commit deadline");
+        }
         reactor_code = durable_reconnect_step(sink);
         if (reactor_code != GATEWAY_OK) {
             return reactor_code;

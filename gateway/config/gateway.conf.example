@@ -21,4 +21,7 @@ spool_path=/var/lib/gatewayd/spool.data
 # legacy 保留 M7/M8/M9 GSP1/GST1；启用 v2 时必须改成全新专用目录。
 spool_format=legacy
 spool_max_bytes=268435456
+# 默认 1 保留逐条同步；M10 后续显式候选为 128 条或 1000 ms，以先到者为准。
+spool_sync_records=1
+spool_sync_interval_ms=1000
 log_level=info

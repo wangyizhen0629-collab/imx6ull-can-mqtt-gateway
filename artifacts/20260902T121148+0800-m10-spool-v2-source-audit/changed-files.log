@@ -1,0 +1,33 @@
+Script started on 2026-09-02 12:22:55+08:00 [<not executed on terminal>]
+M	.gitattributes
+M	README.md
+M	docs/DECISION_LOG.md
+M	docs/OPEN_QUESTIONS.md
+M	docs/PLANS.md
+M	docs/PROJECT_SPEC.md
+M	docs/RESUME_TRACEABILITY.md
+M	docs/TEST_PLAN.md
+M	docs/milestones/M10.md
+A	docs/milestones/M10_SPOOL_V2_DESIGN.md
+M	docs/milestones/M7.md
+M	docs/milestones/M8.md
+M	docs/milestones/M9.md
+M	gateway/CMakeLists.txt
+M	gateway/config/gateway.conf.example
+M	gateway/include/gateway/config.h
+M	gateway/include/gateway/error.h
+M	gateway/include/gateway/mqtt_sink.h
+M	gateway/include/gateway/spool.h
+M	gateway/src/config.c
+M	gateway/src/error.c
+M	gateway/src/main.c
+M	gateway/src/mqtt_sink.c
+M	gateway/src/spool.c
+A	gateway/src/spool_v2.c
+A	gateway/src/spool_v2_internal.h
+M	gateway/tests/test_config.c
+M	gateway/tests/test_mqtt_recovery_driver.c
+M	gateway/tests/test_mqtt_sink.c
+M	gateway/tests/test_spool.c
+
+Script done on 2026-09-02 12:22:55+08:00 [COMMAND_EXIT_CODE="0"]

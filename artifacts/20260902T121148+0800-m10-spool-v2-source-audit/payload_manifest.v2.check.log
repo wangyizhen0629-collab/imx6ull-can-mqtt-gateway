@@ -1,0 +1,24 @@
+Script started on 2026-09-02 12:27:55+08:00 [<not executed on terminal>]
+./artifact_manifest.sha256: 成功
+./cc-version.log: 成功
+./changed-files.log: 成功
+./cmake-version.log: 成功
+./commands.md: 成功
+./dependency_audit.md: 成功
+./diff-stat.log: 成功
+./git-diff-check-final.log: 成功
+./git-diff-check.log: 成功
+./manifest_correction.md: 成功
+./payload_manifest.sha256: 成功
+./payload_manifest_check.log: 成功
+./scan_interpretation.md: 成功
+./sensitive-scan-final.log: 成功
+./sensitive-scan.log: 成功
+./status-before-commit.log: 成功
+./status-prestage.log: 成功
+./test_report.md: 成功
+./tracked-binary-audit-final.log: 成功
+./tracked-binary-audit.log: 成功
+./uname.log: 成功
+
+Script done on 2026-09-02 12:27:55+08:00 [COMMAND_EXIT_CODE="0"]

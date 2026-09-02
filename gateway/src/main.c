@@ -495,6 +495,7 @@ static void log_mqtt_summary(gateway_logger *logger,
         " spool_pending_bytes=%" PRIu64
         " spool_segments=%" PRIu64 " spool_reclaimed=%" PRIu64
         " spool_syncs=%" PRIu64 " spool_sync_failures=%" PRIu64
+        " spool_unsynced=%" PRIu64
         " reactor_enabled=%d reactor_epoll_waits=%" PRIu64
         " reactor_wake_events=%" PRIu64
         " reactor_timer_expirations=%" PRIu64
@@ -534,6 +535,7 @@ static void log_mqtt_summary(gateway_logger *logger,
         sink_snapshot.spool_segments_reclaimed,
         sink_snapshot.spool_sync_count,
         sink_snapshot.spool_sync_failures,
+        sink_snapshot.spool_unsynced_records,
         sink_snapshot.reactor_enabled ? 1 : 0,
         sink_snapshot.reactor_epoll_waits,
         sink_snapshot.reactor_wake_events,
@@ -594,6 +596,8 @@ static int run_mqtt_pipeline(const gateway_config *config,
     sink_config.spool_path = config->spool_path;
     sink_config.spool_format = config->spool_format;
     sink_config.spool_max_bytes = config->spool_max_bytes;
+    sink_config.spool_sync_records = config->spool_sync_records;
+    sink_config.spool_sync_interval_ms = config->spool_sync_interval_ms;
     sink_config.max_records = GATEWAY_MQTT_BATCH_MAX_RECORDS;
     sink_config.stats = &stats;
     sink_config.logger = logger;
@@ -642,13 +646,15 @@ static int run_mqtt_pipeline(const gateway_config *config,
                 "M8 pipeline started interface=%s batch_interval_ms=%u "
                 "ack_timeout_ms=%u reconnect_interval_ms=%u "
                 "qos=1 max_inflight=1 reactor=epoll spool_path=%s "
-                "spool_format=%s spool_max_bytes=%" PRIu64,
+                "spool_format=%s spool_max_bytes=%" PRIu64
+                " spool_sync_records=%u spool_sync_interval_ms=%u",
                 config->can_interface, config->batch_interval_ms,
                 config->mqtt_ack_timeout_ms,
                 config->mqtt_reconnect_interval_ms, config->spool_path,
                 config->spool_format == GATEWAY_SPOOL_FORMAT_V2 ? "v2"
                                                                 : "legacy",
-                config->spool_max_bytes);
+                config->spool_max_bytes, config->spool_sync_records,
+                config->spool_sync_interval_ms);
 
     for (;;) {
         gateway_pipeline_snapshot snapshot;

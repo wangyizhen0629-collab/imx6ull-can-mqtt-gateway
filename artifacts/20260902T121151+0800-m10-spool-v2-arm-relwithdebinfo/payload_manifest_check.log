@@ -1,0 +1,17 @@
+Script started on 2026-09-02 12:24:43+08:00 [<not executed on terminal>]
+./build-clean-verbose.log: 成功
+./build.log: 成功
+./commands.md: 成功
+./compiler-version.log: 成功
+./configure.log: 成功
+./file.log: 成功
+./input-sha256.log: 成功
+./not_run.md: 成功
+./readelf-dynamic.log: 成功
+./readelf-header.log: 成功
+./readelf-program.log: 成功
+./sha256-after-verbose.log: 成功
+./sha256-before-verbose.log: 成功
+./test_report.md: 成功
+
+Script done on 2026-09-02 12:24:43+08:00 [COMMAND_EXIT_CODE="0"]

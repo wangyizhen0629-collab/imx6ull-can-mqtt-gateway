@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #define CHECK(condition)                                                       \
@@ -34,6 +35,16 @@ static telemetry_record make_record(uint64_t sequence)
     record.ecu_counter = (uint8_t)sequence;
     record.decoded_payload[0] = (uint8_t)(sequence + 1U);
     return record;
+}
+
+static void sleep_milliseconds(unsigned int milliseconds)
+{
+    struct timespec remaining;
+
+    remaining.tv_sec = (time_t)(milliseconds / 1000U);
+    remaining.tv_nsec = (long)(milliseconds % 1000U) * 1000000L;
+    while (nanosleep(&remaining, &remaining) != 0 && errno == EINTR) {
+    }
 }
 
 static int write_byte(const char *path, off_t offset, uint8_t value)
@@ -536,6 +547,182 @@ static int test_v2_fail_closed_layout(const char *parent)
     return 0;
 }
 
+static int test_v2_group_commit(const char *parent)
+{
+    char directory[256];
+    gateway_spool_v2_options options;
+    gateway_spool_snapshot first;
+    gateway_spool_snapshot second;
+    gateway_spool_snapshot snapshot;
+    gateway_spool *spool = NULL;
+    telemetry_record records[6];
+    uint64_t batch_seq;
+    size_t count;
+    uint64_t sequence;
+
+    gateway_spool_v2_options_init(&options);
+    options.max_bytes = 10 * GATEWAY_SPOOL_ENTRY_SIZE;
+    options.sync_records = 3;
+    options.sync_interval_ms = 60000;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-count", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 1);
+    {
+        telemetry_record record = make_record(2);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &second);
+    CHECK(second.unsynced_records == 2);
+    CHECK(second.sync_count == first.sync_count);
+    {
+        telemetry_record record = make_record(3);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.unsynced_records == 0);
+    CHECK(snapshot.sync_count > second.sync_count);
+    CHECK(gateway_spool_prepare_batch(spool, records, 6, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 3 && records[0].gateway_seq == 1 &&
+          records[2].gateway_seq == 3);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_interval_ms = 20;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-time", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 1);
+    sleep_milliseconds(30);
+    CHECK(gateway_spool_poll(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &second);
+    CHECK(second.unsynced_records == 0 && second.sync_count > first.sync_count);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 4;
+    options.sync_interval_ms = 60000;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-prepare",
+                   parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 2; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &first);
+    CHECK(first.unsynced_records == 2);
+    CHECK(gateway_spool_prepare_batch(spool, records, 6, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    gateway_spool_read(spool, &second);
+    CHECK(count == 2 && second.unsynced_records == 0);
+    CHECK(second.sync_count > first.sync_count);
+    gateway_spool_cancel_prepared(spool);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 2 && snapshot.unsynced_records == 0);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 2);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-close", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.unsynced_records == 1);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 1 && snapshot.unsynced_records == 0);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 1);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 3;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-failure",
+                   parent) > 0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    {
+        telemetry_record record = make_record(1);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    CHECK(gateway_spool_test_fail_next(
+              spool, GATEWAY_SPOOL_FAULT_SEGMENT_SYNC) == GATEWAY_OK);
+    CHECK(gateway_spool_flush(spool) == GATEWAY_ERROR_IO);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.sync_failures == 1 && snapshot.unsynced_records == 1);
+    gateway_spool_close(spool);
+    spool = NULL;
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 5) ==
+          GATEWAY_OK);
+    CHECK(gateway_spool_last_gateway_seq(spool) == 3);
+    {
+        telemetry_record record = make_record(4);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 3) == 0);
+
+    options.sync_records = 2;
+    CHECK(snprintf(directory, sizeof(directory), "%s/v2-group-cross", parent) >
+          0);
+    CHECK(gateway_spool_test_open_v2(&spool, directory, &options, 2) ==
+          GATEWAY_OK);
+    for (sequence = 1; sequence <= 6; sequence++) {
+        telemetry_record record = make_record(sequence);
+
+        CHECK(gateway_spool_append(spool, &record) == GATEWAY_OK);
+    }
+    CHECK(gateway_spool_prepare_batch(spool, records, 4, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 4 && records[0].gateway_seq == 1 &&
+          records[3].gateway_seq == 4);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    CHECK(gateway_spool_prepare_batch(spool, records, 4, &count,
+                                      &batch_seq) == GATEWAY_OK);
+    CHECK(count == 2 && records[0].gateway_seq == 5 &&
+          records[1].gateway_seq == 6);
+    CHECK(gateway_spool_ack_prepared(spool) == GATEWAY_OK);
+    gateway_spool_read(spool, &snapshot);
+    CHECK(snapshot.pending_records == 0 && snapshot.physical_bytes == 0);
+    gateway_spool_close(spool);
+    CHECK(remove_v2_directory(directory, 5) == 0);
+    return 0;
+}
+
 int main(void)
 {
     char directory[] = "/tmp/gateway-spool-test-XXXXXX";
@@ -558,6 +745,7 @@ int main(void)
     CHECK(test_v2_tail_corruption_and_missing(directory) == 0);
     CHECK(test_v2_fault_injection(directory) == 0);
     CHECK(test_v2_fail_closed_layout(directory) == 0);
+    CHECK(test_v2_group_commit(directory) == 0);
     CHECK(unlink(data_path) == 0);
     CHECK(unlink(state_path) == 0);
     CHECK(unlink(corrupt_path) == 0);

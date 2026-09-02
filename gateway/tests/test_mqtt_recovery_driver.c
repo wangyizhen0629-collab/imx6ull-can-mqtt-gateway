@@ -47,14 +47,18 @@ int main(int argc, char **argv)
     gateway_logger logger;
     unsigned long port;
     unsigned long append_count;
+    unsigned long sync_records = 1;
+    unsigned long sync_interval_ms = 1000;
+    bool use_v2 = false;
     uint64_t next_sequence;
     unsigned int loops = 0;
     int result = 1;
 
-    if (argc != 7 ||
+    if ((argc != 7 && argc != 10) ||
         (strcmp(argv[6], "drain") != 0 && strcmp(argv[6], "hold") != 0)) {
         fprintf(stderr,
-                "usage: %s SPOOL PORT DEVICE TOPIC APPEND_COUNT drain|hold\n",
+                "usage: %s SPOOL PORT DEVICE TOPIC APPEND_COUNT drain|hold "
+                "[v2 SYNC_RECORDS SYNC_INTERVAL_MS]\n",
                 argv[0]);
         return 2;
     }
@@ -62,6 +66,16 @@ int main(int argc, char **argv)
     append_count = strtoul(argv[5], NULL, 10);
     if (port == 0 || port > UINT16_MAX || append_count > 100000U) {
         return 2;
+    }
+    if (argc == 10) {
+        use_v2 = strcmp(argv[7], "v2") == 0;
+        sync_records = strtoul(argv[8], NULL, 10);
+        sync_interval_ms = strtoul(argv[9], NULL, 10);
+        if (!use_v2 || sync_records == 0 ||
+            sync_records > GATEWAY_SPOOL_V2_SEGMENT_RECORDS ||
+            sync_interval_ms == 0 || sync_interval_ms > 60000U) {
+            return 2;
+        }
     }
     if (gateway_stats_init(&stats) != GATEWAY_OK ||
         gateway_logger_init(&logger, stderr, GATEWAY_LOG_INFO) != GATEWAY_OK) {
@@ -78,6 +92,11 @@ int main(int argc, char **argv)
     config.ack_timeout_ms = 500;
     config.reconnect_interval_ms = 100;
     config.spool_path = argv[1];
+    config.spool_format = use_v2 ? GATEWAY_SPOOL_FORMAT_V2
+                                 : GATEWAY_SPOOL_FORMAT_LEGACY;
+    config.spool_max_bytes = GATEWAY_SPOOL_MAX_BYTES_DEFAULT;
+    config.spool_sync_records = (uint32_t)sync_records;
+    config.spool_sync_interval_ms = (uint32_t)sync_interval_ms;
     config.max_records = 2;
     config.stats = &stats;
     config.logger = &logger;

@@ -292,6 +292,8 @@ static int test_v2_durable_offline_reopen(void)
     gateway_mqtt_sink *sink = NULL;
     gateway_stats stats;
     gateway_logger logger;
+    uint16_t silent_port = 0;
+    int listener;
     uint64_t sequence;
 
     CHECK(mkdtemp(parent) != NULL);
@@ -302,7 +304,9 @@ static int test_v2_durable_offline_reopen(void)
     (void)memset(&config, 0, sizeof(config));
     config.device_id = "unit-gateway";
     config.broker_host = "127.0.0.1";
-    config.broker_port = 1883;
+    listener = create_silent_loopback_listener(&silent_port);
+    CHECK(listener >= 0);
+    config.broker_port = silent_port;
     config.broker_username = "";
     config.broker_password = "";
     config.topic = "test/m10/v2-offline";
@@ -312,30 +316,46 @@ static int test_v2_durable_offline_reopen(void)
     config.spool_path = spool_path;
     config.spool_format = GATEWAY_SPOOL_FORMAT_V2;
     config.spool_max_bytes = GATEWAY_SPOOL_MAX_BYTES_DEFAULT;
+    config.spool_sync_records = 4;
+    config.spool_sync_interval_ms = 20;
     config.max_records = 4;
     config.stats = &stats;
     config.logger = &logger;
     CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
-    for (sequence = 1; sequence <= 3; sequence++) {
+    for (sequence = 1; sequence <= 2; sequence++) {
         telemetry_record record = make_record(sequence, (uint8_t)sequence);
 
         CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
     }
     gateway_mqtt_sink_read(sink, &snapshot);
     CHECK(snapshot.spool_v2);
-    CHECK(snapshot.spool_pending_records == 3);
+    CHECK(snapshot.spool_pending_records == 2);
     CHECK(snapshot.spool_physical_bytes ==
-          3 * GATEWAY_SPOOL_ENTRY_SIZE);
+          2 * GATEWAY_SPOOL_ENTRY_SIZE);
     CHECK(snapshot.spool_segment_count == 1);
+    CHECK(snapshot.spool_unsynced_records == 2);
+    sleep_milliseconds(30);
+    CHECK(gateway_mqtt_sink_poll(sink) == GATEWAY_OK);
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.spool_unsynced_records == 0);
+    {
+        telemetry_record record = make_record(3, 3);
+
+        CHECK(gateway_mqtt_sink_consume(sink, &record) == GATEWAY_OK);
+    }
+    gateway_mqtt_sink_read(sink, &snapshot);
+    CHECK(snapshot.spool_unsynced_records == 1);
     gateway_mqtt_sink_destroy(sink);
     sink = NULL;
     CHECK(gateway_mqtt_sink_create(&sink, &config) == GATEWAY_OK);
     gateway_mqtt_sink_read(sink, &snapshot);
     CHECK(snapshot.spool_v2 && snapshot.spool_pending_records == 3);
+    CHECK(snapshot.spool_unsynced_records == 0);
     CHECK(gateway_mqtt_sink_next_gateway_seq(sink) == 4);
     gateway_mqtt_sink_destroy(sink);
     gateway_logger_destroy(&logger);
     gateway_stats_destroy(&stats);
+    CHECK(close(listener) == 0);
     CHECK(snprintf(file_path, sizeof(file_path),
                    "%s/segment-00000000000000000001.gsp2", spool_path) > 0);
     CHECK(unlink(file_path) == 0);

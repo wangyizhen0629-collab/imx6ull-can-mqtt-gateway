@@ -625,6 +625,30 @@
   Windows必须先拉取最终提交并另行取得每个外部状态动作的明确批准；不产生性能、CPU/RSS、
   时延或长期可靠性结论。
 
+## D-041：M10以显式分段v2和有界group commit纠正spool增长与同步写放大
+
+- 日期：2026-09-02
+- 状态：已接受离线实现；M10总门禁仍为`NOT MET`
+- 格式决定：GSP1/GST1 legacy路径、默认选择和逐条同步保持不变。v2只能显式选择并使用
+  全新spool目录；GSP2记录/GST2 state均有CRC，segment编号单调且生产容量固定65536条。
+  不自动迁移或破坏legacy，未知、缺失、乱序及内部损坏均fail closed。
+- 回收决定：ACK state必须先经tmp完整写、`fdatasync`、rename、父目录`fsync`持久化，
+  之后才删除完全ACK的segment并再次同步目录。全部segment删除后仍由GST2保存
+  gateway/batch/segment高水位；reservation防止崩溃后sequence复用。容量默认256 MiB，
+  达上限明确返回capacity错误，绝不覆盖未ACK数据。
+- 同步决定：默认`spool_sync_records=1`、`spool_sync_interval_ms=1000`保持历史严格语义；
+  M10候选128/1000按先到者。Broker离线poll、segment滚动、publish候选生成前和正常关闭
+  均强制flush，sync失败进入fail-stop。候选配置最多允许127次append成功返回但未持久；
+  掉电若落在第128条写入与同步完成之间，最多128条完整新记录可丢失。1000 ms从本组首条
+  append计时并与记录阈值取先到者；sequence最多形成128个空洞但不复用。不声称掉电零丢失。
+- 离线依据：Debug warning-clean与全量CTest21/21，标签M7 4/4、M8 2/2、M9 1/1、M10
+  5/5；ASan+UBSan全量21/21且无诊断；ARMv7 `RelWithDebInfo` clean verbose rebuild和
+  ELF/依赖/无RPATH检查PASS，新SHA256为
+  `07c185e6e7e862195982f37f41501407ca17fd25442ab7b00c224466a8f7be5e`。
+- 影响：旧M10 binary `d234f2c5...fbf`虽未被删除或执行，但因源码变化已过期。本轮没有
+  触碰板端现有M9 spool、硬件、CAN、Broker、固件、进程或长测。真实掉电、板端容量与
+  性能、500/1000帧/s、20轮断网和24小时全部`NOT RUN`；不得关闭M10或开始M11。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

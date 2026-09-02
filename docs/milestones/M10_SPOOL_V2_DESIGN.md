@@ -119,7 +119,7 @@ state 与 segment 扫描结果必须相互约束：扫描所得最大实际 sequ
 ### append 与 segment 滚动
 
 1. 校验 sequence、容量和当前失败状态。达到 `spool_max_bytes` 时直接返回
-   `GATEWAY_ERROR_RANGE`，上层记录 spool error；不得删除/覆盖未 ACK 数据。
+   `GATEWAY_ERROR_CAPACITY`，上层记录 spool error；不得删除/覆盖未 ACK 数据。
 2. group 模式若没有覆盖本条 sequence 的有效 reservation，先按 state 临时文件事务
    持久化 fence；事务顺序与下面 state 提交相同。
 3. 如目标 segment 尚不存在，用 `O_CREAT|O_EXCL` 创建，随后 `fsync(directory)`，再写
@@ -206,9 +206,11 @@ state、state 指向不存在的未 ACK 数据，均不允许“尽量继续”�
 - publish 前强制 flush，正常 `gateway_mqtt_sink_flush` 和 spool close 强制 flush；任何
   sync/state 失败向调用者传播。析构中的兜底 flush 无法改变 `void` 接口，因此正常主
   流程必须先调用可返回错误的 flush，并把失败作为进程失败。
-- 候选 128/1000 下，突然断电或不可恢复进程崩溃最多可失去尚未成功同步的 127 条完整
-  记录，或从本组首条 append 到 1000 ms 阈值触发前进入页缓存的记录，以先到者为准；
-  reservation 确保这些 sequence 不复用，但可能留下缺口。调度停顿、内核或存储设备
+- 候选 128/1000 下，成功返回但尚未持久化的 append 最多 127 条；第 128 条会在返回前
+  同步，但若掉电发生在该次调用的写入和 `fdatasync` 完成之间，磁盘上最多 128 条完整
+  新记录仍可能一起丢失。时间边界是从本组首条 append 到 1000 ms 阈值触发，两个阈值
+  以先到者为准。reservation 确保这些 sequence 不复用，但可能留下最多 128 个序号的
+  缺口。调度停顿、内核或存储设备
   不兑现 flush 语义不在应用层可证明的绝对时间界内，所以不能声称真实掉电零丢失。
 - 一旦 segment `fdatasync` 成功但随后 state 提交失败，实例 fail-stop；重启扫描可在
   已持久 fence 内纳入完整记录。应用不继续 publish 或覆盖不确定数据。

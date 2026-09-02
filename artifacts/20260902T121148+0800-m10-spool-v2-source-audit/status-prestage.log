@@ -1,0 +1,36 @@
+Script started on 2026-09-02 12:24:08+08:00 [<not executed on terminal>]
+## m10-spool-v2-reclaim
+ M .gitattributes
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M docs/TEST_PLAN.md
+ M docs/milestones/M10.md
+ M docs/milestones/M10_SPOOL_V2_DESIGN.md
+ M docs/milestones/M7.md
+ M docs/milestones/M8.md
+ M docs/milestones/M9.md
+ M gateway/config/gateway.conf.example
+ M gateway/include/gateway/config.h
+ M gateway/include/gateway/mqtt_sink.h
+ M gateway/src/config.c
+ M gateway/src/main.c
+ M gateway/src/mqtt_sink.c
+ M gateway/src/spool_v2.c
+ M gateway/tests/test_config.c
+ M gateway/tests/test_mqtt_recovery_driver.c
+ M gateway/tests/test_mqtt_sink.c
+ M gateway/tests/test_spool.c
+?? 20260831T220718p0800-m6-lan-1000-board/
+?? artifacts/20260831T181335+0800-m6-arm-private/
+?? artifacts/20260831T235934+0800-m7-preflight/
+?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+?? artifacts/20260902T121148+0800-m10-spool-v2-source-audit/
+?? artifacts/20260902T121149+0800-m10-spool-v2-host-final/
+?? artifacts/20260902T121150+0800-m10-spool-v2-asan-ubsan/
+?? artifacts/20260902T121151+0800-m10-spool-v2-arm-relwithdebinfo/
+
+Script done on 2026-09-02 12:24:08+08:00 [COMMAND_EXIT_CODE="0"]

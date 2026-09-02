@@ -276,3 +276,21 @@ queue drop、batch/seq/reconnect/duplicate、spool 最大积压、`/proc` CPU/RS
   8/8、全量CTest21/21，并冻结`RelWithDebInfo` ARM binary SHA256
   `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。binary上板、烧录
   和真实短candump仍为`NOT RUN`。
+
+### M10 spool v2纠正性离线门禁
+
+- legacy GSP1/GST1、默认`spool_format=legacy`和`sync_records=1`必须全量回归，禁止
+  自动迁移。v2误指向legacy、未知文件、内部CRC、缺失或乱序segment必须安全拒绝。
+- 使用缩小的测试segment覆盖滚动、跨segment顺序读、全ACK后的物理删除、pending为0且
+  旧segment全删后的gateway/batch/segment序号不复用，以及活跃segment半条尾部恢复。
+- 在append write、segment sync、state write/sync/rename、目录sync和segment delete分别
+  注入一次故障；只能得到旧持久状态、完整新状态、允许的QoS 1重放或fail closed，不能
+  删除/覆盖未ACK记录。
+- 达`spool_max_bytes`必须返回明确capacity错误。验证快照的physical/pending bytes、
+  segment数量/回收数、sync次数/失败和未同步记录数。
+- group commit覆盖记录数阈值、单调时间阈值、Broker离线poll、跨多segment积压/顺序
+  drain、publish候选前强制flush、正常关闭flush和sync失败传播。候选128/1000仅是后续
+  测试配置，不是性能结论。
+- 最终必须运行Debug warning-clean全量CTest及M7/M8/M9/M10标签、ASan+UBSan全量、
+  ARMv7 `RelWithDebInfo` clean verbose rebuild和ELF/NEEDED/RPATH/SHA审计。LeakSanitizer、
+  真实硬件、CAN、Broker、掉电和长时间测试按本轮限制写`NOT RUN`。
