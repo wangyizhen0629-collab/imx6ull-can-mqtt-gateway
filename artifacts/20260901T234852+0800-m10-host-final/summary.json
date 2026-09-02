@@ -1,0 +1,16 @@
+{
+  "run_id": "20260901T234852+0800-m10-host-final",
+  "milestone": "M10",
+  "environment": "ubuntu-x86_64-host",
+  "configure": "PASS",
+  "warning_clean_build": "PASS",
+  "sandbox_ctest": "FAIL_18_OF_20",
+  "sandbox_failures": [
+    "test_can_receiver: PF_CAN descriptor unavailable",
+    "test_mqtt_sink: TCP reserved socket unavailable"
+  ],
+  "unsandboxed_ctest_v2": "PASS_20_OF_20",
+  "final_m10_ctest_v3": "PASS_2_OF_2",
+  "hardware_performance_result": "NOT_RUN"
+}
+

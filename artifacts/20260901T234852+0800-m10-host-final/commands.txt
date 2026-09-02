@@ -1,0 +1,6 @@
+cmake -S . -B build/m10-host-final -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/tmp/imx6ull-m6-mosquitto-root/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+cmake --build build/m10-host-final --parallel 2
+ctest --test-dir build/m10-host-final --output-on-failure
+ctest --test-dir build/m10-host-final --output-on-failure --output-log artifacts/20260901T234852+0800-m10-host-final/ctest-unsandboxed-v2.log
+ctest --test-dir build/m10-host-final -L M10 --output-on-failure --output-log artifacts/20260901T234852+0800-m10-host-final/ctest-m10-v3.log
+

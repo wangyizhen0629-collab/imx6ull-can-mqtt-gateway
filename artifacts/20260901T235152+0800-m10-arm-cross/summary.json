@@ -1,0 +1,13 @@
+{
+  "run_id": "20260901T235152+0800-m10-arm-cross",
+  "milestone": "M10",
+  "configure": "PASS",
+  "warning_clean_build": "PASS",
+  "architecture": "ARMv7 EABI5 hard-float ELF32",
+  "interpreter": "/lib/ld-linux-armhf.so.3",
+  "needed": ["libpthread.so.0", "libmosquitto.so.1", "libc.so.6"],
+  "rpath_runpath": "ABSENT",
+  "binary_sha256": "7bb1d7299eac43d5a7a9b8f52981652c6ed3e3f3b29567ff74a1abc5f2b3edef",
+  "board_deploy_or_execution": "NOT_RUN"
+}
+

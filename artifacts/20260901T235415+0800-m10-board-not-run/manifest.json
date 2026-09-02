@@ -1,0 +1,8 @@
+{
+  "run_id": "20260901T235415+0800-m10-board-not-run",
+  "milestone": "M10",
+  "result": "NOT_RUN",
+  "environment": "ubuntu-session-without-board-or-broker-endpoint",
+  "hardware_or_external_state_modified": false
+}
+

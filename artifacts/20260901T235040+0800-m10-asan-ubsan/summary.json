@@ -1,0 +1,11 @@
+{
+  "run_id": "20260901T235040+0800-m10-asan-ubsan",
+  "milestone": "M10",
+  "asan": "PASS",
+  "ubsan": "PASS",
+  "full_ctest_v2": "PASS_20_OF_20",
+  "final_m10_ctest_v3": "PASS_2_OF_2",
+  "leak_sanitizer": "NOT_RUN",
+  "leak_sanitizer_reason": "ptrace-managed execution environment; detect_leaks=0"
+}
+

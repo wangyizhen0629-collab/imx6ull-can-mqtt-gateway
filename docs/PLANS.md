@@ -62,8 +62,13 @@
   补充run `artifacts/20260901T230215+0800-m9-manual-postboot-gate/`取得唯一reboot后的新
   boot ID，证明PID 1在无人工start/restart/HUP时自动拉起唯一supervisor。操作者经新增
   授权恢复重启后DOWN的既有CAN基线，再受控start；最终supervisor/child为1/1，child PID
-  9951超过60秒不变且身份/SHA/库映射正确。因此M9 BusyBox进程监督门禁为`MET`，M10及
-  后续未开始。CAN持久配置、Broker交付、正确UTC和完整无人值守产品ready仍未验证。
+  9951超过60秒不变且身份/SHA/库映射正确。因此M9 BusyBox进程监督门禁为`MET`。
+  CAN持久配置、Broker交付、正确UTC和完整无人值守产品ready仍未验证。
+- M10已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS汇总和四场景严格门禁校验。
+  warning-clean主机构建、沙箱外全量CTest20/20、最终M10专项2/2、ASan+UBSan全量20/20、
+  sanitizer M10专项2/2和ARMv7 warning-clean构建均通过。当前会话无真实目标板、STM32、
+  Windows Broker或subscriber访问路径，因此500/1000帧/s各30分钟、20轮每轮5分钟断网、
+  板端`/proc`和24小时基准均为`NOT RUN`。M10总门禁为`NOT MET`，本轮停止在M10。
 
 ## Milestone 总表
 
@@ -83,7 +88,7 @@
 | M7 | 持久化 spool、恢复、重连补传 | 断线/恢复和 `kill -9` 证明顺序恢复及去重后完整 | 2026-09-01 已通过；真实板端/Windows断线、SIGKILL、损坏恢复及raw duplicate validator PASS |
 | M8 | 条件式 epoll network reactor | 外部 loop API 可用且保持 M7 行为，否则记录删除 epoll 的决定 | 2026-09-01 已通过；Ubuntu/ARM构建与真实i.MX6ULL/Windows Broker重连、SIGKILL/state恢复、reactor计数及validator PASS |
 | M9 | BusyBox 部署与进程恢复 | 开机启动和异常拉起通过，不使用 systemd | 2026-09-01 已通过；主机/ARM、真实安装、init开机拉起supervisor、最终1/1、restart、SIGKILL恢复和ash cooldown PASS |
-| M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 未开始 |
+| M10 | 自动化中断、性能和 24 小时证据 | 压力、断网、`/proc` 指标、稳定性和简历追溯报告齐全 | 工具/离线回归已完成；真实场景均NOT RUN，总门禁NOT MET |
 
 ## M2 完成记录
 
@@ -532,6 +537,43 @@ epoll以及M9/M10均未实现、未测试、未批准。
 隔离storm cooldown和最终正常状态，M9总门禁为 **MET**。该结论只覆盖BusyBox进程监督；
 CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready、性能和可靠性仍不成立。
 本轮停止在M9，不进入M10。
+
+## M10 执行记录
+
+1. 用户在Windows端完成M9后授权本轮只执行M10。前置run
+   `artifacts/20260901T233553+0800-m10-preflight/`确认HEAD与`origin/master`均为
+   `645d6842facf8b6a2a9bf00b02b79a7c602657fd`；4组既有未跟踪证据保持不动。M9基础run
+   的生成端manifest自检为109项0不匹配，post-boot补充run为29项0不匹配；组合门禁为
+   `MET`。Ubuntu直接复核Windows文本hash会受M9未设置`-text`的CRLF/LF规范化影响，该
+   限制已记录且未伪装成跨clone逐字节PASS。
+2. `tools/metrics/collect_proc_metrics.sh`使用POSIX/BusyBox ash读取固定PID或PID文件，
+   每个样本保存epoch、`/proc/uptime`、进程starttime/CPU ticks、系统CPU ticks、VmRSS、
+   VmHWM、Linux state和采样状态；可核对exe，进程缺失/身份不符/读取错误均可见，且
+   拒绝覆盖已有输出。
+3. `report_proc_metrics.py`按相邻同一PID/starttime样本计算总系统CPU容量口径，CPU、
+   VmRSS和VmHWM报告平均、nearest-rank P95及最大值。`validate_m10_run.py`只接受
+   `imx6ull-physical`：500/1000帧/s场景各至少1800秒、20轮断网每轮至少300秒、111帧/s
+   基准至少86400秒。指标必须覆盖完整时长、至少`duration+1`个样本，最大间隔不超过
+   2.5秒；三类CAN ID必须分别统计帧数/gap，总数达到速率乘时长并与最终MQTT unique
+   record相等；CAN error、queue drop、MQTT missing/effective duplicate和进程退出为0。
+4. 主机run `artifacts/20260901T234852+0800-m10-host-final/` warning-clean。首次受限沙箱
+   全量CTest为18/20，两个FAIL分别是PF_CAN和TCP socket权限，原日志保留；沙箱外v2为
+   20/20 PASS；最终工具源码全量v4再次为20/20。M10专项v4为2/2 PASS，实际使用Ubuntu
+   BusyBox 1.30.1 ash，
+   并以合成CSV/JSON覆盖正常/拒绝规则。合成86401行只测试24小时合同解析，不是24小时运行。
+5. ASan+UBSan run `artifacts/20260901T235040+0800-m10-asan-ubsan/`全量v2和最终v4均为
+   20/20，M10专项v4为2/2；LeakSanitizer因ptrace环境为`NOT RUN`。ARM run
+   `artifacts/20260901T235152+0800-m10-arm-cross/` warning-clean，binary为ARMv7 EABI5
+   hard-float、解释器/依赖正确、无RPATH/RUNPATH，SHA256为
+   `7bb1d7299eac43d5a7a9b8f52981652c6ed3e3f3b29567ff74a1abc5f2b3edef`；未部署或板端执行。
+6. `artifacts/20260901T235415+0800-m10-board-not-run/`明确记录：本会话没有真实i.MX6ULL、
+   STM32、Windows Broker或subscriber端点/凭据/已验证传输路径，也没有本轮具体外部状态
+   操作条件。因此500/1000帧/s各30分钟、20轮5分钟Broker断网、板端`/proc`采样和24小时
+   基准全部`NOT RUN`；没有修改CAN、网络、`/etc`、init、进程、Broker、固件或依赖。
+
+M10离线工具与可执行回归已完成，但退出门禁要求的真实压力、断网、指标和24小时报告不齐，
+故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮
+立即停止在M10，不进入任何后续阶段。
 
 ## M1 完成记录
 

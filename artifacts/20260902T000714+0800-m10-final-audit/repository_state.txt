@@ -1,0 +1,27 @@
+## master...origin/master
+ M .gitattributes
+ M README.md
+ M docs/DECISION_LOG.md
+ M docs/OPEN_QUESTIONS.md
+ M docs/PLANS.md
+ M docs/PROJECT_SPEC.md
+ M docs/RESUME_TRACEABILITY.md
+ M gateway/CMakeLists.txt
+ M tools/README.md
+ M tools/metrics/README.md
+?? 20260831T220718p0800-m6-lan-1000-board/
+?? artifacts/20260831T181335+0800-m6-arm-private/
+?? artifacts/20260831T235934+0800-m7-preflight/
+?? artifacts/20260901T090837+0800-m6-lan-gate-review/
+?? artifacts/20260901T233553+0800-m10-preflight/
+?? artifacts/20260901T234852+0800-m10-host-final/
+?? artifacts/20260901T235040+0800-m10-asan-ubsan/
+?? artifacts/20260901T235152+0800-m10-arm-cross/
+?? artifacts/20260901T235415+0800-m10-board-not-run/
+?? artifacts/20260902T000714+0800-m10-final-audit/
+?? docs/milestones/M10.md
+?? tools/metrics/collect_proc_metrics.sh
+?? tools/metrics/report_proc_metrics.py
+?? tools/metrics/test_proc_metrics.py
+?? tools/metrics/test_validate_m10_run.py
+?? tools/metrics/validate_m10_run.py

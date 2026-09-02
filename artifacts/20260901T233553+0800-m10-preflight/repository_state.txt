@@ -1,0 +1,13 @@
+run_id=20260901T233553+0800-m10-preflight
+captured_at=2026-09-01T23:35:53+08:00
+host=Linux wangyizhen-virtual-machine 6.8.0-138-generic x86_64
+branch=master
+head=645d6842facf8b6a2a9bf00b02b79a7c602657fd
+origin_master=645d6842facf8b6a2a9bf00b02b79a7c602657fd
+tracked_changes=0
+preexisting_untracked_paths=4
+preexisting_untracked_1=20260831T220718p0800-m6-lan-1000-board/
+preexisting_untracked_2=artifacts/20260831T181335+0800-m6-arm-private/
+preexisting_untracked_3=artifacts/20260831T235934+0800-m7-preflight/
+preexisting_untracked_4=artifacts/20260901T090837+0800-m6-lan-gate-review/
+

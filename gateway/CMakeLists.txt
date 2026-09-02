@@ -155,6 +155,20 @@ if(BUILD_TESTING)
     set_tests_properties(test_busybox_gatewayd_supervisor PROPERTIES
                          LABELS "M9;deploy")
 
+    add_test(
+        NAME test_proc_metrics
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
+                ${PROJECT_SOURCE_DIR}/tools/metrics/test_proc_metrics.py
+    )
+    set_tests_properties(test_proc_metrics PROPERTIES LABELS "M10;metrics")
+    add_test(
+        NAME test_m10_evidence_validator
+        COMMAND ${GATEWAY_PYTHON3_EXECUTABLE} -B
+                ${PROJECT_SOURCE_DIR}/tools/metrics/test_validate_m10_run.py
+    )
+    set_tests_properties(test_m10_evidence_validator PROPERTIES
+                         LABELS "M10;metrics")
+
     # 该可执行文件只在显式启动测试 Broker/subscriber 的 M6 集成 run 中执行，
     # 不注册到默认 CTest，避免普通回归隐式改变 Broker/进程状态。
     add_executable(test_mqtt_integration tests/test_mqtt_integration.c)

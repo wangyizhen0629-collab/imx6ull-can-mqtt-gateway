@@ -121,6 +121,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   的镜像supervisor，也不使用systemd。真实目标安装、PID 1 HUP、唯一进程、restart、
   SIGKILL恢复、ash隔离cooldown、reboot后PID 1自动拉起supervisor和最终1/1均已通过。
   CAN持久启动配置仍是外部产品问题，不纳入M9实现。
+- 本轮M10只完成离线工具和不改变外部状态的测试。真实场景仍需确认：由谁提供并操作
+  i.MX6ULL/STM32和Windows Broker/subscriber；500/1000帧/s物理负载如何可重复配置；
+  谁明确批准20轮Broker启停与24小时运行；长时CSV、gateway/Broker/subscriber原始日志
+  如何回收、脱敏和备份。上述条件未解决前M10不能续跑或标为MET。
 
 ## M1～M7 后续验证边界
 
@@ -192,8 +196,11 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   功能门禁的已验证结论。
 - M8：与M7相同SHA256的libmosquitto 2.0.11、最终ARMv7 binary、真实i.MX6ULL/Windows
   Broker重连、SIGKILL/state恢复、reactor计数和严格validator均已通过；门禁已关闭。
+- M10离线工具：BusyBox ash `/proc`采集、CPU/RSS离线报告、四场景真实环境/时长/每秒
+  采样/功能计数合同已实现；warning-clean与ASan+UBSan全量20/20、最终M10专项2/2及
+  ARMv7构建PASS。该项只解决测试工具可执行性，不解决任何真实性能或稳定性数值。
 
-## M8 关闭后仍未解决的边界
+## M10 当前仍未解决的边界
 
 - 板端wall clock仍为1970；正确UTC何时由产品部署阶段提供并单独验证？
 - 真实掉电、存储掉电语义、性能/时延/吞吐、CPU/RSS、介质寿命、容量阈值、compaction
@@ -201,7 +208,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
 - M9仓库实现、主机/ASan+UBSan、ARM、板端安装/reload/restart/SIGKILL恢复、BusyBox ash
   cooldown和手动post-boot补充门禁已有真实证据，M9为`MET`。仍未解决的产品问题是正确
   UTC、CAN持久启动配置、Broker交付以及性能/长期可靠性；这些不得从M9短时进程监督门禁
-  外推。M10仍未开始。
+  外推。
+- M10的500/1000帧/s各30分钟、20轮每轮5分钟Broker断网、真实板端`/proc`指标和24小时
+  基准均为`NOT RUN`；原因和条件见
+  `artifacts/20260901T235415+0800-m10-board-not-run/`。当前M10总门禁为`NOT MET`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

@@ -1,0 +1,14 @@
+artifact_manifest.sha256: 成功
+build-v2.log: 成功
+build.log: 成功
+commands.txt: 成功
+configure.log: 成功
+file.txt: 成功
+git_commit.txt: 成功
+readelf-dynamic.txt: 成功
+readelf-program.txt: 成功
+sha256.txt: 成功
+source_sha256.txt: 成功
+source_sha256.v2.txt: 成功
+summary.json: 成功
+test_report.md: 成功

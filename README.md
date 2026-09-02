@@ -48,9 +48,14 @@ CTest/ASan+UBSan及ARM构建通过。真实i.MX6ULL基础run完成binary/库SHA�
 HUP 1/1、restart换PID、一次SIGKILL恢复和BusyBox 1.31.1 ash隔离cooldown。手动post-boot
 补充run又取得唯一reboot后的新boot ID，并证明PID 1在无人为start/restart/HUP时自动拉起
 唯一supervisor；操作者经新增授权恢复重启后DOWN的既有CAN基线，再受控start，最终
-supervisor/child为1/1且child PID超过60秒不变。因此M9进程监督门禁为`MET`，M10尚未
-开始。板端时钟仍为1970，CAN持久自动配置、Broker交付、性能和无人值守完整产品ready
-不属于该结论。
+supervisor/child为1/1且child PID超过60秒不变。因此M9进程监督门禁为`MET`。板端时钟
+仍为1970，CAN持久自动配置、Broker交付、性能和无人值守完整产品ready不属于该结论。
+
+M10现已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS报告和四场景严格validator；
+主机warning-clean/ASan+UBSan全量20/20、最终M10专项2/2及ARMv7交叉构建通过。当前
+会话没有真实i.MX6ULL、STM32或Windows Broker/subscriber访问路径，因此500/1000帧/s
+各30分钟、20轮5分钟断网、板端指标和24小时基准全部`NOT RUN`。M10总门禁为`NOT MET`，
+没有性能或长期可靠性结论。
 
 ## Ubuntu 主机构建
 
@@ -94,4 +99,5 @@ Broker状态改动、进程kill或网络/CAN状态改动仍受仓库批准规则
 [docs/milestones/M6.md](docs/milestones/M6.md)，M7完成记录和M8当前记录分别在
 [docs/milestones/M7.md](docs/milestones/M7.md)、
 [docs/milestones/M8.md](docs/milestones/M8.md)，M9当前记录在
-[docs/milestones/M9.md](docs/milestones/M9.md)。
+[docs/milestones/M9.md](docs/milestones/M9.md)，M10执行记录在
+[docs/milestones/M10.md](docs/milestones/M10.md)。

@@ -1,0 +1,65 @@
+[OUTPUT] 
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m10-host-final
+
+[HANDLER_OUTPUT] 
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m10-host-final
+
+      Start  1: gatewayd_version
+ 1/20 Test  #1: gatewayd_version ...................   Passed    0.00 sec
+      Start  2: gatewayd_default_config
+ 2/20 Test  #2: gatewayd_default_config ............   Passed    0.00 sec
+      Start  3: gatewayd_example_config
+ 3/20 Test  #3: gatewayd_example_config ............   Passed    0.00 sec
+      Start  4: test_config
+ 4/20 Test  #4: test_config ........................   Passed    0.00 sec
+      Start  5: test_error_record
+ 5/20 Test  #5: test_error_record ..................   Passed    0.00 sec
+      Start  6: test_lifecycle
+ 6/20 Test  #6: test_lifecycle .....................   Passed    0.02 sec
+      Start  7: test_log
+ 7/20 Test  #7: test_log ...........................   Passed    0.00 sec
+      Start  8: test_ring_buffer
+ 8/20 Test  #8: test_ring_buffer ...................   Passed    0.13 sec
+      Start  9: test_can_receiver
+ 9/20 Test  #9: test_can_receiver ..................   Passed    0.01 sec
+      Start 10: test_vehicle_decoder
+10/20 Test #10: test_vehicle_decoder ...............   Passed    0.00 sec
+      Start 11: test_vehicle_dbc
+11/20 Test #11: test_vehicle_dbc ...................   Passed    0.05 sec
+      Start 12: test_pipeline
+12/20 Test #12: test_pipeline ......................   Passed    1.01 sec
+      Start 13: test_mqtt_sink
+13/20 Test #13: test_mqtt_sink .....................   Passed    0.53 sec
+      Start 14: test_mqtt_reactor
+14/20 Test #14: test_mqtt_reactor ..................   Passed    0.02 sec
+      Start 15: test_spool
+15/20 Test #15: test_spool .........................   Passed    0.03 sec
+      Start 16: test_mqtt_validator
+16/20 Test #16: test_mqtt_validator ................   Passed    0.85 sec
+      Start 17: test_mqtt_recovery_validator
+17/20 Test #17: test_mqtt_recovery_validator .......   Passed    0.43 sec
+      Start 18: test_busybox_gatewayd_supervisor
+18/20 Test #18: test_busybox_gatewayd_supervisor ...   Passed    8.13 sec
+      Start 19: test_proc_metrics
+19/20 Test #19: test_proc_metrics ..................   Passed    1.14 sec
+      Start 20: test_m10_evidence_validator
+20/20 Test #20: test_m10_evidence_validator ........   Passed    0.41 sec
+
+100% tests passed, 0 tests failed out of 20
+
+Label Time Summary:
+M1          =   0.16 sec*proc (5 tests)
+M10         =   1.55 sec*proc (2 tests)
+M2          =   0.01 sec*proc (1 test)
+M4          =   0.06 sec*proc (2 tests)
+M5          =   1.01 sec*proc (1 test)
+M6          =   1.38 sec*proc (2 tests)
+M7          =   2.00 sec*proc (4 tests)
+M8          =   0.55 sec*proc (2 tests)
+M9          =   8.13 sec*proc (1 test)
+deploy      =   8.13 sec*proc (1 test)
+metrics     =   1.55 sec*proc (2 tests)
+protocol    =   0.05 sec*proc (1 test)
+unit        =   3.04 sec*proc (13 tests)
+
+Total Test time (real) =  12.80 sec

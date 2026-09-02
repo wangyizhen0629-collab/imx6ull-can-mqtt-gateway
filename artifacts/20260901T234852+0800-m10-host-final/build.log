@@ -1,0 +1,60 @@
+[  2%] Building C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o
+[  4%] Building C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o
+[  6%] Building C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o
+[  9%] Building C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o
+[ 11%] Building C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o
+[ 13%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o
+[ 15%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o
+[ 18%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o
+[ 20%] Building C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o
+[ 22%] Building C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o
+[ 25%] Building C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o
+[ 27%] Building C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o
+[ 29%] Building C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o
+[ 31%] Linking C static library libgateway_core.a
+[ 31%] Built target gateway_core
+[ 36%] Building C object gateway/CMakeFiles/test_config.dir/tests/test_config.c.o
+[ 36%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+[ 38%] Linking C executable test_config
+[ 38%] Built target test_config
+[ 40%] Linking C executable gatewayd
+[ 43%] Building C object gateway/CMakeFiles/test_error_record.dir/tests/test_error_record.c.o
+[ 45%] Linking C executable test_error_record
+[ 45%] Built target gatewayd
+[ 45%] Built target test_error_record
+[ 50%] Building C object gateway/CMakeFiles/test_lifecycle.dir/tests/test_lifecycle.c.o
+[ 50%] Building C object gateway/CMakeFiles/test_log.dir/tests/test_log.c.o
+[ 52%] Linking C executable test_log
+[ 54%] Linking C executable test_lifecycle
+[ 54%] Built target test_lifecycle
+[ 54%] Built target test_log
+[ 59%] Building C object gateway/CMakeFiles/test_can_receiver.dir/tests/test_can_receiver.c.o
+[ 59%] Building C object gateway/CMakeFiles/test_ring_buffer.dir/tests/test_ring_buffer.c.o
+[ 61%] Linking C executable test_can_receiver
+[ 63%] Linking C executable test_ring_buffer
+[ 63%] Built target test_can_receiver
+[ 63%] Built target test_ring_buffer
+[ 65%] Building C object gateway/CMakeFiles/test_vehicle_decoder.dir/tests/test_vehicle_decoder.c.o
+[ 68%] Building C object gateway/CMakeFiles/test_pipeline.dir/tests/test_pipeline.c.o
+[ 70%] Linking C executable test_vehicle_decoder
+[ 72%] Linking C executable test_pipeline
+[ 72%] Built target test_vehicle_decoder
+[ 72%] Built target test_pipeline
+[ 75%] Building C object gateway/CMakeFiles/test_mqtt_sink.dir/tests/test_mqtt_sink.c.o
+[ 77%] Building C object gateway/CMakeFiles/test_mqtt_reactor.dir/tests/test_mqtt_reactor.c.o
+[ 79%] Linking C executable test_mqtt_reactor
+[ 81%] Linking C executable test_mqtt_sink
+[ 81%] Built target test_mqtt_reactor
+[ 81%] Built target test_mqtt_sink
+[ 84%] Building C object gateway/CMakeFiles/test_spool.dir/tests/test_spool.c.o
+[ 86%] Building C object gateway/CMakeFiles/test_mqtt_integration.dir/tests/test_mqtt_integration.c.o
+[ 88%] Linking C executable test_mqtt_integration
+[ 90%] Linking C executable test_spool
+[ 90%] Built target test_spool
+[ 93%] Building C object gateway/CMakeFiles/test_mqtt_timing.dir/tests/test_mqtt_timing.c.o
+[ 93%] Built target test_mqtt_integration
+[ 95%] Building C object gateway/CMakeFiles/test_mqtt_recovery_driver.dir/tests/test_mqtt_recovery_driver.c.o
+[ 97%] Linking C executable test_mqtt_timing
+[100%] Linking C executable test_mqtt_recovery_driver
+[100%] Built target test_mqtt_timing
+[100%] Built target test_mqtt_recovery_driver

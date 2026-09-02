@@ -1,0 +1,18 @@
+[OUTPUT] 
+Internal ctest changing into directory: /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m10-asan-ubsan
+
+[HANDLER_OUTPUT] 
+Test project /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/build/m10-asan-ubsan
+
+    Start 19: test_proc_metrics
+1/2 Test #19: test_proc_metrics ................   Passed    1.15 sec
+    Start 20: test_m10_evidence_validator
+2/2 Test #20: test_m10_evidence_validator ......   Passed    1.87 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+M10        =   3.02 sec*proc (2 tests)
+metrics    =   3.02 sec*proc (2 tests)
+
+Total Test time (real) =   3.02 sec

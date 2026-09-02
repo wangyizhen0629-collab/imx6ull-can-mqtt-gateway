@@ -556,6 +556,31 @@
   `MET`。该决定不证明CAN持久自动配置、Broker交付、正确UTC、完整无人值守产品ready、
   性能或可靠性，也不授权开始M10。
 
+## D-038：M10采用原始/proc差值与真实场景硬门禁，缺少板端证据时保持NOT MET
+
+- 日期：2026-09-02
+- 状态：已接受实现；M10总门禁`NOT MET`
+- 前提：`artifacts/20260901T233553+0800-m10-preflight/`复核M9组合门禁为`MET`。M9的
+  Windows文本artifact在Ubuntu checkout会因CRLF/LF规范化导致直接hash不匹配；本次只按
+  已归档生成端manifest自检和结构化关键事实放行，并为全部M10 artifact增加`-text`。
+- 指标决定：目标只采集原始`/proc/<pid>/stat`、`/proc/<pid>/status`、`/proc/stat`和
+  `/proc/uptime`。Ubuntu按同一PID/starttime的相邻tick差计算CPU总系统容量占比；CPU、
+  VmRSS、VmHWM报告平均、nearest-rank P95和最大值。采集器拒绝覆盖，PID缺失、身份不符、
+  读取错误和PID变化都不得静默忽略。
+- 场景决定：四个run互不替代，只接受`environment=imx6ull-physical`。500/1000帧/s各
+  至少1800秒；Broker中断恰好20轮且每轮至少300秒；111帧/s基准至少86400秒。每秒指标
+  必须覆盖完整时长，至少`duration+1`个样本，最大间隔不超过2.5秒。三类CAN ID分别
+  报告帧数/gap，总数必须达到速率乘时长并与最终MQTT unique record相等；CAN error、
+  queue drop、MQTT missing/effective duplicate和进程退出为0才允许单场景PASS。QoS 1
+  raw duplicate单独报告且允许存在。CPU/RSS只报告，不虚构未冻结的产品阈值。
+- 离线依据：主机warning-clean、沙箱外全量20/20、最终M10专项2/2；ASan+UBSan全量20/20
+  和最终M10专项2/2；ARMv7 warning-clean/ELF/无RPATH均PASS。合成86401行CSV只验证门禁
+  算法，不是24小时实测。LeakSanitizer为`NOT RUN`。
+- 未满足事实：当前Ubuntu会话没有真实目标板、STM32、Windows Broker或subscriber路径。
+  500/1000帧/s、20轮断网、板端指标和24小时测试全部`NOT RUN`，且没有改变任何外部状态。
+- 影响：工具实现完成不等于性能/稳定性通过。M10总门禁保持`NOT MET`，相关简历表述不可用；
+  本轮停止在M10。
+
 ## 本次规范冲突修正清单
 
 | 原规范/状态 | 本次调整 | 修正位置 |

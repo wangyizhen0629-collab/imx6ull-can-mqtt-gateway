@@ -1,0 +1,4 @@
+645d6842facf8b6a2a9bf00b02b79a7c602657fd
+
+本run构建M10未提交工作树中的当前C源码；M10 Python/shell工具不链接进gatewayd。
+

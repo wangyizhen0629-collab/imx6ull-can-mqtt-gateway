@@ -22,3 +22,11 @@
 
 # M7 跨主机恢复门禁证据逐字节保留，确保subscriber JSON和manifest跨clone可复核。
 /artifacts/20260901T105414+0800-m7-lan-recovery-gate2/** -text
+
+# M10证据逐字节保留，避免Windows/Linux clone行尾规范化破坏manifest。
+/artifacts/20260901T233553+0800-m10-preflight/** -text -whitespace
+/artifacts/20260901T234852+0800-m10-host-final/** -text -whitespace
+/artifacts/20260901T235040+0800-m10-asan-ubsan/** -text -whitespace
+/artifacts/20260901T235152+0800-m10-arm-cross/** -text -whitespace
+/artifacts/20260901T235415+0800-m10-board-not-run/** -text -whitespace
+/artifacts/20260902T000714+0800-m10-final-audit/** -text -whitespace

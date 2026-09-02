@@ -1,0 +1,11 @@
+ .gitattributes              |  7 +++++++
+ README.md                   | 14 +++++++++----
+ docs/DECISION_LOG.md        | 25 +++++++++++++++++++++++
+ docs/OPEN_QUESTIONS.md      | 14 +++++++++++--
+ docs/PLANS.md               | 48 ++++++++++++++++++++++++++++++++++++++++++---
+ docs/PROJECT_SPEC.md        |  7 +++++--
+ docs/RESUME_TRACEABILITY.md | 19 ++++++++++++++----
+ gateway/CMakeLists.txt      | 14 +++++++++++++
+ tools/README.md             |  2 +-
+ tools/metrics/README.md     | 39 +++++++++++++++++++++++++++++++++---
+ 10 files changed, 170 insertions(+), 19 deletions(-)

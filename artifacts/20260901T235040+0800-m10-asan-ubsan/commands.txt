@@ -1,0 +1,5 @@
+cmake -S . -B build/m10-asan-ubsan -DCMAKE_BUILD_TYPE=Debug -DGATEWAY_ENABLE_SANITIZERS=ON -DGATEWAY_MOSQUITTO_INCLUDE_DIR=/tmp/imx6ull-m6-mosquitto-root/usr/include -DGATEWAY_MOSQUITTO_LIBRARY=/tmp/imx6ull-m6-mosquitto-root/usr/lib/x86_64-linux-gnu/libmosquitto.so
+cmake --build build/m10-asan-ubsan --parallel 2
+ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m10-asan-ubsan --output-on-failure
+ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 ctest --test-dir build/m10-asan-ubsan -L M10 --output-on-failure
+

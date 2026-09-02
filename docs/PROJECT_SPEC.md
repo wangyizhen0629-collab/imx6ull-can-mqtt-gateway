@@ -188,5 +188,8 @@ Ubuntu/ARM和真实Windows Broker+i.MX6ULL恢复门禁通过，去重后27434条
 SIGKILL恢复及BusyBox 1.31.1 ash隔离storm cooldown。手动post-boot补充证据取得新boot
 ID，证明PID 1在无人工start/restart/HUP时自动拉起唯一supervisor；经单独授权恢复既有
 500000 bit/s CAN基线后，最终supervisor/child为1/1且child PID超过60秒不变。因此M9
-BusyBox进程监督门禁为`MET`，M10尚未开始。CAN持久配置、Broker交付、正确UTC和完整
-产品无人值守ready不由M9结论覆盖。
+BusyBox进程监督门禁为`MET`。M10已实现BusyBox `/proc`采集、Ubuntu CPU/RSS汇总和
+四场景严格门禁工具，并通过主机、sanitizer与ARMv7离线验证；真实500/1000帧/s压力、
+20轮Broker断网、板端指标和24小时基准因当前无目标/Broker路径均为`NOT RUN`，故M10
+总门禁为`NOT MET`。CAN持久配置、Broker交付、正确UTC、完整产品无人值守ready、性能
+和长期可靠性仍无结论。
