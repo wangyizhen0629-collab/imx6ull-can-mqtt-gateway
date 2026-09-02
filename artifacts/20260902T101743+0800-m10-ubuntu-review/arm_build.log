@@ -1,0 +1,18 @@
+[  6%] Building C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o
+[ 12%] Building C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o
+[ 18%] Building C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o
+[ 25%] Building C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o
+[ 31%] Building C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o
+[ 37%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mock_sink.c.o
+[ 43%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_reactor.c.o
+[ 50%] Building C object gateway/CMakeFiles/gateway_core.dir/src/mqtt_sink.c.o
+[ 56%] Building C object gateway/CMakeFiles/gateway_core.dir/src/pipeline.c.o
+[ 62%] Building C object gateway/CMakeFiles/gateway_core.dir/src/ring_buffer.c.o
+[ 68%] Building C object gateway/CMakeFiles/gateway_core.dir/src/spool.c.o
+[ 75%] Building C object gateway/CMakeFiles/gateway_core.dir/src/stats.c.o
+[ 81%] Building C object gateway/CMakeFiles/gateway_core.dir/src/vehicle_decoder.c.o
+[ 87%] Linking C static library libgateway_core.a
+[ 87%] Built target gateway_core
+[ 93%] Building C object gateway/CMakeFiles/gatewayd.dir/src/main.c.o
+[100%] Linking C executable gatewayd
+[100%] Built target gatewayd

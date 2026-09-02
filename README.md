@@ -53,10 +53,12 @@ supervisor/child为1/1且child PID超过60秒不变。因此M9进程监督门禁
 
 M10现已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS报告和四场景严格validator；
 主机warning-clean/ASan+UBSan全量20/20、最终M10专项2/2及ARMv7交叉构建通过。Windows
-又冻结111/500/1000帧/s STM32编译期profile，新增candump分析器并完成7/7回归和三个
-Keil target全量rebuild 0 error/0 warning。Ubuntu全量复核和正式`RelWithDebInfo` ARM
-binary尚未完成；烧录、500/1000帧/s各30分钟、20轮5分钟断网、板端指标和24小时基准
-全部`NOT RUN`。M10总门禁为`NOT MET`，没有性能或长期可靠性结论。
+又冻结111/500/1000帧/s STM32编译期profile，三个Keil target全量rebuild均0 error/
+0 warning。Ubuntu随后修正扩展帧文本ID边界，分析器8/8、当前全量CTest21/21，并生成
+通过ELF/RPATH复核的`RelWithDebInfo` ARM binary，SHA256为
+`d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。该binary未上板；
+烧录、短预演、500/1000帧/s各30分钟、20轮5分钟断网、板端指标和24小时基准全部
+`NOT RUN`。M10总门禁为`NOT MET`，没有性能或长期可靠性结论。
 
 ## Ubuntu 主机构建
 

@@ -52,12 +52,14 @@ def parse_frames(path: Path) -> list[Frame]:
             compact = LOG_PATTERN.match(line)
             if pretty is not None:
                 timestamp = float(pretty.group(1))
-                raw_can_id = int(pretty.group(2), 16)
+                can_id_text = pretty.group(2)
+                raw_can_id = int(can_id_text, 16)
                 dlc = int(pretty.group(3), 10)
                 data_text = pretty.group(4)
             elif compact is not None:
                 timestamp = float(compact.group(1))
-                raw_can_id = int(compact.group(2), 16)
+                can_id_text = compact.group(2)
+                raw_can_id = int(can_id_text, 16)
                 data_text = compact.group(3)
                 require(len(data_text) % 2 == 0,
                         f"line {line_number}: odd compact payload length")
@@ -72,6 +74,11 @@ def parse_frames(path: Path) -> list[Frame]:
                 raise ValueError(
                     f"candump line {line_number}: invalid payload: {error}"
                 ) from error
+            # can-utils以8位文本ID区分EFF帧，不会把CAN_EFF_FLAG直接打印进数值。
+            if (len(can_id_text) > 3 and not (
+                    raw_can_id &
+                    (CAN_ERR_FLAG | CAN_RTR_FLAG | CAN_EFF_FLAG))):
+                raw_can_id |= CAN_EFF_FLAG
             can_id = raw_can_id & 0x7FF
             frames.append(
                 Frame(line_number, timestamp, raw_can_id, can_id, dlc, data)

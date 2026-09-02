@@ -1,0 +1,148 @@
+artifacts/20260902T094551+0800-m10-windows-profile-prep
+sha256sum: 'analyzer_unit_tests.txt'$'\r': 没有那个文件或目录
+analyzer_unit_tests.txt: 打开或读取失败
+sha256sum: 'authorization_and_scope.txt'$'\r': 没有那个文件或目录
+authorization_and_scope.txt: 打开或读取失败
+sha256sum: 'commands.txt'$'\r': 没有那个文件或目录
+commands.txt: 打开或读取失败
+sha256sum: 'environment.txt'$'\r': 没有那个文件或目录
+environment.txt: 打开或读取失败
+sha256sum: 'git_head.txt'$'\r': 没有那个文件或目录
+git_head.txt: 打开或读取失败
+sha256sum: 'git_status_before.txt'$'\r': 没有那个文件或目录
+git_status_before.txt: 打开或读取失败
+sha256sum: 'hardware_tests_not_run.md'$'\r': 没有那个文件或目录
+hardware_tests_not_run.md: 打开或读取失败
+sha256sum: 'keil_target_generator_check.txt'$'\r': 没有那个文件或目录
+keil_target_generator_check.txt: 打开或读取失败
+sha256sum: 'local_time.txt'$'\r': 没有那个文件或目录
+local_time.txt: 打开或读取失败
+sha256sum: 'run_windows_profile_prep.ps1'$'\r': 没有那个文件或目录
+run_windows_profile_prep.ps1: 打开或读取失败
+sha256sum: 'sensitive_scan.txt'$'\r': 没有那个文件或目录
+sensitive_scan.txt: 打开或读取失败
+sha256sum: 'test_report.md'$'\r': 没有那个文件或目录
+test_report.md: 打开或读取失败
+sha256sum: 警告：12 个列出的文件无法读取
+exit_code=1
+artifacts/20260902T094824+0800-m10-windows-profile-prep2
+sha256sum: 'analyzer_unit_tests.txt'$'\r': 没有那个文件或目录
+analyzer_unit_tests.txt: 打开或读取失败
+sha256sum: 'authorization_and_scope.txt'$'\r': 没有那个文件或目录
+authorization_and_scope.txt: 打开或读取失败
+sha256sum: 'build_completion_recheck.ps1'$'\r': 没有那个文件或目录
+build_completion_recheck.ps1: 打开或读取失败
+sha256sum: 'build_product_sha256.txt'$'\r': 没有那个文件或目录
+build_product_sha256.txt: 打开或读取失败
+sha256sum: 'build_product_sha256_after_completion.txt'$'\r': 没有那个文件或目录
+build_product_sha256_after_completion.txt: 打开或读取失败
+sha256sum: 'commands.txt'$'\r': 没有那个文件或目录
+commands.txt: 打开或读取失败
+sha256sum: 'environment.txt'$'\r': 没有那个文件或目录
+environment.txt: 打开或读取失败
+sha256sum: 'finalize_attempt1.ps1'$'\r': 没有那个文件或目录
+finalize_attempt1.ps1: 打开或读取失败
+sha256sum: 'git_head.txt'$'\r': 没有那个文件或目录
+git_head.txt: 打开或读取失败
+sha256sum: 'git_status_before.txt'$'\r': 没有那个文件或目录
+git_status_before.txt: 打开或读取失败
+sha256sum: 'hardware_tests_not_run.md'$'\r': 没有那个文件或目录
+hardware_tests_not_run.md: 打开或读取失败
+sha256sum: 'keil_exit_codes.txt'$'\r': 没有那个文件或目录
+keil_exit_codes.txt: 打开或读取失败
+sha256sum: 'keil_log_assessment.txt'$'\r': 没有那个文件或目录
+keil_log_assessment.txt: 打开或读取失败
+sha256sum: 'keil_m10_1000_rebuild.txt'$'\r': 没有那个文件或目录
+keil_m10_1000_rebuild.txt: 打开或读取失败
+sha256sum: 'keil_m10_111_rebuild.txt'$'\r': 没有那个文件或目录
+keil_m10_111_rebuild.txt: 打开或读取失败
+sha256sum: 'keil_m10_500_rebuild.txt'$'\r': 没有那个文件或目录
+keil_m10_500_rebuild.txt: 打开或读取失败
+sha256sum: 'keil_target_generator_check.txt'$'\r': 没有那个文件或目录
+keil_target_generator_check.txt: 打开或读取失败
+sha256sum: 'keil_target_settings.txt'$'\r': 没有那个文件或目录
+keil_target_settings.txt: 打开或读取失败
+sha256sum: 'local_time.txt'$'\r': 没有那个文件或目录
+local_time.txt: 打开或读取失败
+sha256sum: 'race_correction.txt'$'\r': 没有那个文件或目录
+race_correction.txt: 打开或读取失败
+sha256sum: 'run_windows_profile_prep.ps1'$'\r': 没有那个文件或目录
+run_windows_profile_prep.ps1: 打开或读取失败
+sha256sum: 'sensitive_scan.txt'$'\r': 没有那个文件或目录
+sensitive_scan.txt: 打开或读取失败
+sha256sum: 'source_sha256.txt'$'\r': 没有那个文件或目录
+source_sha256.txt: 打开或读取失败
+sha256sum: 'test_report.md'$'\r': 没有那个文件或目录
+test_report.md: 打开或读取失败
+sha256sum: 'uv4_process_after.txt'$'\r': 没有那个文件或目录
+uv4_process_after.txt: 打开或读取失败
+sha256sum: 警告：25 个列出的文件无法读取
+exit_code=1
+artifacts/20260902T095951+0800-m10-windows-prep-final-audit
+sha256sum: 'analyzer_unit_tests.txt'$'\r': 没有那个文件或目录
+analyzer_unit_tests.txt: 打开或读取失败
+sha256sum: 'archived_m4_real_capture_replay.txt'$'\r': 没有那个文件或目录
+archived_m4_real_capture_replay.txt: 打开或读取失败
+sha256sum: 'archived_m4_real_capture_summary.json'$'\r': 没有那个文件或目录
+archived_m4_real_capture_summary.json: 打开或读取失败
+sha256sum: 'commands.txt'$'\r': 没有那个文件或目录
+commands.txt: 打开或读取失败
+sha256sum: 'finalize_manifest.ps1'$'\r': 没有那个文件或目录
+finalize_manifest.ps1: 打开或读取失败
+sha256sum: 'keil_target_generator_check.txt'$'\r': 没有那个文件或目录
+keil_target_generator_check.txt: 打开或读取失败
+sha256sum: 'local_time.txt'$'\r': 没有那个文件或目录
+local_time.txt: 打开或读取失败
+sha256sum: 'run_final_audit.ps1'$'\r': 没有那个文件或目录
+run_final_audit.ps1: 打开或读取失败
+sha256sum: 'scope.txt'$'\r': 没有那个文件或目录
+scope.txt: 打开或读取失败
+sha256sum: 'syntax_and_format_checks.txt'$'\r': 没有那个文件或目录
+syntax_and_format_checks.txt: 打开或读取失败
+sha256sum: 'test_report.md'$'\r': 没有那个文件或目录
+test_report.md: 打开或读取失败
+sha256sum: 警告：11 个列出的文件无法读取
+exit_code=1
+artifacts/20260902T100231+0800-m10-windows-prep-final-audit2
+sha256sum: 'analyzer_unit_tests.txt'$'\r': 没有那个文件或目录
+analyzer_unit_tests.txt: 打开或读取失败
+sha256sum: 'archived_m4_real_capture_replay.txt'$'\r': 没有那个文件或目录
+archived_m4_real_capture_replay.txt: 打开或读取失败
+sha256sum: 'archived_m4_real_capture_summary.json'$'\r': 没有那个文件或目录
+archived_m4_real_capture_summary.json: 打开或读取失败
+sha256sum: 'build_product_git_audit.txt'$'\r': 没有那个文件或目录
+build_product_git_audit.txt: 打开或读取失败
+sha256sum: 'commands.txt'$'\r': 没有那个文件或目录
+commands.txt: 打开或读取失败
+sha256sum: 'finalize_manifest.ps1'$'\r': 没有那个文件或目录
+finalize_manifest.ps1: 打开或读取失败
+sha256sum: 'git_diff_check.txt'$'\r': 没有那个文件或目录
+git_diff_check.txt: 打开或读取失败
+sha256sum: 'intended_commit_scope.txt'$'\r': 没有那个文件或目录
+intended_commit_scope.txt: 打开或读取失败
+sha256sum: 'keil_dependency_tracking_audit.txt'$'\r': 没有那个文件或目录
+keil_dependency_tracking_audit.txt: 打开或读取失败
+sha256sum: 'keil_target_generator_check.txt'$'\r': 没有那个文件或目录
+keil_target_generator_check.txt: 打开或读取失败
+sha256sum: 'key_source_sha256.txt'$'\r': 没有那个文件或目录
+key_source_sha256.txt: 打开或读取失败
+sha256sum: 'local_time.txt'$'\r': 没有那个文件或目录
+local_time.txt: 打开或读取失败
+sha256sum: 'post_report_scan.ps1'$'\r': 没有那个文件或目录
+post_report_scan.ps1: 打开或读取失败
+sha256sum: 'previous_manifest_checks.txt'$'\r': 没有那个文件或目录
+previous_manifest_checks.txt: 打开或读取失败
+sha256sum: 'run_final_audit.ps1'$'\r': 没有那个文件或目录
+run_final_audit.ps1: 打开或读取失败
+sha256sum: 'scope.txt'$'\r': 没有那个文件或目录
+scope.txt: 打开或读取失败
+sha256sum: 'sensitive_scan.txt'$'\r': 没有那个文件或目录
+sensitive_scan.txt: 打开或读取失败
+sha256sum: 'sensitive_scan_v2.txt'$'\r': 没有那个文件或目录
+sensitive_scan_v2.txt: 打开或读取失败
+sha256sum: 'syntax_and_format_checks.txt'$'\r': 没有那个文件或目录
+syntax_and_format_checks.txt: 打开或读取失败
+sha256sum: 'test_report.md'$'\r': 没有那个文件或目录
+test_report.md: 打开或读取失败
+sha256sum: 警告：20 个列出的文件无法读取
+exit_code=1

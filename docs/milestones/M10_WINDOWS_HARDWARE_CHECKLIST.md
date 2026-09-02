@@ -2,8 +2,9 @@
 
 本清单用于Windows clone、STM32CubeMX/Keil/ST-Link、真实i.MX6ULL、物理CAN和Windows
 专用Mosquitto端点之间的M10续跑。Ubuntu已在提交`691c3bd`完成M10离线工具、主机回归、
-sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT RUN`，M10总门禁仍为
-`NOT MET`。
+sanitizer和ARMv7交叉构建，并在Windows准备交接后完成分析器边界复核、全量CTest和正式
+`RelWithDebInfo` ARM输入冻结；真实压力、断网和24小时门禁仍是`NOT RUN`，M10总门禁
+仍为`NOT MET`。
 
 **生成或转发本清单不等于批准硬件操作。** 烧录STM32、停止或启动目标进程、启停Broker、
 修改CAN/网络/`/etc`/init、部署binary以及任何长时间测试，仍须在实际操作前取得项目所有者
@@ -38,6 +39,9 @@ sanitizer和ARMv7交叉构建；真实压力、断网和24小时门禁仍是`NOT
 - [ ] `HEAD`与`origin/master`必须相同，且必须包含`691c3bd`。读取根目录`AGENTS.md`、
   `docs/PROJECT_SPEC.md`、`docs/PLANS.md`、`docs/TEST_PLAN.md`、
   `docs/milestones/M9.md`、`docs/milestones/M10.md`和本清单。
+- [ ] 确认当前源码的`test_extended_target_id_is_rejected`存在，并在Windows重新执行
+  `python tools/protocol/test_analyze_m10_candump.py -v`得到8/8 PASS；若仍是7项说明未拉到
+  Ubuntu边界修复，立即停止，不得烧录。
 - [ ] 确认M9仍为`MET`、M10仍为`NOT MET`。保存Windows、Git、PowerShell、Keil、
   STM32CubeMX、ST-Link、Mosquitto client/Broker和SSH工具版本。
 - [ ] 记录Windows正确UTC/本地时间；目标板时钟若仍不正确，只记录`/proc/uptime`、
@@ -74,21 +78,18 @@ Windows准备结果：项目所有者已确认`M10_STM32_PROFILE_DESIGN.md`；�
 三个ARMCC 5.06u6 target完整rebuild 0 error/0 warning及产品hash见
 `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。准备提交
 `06eaf8efafe126f74330fc60dbd291b1dffe1cfe`已push到`origin/master`，Windows现已停止；
-Ubuntu复核、烧录和真实短测均未开始。
+Ubuntu随后修正扩展帧文本ID边界，最终分析器8/8、全量CTest21/21并完成ARM输入冻结，
+证据见`artifacts/20260902T101743+0800-m10-ubuntu-review/`。烧录和真实短测均未开始。
 
 停止条件：500/1000仅是推算值；高负载时发送失败；三类ID任一为0；counter/checksum
 合同改变；Keil有warning/error；分析器不能从原始数据独立复算。此时不得开始正式run。
 
 ### 2.2 冻结被测gateway binary
 
-- [ ] Ubuntu现有M10 ARMv7 binary SHA256为
-  `7bb1d7299eac43d5a7a9b8f52981652c6ed3e3f3b29567ff74a1abc5f2b3edef`，它是Debug构建，
-  尚未部署或上板运行。项目所有者必须二选一并记录：
-  1. 明确接受所有M10数值只代表这个精确Debug binary；或
-  2. 先回Ubuntu生成并验证指定的Release/RelWithDebInfo binary，再以新SHA替换被测输入。
-
-已选择方案2：`RelWithDebInfo`。Ubuntu尚未生成、验证或冻结新SHA，因此本项保持未完成，
-现有Debug SHA不得用于正式M10性能run。
+- [x] 已选择并生成ARMv7 `RelWithDebInfo`正式输入。Ubuntu配置、构建、clean verbose
+  rebuild、SHA、ELF/解释器/NEEDED和无RPATH/RUNPATH检查均PASS；精确SHA256为
+  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。该文件尚未部署或
+  上板运行；旧Debug SHA不得用于正式M10性能run。
 - [ ] binary必须经私有传输取得；不得从Git artifact猜测或用M9旧binary替代。先在非系统
   staging目录复核`sha256sum`、`file`、`readelf -h/-l/-d`和无RPATH/RUNPATH。
 - [ ] 板端实际加载的`libmosquitto.so.1`真实文件SHA256应与已冻结值

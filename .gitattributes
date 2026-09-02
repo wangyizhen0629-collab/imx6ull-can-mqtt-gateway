@@ -34,3 +34,5 @@
 /artifacts/20260902T094824+0800-m10-windows-profile-prep2/** -text -whitespace
 /artifacts/20260902T095951+0800-m10-windows-prep-final-audit/** -text -whitespace
 /artifacts/20260902T100231+0800-m10-windows-prep-final-audit2/** -text -whitespace
+/artifacts/20260902T101743+0800-m10-ubuntu-review/** -text -whitespace
+/artifacts/20260902T103243+0800-m10-ubuntu-final-rerun/** -text -whitespace

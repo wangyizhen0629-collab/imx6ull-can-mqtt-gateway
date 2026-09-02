@@ -12,8 +12,9 @@ Broker上完成断线、一次`kill -9`、同spool重启补传及损坏恢复，
 仍是单次受控功能验证，不支持“完整网关”、掉电、性能或可靠性结论。M8随后以最终
 ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成external-loop
 断线重连、SIGKILL/state恢复及严格validator，门禁为`MET`。M9的真实BusyBox进程监督
-门禁也为`MET`。M10只完成采集/报告/门禁工具和离线回归，真实压力、断网、CPU/RSS与
-24小时场景均为`NOT RUN`，所以仍只允许使用下表明确标为“是”的窄范围表述。
+门禁也为`MET`。M10已完成采集/报告/门禁工具、离线回归、三档STM32构建准备和正式ARM
+输入静态冻结，但真实压力、断网、CPU/RSS与24小时场景均为`NOT RUN`，所以仍只允许使用
+下表明确标为“是”的窄范围表述。
 
 | 候选描述 | 必需源码/配置 | 必需测试 | 必需证据 | 真实值 | 可写简历 |
 | --- | --- | --- | --- | --- | --- |
@@ -27,7 +28,7 @@ ARMv7 binary在真实i.MX6ULL、物理CAN、ext4 spool和Windows Broker上完成
 | 持久化spool、断线重连补传与进程崩溃恢复 | M7 spool/MQTT/seq恢复源码、格式和配置 | ARM/板端、局域网断线、尾部/internal/cursor损坏、一次`kill -9` | M7离线run及LAN gate2 run | 主机/ASan全量16/16、ARM构建PASS；raw 71288、unique 35644、missing 0、effective duplicate 0 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写掉电、性能或长期可靠性 |
 | epoll 统一 eventfd/timerfd/MQTT socket | M8 reactor、目标API兼容性和计数快照 | 与 M7 等价的 reactor/重连/退出测试 | M8 Ubuntu/ARM证据及最终Windows/i.MX6ULL gate | API兼容、全量17/17、M8/ASan/UBSan 2/2；真实323 batch、unique seq 1～27434、missing/effective duplicate 0，reactor必需计数非零 | 是，必须注明真实i.MX6ULL上的单次受控功能门禁；不得写性能、时延或长期可靠性 |
 | BusyBox 开机启动和异常退出恢复 | M9 inittab/foreground supervisor/env及风暴冷却 | 主机状态机、ARM构建、真实启动和受控crash/restart | M9主机/ASan/ARM、目标安装/reload/restart/SIGKILL/ash cooldown及手动post-boot补充run | 新boot ID；PID 1自动拉起supervisor；最终1/1；SIGKILL/restart换PID；3次快速失败后cooldown | 是，但只写真实i.MX6ULL单次BusyBox进程监督门禁；注明CAN基线手工恢复，不写完整无人值守产品ready |
-| 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 BusyBox采集器、离线报告器、场景validator、三档STM32 profile和candump分析器 | 经批准的500/1000帧/s、20轮断网、每秒/proc及24小时流程 | M10离线run、Windows profile准备run与未来真实场景run | 工具回归及三档Keil rebuild PASS；真实场景全部NOT RUN，无性能/稳定性数值 | 否 |
+| 压力、重复断网、CPU/RSS 和 24 小时稳定性 | M10 BusyBox采集器、离线报告器、场景validator、三档STM32 profile和candump分析器 | 经批准的500/1000帧/s、20轮断网、每秒/proc及24小时流程 | M10离线run、Windows profile准备run、Ubuntu复核run与未来真实场景run | 分析器8/8、全量CTest21/21、三档Keil rebuild和ARM RelWithDebInfo静态验证PASS；真实场景全部NOT RUN，无性能/稳定性数值 | 否 |
 
 一行满足条件后，只能用已有不可变 run 计算出的数值替换“未测量”，并补充精确源码、
 测试、配置和 `artifacts/<run_id>/` 链接。STM32 Keil 结果与 Linux 结果必须分别标明环境。
@@ -215,5 +216,8 @@ M10总门禁为`NOT MET`，表中压力、CPU/RSS与稳定性描述仍不可写�
 Windows准备随后冻结111/500/1000档为100/10/1、450/45/5和900/90/10帧/s，并增加独立
 candump分析器。`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`记录分析器
 7/7和三个Keil ARMCC 5.06u6全量rebuild 0 error/0 warning，固件只保存hash而未提交。
-这只支持“准备工具和固件可构建”表述；Ubuntu全量复核、`RelWithDebInfo` ARM binary、
-烧录/短预演和全部真实场景仍为`NOT RUN`，不改变表中“否”。
+Ubuntu复核`artifacts/20260902T101743+0800-m10-ubuntu-review/`发现并修正扩展帧文本ID
+边界；最终分析器8/8、全量CTest21/21，已冻结`RelWithDebInfo` ARM binary SHA256
+`d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`，其ELF/解释器/
+NEEDED/无RPATH均PASS。该binary未部署或上板运行；烧录/短预演和全部真实场景仍为
+`NOT RUN`，不改变表中“否”。

@@ -584,7 +584,8 @@
 ## D-039：M10冻结整数STM32压力profile并改用RelWithDebInfo正式输入
 
 - 日期：2026-09-02
-- 状态：Windows准备提交`06eaf8e`已push并PASS；等待Ubuntu复核，M10仍为`NOT MET`
+- 状态：Windows准备提交`06eaf8e`已push并PASS；当时等待Ubuntu复核，后由D-040关闭；
+  M10仍为`NOT MET`
 - 输入决定：项目所有者明确选择推荐方案。三个编译期Keil target分别为111帧/s的
   100/10/1、500帧/s的450/45/5和1000帧/s的900/90/10；压力档使用100-slot整数超帧，
   slot周期为2 ms/1 ms。60秒车况仍按10 ms状态时钟推进，不随高频采样加速。
@@ -596,9 +597,33 @@
   `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`。第一次捕获脚本失败run保留，
   第二次uVision异步产品检查竞态的原始`MISSING`及完成后纠正证据同时保留。
 - binary决定：正式性能输入不使用现有Debug SHA；Ubuntu拉取本准备提交后生成、验证并冻结
-  `RelWithDebInfo` ARM binary的新SHA。该项当前`NOT RUN`。
+  `RelWithDebInfo` ARM binary的新SHA。D-039作出时该项为`NOT RUN`，后续结果见D-040。
 - 影响：Windows准备PASS只允许进入Ubuntu复核停止点，不授权烧录、目标/Broker控制、
   短预演或长时间测试；真实四场景未执行，M10保持`NOT MET`。
+
+## D-040：M10关闭Ubuntu准备停止点但不放宽真实硬件门禁
+
+- 日期：2026-09-02
+- 状态：已接受；Ubuntu准备复核PASS，M10总门禁仍为`NOT MET`
+- 证据决定：Windows四个artifact的原始manifest为CRLF。直接`sha256sum -c`会把行尾
+  `\r`解释为文件名一部分并FAIL；不得改写已有证据。本次保存该失败，再以
+  `tr -d '\r' < artifact_manifest.sha256 | sha256sum -c -`只读兼容复核，共68/68 PASS。
+- 分析器决定：can-utils以超过3位的文本ID表示EFF帧，并不直接打印`CAN_EFF_FLAG`数值。
+  解析时保留ID文本宽度，除ERR/RTR/EFF数值标志已经存在外，超过3位的ID补回EFF语义；
+  新增`00000100`不得冒充标准`0x100`的拒绝回归。最终分析器8/8、全量CTest21/21 PASS，
+  已归档M4真实6660帧重放仍PASS。
+- 构建决定：正式M10输入冻结为ARMv7 `RelWithDebInfo`，参数包含
+  `-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic -Werror`，SHA256为
+  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。ELF32 EABI5
+  hard-float、解释器、三项NEEDED和无RPATH/RUNPATH均PASS。binary只在忽略的`build/`
+  生成，未提交、私有传输、部署或板端运行。
+- 失败边界：Ubuntu主机`RelWithDebInfo`诊断构建因glibc FORTIFY暴露既有`write`返回值和
+  时间戳`snprintf`warning，在`-Werror`下FAIL；原日志保留。正式ARM构建PASS不能倒写该
+  主机结果，Debug warning-clean及沙箱外全量CTest仍PASS。
+- 影响：关闭的只是Ubuntu准备停止点。STM32烧录、三档短candump、120秒板端指标、短
+  端到端对账、500/1000帧/s各30分钟、20轮Broker中断和24小时基准全部`NOT RUN`。
+  Windows必须先拉取最终提交并另行取得每个外部状态动作的明确批准；不产生性能、CPU/RSS、
+  时延或长期可靠性结论。
 
 ## 本次规范冲突修正清单
 

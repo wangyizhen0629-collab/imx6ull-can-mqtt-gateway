@@ -55,8 +55,9 @@
 记录和生成固件SHA256。禁止在同一binary运行时切换profile；profile身份由target、编译
 定义、固件SHA和短candump四方绑定。
 
-`tools/stm32/generate_m10_keil_targets.py --check`只复核三个target配置一致性，不执行Keil
-编译。Keil未真实运行时只能写`NOT RUN`。
+`python -B tools/stm32/generate_m10_keil_targets.py --project \
+stm32/firmware/imx6ull-can-mqtt-gateway/MDK-ARM/imx6ull-can-mqtt-gateway.uvprojx --check`
+只复核三个target配置一致性，不执行Keil编译。Keil未真实运行时只能写`NOT RUN`。
 
 Windows准备run `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`已使用ARMCC
 5.06u6对三个target执行完整rebuild，均0 error/0 warning，并记录六个`.axf/.hex`的

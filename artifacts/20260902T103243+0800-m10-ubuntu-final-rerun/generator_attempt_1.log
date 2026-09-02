@@ -1,0 +1,3 @@
+command: python3 tools/stm32/generate_keil_targets.py --check
+exit_code: 2
+python3: can't open file '/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/tools/stm32/generate_keil_targets.py': [Errno 2] No such file or directory

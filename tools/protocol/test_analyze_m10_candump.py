@@ -167,6 +167,13 @@ class M10CandumpAnalyzerTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("XOR mismatch", result.stderr)
 
+    def test_extended_target_id_is_rejected(self) -> None:
+        lines = stress_frames(500)
+        lines[0] = lines[0].replace(" can0 100#", " can0 00000100#", 1)
+        result = self.run_analyzer(500, lines, 3.0)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("unexpected/extended/RTR", result.stderr)
+
     def test_missing_schedule_slot_is_rejected(self) -> None:
         lines = stress_frames(1000)
         del lines[98]

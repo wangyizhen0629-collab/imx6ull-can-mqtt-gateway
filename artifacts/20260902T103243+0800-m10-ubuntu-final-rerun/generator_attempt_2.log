@@ -1,0 +1,4 @@
+command: python3 tools/stm32/generate_m10_keil_targets.py --check
+exit_code: 2
+usage: generate_m10_keil_targets.py [-h] --project PROJECT (--write | --check)
+generate_m10_keil_targets.py: error: the following arguments are required: --project

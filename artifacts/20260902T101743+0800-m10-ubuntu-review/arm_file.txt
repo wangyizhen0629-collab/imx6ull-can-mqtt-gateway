@@ -1,0 +1,1 @@
+build/m10-ubuntu-review-arm-relwithdebinfo/gateway/gatewayd: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, for GNU/Linux 4.9.0, with debug_info, not stripped

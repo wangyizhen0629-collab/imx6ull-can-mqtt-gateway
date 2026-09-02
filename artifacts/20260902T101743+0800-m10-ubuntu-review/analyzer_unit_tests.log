@@ -1,0 +1,12 @@
+test_all_profiles_pass (__main__.M10CandumpAnalyzerTest) ... ok
+test_checksum_error_is_rejected (__main__.M10CandumpAnalyzerTest) ... ok
+test_counter_gap_is_rejected (__main__.M10CandumpAnalyzerTest) ... ok
+test_legacy_m4_contract_still_passes (__main__.M10CandumpAnalyzerTest) ... ok
+test_missing_schedule_slot_is_rejected (__main__.M10CandumpAnalyzerTest) ... ok
+test_profile_source_and_keil_targets_are_consistent (__main__.M10CandumpAnalyzerTest) ... ok
+test_short_capture_is_rejected (__main__.M10CandumpAnalyzerTest) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.653s
+
+OK

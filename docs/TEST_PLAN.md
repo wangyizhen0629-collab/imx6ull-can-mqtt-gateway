@@ -271,5 +271,8 @@ queue drop、batch/seq/reconnect/duplicate、spool 最大积压、`/proc` CPU/RS
 - `analyze_m10_candump.py`必须同时检查三ID计数/速率、完整持续时间、Rolling Counter、
   DLC、XOR、压力slot序列、意外/error frame，以及CAN前后bitrate/state/berr/RX错误增量。
 - Windows无硬件回归和三个Keil target rebuild已在
-  `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`通过；烧录和真实短candump仍
-  `NOT RUN`。Ubuntu必须先执行全量CTest/分析器复核并冻结`RelWithDebInfo` ARM binary。
+  `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`通过。Ubuntu复核
+  `artifacts/20260902T101743+0800-m10-ubuntu-review/`修正扩展帧文本ID边界后，分析器
+  8/8、全量CTest21/21，并冻结`RelWithDebInfo` ARM binary SHA256
+  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。binary上板、烧录
+  和真实短candump仍为`NOT RUN`。

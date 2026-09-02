@@ -1,0 +1,59 @@
+{
+  "schema": "gateway.m10.ubuntu-review.v1",
+  "run_id": "20260902T101743+0800-m10-ubuntu-review",
+  "source_head": "b25cab851c2daf8e7b19d6eb3338747d400d06c8",
+  "windows_preparation_commit": "06eaf8efafe126f74330fc60dbd291b1dffe1cfe",
+  "windows_handoff_commit": "b25cab851c2daf8e7b19d6eb3338747d400d06c8",
+  "results": {
+    "previous_m9_gate": "MET",
+    "windows_manifests_direct": {
+      "status": "FAIL",
+      "reason": "CRLF leaves carriage return in each sha256sum filename field"
+    },
+    "windows_manifests_crlf_compatible": {
+      "status": "PASS",
+      "files_checked": 68,
+      "files_failed": 0
+    },
+    "host_debug_warning_clean_build": "PASS",
+    "host_relwithdebinfo_build": {
+      "status": "FAIL",
+      "reason": "existing glibc FORTIFY warnings are promoted by -Werror"
+    },
+    "ctest_sandboxed": {
+      "status": "FAIL",
+      "passed": 19,
+      "total": 21,
+      "reason": "PF_CAN and reserved socket permissions"
+    },
+    "ctest_unsandboxed_final": {
+      "status": "PASS",
+      "passed": 21,
+      "total": 21,
+      "m10_passed": 3,
+      "m10_total": 3
+    },
+    "candump_analyzer_unit_tests": {
+      "status": "PASS",
+      "passed": 8,
+      "total": 8
+    },
+    "archived_m4_capture_replay": {
+      "status": "PASS",
+      "frames": 6660,
+      "observed_duration_seconds": 59.988758,
+      "counter_gaps": 0,
+      "error_frames": 0
+    },
+    "arm_relwithdebinfo": {
+      "status": "PASS",
+      "sha256": "d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf",
+      "format": "ELF32 ARM EABI5 hard-float",
+      "interpreter": "/lib/ld-linux-armhf.so.3",
+      "rpath_runpath": false,
+      "deployed_or_run": false
+    },
+    "physical_hardware_tests": "NOT RUN",
+    "m10_gate": "NOT MET"
+  }
+}

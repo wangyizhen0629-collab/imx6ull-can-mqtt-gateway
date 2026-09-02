@@ -123,7 +123,8 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   CAN持久启动配置仍是外部产品问题，不纳入M9实现。
 - M10的STM32输入定义已冻结为111档100/10/1、500档450/45/5、1000档900/90/10帧/s，
   Windows分析器回归和三个Keil target全量rebuild已PASS；这解决的是准备代码，不是真实
-  物理速率。下一停止点是Ubuntu复核该提交并生成/验证`RelWithDebInfo` ARM binary及新SHA。
+  物理速率。Ubuntu已复核提交，修正扩展帧文本ID边界，完成分析器8/8、全量CTest21/21，
+  并生成/验证`RelWithDebInfo` ARM binary及新SHA；binary仍未部署或运行。
 - 真实场景仍需确认：短candump/端到端预演实际PASS；谁逐项批准烧录、目标进程和Broker
   控制、20轮Broker启停与24小时运行；长时CSV和三端原始日志如何回收、脱敏和备份。
   上述条件未解决前M10不能启动正式run或标为MET。
@@ -215,8 +216,10 @@ Ubuntu 不存在 `arm-none-eabi-gcc`/OpenOCD 已不再是待解决问题，也�
   基准均为`NOT RUN`；原因和条件见
   `artifacts/20260901T235415+0800-m10-board-not-run/`。当前M10总门禁为`NOT MET`。
 - Windows准备证据`artifacts/20260902T094824+0800-m10-windows-profile-prep2/`已经关闭
-  profile分配、调度、分析器和Keil可构建性缺口，但Ubuntu全量复核、正式`RelWithDebInfo`
-  binary、STM32烧录、三档短candump、120秒指标预演和短端到端对账均仍为`NOT RUN`。
+  profile分配、调度和Keil可构建性缺口。Ubuntu证据
+  `artifacts/20260902T101743+0800-m10-ubuntu-review/`又关闭全量复核、分析器扩展帧边界和
+  正式`RelWithDebInfo` binary生成/静态验证缺口；STM32烧录、binary上板、三档短candump、
+  120秒指标预演和短端到端对账仍为`NOT RUN`。
 
 “模块标称带终端”只解决硬件配置/采购问题；M3-C 已由项目所有者按检查现象简化验收，
 但精确电阻读数没有归档，后续不得引用推测的欧姆值。

@@ -1,0 +1,33 @@
+[  2%] Building C object gateway/CMakeFiles/gateway_core.dir/src/config.c.o
+[  4%] Building C object gateway/CMakeFiles/gateway_core.dir/src/can_receiver.c.o
+[  6%] Building C object gateway/CMakeFiles/gateway_core.dir/src/error.c.o
+[  9%] Building C object gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/lifecycle.c: In function ‘lifecycle_signal_handler’:
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/lifecycle.c:20:15: error: ignoring return value of ‘write’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
+   20 |         (void)write(descriptor, &value, sizeof(value));
+      |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 11%] Building C object gateway/CMakeFiles/gateway_core.dir/src/log.c.o
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/log.c: In function ‘gateway_log’:
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/log.c:87:49: error: ‘:’ directive output may be truncated writing 1 byte into a region of size between 0 and 16 [-Werror=format-truncation=]
+   87 |                        "%04d-%02d-%02dT%02d:%02d:%02d.%03ldZ",
+      |                                                 ^
+/home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/log.c:87:24: note: directive argument in the range [-9223372036854, 9223372036854]
+   87 |                        "%04d-%02d-%02dT%02d:%02d:%02d.%03ldZ",
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /usr/include/stdio.h:894,
+                 from /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/include/gateway/log.h:8,
+                 from /home/wangyizhen/projects/imx6ull-can-mqtt-gateway/gateway/src/log.c:1:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:71:10: note: ‘__builtin___snprintf_chk’ output between 25 and 88 bytes into a destination of size 32
+   71 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   72 |                                    __glibc_objsize (__s), __fmt,
+      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   73 |                                    __va_arg_pack ());
+      |                                    ~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+cc1: all warnings being treated as errors
+gmake[2]: *** [gateway/CMakeFiles/gateway_core.dir/build.make:132：gateway/CMakeFiles/gateway_core.dir/src/log.c.o] 错误 1
+gmake[2]: *** 正在等待未完成的任务....
+gmake[2]: *** [gateway/CMakeFiles/gateway_core.dir/build.make:118：gateway/CMakeFiles/gateway_core.dir/src/lifecycle.c.o] 错误 1
+gmake[1]: *** [CMakeFiles/Makefile2:884：gateway/CMakeFiles/gateway_core.dir/all] 错误 2
+gmake: *** [Makefile:146：all] 错误 2

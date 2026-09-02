@@ -66,9 +66,12 @@
   CAN持久配置、Broker交付、正确UTC和完整无人值守产品ready仍未验证。
 - M10已实现BusyBox ash `/proc`每秒采集、Ubuntu CPU/RSS汇总和四场景严格门禁校验。
   warning-clean主机构建、沙箱外全量CTest20/20、最终M10专项2/2、ASan+UBSan全量20/20、
-  sanitizer M10专项2/2和ARMv7 warning-clean构建均通过。当前会话无真实目标板、STM32、
-  Windows Broker或subscriber访问路径，因此500/1000帧/s各30分钟、20轮每轮5分钟断网、
-  板端`/proc`和24小时基准均为`NOT RUN`。M10总门禁为`NOT MET`，本轮停止在M10。
+  sanitizer M10专项2/2和ARMv7 warning-clean构建均通过。Windows完成三档profile和Keil
+  准备后，Ubuntu复核修正扩展帧文本ID边界，最终分析器8/8、全量CTest21/21，并冻结
+  `RelWithDebInfo` ARM binary SHA256
+  `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`；该binary未上板。
+  500/1000帧/s各30分钟、20轮每轮5分钟断网、板端`/proc`和24小时基准均为`NOT RUN`。
+  M10总门禁为`NOT MET`，本轮停止在M10。
 
 ## Milestone 总表
 
@@ -576,15 +579,37 @@ CAN持久启动配置、Broker交付、正确UTC、完整无人值守产品ready
    选择由Ubuntu新建`RelWithDebInfo`，不沿用现有Debug SHA作为性能输入。
 8. 新增M10 candump分析器及7项无硬件回归，覆盖三档速率/每ID计数、counter、DLC、XOR、
    压力slot序列、意外/error frame、CAN前后状态和旧M4 6660帧合同；Windows直接执行7/7
-   PASS，并把测试注册到CTest，等待Ubuntu执行全量复核。
+   PASS，并把测试注册到CTest；当时等待Ubuntu执行全量复核，后续结果见第11～14项。
 9. `artifacts/20260902T094824+0800-m10-windows-profile-prep2/`保存三个Keil target的
    ARMCC 5.06u6全量rebuild，均0 error/0 warning；六个`.axf/.hex`完成大小/SHA256复核，
    构建产物被忽略且不提交。首次脚本run因PowerShell stderr捕获错误停止，保留在
    `artifacts/20260902T094551+0800-m10-windows-profile-prep/`，其中Keil build为`NOT RUN`。
 10. 本次未烧录、未修改目标/CAN/Broker/网络/进程，未执行短硬件预演或长时间测试。Windows
-    准备提交`06eaf8efafe126f74330fc60dbd291b1dffe1cfe`已push并停止；Ubuntu拉取后仍需复核
-    diff、全量CTest、分析器回归和新`RelWithDebInfo` ARM binary/ELF/RPATH/SHA，明确
-    放行后才可申请下一步硬件授权。
+    准备提交`06eaf8efafe126f74330fc60dbd291b1dffe1cfe`和交接提交
+    `b25cab851c2daf8e7b19d6eb3338747d400d06c8`已push并停止。
+11. Ubuntu以fast-forward拉取到`b25cab851c2daf8e7b19d6eb3338747d400d06c8`，四组既有
+    未跟踪目录未动。四个Windows manifest直接`sha256sum -c`因CRLF使文件名含`\r`均
+    exit 1；未改写原件，改用`tr -d '\r'`只读输入后68/68 PASS。原失败与兼容复核保存在
+    `artifacts/20260902T101743+0800-m10-ubuntu-review/`。
+12. 代码复核发现can-utils以8位文本ID表示EFF帧，原分析器可能把`00000100`错误接受为
+    标准`0x100`。现保留文本宽度并恢复EFF语义，新增拒绝回归；最终分析器8/8 PASS，
+    已归档M4真实6660帧抓包重放仍PASS。
+13. Ubuntu Debug warning-clean构建PASS。受限沙箱CTest为19/21，两个FAIL仍是PF_CAN和
+    保留socket权限；沙箱外最终当前源码21/21、M10标签3/3 PASS。额外主机
+    `RelWithDebInfo`诊断构建因glibc FORTIFY在既有`write`返回值和时间戳`snprintf`处产生
+    warning且项目启用`-Werror`而FAIL，原日志保留，未冒充PASS。
+14. 正式ARMv7 `RelWithDebInfo`配置、构建和clean verbose rebuild均PASS，实际参数包含
+    `-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic -Werror`。binary为EABI5 hard-float ELF32，
+    解释器`/lib/ld-linux-armhf.so.3`，NEEDED为`libpthread.so.0`、`libmosquitto.so.1`、
+    `libc.so.6`，无RPATH/RUNPATH；两次SHA一致，为
+    `d234f2c5f0cc732fd56bc43cc2b8f59491944111b430409ca0ab5b6bb07e4fbf`。binary未提交、
+    私有传输、部署或板端运行。
+15. Ubuntu准备停止点已关闭，但这不授权硬件操作。STM32烧录、三档短candump、120秒板端
+    指标预演、短端到端对账、两个30分钟压力run、20轮Broker中断和24小时基准仍全部
+    `NOT RUN`。Windows必须先拉取包含分析器修复的最终提交，再按清单逐项取得精确授权。
+16. 最终复跑发现文档化生成器命令先后使用旧脚本名、遗漏必需`--project`，两次均exit 2；
+    失败保存在`artifacts/20260902T103243+0800-m10-ubuntu-final-rerun/`。补齐真实脚本和
+    工程路径后canonical target检查PASS；分析器8/8及沙箱外CTest21/21也再次PASS。
 
 M10离线工具与可执行回归已完成，但退出门禁要求的真实压力、断网、指标和24小时报告不齐，
 故M10总门禁为 **NOT MET**。不得产生性能、稳定性、CPU/RSS或长期可靠性简历结论。本轮

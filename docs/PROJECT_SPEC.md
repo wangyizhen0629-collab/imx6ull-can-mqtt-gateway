@@ -190,8 +190,8 @@ ID，证明PID 1在无人工start/restart/HUP时自动拉起唯一supervisor；�
 500000 bit/s CAN基线后，最终supervisor/child为1/1且child PID超过60秒不变。因此M9
 BusyBox进程监督门禁为`MET`。M10已实现BusyBox `/proc`采集、Ubuntu CPU/RSS汇总、
 四场景严格门禁工具，以及111/500/1000帧/s的STM32编译期profile和独立candump分析器；
-主机、sanitizer、ARMv7离线验证、分析器7/7和Windows三个Keil全量rebuild均已通过。
-正式M10选择由Ubuntu另建`RelWithDebInfo` ARM binary，该复核和新SHA尚未完成；真实
-500/1000帧/s压力、20轮Broker断网、板端指标和24小时基准均为`NOT RUN`，故M10总门禁
-为`NOT MET`。CAN持久配置、Broker交付、正确UTC、完整产品无人值守ready、性能和长期
-可靠性仍无结论。
+主机、sanitizer、ARMv7离线验证和Windows三个Keil全量rebuild均已通过。Ubuntu复核又
+修正扩展帧文本ID边界，分析器8/8、全量CTest21/21，并冻结通过ELF/RPATH检查的
+`RelWithDebInfo` ARM binary及SHA；该binary未上板。真实500/1000帧/s压力、20轮Broker
+断网、板端指标和24小时基准均为`NOT RUN`，故M10总门禁为`NOT MET`。CAN持久配置、
+Broker交付、正确UTC、完整产品无人值守ready、性能和长期可靠性仍无结论。
